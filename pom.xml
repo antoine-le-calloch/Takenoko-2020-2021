@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
     <groupId>GigaBoss</groupId> <!-- CHANGE ME -->
-    <artifactId>projet2-ps5-20-21-takenoko-2021-gigaboss</artifactId> <!-- CHANGE ME -->
+    <artifactId>projet2-ps5-20-21-takenoko-2021-gigaboss</artifactId> <!-- CHANGE ME --> 
     <version>0.1-SNAPSHOT</version> <!-- CHANGE ME -->
 
     <properties>
