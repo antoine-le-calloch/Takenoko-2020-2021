@@ -2,9 +2,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-    <groupId>TeamName</groupId> <!-- CHANGE ME -->
-    <artifactId>JarName</artifactId> <!-- CHANGE ME -->
-    <version>0.2-SNAPSHOT</version> <!-- CHANGE ME -->
+    <groupId>GigaBoss</groupId> <!-- CHANGE ME -->
+    <artifactId>projet2-ps5-20-21-takenoko-2021-gigaboss</artifactId> <!-- CHANGE ME -->
+    <version>0.1-SNAPSHOT</version> <!-- CHANGE ME -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- CHANGE ME IF NEEDED, other : ISO-8859-1 -->
