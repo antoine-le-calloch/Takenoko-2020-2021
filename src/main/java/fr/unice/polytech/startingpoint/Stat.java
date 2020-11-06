@@ -2,14 +2,20 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 
-public class Stat {
-    ArrayList<GameData> gamesData = new ArrayList<>();
+class Stat {
+    int[] gamesData = new int[2];
 
-    public void add(GameData data) {
-        gamesData.add(data);
+    void add(int[] data) {
+        gamesData=data;
+    }
+
+    String getWinner(int[] score){
+        if(score[0]==score[1])
+            return "Egalité";
+        return (score[0]>score[1]) ? "Joueur 1 gagne" : "Joueur 2 gagne";
     }
 
     public String toString(){
-        return null;
+        return getWinner(gamesData);
     }
 }

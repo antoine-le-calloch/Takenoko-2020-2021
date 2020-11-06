@@ -2,39 +2,29 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 
-public class Game {
-    GameState gameState = new GameState();
-    ArrayList<Bot> bots = new ArrayList<>();
+class Game {
+    Resource resource = new Resource();
+    Board board = new Board();
+    ArrayList<Bot> botList = new ArrayList<>();
     int[] scores;
-    Bot winner;
 
     Game(int[] numBots){
+
         scores = new int[numBots.length];
         for(int i = 0; i < numBots.length; i++){
-            bots.add(new Bot("bot"+(i+1),numBots[i]));
+            botList.add(new Bot(numBots[i]));
         }
     }
 
     void play() {
-        int botTurn = 0;
-
-        while(gameOver()){
-            scores[botTurn] += bots.get(botTurn).play(gameState);
-            botTurn = (botTurn + 1) % bots.size();
-        }
-
-        winner = getWinner();
+        int numBot = 0;
+        scores[numBot] += botList.get(numBot).play(resource,board);
+        numBot++;
+        scores[numBot] += botList.get(numBot).play(resource,board);
+        System.out.println(scores[0] +" "+ scores[1]);
     }
 
-    private boolean gameOver() {
-        return false;
-    }
-
-    private Bot getWinner() {
-        return null;
-    }
-
-    GameData getData() {
-        return new GameData(winner,scores);
+    int[] getData() {
+        return scores;
     }
 }
