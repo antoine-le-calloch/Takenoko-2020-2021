@@ -17,6 +17,10 @@ class Resource {
         }
     }
 
+    ArrayList<Parcel> getParcel(){
+        return deckParcel;
+    }
+
     Parcel drawParcel() {
         Parcel parcel = deckParcel.get(0);
         deckParcel.remove(parcel);

@@ -17,6 +17,7 @@ class Bot {
         if (board.placedParcel.size() != 0 && inventoryMission.get(0).getIDMission() == 1) {
             return inventoryMission.get(0).getPoints();
         }
+
         return 0;
     }
 }

@@ -8,7 +8,7 @@ class Board {
     Board(){
     }
 
-    ArrayList<Parcel> getBoard(){
+    ArrayList<Parcel> getParcel(){
         return placedParcel;
     }
 
