@@ -1,11 +1,15 @@
 package fr.unice.polytech.startingpoint;
 
+import java.util.ArrayList;
+
 public class Stat {
-    void add(int[]tab) {
+    ArrayList<GameData> gamesData = new ArrayList<>();
+
+    public void add(GameData data) {
+        gamesData.add(data);
     }
 
     public String toString(){
-
         return null;
     }
 }

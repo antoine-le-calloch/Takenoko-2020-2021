@@ -1,19 +1,16 @@
 package fr.unice.polytech.startingpoint;
 
 public class Bot {
-    GameState gameState;
+    String name;
     int num_bot;
 
-    Bot(int num_bot, GameState gameState) {
-        this.gameState = gameState;
+    Bot(String name, int num_bot) {
+        this.name = name;
         this.num_bot = num_bot;
     }
 
-    boolean play() {
-        return false;
-    }
-
-    int score() {
+    int play(GameState gameState) {
+        Card board = gameState.getBoard();
         return 0;
     }
 }

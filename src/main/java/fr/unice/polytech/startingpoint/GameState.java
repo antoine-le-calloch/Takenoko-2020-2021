@@ -6,4 +6,6 @@ public class GameState {
     Card getBoard(){
         return centralCard;
     }
+
+
 }
