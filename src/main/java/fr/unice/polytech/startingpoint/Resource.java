@@ -3,6 +3,8 @@ package fr.unice.polytech.startingpoint;
 import java.util.ArrayList;
 
 class Resource {
+
+
     ArrayList<Mission> deckMission = new ArrayList<>();
     ArrayList<Parcel> deckParcel = new ArrayList<>();
 
