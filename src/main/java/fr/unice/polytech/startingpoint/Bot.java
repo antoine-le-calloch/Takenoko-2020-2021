@@ -1,14 +1,12 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 class Bot {
-
-
     int num_bot;
     int score_bot=0;
     int mission_done=0;
-
     ArrayList<Mission> inventoryMission = new ArrayList<>();
 
     Bot(int num_bot) {
@@ -30,14 +28,20 @@ class Bot {
     }
 
 
-    void missionDone(Board board){
-        for(Mission mission : inventoryMission){
-            int count=mission.checkMission(board);
-            if (count!=0){
-                inventoryMission.remove(mission);
+    void missionDone(Board board) {
+
+        Iterator<Mission> it = inventoryMission.iterator();
+        while (it.hasNext()) {
+            Mission mission = it.next();
+            int count = mission.checkMission(board);
+            if (count != 0) {
+                it.remove();
                 mission_done++;
-                score_bot+=count;
+                score_bot += count;
             }
+
         }
     }
+
+
 }

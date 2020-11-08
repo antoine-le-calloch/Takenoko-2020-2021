@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 class Resource {
 
-
     ArrayList<Mission> deckMission = new ArrayList<>();
     ArrayList<Parcel> deckParcel = new ArrayList<>();
 
@@ -13,7 +12,7 @@ class Resource {
         for (int i = 0; i < nbParcel ; i++){
             deckParcel.add(new Parcel());
         }
-        int nbMission = 2;
+        int nbMission = 10;
         for (int i = 0; i < nbMission ; i++){
             deckMission.add(new Mission(1, 3));
         }

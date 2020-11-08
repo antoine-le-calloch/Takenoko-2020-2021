@@ -21,16 +21,17 @@ class Game {
         int numBot = 0;
         boolean isContinue=true;
         while(isContinue) {
-
             botList.get(numBot).play(resource, board);
+            if (botList.get(numBot).mission_done >= 1) {
+                numBot=(numBot+1)%2;
+                botList.get(numBot).play(resource, board);
+                isContinue = false;
+            }
             numBot=(numBot+1)%2;
-
-            if (botList.get(numBot).mission_done == 1)
-                isContinue=false;
-
         }
-        for (Bot bot : botList){
-            scores[bot.num_bot]=bot.score_bot;
+
+        for (int i=0; i<botList.size();i++){
+            scores[i]=botList.get(i).score_bot;
         }
         System.out.println(scores[0] + " " + scores[1]);
 

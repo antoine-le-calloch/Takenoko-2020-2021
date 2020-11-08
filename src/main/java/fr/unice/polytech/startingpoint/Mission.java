@@ -21,18 +21,10 @@ public class Mission {
     }
 
     int checkMission(Board board){
-
         if (iDMission==1 && board.placedParcel.size()!=0){
-
-
-
             return points;
-
         }
-
         return 0;
-
-
     }
 
 }
