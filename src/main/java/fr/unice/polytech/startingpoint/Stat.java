@@ -16,6 +16,6 @@ class Stat {
     }
 
     public String toString(){
-        return getWinner(gamesData);
+        return gamesData[0]+" "+gamesData[1]+"\n"+getWinner(gamesData);
     }
 }
