@@ -3,12 +3,11 @@ package fr.unice.polytech.startingpoint;
 import java.util.ArrayList;
 
 class Game {
-    private Resource resource = new Resource();
-    private Board board = new Board();
-    private ArrayList<Bot> botList = new ArrayList<>();
-    private int[] score_bots;
-    private int[] mission_done;
-    private final int nbMissions = 3;
+    private final Resource resource = new Resource();
+    private final Board board = new Board();
+    private final ArrayList<Bot> botList = new ArrayList<>();
+    private final int[] score_bots;
+    private final int[] mission_done;
 
     Game(String[] botNames){
         score_bots = new int[botNames.length];
@@ -30,6 +29,7 @@ class Game {
 
     boolean isContinue(){
         for (int mission : mission_done){
+            int nbMissions = 3;
             if( mission < nbMissions){
                 return true;
             }
@@ -49,19 +49,19 @@ class Game {
         }
     }
 
-    public Resource getResource() {
+    Resource getResource() {
         return resource;
     }
 
-    public Board getBoard() {
+    Board getBoard() {
         return board;
     }
 
-    public ArrayList<Bot> getBotList() {
+    ArrayList<Bot> getBotList() {
         return (ArrayList<Bot>) botList.clone();
     }
 
-    public int[] getData() {
+    int[] getData() {
         return score_bots;
     }
 }

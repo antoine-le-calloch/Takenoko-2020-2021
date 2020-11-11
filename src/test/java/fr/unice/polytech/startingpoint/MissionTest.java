@@ -11,9 +11,9 @@ class MissionTest {
     Mission mission3;
 
     @BeforeEach void setUp(){
-        mission=new Mission(1,1);
-        mission2=new Mission(1,2);
-        mission3=new Mission(2,1);
+        mission=new Mission(1,1,"parcel","triangle");
+        mission2=new Mission(1,2,"parcel","ligne");
+        mission3=new Mission(2,1,"parcel","ligne");
     }
 
     @Test void newMission(){

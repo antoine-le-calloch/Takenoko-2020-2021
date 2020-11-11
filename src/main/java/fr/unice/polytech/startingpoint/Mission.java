@@ -1,24 +1,33 @@
 package fr.unice.polytech.startingpoint;
 
-public class Mission {
-    private int iDMission;
-    private int points;
+import java.lang.String;
 
-    Mission(int nbMission, int points) {
+public class Mission {
+    private final int iDMission;
+    private final int points;
+    private enum Type {parcel};
+    private enum Forme {triangle, ligne};
+    private final Type type;
+    private final Forme forme;
+
+    Mission(int nbMission, int points, String type, String forme) {
         this.iDMission = nbMission;
         this.points = points;
-    }
-
-    int getPoints() {
-        return points;
-    }
-
-    int getIDMission() {
-        return iDMission;
+        this.type = Type.valueOf(type);
+        this.forme = Forme.valueOf(forme);
     }
 
     int checkMission(Board board){
-        if (iDMission==1 && board.getParcel().size()!=1){
+        if (type.toString().equals("parcel"))
+            return checkMissionParcel(board);
+        return 0;
+    }
+
+    int checkMissionParcel(Board board){
+        if (forme.toString().equals("triangle")) {
+            return points;
+        }
+        if (forme.toString().equals("ligne")) {
             return points;
         }
         return 0;

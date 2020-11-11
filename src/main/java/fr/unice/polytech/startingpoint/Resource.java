@@ -5,15 +5,16 @@ import java.util.ArrayList;
 class Resource {
     private ArrayList<Mission> deckMission = new ArrayList<>();
     private ArrayList<Parcel> deckParcel = new ArrayList<>();
-    private final int nbParcel = 27;
-    private final int nbMission = 46;
 
     Resource(){
-        for (int i = 0; i < nbParcel ; i++){
+        int nbParcel = 27;
+        for (int i = 0; i < nbParcel; i++){
             deckParcel.add(new Parcel());
         }
-        for (int i = 0; i < nbMission ; i++){
-            deckMission.add(new Mission(1, 3));
+        int nbMission = 32;
+        for (int i = 0; i < nbMission / 2 ; i++) {
+            deckMission.add(new Mission(1, 2, "parcel", "triangle"));
+            deckMission.add(new Mission(2, 3, "parcel", "ligne"));
         }
     }
 

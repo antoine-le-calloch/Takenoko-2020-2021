@@ -23,15 +23,15 @@ class Bot {
         return board.putParcel(resource.drawParcel(),x,y,z);
     }
 
-    public void deleteMission(Mission mission) {
+    void deleteMission(Mission mission) {
         inventoryMission.remove(mission);
     }
 
-    public String getBotName() {
+    String getBotName() {
         return botName;
     }
 
-    public ArrayList<Mission> getInventoryMission() {
+    ArrayList<Mission> getInventoryMission() {
         return (ArrayList<Mission>) inventoryMission.clone();
     }
 }
