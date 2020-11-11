@@ -3,23 +3,18 @@ package fr.unice.polytech.startingpoint;
 import java.util.ArrayList;
 
 class Resource {
-
-    ArrayList<Mission> deckMission = new ArrayList<>();
-    ArrayList<Parcel> deckParcel = new ArrayList<>();
+    private ArrayList<Mission> deckMission = new ArrayList<>();
+    private ArrayList<Parcel> deckParcel = new ArrayList<>();
+    private final int nbParcel = 27;
+    private final int nbMission = 46;
 
     Resource(){
-        int nbParcel = 14;
         for (int i = 0; i < nbParcel ; i++){
             deckParcel.add(new Parcel());
         }
-        int nbMission = 12;
         for (int i = 0; i < nbMission ; i++){
             deckMission.add(new Mission(1, 3));
         }
-    }
-
-    ArrayList<Parcel> getParcel(){
-        return deckParcel;
     }
 
     Parcel drawParcel() {
@@ -32,5 +27,9 @@ class Resource {
         Mission mission = deckMission.get(0);
         deckMission.remove(mission);
         return mission;
+    }
+
+    ArrayList<Parcel> getParcel(){
+        return (ArrayList<Parcel>) deckParcel.clone();
     }
 }

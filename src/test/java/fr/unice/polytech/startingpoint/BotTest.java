@@ -6,19 +6,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BotTest {
-
     private Bot bot1;
     private Bot bot2;
     private Resource resource;
     private Board board;
 
     @BeforeEach public void setUp(){
-        bot1= new Bot(1);
-        bot2=new Bot(2);
-        resource=new Resource();
-        board=new Board();
+        bot1 = new Bot("Bob");
+        bot2 = new Bot("Bob");
+        resource = new Resource();
+        board = new Board();
     }
-
 
     @Test public void testEquals(){
         assertEquals(bot1,bot1);
@@ -28,13 +26,13 @@ class BotTest {
 
     @Test
     public void parcelIncrease(){
-        bot1.placeParcel(resource, board);
-        assertEquals(1,board.getParcel().size());
+        bot1.placeParcel(resource, board,0,0,1);
+        assertEquals(2,board.getParcel().size());
     }
 
     @Test
     public void missionIncrease(){
         bot1.drawMission(resource);
-        assertEquals(1,bot1.inventoryMission.size());
+        assertEquals(1,bot1.getInventoryMission().size());
     }
 }

@@ -6,7 +6,7 @@ public class Main {
 
         Stat statGame = new Stat();
 
-        Game game = new Game(new int[]{1, 1});
+        Game game = new Game(new String[]{"Bob","Bob"});
         game.play();
         statGame.add(game.getData());
 

@@ -1,11 +1,8 @@
 package fr.unice.polytech.startingpoint;
 
-import javax.swing.*;
-import java.util.ArrayList;
-
 public class Mission {
-    int iDMission;
-    int points;
+    private int iDMission;
+    private int points;
 
     Mission(int nbMission, int points) {
         this.iDMission = nbMission;
@@ -21,10 +18,9 @@ public class Mission {
     }
 
     int checkMission(Board board){
-        if (iDMission==1 && board.placedParcel.size()!=0){
+        if (iDMission==1 && board.getParcel().size()!=1){
             return points;
         }
         return 0;
     }
-
 }

@@ -1,21 +1,20 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 class Game {
-    Resource resource = new Resource();
-    Board board = new Board();
-    ArrayList<Bot> botList = new ArrayList<>();
-    int[] score_bots;
-    int[] mission_done;
-    private int nbMissions = 6;
+    private Resource resource = new Resource();
+    private Board board = new Board();
+    private ArrayList<Bot> botList = new ArrayList<>();
+    private int[] score_bots;
+    private int[] mission_done;
+    private final int nbMissions = 3;
 
-    Game(int[] numBots){
-        score_bots = new int[numBots.length];
-        mission_done = new int[numBots.length];
-        for(int i = 0; i < numBots.length; i++){
-            botList.add(new Bot(numBots[i]));
+    Game(String[] botNames){
+        score_bots = new int[botNames.length];
+        mission_done = new int[botNames.length];
+        for(int i = 0; i < botNames.length; i++){
+            botList.add(new Bot(botNames[i]));
         }
     }
 
@@ -39,18 +38,30 @@ class Game {
     }
 
     void missionDone(int idBot, Board board) {
-        Iterator<Mission> it = botList.get(idBot).inventoryMission.iterator();
-        while (it.hasNext()) {
-            int count = it.next().checkMission(board);
-            if (count != 0) {
-                it.remove();
+        int count;
+        for(Mission mission : botList.get(idBot).getInventoryMission()){
+            count = mission.checkMission(board);
+            if( count != 0){
                 mission_done[idBot]++;
                 score_bots[idBot] += count;
+                botList.get(idBot).deleteMission(mission);
             }
         }
     }
 
-    int[] getData() {
+    public Resource getResource() {
+        return resource;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public ArrayList<Bot> getBotList() {
+        return (ArrayList<Bot>) botList.clone();
+    }
+
+    public int[] getData() {
         return score_bots;
     }
 }

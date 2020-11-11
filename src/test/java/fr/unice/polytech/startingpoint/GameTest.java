@@ -5,66 +5,58 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-
-
-    Game game;
+    Game game1;
     Game game2;
     Game game3;
     Game game4;
     Game game5;
 
     @BeforeEach public void Setup(){
-
-        game=new Game(new int []{1,1});
-        game2=new Game(new int[]{1,3});
-        game3=new Game(new int[]{1});
-        game4=new Game(new int[]{1,1,1});
-        game5=new Game(new int[]{});
-
-
+        game1 = new Game(new String[]{"Bob","Bob"});
+        game2 = new Game(new String[]{"Bob","Albert"});
+        game3 = new Game(new String[]{"Bob"});
+        game4 = new Game(new String[]{"Bob","Bob","Bob"});
+        game5 = new Game(new String[]{});
     }
 
-
-
     @Test public void numberPlayers(){
-
-        assertNotEquals(game,game2);
-        assertNotEquals(game,game3);
-        assertNotEquals(game,game4);
-        assertNotEquals(game,game5);
-        assertNotEquals(game,null);
-
-
+        assertNotEquals(game1,game2);
+        assertNotEquals(game1,game3);
+        assertNotEquals(game1,game4);
+        assertNotEquals(game1,game5);
+        assertNotEquals(game1,null);
     }
 
     @Test public void bots(){
-
-
-        assertEquals( 2,game.botList.size() );
-        assertEquals( 0,game5.botList.size() );
-        assertEquals(1,game.botList.get(0).num_bot);
-        assertEquals(game4.botList.get(2).num_bot,game.botList.get(0).num_bot);
-        assertNotEquals( 3,game.botList.get(0).num_bot);
-        assertNotEquals( 2,game4.botList.size());
-        assertNotEquals(game5.botList, null);
-
+        assertEquals( 2,game1.getBotList().size() );
+        assertEquals( 0,game5.getBotList().size() );
+        assertEquals("Bob",game1.getBotList().get(0).getBotName());
+        assertEquals(game4.getBotList().get(2).getBotName(),game1.getBotList().get(0).getBotName());
+        assertNotEquals( "Albert",game1.getBotList().get(0).getBotName());
+        assertNotEquals( 2,game4.getBotList().size());
+        assertNotEquals(game5.getBotList(), null);
     }
 
-    @Test public void ressource(){
-
-        assertEquals(game.resource,game.resource);
-        assertTrue(!game.resource.equals(game2.resource));
-        assertTrue(!game.resource.equals(null));
+    @Test public void resource(){
+        assertEquals(game1.getResource(),game1.getResource());
+        assertTrue(!game1.getResource().equals(game2.getResource()));
+        assertTrue(!game1.getResource().equals(null));
     }
 
+    @Test
+    public void missionDeletedAndIncreaseScore(){
+        game1.getBotList().get(0).play(game1.getResource(), game1.getBoard());
+        game1.missionDone(0,game1.getBoard());
+        assertEquals(0,game1.getBotList().get(0).getInventoryMission().size());
+        assertNotEquals(0,game1.getData()[0]);
+    }
 
-
-
-
-
-
-
-
-
-
+    @Test
+    public void wrongPlacementSoNoDeletedMissionAndNoIncreaseScore(){
+        game1.getBotList().get(0).drawMission(game1.getResource());
+        game1.getBotList().get(0).placeParcel(game1.getResource(), game1.getBoard(),0,0,0);
+        game1.missionDone(0,game1.getBoard());
+        assertEquals(1,game1.getBotList().get(0).getInventoryMission().size());
+        assertEquals(0,game1.getData()[0]);
+    }
 }
