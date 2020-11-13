@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Board {
     ArrayList<Parcel> placedParcels = new ArrayList<>();
-
+    
     Board(){
         placedParcels.add(new Parcel(0,0,0));
     }
@@ -19,22 +19,24 @@ class Board {
     }
 
     boolean playableParcel(Parcel parcel){
+        if (!(parcel.getCoordinates()[0] + parcel.getCoordinates()[1] + parcel.getCoordinates()[2] == 0)){
+            return false;
+        }
         int nbParcelAround = 0;
-        for(Parcel placedParcel : placedParcels){
+        for (Parcel placedParcel : placedParcels) {
             int norm = parcel.getNorm(placedParcel);
-            if(norm == 0){
+            if (norm == 0) {
                 return false;
-            }
-            else if(norm == 1){
-                if(placedParcel.getNorm(new Parcel(0,0,0)) == 0){
+            } else if (norm == 2) {
+                if (placedParcel.getNorm(new Parcel(0, 0, 0)) == 0) {
                     nbParcelAround++;
                 }
-                nbParcelAround ++;
+                nbParcelAround++;
             }
         }
         return (nbParcelAround > 1);
-    }
 
+    }
     ArrayList<Parcel> getParcel(){
         return (ArrayList<Parcel>) placedParcels.clone();
     }

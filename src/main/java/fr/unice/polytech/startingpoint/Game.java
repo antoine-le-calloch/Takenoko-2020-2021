@@ -57,11 +57,11 @@ class Game {
         return board;
     }
 
-    ArrayList<Bot> getBotList() {
+    public ArrayList<Bot> getBotList() {
         return (ArrayList<Bot>) botList.clone();
     }
 
-    int[] getData() {
+    public int[] getData() {
         return score_bots;
     }
 }

@@ -12,14 +12,16 @@ class Bot {
 
     void play(Resource resource,Board board){
         drawMission(resource);
-        placeParcel(resource,board,0,0,1);
+        placeParcel(resource,board);
     }
 
     void drawMission(Resource resource){
         inventoryMission.add(resource.drawMission());
     }
 
-    boolean placeParcel(Resource resource, Board board,int x,int y,int z){
+    boolean placeParcel(Resource resource, Board board){
+
+
         return board.putParcel(resource.drawParcel(),x,y,z);
     }
 
@@ -34,4 +36,8 @@ class Bot {
     ArrayList<Mission> getInventoryMission() {
         return (ArrayList<Mission>) inventoryMission.clone();
     }
+
+
+
+
 }

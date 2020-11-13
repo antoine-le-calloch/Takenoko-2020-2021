@@ -13,8 +13,8 @@ class Resource {
         }
         int nbMission = 32;
         for (int i = 0; i < nbMission / 2 ; i++) {
-            deckMission.add(new Mission(1, 2, "parcel", "triangle"));
-            deckMission.add(new Mission(2, 3, "parcel", "ligne"));
+            deckMission.add(new Mission(1, 2,"triangle"));
+            deckMission.add(new Mission(2, 3, "ligne"));
         }
     }
 
