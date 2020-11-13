@@ -6,27 +6,19 @@ class Parcel {
     Parcel(){
     }
 
-    public Parcel(int x, int y, int z) {
-        coordinates[0] = x;
-        coordinates[1] = y;
-        coordinates[2] = z;
+    public Parcel(int[] coord) {
+        coordinates[0] = coord[0];
+        coordinates[1] = coord[1];
+        coordinates[2] = coord[2];
     }
 
-    public void setPosition(int x, int y, int z) {
-        coordinates[0] = x;
-        coordinates[1] = y;
-        coordinates[2] = z;
+    public void setPosition(int[] coord) {
+        coordinates[0] = coord[0];
+        coordinates[1] = coord[1];
+        coordinates[2] = coord[2];
     }
 
     public int[] getCoordinates(){
         return coordinates.clone();
-    }
-
-    public int getNorm(Parcel placedParcel) {
-        int norm = 0;
-        for(int i = 0 ; i < coordinates.length ; i++){
-            norm += (coordinates[i] - placedParcel.coordinates[i])*(coordinates[i] - placedParcel.coordinates[i]);
-        }
-        return norm;
     }
 }

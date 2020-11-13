@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 class Bot {
     private String botName;
@@ -20,9 +21,9 @@ class Bot {
     }
 
     boolean placeParcel(Resource resource, Board board){
-
-
-        return board.putParcel(resource.drawParcel(),x,y,z);
+        ArrayList<int[]> possibleCoord = board.possibleCoordinates();
+        Collections.shuffle(possibleCoord);
+        return board.putParcel(resource.drawParcel(),possibleCoord.get(0));
     }
 
     void deleteMission(Mission mission) {

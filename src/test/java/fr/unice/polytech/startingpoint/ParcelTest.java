@@ -26,25 +26,25 @@ class ParcelTest {
 
     @Test
     public void sameCoordinates(){
-        parcel1.setPosition(1,0,0);
-        parcel2.setPosition(1,0,0);
-        assertEquals(0,parcel1.getNorm(parcel2));
+        parcel1.setPosition(new int[]{1,-1,0});
+        parcel2.setPosition(new int[]{1,-1,0});
+        assertEquals(0,board.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
     }
 
     @Test
     public void nextToEachOther(){
-        parcel1.setPosition(1,0,0);
-        parcel2.setPosition(0,0,0);
-        assertEquals(1,parcel1.getNorm(parcel2));
-        parcel1.setPosition(0,0,-1);
-        parcel2.setPosition(0,0,0);
-        assertEquals(1,parcel1.getNorm(parcel2));
+        parcel1.setPosition(new int[]{1,-1,0});
+        parcel2.setPosition(new int[]{0,0,0});
+        assertEquals(1,board.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
+        parcel1.setPosition(new int[]{-1,1,0});
+        parcel2.setPosition(new int[]{0,0,0});
+        assertEquals(1,board.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
     }
 
     @Test
     public void farAwayFromEachOther(){
-        parcel1.setPosition(0,0,-2);
-        parcel2.setPosition(0,0,0);
-        assertTrue(parcel1.getNorm(parcel2) > 1);
+        parcel1.setPosition(new int[]{-2,2,0});
+        parcel2.setPosition(new int[]{0,0,0});
+        assertTrue(board.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()) > 1);
     }
 }

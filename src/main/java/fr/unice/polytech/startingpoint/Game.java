@@ -25,16 +25,21 @@ class Game {
             missionDone(numBot,board);
             numBot = (numBot+1) % botList.size();
         }
+        for(int i = 0; i<botList.size()-1 ; i++){
+            botList.get(numBot).play(resource, board);
+            missionDone(numBot,board);
+            numBot = (numBot+1) % botList.size();
+        }
     }
 
     boolean isContinue(){
         for (int mission : mission_done){
-            int nbMissions = 3;
-            if( mission < nbMissions){
-                return true;
+            int nbMissions = 1;
+            if( mission >= nbMissions){
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     void missionDone(int idBot, Board board) {

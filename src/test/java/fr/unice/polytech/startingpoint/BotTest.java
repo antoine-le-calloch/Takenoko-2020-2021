@@ -26,7 +26,7 @@ class BotTest {
 
     @Test
     public void parcelIncrease(){
-        bot1.placeParcel(resource, board,0,0,1);
+        bot1.placeParcel(resource, board);
         assertEquals(2,board.getParcel().size());
     }
 

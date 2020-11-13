@@ -54,7 +54,7 @@ class GameTest {
     @Test
     public void wrongPlacementSoNoDeletedMissionAndNoIncreaseScore(){
         game1.getBotList().get(0).drawMission(game1.getResource());
-        game1.getBotList().get(0).placeParcel(game1.getResource(), game1.getBoard(),0,0,0);
+        game1.getBotList().get(0).placeParcel(game1.getResource(), game1.getBoard());
         game1.missionDone(0,game1.getBoard());
         assertEquals(0,game1.getBotList().get(0).getInventoryMission().size());
         assertEquals(2,game1.getData()[0]);

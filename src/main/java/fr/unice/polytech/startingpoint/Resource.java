@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 class Resource {
     private ArrayList<Mission> deckMission = new ArrayList<>();
@@ -16,6 +17,7 @@ class Resource {
             deckMission.add(new Mission(1, 2,"triangle"));
             deckMission.add(new Mission(2, 3, "ligne"));
         }
+        Collections.shuffle(deckMission);
     }
 
     Parcel drawParcel() {

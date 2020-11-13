@@ -22,43 +22,48 @@ public class BoardTest {
 
     @Test
     public void goodParcelPlacementSoParcelIncrease(){
-        board.putParcel(resource.drawParcel(),1,0,0);
+        board.putParcel(resource.drawParcel(),new int[]{1,-1,0});
         assertEquals(2,board.getParcel().size());
     }
 
     @Test
     public void wrongParcelPlacementSoNoParcelIncrease(){
-        board.putParcel(resource.drawParcel(),0,0,0);
+        board.putParcel(resource.drawParcel(),new int[]{0,0,0});
         assertEquals(1,board.getParcel().size());
     }
 
     @Test
     public void goodPlacementNextToCentralParcel(){
-        assertTrue(board.putParcel(parcel1,1,0,0));
-        assertTrue(board.putParcel(parcel2,0,-1,0));
+        assertTrue(board.putParcel(parcel1,new int[]{1,-1,0}));
+        assertTrue(board.putParcel(parcel2,new int[]{1,0,-1}));
     }
 
     @Test
     public void wrongPlacementOnCentralParcel(){
-        assertFalse(board.putParcel(parcel1,0,0,0));
+        assertFalse(board.putParcel(parcel1,new int[]{0,0,0}));
     }
 
     @Test
     public void wrongPlacementAwayFromCentralParcel(){
-        assertFalse(board.putParcel(parcel2,-1,1,0));
+        assertFalse(board.putParcel(parcel2,new int[]{3,0,-3}));
     }
 
     @Test
     public void goodPlacementNextToNormalParcels(){
-        board.putParcel(parcel1,1,0,0);
-        board.putParcel(parcel2,0,1,0);
-        assertTrue(board.putParcel(parcel3,1,1,0));
+        board.putParcel(parcel1,new int[]{1,-1,0});
+        board.putParcel(parcel2,new int[]{1,0,-1});
+        assertTrue(board.putParcel(parcel3,new int[]{2,-1,-1}));
     }
 
     @Test
     public void wrongPlacementNextToNormalParcels(){
-        board.putParcel(parcel1,1,0,0);
-        board.putParcel(parcel2,0,1,0);
-        assertFalse(board.putParcel(parcel3,0,1,1));
+        board.putParcel(parcel1,new int[]{1,-1,0});
+        board.putParcel(parcel2,new int[]{1,0,-1});
+        assertFalse(board.putParcel(parcel3,new int[]{3,0,-3}));
+    }
+
+    @Test
+    void normTesting(){
+        board.playableParcel(new int[]{1,-1,0});
     }
 }
