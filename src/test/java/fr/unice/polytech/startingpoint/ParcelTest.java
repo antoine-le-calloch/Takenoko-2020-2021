@@ -34,11 +34,11 @@ class ParcelTest {
     @Test
     public void nextToEachOther(){
         parcel1.setPosition(new int[]{1,-1,0});
-        parcel2.setPosition(new int[]{0,0,0});
-        assertEquals(1,board.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
+        parcel2.setPosition(new int[]{1,0,-1});
+        assertEquals(2,board.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
         parcel1.setPosition(new int[]{-1,1,0});
-        parcel2.setPosition(new int[]{0,0,0});
-        assertEquals(1,board.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
+        parcel2.setPosition(new int[]{0,1,-1});
+        assertEquals(2,board.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
     }
 
     @Test

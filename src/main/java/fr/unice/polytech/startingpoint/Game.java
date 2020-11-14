@@ -8,6 +8,7 @@ class Game {
     private final ArrayList<Bot> botList = new ArrayList<>();
     private final int[] score_bots;
     private final int[] mission_done;
+    private int nbMissions = 1;
 
     Game(String[] botNames){
         score_bots = new int[botNames.length];
@@ -34,7 +35,6 @@ class Game {
 
     boolean isContinue(){
         for (int mission : mission_done){
-            int nbMissions = 1;
             if( mission >= nbMissions){
                 return false;
             }
