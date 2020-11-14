@@ -14,10 +14,12 @@ public class Mission {
         this.forme = forme;
     }
 
+    //Verifie si une mission est faite
     int checkMission(Board board){
         return checkMissionParcel(board);
     }
 
+    //Verifie si une mission parcelle est faite
     int checkMissionParcel(Board board){
         if (forme.equals("triangle")) {
             for(Parcel parcel : board.getParcel()) {
@@ -36,6 +38,7 @@ public class Mission {
         return 0;
     }
 
+    //Verifie si une parcelle est placé aux coordonnées qu'on lui donne additioné à un offset
     boolean isPlaced(int[] coord, int[] offset,Board board){
         int [] parcelcoord = new int[]{coord[0]+offset[0],coord[1]+offset[1],coord[2]+offset[2]};
         for(Parcel parcel : board.getParcel()) {

@@ -9,6 +9,7 @@ class Board {
         placedParcels.add(new Parcel(new int[]{0,0,0}));
     }
 
+    //Place une parcelle sur le board (quand cela est possible)
     boolean putParcel(Parcel parcel,int[] coord){
         if(playableParcel(coord)){
             parcel.setPosition(coord);
@@ -18,6 +19,7 @@ class Board {
         return false;
     }
 
+    //verifie si on peut poser une parcelle sur le board
     boolean playableParcel(int[] coord){
         int nbParcelAround = 0;
         for (Parcel placedParcel : placedParcels) {
@@ -34,6 +36,7 @@ class Board {
         return (nbParcelAround > 1);
     }
 
+    //Calcule la norme de deux différentes coordonnées
     static int getNorm(int[] coord1, int[] coord2) {
         int norm = 0;
         for(int i = 0 ; i < coord1.length ; i++){

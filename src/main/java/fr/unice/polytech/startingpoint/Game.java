@@ -18,6 +18,7 @@ class Game {
         }
     }
 
+    // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
         int numBot = 0;
 
@@ -33,6 +34,7 @@ class Game {
         }
     }
 
+    //Permet de verifier si un bot à fait suffisament de mission pour que la partie s'arrête
     boolean isContinue(){
         for (int mission : mission_done){
             if( mission >= nbMissions){
@@ -42,6 +44,8 @@ class Game {
         return true;
     }
 
+    /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
+    il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
     void missionDone(int idBot, Board board) {
         int count;
         for(Mission mission : botList.get(idBot).getInventoryMission()){
