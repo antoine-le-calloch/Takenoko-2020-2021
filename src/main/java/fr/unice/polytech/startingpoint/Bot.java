@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 class Bot {
-    private String botName;
-    private ArrayList<Mission> inventoryMission = new ArrayList<>();
+
+
+    private final String botName;
+    private final ArrayList<Mission> inventoryMission = new ArrayList<>();
     private final ArrayList<int[]> nextCoordinates = new ArrayList<>();
     private final ArrayList<int[]> offset = new ArrayList<>();
 
