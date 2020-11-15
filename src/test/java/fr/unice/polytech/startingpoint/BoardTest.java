@@ -41,6 +41,18 @@ public class BoardTest {
     @Test
     public void wrongPlacementOnCentralParcel(){
         assertFalse(board.putParcel(parcel1,new int[]{0,0,0}));
+    } @Test
+
+
+
+    //On  vérifie le fait qu'une parcelle
+    // pour être posée loin du centre,
+    // doit avoir au moins 2 parcelles voisines
+    public void PlacementAwayFromCentralParcel(){
+        board.putParcel(parcel1,new int[]{1,-1,0});
+        board.putParcel(parcel2,new int[]{1,0,-1});
+        assertFalse(board.playableParcel(new int[]{2,-2,0}));
+        assertTrue(board.playableParcel(new int[]{2,-1,-1}));
     }
 
     @Test
@@ -65,5 +77,8 @@ public class BoardTest {
     @Test
     void normTesting(){
         board.playableParcel(new int[]{1,-1,0});
+        assertEquals(2,Board.getNorm(new int[]{1,-1,0},new int[]{1,0,-1}));
+        assertNotEquals(-18,Board.getNorm(new int[]{0,0,0},new int[]{3,0,-3}));
+        assertEquals(0,Board.getNorm(new int[]{0,0,0},new int[]{0,0,0}));
     }
 }

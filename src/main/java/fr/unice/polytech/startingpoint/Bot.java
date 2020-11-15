@@ -45,7 +45,7 @@ class Bot {
     }
 
     //créer une liste qui possède toutes les coordonnées des cases à côté de parcelle posé
-    private void initializeNextCoordinates(Board board){
+   void initializeNextCoordinates(Board board){
         for(Parcel parcel : board.getParcel()) {
             for(int[] offset : offset) {
                 nextCoordinates.add(new int[] { parcel.getCoordinates()[0] + offset[0], parcel.getCoordinates()[1] + offset[1], parcel.getCoordinates()[2] + offset[2] });
@@ -54,7 +54,7 @@ class Bot {
     }
 
     //initialise la array liste offset
-    private void initializeOffset(){
+    void initializeOffset(){
         offset.add(new int[]{0,-1,1});
         offset.add(new int[]{1,-1,0});
         offset.add(new int[]{1,0,-1});
@@ -69,6 +69,10 @@ class Bot {
 
     String getBotName() {
         return botName;
+    }
+
+    ArrayList<int[]> getNextCoordinates() {
+        return (ArrayList<int[]>)nextCoordinates.clone();
     }
 
     ArrayList<Mission> getInventoryMission() {
