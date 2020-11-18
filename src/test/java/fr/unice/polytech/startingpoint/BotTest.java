@@ -95,13 +95,9 @@ class BotTest {
         assertFalse((Coordinate.getNorm(randomco,randomco2)>18));
     }
 
-
     @Test void possibleCoordinatestest(){
         ArrayList<Coordinate> possibleco = bot1.possibleCoordinates(board);
         Collections.shuffle(possibleco);
         assertEquals(true , board.playableParcel(possibleco.get(0)));
     }
-
-
-
 }

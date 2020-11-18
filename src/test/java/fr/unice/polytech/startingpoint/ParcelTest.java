@@ -36,7 +36,7 @@ class ParcelTest {
         parcel1.setCoordinates(new Coordinate(1,-1,0));
         parcel2.setCoordinates(new Coordinate(1,0,-1));
         assertEquals(2,Coordinate.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
-        parcel1.setCoordinates(new Coordinate(1,-1,0));
+        parcel1.setCoordinates(new Coordinate(1,0,-1));
         parcel2.setCoordinates(new Coordinate(0,1,-1));
         assertEquals(2,Coordinate.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()));
     }

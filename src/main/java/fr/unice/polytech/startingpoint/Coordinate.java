@@ -6,6 +6,7 @@ public class Coordinate {
     private int[] coordinate;
 
     Coordinate(int x,int y,int z){
+        coordinate = new int[3];
         coordinate[0] = x;
         coordinate[1] = y;
         coordinate[2] = z;
@@ -21,6 +22,7 @@ public class Coordinate {
     }
 
     Coordinate(int x,int y,int z,Coordinate ... coordinates){
+        coordinate = new int[3];
         coordinate[0] = x;
         coordinate[1] = y;
         coordinate[2] = z;
@@ -42,8 +44,6 @@ public class Coordinate {
         coordinatesAround.add(new Coordinate(-1,0,1,this));
         return coordinatesAround;
     }
-
-
 
     boolean isEqualTo(Coordinate coord){
         for( int i = 0 ; i < coordinate.length ; i++ ){

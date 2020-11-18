@@ -43,8 +43,6 @@ public class BoardTest {
         assertFalse(board.putParcel(parcel1,new Coordinate(0,0,0)));
     } @Test
 
-
-
     //On  vérifie le fait qu'une parcelle
     // pour être posée loin du centre,
     // doit avoir au moins 2 parcelles voisines
