@@ -6,13 +6,13 @@ class Board {
     private final ArrayList<Parcel> placedParcels = new ArrayList<>();
 
     Board(){
-        placedParcels.add(new Parcel(new int[]{0,0,0}));
+        placedParcels.add(new Parcel(new Coordinate(0,0,0)));
     }
 
     //Place une parcelle sur le board (quand cela est possible)
-    boolean putParcel(Parcel parcel,int[] coord){
+    boolean putParcel(Parcel parcel,Coordinate coord){
         if(playableParcel(coord)){
-            parcel.setPosition(coord);
+            parcel.setCoordinates(coord);
             placedParcels.add(parcel);
             return true;
         }
@@ -20,29 +20,21 @@ class Board {
     }
 
     //verifie si on peut poser une parcelle sur le board
-    boolean playableParcel(int[] coord){
+    boolean playableParcel(Coordinate coord){
         int nbParcelAround = 0;
         for (Parcel placedParcel : placedParcels) {
-            int norm = getNorm(coord,placedParcel.getCoordinates());
+            int norm = Coordinate.getNorm(coord,placedParcel.getCoordinates());
             if (norm == 0) {
                 return false;
-            } else if (norm == 2) {
-                if (getNorm(new int[]{0,0,0},placedParcel.getCoordinates()) == 0) {
+            }
+            else if (norm == 2) {
+                if (Coordinate.getNorm(new Coordinate(0,0,0),placedParcel.getCoordinates()) == 0) {
                     nbParcelAround++;
                 }
                 nbParcelAround++;
             }
         }
         return (nbParcelAround > 1);
-    }
-
-    //Calcule la norme de deux différentes coordonnées
-    static int getNorm(int[] coord1, int[] coord2) {
-        int norm = 0;
-        for(int i = 0 ; i < coord1.length ; i++){
-            norm += (coord1[i] - coord2[i])*(coord1[i] - coord2[i]);
-        }
-        return norm;
     }
 
     ArrayList<Parcel> getParcel(){

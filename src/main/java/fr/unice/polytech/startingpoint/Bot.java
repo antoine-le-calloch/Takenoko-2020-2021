@@ -5,16 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 
 class Bot {
-
-
     private final String botName;
     private final ArrayList<Mission> inventoryMission = new ArrayList<>();
-    private final ArrayList<int[]> nextCoordinates = new ArrayList<>();
-    private final ArrayList<int[]> offset = new ArrayList<>();
 
     Bot(String botName) {
         this.botName = botName;
-        initializeOffset();
     }
 
     //Action d'un bot pendant un tour
@@ -30,49 +25,38 @@ class Bot {
 
     //place une parcelle
     boolean placeParcel(Resource resource, Board board){
-        ArrayList<int[]> possibleCoord = possibleCoordinates(board);
+        ArrayList<Coordinate> possibleCoord = possibleCoordinates(board);
         Collections.shuffle(possibleCoord);
         return board.putParcel(resource.drawParcel(),possibleCoord.get(0));
     }
 
-    //créer une liste de toutes les coordonnées ont une case peut être posé
-    ArrayList<int[]> possibleCoordinates(Board board){
-        initializeNextCoordinates(board);
-        ArrayList<int[]> possibleCoordinates = new ArrayList<>();
-        for(int[] coord : nextCoordinates){
-            if(board.playableParcel(coord)){
-                possibleCoordinates.add(coord);
-            }
+    public ArrayList<Coordinate> possibleCoordinates(Board board) {
+        ArrayList<Coordinate> coordArounds = coordinatesAroundBoard(board);
+        ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();
+        for(Coordinate coordinate : coordArounds){
+            if(board.playableParcel(coordinate)){
+                possibleCoordinates.add(coordinate); }
         }
         return possibleCoordinates;
     }
 
-    //créer une liste qui possède toutes les coordonnées des cases à côté de parcelle posé
-   void initializeNextCoordinates(Board board){
-        for(Parcel parcel : board.getParcel()) {
-            for(int[] offset : offset) {
-                int[] newCoord = new int[]{parcel.getCoordinates()[0] + offset[0], parcel.getCoordinates()[1] + offset[1], parcel.getCoordinates()[2] + offset[2]};
+    public ArrayList<Coordinate> coordinatesAroundBoard(Board board) {
+        ArrayList<Coordinate> coordinatesAroundBoard = new ArrayList<>();
+        for(Parcel parcel : board.getParcel()){
+            ArrayList<Coordinate> coordinatesAround = parcel.getCoordinates().coordinatesAround();
+            for(Coordinate coord : coordinatesAround){
                 boolean add = true;
-                for(int[] nextCoordinate : nextCoordinates) {
-                    if (newCoord[0] == nextCoordinate[0] && newCoord[1] == nextCoordinate[1] && newCoord[2] == nextCoordinate[2]) {
+                for(Coordinate coordAB : coordinatesAroundBoard){
+                    if(coord.isEqualTo(coordAB)){
                         add = false;
                     }
                 }
                 if(add){
-                    nextCoordinates.add(newCoord);
+                    coordinatesAroundBoard.add(coord);
                 }
             }
         }
-    }
-
-    //initialise la array liste offset
-    void initializeOffset(){
-        offset.add(new int[]{0,-1,1});
-        offset.add(new int[]{1,-1,0});
-        offset.add(new int[]{1,0,-1});
-        offset.add(new int[]{0,1,-1});
-        offset.add(new int[]{-1,1,0});
-        offset.add(new int[]{-1,0,1});
+        return coordinatesAroundBoard;
     }
 
     void deleteMission(Mission mission) {
@@ -81,10 +65,6 @@ class Bot {
 
     String getBotName() {
         return botName;
-    }
-
-    ArrayList<int[]> getNextCoordinates() {
-        return (ArrayList<int[]>)nextCoordinates.clone();
     }
 
     ArrayList<Mission> getInventoryMission() {

@@ -23,14 +23,14 @@ public class Mission {
     int checkMissionParcel(Board board){
         if (forme.equals("triangle")) {
             for(Parcel parcel : board.getParcel()) {
-                if (isPlaced(parcel.getCoordinates() ,new int[]{1,-1,0} ,board) && isPlaced(parcel.getCoordinates() ,new int[]{1,0,-1} ,board)){
+                if (isPlaced(parcel.getCoordinates() ,new Coordinate(1,-1,0) ,board) && isPlaced(parcel.getCoordinates() ,new Coordinate(1,0,-1), board)){
                     return points;
                 }
             }
         }
         if (forme.equals("ligne")) {
             for(Parcel parcel : board.getParcel()) {
-                if (isPlaced(parcel.getCoordinates(), new int[]{0, 1, -1}, board) && isPlaced(parcel.getCoordinates(), new int[]{0, 2, -2}, board)){
+                if (isPlaced(parcel.getCoordinates(), new Coordinate(0, 1, -1), board) && isPlaced(parcel.getCoordinates(), new Coordinate(0,2,-2), board)){
                     return points;
                 }
             }
@@ -39,10 +39,9 @@ public class Mission {
     }
 
     //Verifie si une parcelle est placé aux coordonnées qu'on lui donne additioné à un offset
-    boolean isPlaced(int[] coord, int[] offset,Board board){
-        int [] parcelcoord = new int[]{coord[0]+offset[0],coord[1]+offset[1],coord[2]+offset[2]};
+    boolean isPlaced(Coordinate coord, Coordinate offset,Board board){
         for(Parcel parcel : board.getParcel()) {
-            if (Arrays.equals(parcel.getCoordinates(), parcelcoord))
+            if (parcel.getCoordinates().isEqualTo(new Coordinate(coord,offset)))
                 return true;
         }
         return false;
