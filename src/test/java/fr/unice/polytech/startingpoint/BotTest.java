@@ -61,41 +61,43 @@ class BotTest {
         //toutes les coordonnées
         // de cette liste ont une norme de 2 par rapport à la parcelle centrale
         //on vérifie aussi que ces coordonnées sont valides et sont posables
-        bot1.initializeNextCoordinates(board);
-        ArrayList<int []> nextTocentral =bot1.getNextCoordinates();
+
+        ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
         assertEquals(6,nextTocentral.size());
         Collections.shuffle(nextTocentral);
-        int[] randomco=nextTocentral.get(0);
-        assertEquals(2,    Board.getNorm(new int[]{0,0,0},randomco));
-        int sumco=randomco[0]+randomco[1]+randomco[2];
+        Coordinate randomco=nextTocentral.get(0);
+        assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
+        int[] tabco = randomco.getCoordinate();
+        int sumco=tabco[0]+tabco[1]+tabco[2];
         assertEquals(0,sumco);
         assertEquals(true,board.playableParcel(randomco));
 
     }
 
     @Test void initializeNextCoordinatesAwayFromCentral(){
-        board.putParcel(parcel1,new int[]{1,-1,0});
-        board.putParcel(parcel2,new int[]{1,0,-1});
-        bot1.initializeNextCoordinates(board);
-        ArrayList<int []> awayFromcentral =bot1.getNextCoordinates();
-        Collections.shuffle(awayFromcentral);
-        int[] randomco=awayFromcentral.get(0);
-        int[] randomco2=awayFromcentral.get(1);
-        int sumco=randomco[0]+randomco[1]+randomco[2];
-        int sumco2=randomco2[0]+randomco2[1]+randomco2[2];
+        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        board.putParcel(parcel1,new Coordinate(1,0,-1));
+        ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
+        Collections.shuffle(nextTocentral);
+        Coordinate randomco=nextTocentral.get(0);
+        Coordinate randomco2=nextTocentral.get(1);
+        int [] tabco= randomco.getCoordinate();
+        int [] tabco2= randomco.getCoordinate();
+        int sumco=tabco[0]+tabco[1]+tabco[2];
+        int sumco2=tabco2[0]+tabco2[1]+tabco2[2];
         assertEquals(sumco2,sumco);
         assertEquals(0,sumco);
         //la norme doit être comprise entre 2 et 18
         //en effet si on regarde le plateau parmis toutes les parcelles dasn next coordinates dans cette exemple
         // soit une case est à côté l'une de l'autre minoré par une  norme de 2
         //soit éloignée au max de 18 majorée par une norme de 18
-        assertTrue((Board.getNorm(randomco,randomco2)>=2));
-        assertFalse((Board.getNorm(randomco,randomco2)>18));
+        assertTrue((Coordinate.getNorm(randomco,randomco2)>=2));
+        assertFalse((Coordinate.getNorm(randomco,randomco2)>18));
     }
 
 
     @Test void possibleCoordinatestest(){
-        ArrayList<int []> possibleco = bot1.possibleCoordinates(board);
+        ArrayList<Coordinate> possibleco = bot1.possibleCoordinates(board);
         Collections.shuffle(possibleco);
         assertEquals(true , board.playableParcel(possibleco.get(0)));
     }
