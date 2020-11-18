@@ -60,7 +60,7 @@ class BotTest {
         //on mélange la liste
         //toutes les coordonnées
         // de cette liste ont une norme de 2 par rapport à la parcelle centrale
-        //on vérifie aussi que ces coordonnées sont valides
+        //on vérifie aussi que ces coordonnées sont valides et sont posables
         bot1.initializeNextCoordinates(board);
         ArrayList<int []> nextTocentral =bot1.getNextCoordinates();
         assertEquals(6,nextTocentral.size());
@@ -83,14 +83,23 @@ class BotTest {
         int[] randomco2=awayFromcentral.get(1);
         int sumco=randomco[0]+randomco[1]+randomco[2];
         int sumco2=randomco2[0]+randomco2[1]+randomco2[2];
-        for(int[] co :  awayFromcentral){             System.out.print(co[0] + " " + co[1] + " " + co[2]);             System.out.println();         }
         assertEquals(sumco2,sumco);
         assertEquals(0,sumco);
         //la norme doit être comprise entre 2 et 18
-        //METTRE UN HASHSET CAR IL Y A UNION POSSIBILITE 2 FOIS LA MM CASE
+        //en effet si on regarde le plateau parmis toutes les parcelles dasn next coordinates dans cette exemple
+        // soit une case est à côté l'une de l'autre minoré par une  norme de 2
+        //soit éloignée au max de 18 majorée par une norme de 18
         assertTrue((Board.getNorm(randomco,randomco2)>=2));
         assertFalse((Board.getNorm(randomco,randomco2)>18));
     }
+
+
+    @Test void possibleCoordinatestest(){
+        ArrayList<int []> possibleco = bot1.possibleCoordinates(board);
+        Collections.shuffle(possibleco);
+        assertEquals(true , board.playableParcel(possibleco.get(0)));
+    }
+
 
 
 }
