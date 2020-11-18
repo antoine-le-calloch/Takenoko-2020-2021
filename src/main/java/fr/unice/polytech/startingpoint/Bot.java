@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 class Bot {
@@ -50,7 +51,16 @@ class Bot {
    void initializeNextCoordinates(Board board){
         for(Parcel parcel : board.getParcel()) {
             for(int[] offset : offset) {
-                nextCoordinates.add(new int[] { parcel.getCoordinates()[0] + offset[0], parcel.getCoordinates()[1] + offset[1], parcel.getCoordinates()[2] + offset[2] });
+                int[] newCoord = new int[]{parcel.getCoordinates()[0] + offset[0], parcel.getCoordinates()[1] + offset[1], parcel.getCoordinates()[2] + offset[2]};
+                boolean add = true;
+                for(int[] nextCoordinate : nextCoordinates) {
+                    if (newCoord[0] == nextCoordinate[0] && newCoord[1] == nextCoordinate[1] && newCoord[2] == nextCoordinate[2]) {
+                        add = false;
+                    }
+                }
+                if(add){
+                    nextCoordinates.add(newCoord);
+                }
             }
         }
     }

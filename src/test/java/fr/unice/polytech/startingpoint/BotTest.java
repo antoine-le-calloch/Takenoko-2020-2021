@@ -83,12 +83,14 @@ class BotTest {
         int[] randomco2=awayFromcentral.get(1);
         int sumco=randomco[0]+randomco[1]+randomco[2];
         int sumco2=randomco2[0]+randomco2[1]+randomco2[2];
+        for(int[] co :  awayFromcentral){             System.out.print(co[0] + " " + co[1] + " " + co[2]);             System.out.println();         }
         assertEquals(sumco2,sumco);
         assertEquals(0,sumco);
         //la norme doit être comprise entre 2 et 18
         //METTRE UN HASHSET CAR IL Y A UNION POSSIBILITE 2 FOIS LA MM CASE
         assertTrue((Board.getNorm(randomco,randomco2)>=2));
         assertFalse((Board.getNorm(randomco,randomco2)>18));
-}
+    }
+
 
 }
