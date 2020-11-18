@@ -39,7 +39,7 @@ class GameTest {
 
     @Test public void resource(){
         assertEquals(game1.getResource(),game1.getResource());
-        assertTrue(!game1.getResource().equals(game2.getResource()));
-        assertTrue(!game1.getResource().equals(null));
+        assertNotEquals(game1.getResource(),game2.getResource());
+        assertNotEquals(game1.getResource(),null);
     }
 }

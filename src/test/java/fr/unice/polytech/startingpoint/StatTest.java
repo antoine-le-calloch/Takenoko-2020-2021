@@ -20,16 +20,16 @@ public class StatTest {
 
     @Test
     public void playerOneWinner(){
-        assertTrue(stat.getWinner(j1w).equals("Joueur 1 gagne"));
+        assertEquals(stat.getWinner(j1w),"Joueur 1 gagne");
     }
 
     @Test
     public void playerTwoWinner(){
-        assertTrue(stat.getWinner(j2w).equals("Joueur 2 gagne"));
+        assertEquals(stat.getWinner(j2w),"Joueur 2 gagne");
     }
 
     @Test
     public void equalityCase(){
-        assertTrue(stat.getWinner(equality).equals("Egalité"));
+        assertEquals(stat.getWinner(equality),"Egalité");
     }
 }

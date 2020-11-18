@@ -9,6 +9,7 @@ class MissionTest {
     Parcel parcel1;
     Parcel parcel2;
     Parcel parcel3;
+    Parcel parcel4;
     Board board;
     Mission mission;
     Mission mission2;
@@ -16,25 +17,39 @@ class MissionTest {
 
     @BeforeEach void setUp(){
         mission=new Mission(1,1,"triangle");
-        mission2=new Mission(1,2,"ligne");
-        mission3=new Mission(2,1,"ligne");
+        mission2=new Mission(2,2,"ligne");
+        mission3=new Mission(3,1,"ligne");
         board = new Board();
         parcel1 = new Parcel();
         parcel2 = new Parcel();
         parcel3 = new Parcel();
+        parcel4 = new Parcel();
     }
 
     @Test void newMission(){
-        assertTrue(!mission.equals(null));
-        assertTrue(!mission.equals(mission2));
-        assertTrue(mission.equals(mission));
-        assertTrue(!mission.equals(mission3));
+        assertNotEquals(mission,null);
+        assertNotEquals(mission,mission2);
+        assertEquals(mission,mission);
+        assertNotEquals(mission,mission3);
     }
 
-    @Test void triangleMisssionDone(){
-        System.out.println(board.putParcel(parcel1,new int[]{1,-1,0}));
-        System.out.println(board.putParcel(parcel2,new int[]{0,-1,1}));
-        System.out.println(board.putParcel(parcel3,new int[]{1,-2,1}));
+    @Test void triangleMissionDone(){
+        board.putParcel(parcel1,new int[]{1,-1,0});
+        board.putParcel(parcel2,new int[]{0,-1,1});
+        board.putParcel(parcel3,new int[]{1,-2,1});
         assertEquals(1,mission.checkMission(board));
+    }
+
+    @Test void ligneMissionDone(){
+        board.putParcel(parcel4,new int[]{0,-1,1});
+        board.putParcel(parcel1,new int[]{1,0,-1});
+        board.putParcel(parcel2,new int[]{1,-1,0});
+        board.putParcel(parcel3,new int[]{1,-2,1});
+        assertEquals(2,mission2.checkMission(board));
+    }
+
+    @Test void noMission(){
+        board.putParcel(parcel1,new int[]{0,-1,1});
+        assertEquals(0,mission.checkMission(board));
     }
 }

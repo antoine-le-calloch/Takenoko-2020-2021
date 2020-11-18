@@ -21,7 +21,7 @@ class ParcelTest {
     public void simpleAdd(){
         assertEquals(parcel1,parcel1);
         assertNotEquals(parcel1,parcel2);
-        assertTrue(!parcel1.equals(null));
+        assertNotEquals(parcel1,null);
     }
 
     @Test
