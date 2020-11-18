@@ -22,25 +22,25 @@ public class BoardTest {
 
     @Test
     public void goodParcelPlacementSoParcelIncrease(){
-        board.putParcel(resource.drawParcel(),new int[]{1,-1,0});
+        board.putParcel(resource.drawParcel(),new Coordinate(1,-1,0));
         assertEquals(2,board.getParcel().size());
     }
 
     @Test
     public void wrongParcelPlacementSoNoParcelIncrease(){
-        board.putParcel(resource.drawParcel(),new int[]{0,0,0});
+        board.putParcel(resource.drawParcel(),new Coordinate(0,0,0));
         assertEquals(1,board.getParcel().size());
     }
 
     @Test
     public void goodPlacementNextToCentralParcel(){
-        assertTrue(board.putParcel(parcel1,new int[]{1,-1,0}));
-        assertTrue(board.putParcel(parcel2,new int[]{1,0,-1}));
+        assertTrue(board.putParcel(parcel1,new Coordinate(1,-1,0)));
+        assertTrue(board.putParcel(parcel2,new Coordinate(1,0,-1)));
     }
 
     @Test
     public void wrongPlacementOnCentralParcel(){
-        assertFalse(board.putParcel(parcel1,new int[]{0,0,0}));
+        assertFalse(board.putParcel(parcel1,new Coordinate(0,0,0)));
     } @Test
 
 
@@ -49,36 +49,36 @@ public class BoardTest {
     // pour être posée loin du centre,
     // doit avoir au moins 2 parcelles voisines
     public void PlacementAwayFromCentralParcel(){
-        board.putParcel(parcel1,new int[]{1,-1,0});
-        board.putParcel(parcel2,new int[]{1,0,-1});
-        assertFalse(board.playableParcel(new int[]{2,-2,0}));
-        assertTrue(board.playableParcel(new int[]{2,-1,-1}));
+        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        board.putParcel(parcel2,new Coordinate(1,0,-1));
+        assertFalse(board.playableParcel(new Coordinate(2,-2,0)));
+        assertTrue(board.playableParcel(new Coordinate(2,-1,-1)));
     }
 
     @Test
     public void wrongPlacementAwayFromCentralParcel(){
-        assertFalse(board.putParcel(parcel2,new int[]{3,0,-3}));
+        assertFalse(board.putParcel(parcel2,new Coordinate(3,0,-3)));
     }
 
     @Test
     public void goodPlacementNextToNormalParcels(){
-        board.putParcel(parcel1,new int[]{1,-1,0});
-        board.putParcel(parcel2,new int[]{1,0,-1});
-        assertTrue(board.putParcel(parcel3,new int[]{2,-1,-1}));
+        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        board.putParcel(parcel2,new Coordinate(1,0,-1));
+        assertTrue(board.putParcel(parcel3,new Coordinate(2,-1,-1)));
     }
 
     @Test
     public void wrongPlacementNextToNormalParcels(){
-        board.putParcel(parcel1,new int[]{1,-1,0});
-        board.putParcel(parcel2,new int[]{1,0,-1});
-        assertFalse(board.putParcel(parcel3,new int[]{3,0,-3}));
+        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        board.putParcel(parcel2,new Coordinate(1,0,-1));
+        assertFalse(board.putParcel(parcel3,new Coordinate(3,0,-3)));
     }
 
     @Test
     void normTesting(){
-        board.playableParcel(new int[]{1,-1,0});
-        assertEquals(2,Board.getNorm(new int[]{1,-1,0},new int[]{1,0,-1}));
-        assertNotEquals(-18,Board.getNorm(new int[]{0,0,0},new int[]{3,0,-3}));
-        assertEquals(0,Board.getNorm(new int[]{0,0,0},new int[]{0,0,0}));
+        board.playableParcel(new Coordinate(1,-1,0));
+        assertEquals(2,Coordinate.getNorm(new Coordinate(1,-1,0),new Coordinate(1,0,-1)));
+        assertNotEquals(-18,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(3,0,-3)));
+        assertEquals(0,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(0,0,0)));
     }
 }

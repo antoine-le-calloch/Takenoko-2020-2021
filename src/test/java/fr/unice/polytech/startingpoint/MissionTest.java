@@ -34,22 +34,22 @@ class MissionTest {
     }
 
     @Test void triangleMissionDone(){
-        board.putParcel(parcel1,new int[]{1,-1,0});
-        board.putParcel(parcel2,new int[]{0,-1,1});
-        board.putParcel(parcel3,new int[]{1,-2,1});
+        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        board.putParcel(parcel2,new Coordinate(0,-1,1));
+        board.putParcel(parcel3,new Coordinate(1,-2,1));
         assertEquals(1,mission.checkMission(board));
     }
 
     @Test void ligneMissionDone(){
-        board.putParcel(parcel4,new int[]{0,-1,1});
-        board.putParcel(parcel1,new int[]{1,0,-1});
-        board.putParcel(parcel2,new int[]{1,-1,0});
-        board.putParcel(parcel3,new int[]{1,-2,1});
+        board.putParcel(parcel4,new Coordinate(0,-1,1));
+        board.putParcel(parcel1,new Coordinate(1,0,-1));
+        board.putParcel(parcel2,new Coordinate(1,-1,0));
+        board.putParcel(parcel3,new Coordinate(1,-2,1));
         assertEquals(2,mission2.checkMission(board));
     }
 
     @Test void noMission(){
-        board.putParcel(parcel1,new int[]{0,-1,1});
+        board.putParcel(parcel1,new Coordinate(0,-1,1));
         assertEquals(0,mission.checkMission(board));
     }
 }
