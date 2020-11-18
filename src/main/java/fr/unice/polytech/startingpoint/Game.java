@@ -13,9 +13,7 @@ class Game {
     Game(String[] botNames){
         score_bots = new int[botNames.length];
         mission_done = new int[botNames.length];
-        for(int i = 0; i < botNames.length; i++){
-            botList.add(new Bot(botNames[i]));
-        }
+        initializeBot(botNames);
     }
 
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
@@ -55,6 +53,15 @@ class Game {
                 score_bots[idBot] += count;
                 botList.get(idBot).deleteMission(mission);
             }
+        }
+    }
+
+    void initializeBot(String[] botNames){
+        for (int i=0; i<botNames.length; i++) {
+            if (botNames[i].equals("random"))
+                botList.add(new RandomBot(botNames[i]));
+            if (botNames[i].equals("intelligent"))
+                botList.add(new IntelligentBot(botNames[i]));
         }
     }
 
