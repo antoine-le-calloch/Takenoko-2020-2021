@@ -6,33 +6,42 @@ import java.util.Arrays;
 public class Mission {
     private final int iDMission;
     private final int points;
-    private final String forme;
+    private final String goal;
 
-    Mission(int nbMission, int points, String forme) {
+    Mission(int nbMission, int points, String goal) {
         this.iDMission = nbMission;
         this.points = points;
-        this.forme = forme;
+        this.goal = goal;
     }
 
     //Verifie si une mission est faite
     int checkMission(Board board){
-        return checkMissionParcel(board);
+        return checkMissionParcel(board)+checkMissionIrriguated(board);
     }
 
     //Verifie si une mission parcelle est faite
     int checkMissionParcel(Board board){
-        if (forme.equals("triangle")) {
+        if (goal.equals("triangle")) {
             for(Parcel parcel : board.getParcel()) {
                 if (isPlaced(parcel.getCoordinates() ,new Coordinate(1,-1,0) ,board) && isPlaced(parcel.getCoordinates() ,new Coordinate(1,0,-1), board)){
                     return points;
                 }
             }
         }
-        if (forme.equals("ligne")) {
+        if (goal.equals("ligne")) {
             for(Parcel parcel : board.getParcel()) {
                 if (isPlaced(parcel.getCoordinates(), new Coordinate(0, 1, -1), board) && isPlaced(parcel.getCoordinates(), new Coordinate(0,2,-2), board)){
                     return points;
                 }
+            }
+        }
+        return 0;
+    }
+    int checkMissionIrriguated(Board board){
+        for(Parcel parcel : board.getParcel()){
+            if (parcel.getIrriguated()) {
+                System.out.println("ok");
+                return points;
             }
         }
         return 0;

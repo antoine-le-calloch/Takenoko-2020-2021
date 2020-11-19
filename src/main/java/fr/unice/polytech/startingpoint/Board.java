@@ -14,6 +14,9 @@ class Board {
         if(playableParcel(coord)){
             parcel.setCoordinates(coord);
             placedParcels.add(parcel);
+            if (Coordinate.getNorm(parcel.getCoordinates(),new Coordinate(0,0,0) )==2){
+                parcel.setIrriguated();
+            }
             return true;
         }
         return false;

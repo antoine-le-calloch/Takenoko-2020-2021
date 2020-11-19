@@ -2,19 +2,28 @@ package fr.unice.polytech.startingpoint;
 
 class Parcel {
     private Coordinate coordinates;
+    private boolean irriguated=false;
 
     Parcel(){
     }
 
-    public Parcel(Coordinate coord) {
+    Parcel(Coordinate coord) {
         coordinates = coord;
     }
 
-    public void setCoordinates(Coordinate coord) {
+    void setCoordinates(Coordinate coord) {
         coordinates = coord;
     }
+    void setIrriguated() {
+        irriguated=true;
+    }
+    boolean getIrriguated(){
+        return irriguated;
+    }
 
-    public Coordinate getCoordinates(){
+
+
+    Coordinate getCoordinates(){
         return coordinates;
     }
 }
