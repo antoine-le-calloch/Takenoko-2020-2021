@@ -1,9 +1,10 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Coordinate {
-    private int[] coordinate;
+    private final int[] coordinate;
 
     Coordinate(int x,int y,int z){
         coordinate = new int[3];
@@ -64,5 +65,21 @@ public class Coordinate {
 
     int[] getCoordinate() {
         return coordinate.clone();
+    }
+
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Coordinate))
+            return false;
+        Coordinate co = (Coordinate) obj;
+        return Arrays.equals(coordinate, co.coordinate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(coordinate);
     }
 }

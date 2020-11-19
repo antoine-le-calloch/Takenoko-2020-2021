@@ -47,4 +47,5 @@ class ParcelTest {
         parcel2.setCoordinates(new Coordinate(0,0,0));
         assertTrue(Coordinate.getNorm(parcel1.getCoordinates(),parcel2.getCoordinates()) > 1);
     }
+
 }

@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 class Bot {
     private final String botName;
@@ -23,14 +25,14 @@ class Bot {
     }
 
     //place une parcelle
-    boolean placeParcel(Resource resource, Board board){
+    void placeParcel(Resource resource, Board board){
         ArrayList<Coordinate> possibleCoord = possibleCoordinates(board);
         Collections.shuffle(possibleCoord);
-        return board.putParcel(resource.drawParcel(),possibleCoord.get(0));
+        board.putParcel(resource.drawParcel(), possibleCoord.get(0));
     }
 
     public ArrayList<Coordinate> possibleCoordinates(Board board) {
-        ArrayList<Coordinate> coordArounds = coordinatesAroundBoard(board);
+        Set<Coordinate> coordArounds = coordinatesAroundBoard(board);
         ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();
         for(Coordinate coordinate : coordArounds){
             if(board.playableParcel(coordinate)){
@@ -39,24 +41,16 @@ class Bot {
         return possibleCoordinates;
     }
 
-    public ArrayList<Coordinate> coordinatesAroundBoard(Board board) {
-        ArrayList<Coordinate> coordinatesAroundBoard = new ArrayList<>();
-        for(Parcel parcel : board.getParcel()){
+    public Set<Coordinate> coordinatesAroundBoard(Board board) {
+        Set<Coordinate> coordinatesAroundBoard = new HashSet<>();
+        for(Parcel parcel : board.getParcel()) {
             ArrayList<Coordinate> coordinatesAround = parcel.getCoordinates().coordinatesAround();
-            for(Coordinate coord : coordinatesAround){
-                boolean add = true;
-                for(Coordinate coordAB : coordinatesAroundBoard){
-                    if(coord.isEqualTo(coordAB)){
-                        add = false;
-                    }
-                }
-                if(add){
-                    coordinatesAroundBoard.add(coord);
-                }
-            }
+            coordinatesAroundBoard.addAll(coordinatesAround);
         }
         return coordinatesAroundBoard;
     }
+
+
 
     void deleteMission(Mission mission) {
         inventoryMission.remove(mission);

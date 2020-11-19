@@ -21,8 +21,6 @@ class Parcel {
         return irriguated;
     }
 
-
-
     Coordinate getCoordinates(){
         return coordinates;
     }

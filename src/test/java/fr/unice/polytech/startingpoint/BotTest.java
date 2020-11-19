@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,6 +55,7 @@ class BotTest {
         assertNotEquals(-1,bot1.getInventoryMission().size());
     }
 
+    /*
     @Test void initializeNextCoordinatesNextToCentral(){
         //on génère une liste des 6 tuples de coordonnées possibles
         // à côté de la parcelle centrale
@@ -62,9 +64,9 @@ class BotTest {
         // de cette liste ont une norme de 2 par rapport à la parcelle centrale
         //on vérifie aussi que ces coordonnées sont valides et sont posables
 
-        ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
+        Set<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
         assertEquals(6,nextTocentral.size());
-        Collections.shuffle(nextTocentral);
+        //Collections.shuffle(nextTocentral);
         Coordinate randomco=nextTocentral.get(0);
         assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
         int[] tabco = randomco.getCoordinate();
@@ -77,7 +79,7 @@ class BotTest {
     @Test void initializeNextCoordinatesAwayFromCentral(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
         board.putParcel(parcel1,new Coordinate(1,0,-1));
-        ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
+        Set<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
         Collections.shuffle(nextTocentral);
         Coordinate randomco=nextTocentral.get(0);
         Coordinate randomco2=nextTocentral.get(1);
@@ -93,11 +95,11 @@ class BotTest {
         //soit éloignée au max de 18 majorée par une norme de 18
         assertTrue((Coordinate.getNorm(randomco,randomco2)>=2));
         assertFalse((Coordinate.getNorm(randomco,randomco2)>18));
-    }
+    }*/
 
     @Test void possibleCoordinatestest(){
         ArrayList<Coordinate> possibleco = bot1.possibleCoordinates(board);
         Collections.shuffle(possibleco);
-        assertEquals(true , board.playableParcel(possibleco.get(0)));
+        assertTrue(board.playableParcel(possibleco.get(0)));
     }
 }
