@@ -12,10 +12,10 @@ class GameTest {
     Game game5;
 
     @BeforeEach public void Setup(){
-        game1 = new Game(new String[]{"Bob","Bob"});
-        game2 = new Game(new String[]{"Bob","Albert"});
-        game3 = new Game(new String[]{"Bob"});
-        game4 = new Game(new String[]{"Bob","Bob","Bob"});
+        game1 = new Game(new String[]{"random","intelligent"});
+        game2 = new Game(new String[]{"intelligent","intelligent"});
+        game3 = new Game(new String[]{"intelligent"});
+        game4 = new Game(new String[]{"random","intelligent","random"});
         game5 = new Game(new String[]{});
     }
 
@@ -30,9 +30,9 @@ class GameTest {
     @Test public void bots(){
         assertEquals( 2,game1.getBotList().size() );
         assertEquals( 0,game5.getBotList().size() );
-        assertEquals("Bob",game1.getBotList().get(0).getBotName());
+        assertEquals("random",game1.getBotList().get(0).getBotName());
         assertEquals(game4.getBotList().get(2).getBotName(),game1.getBotList().get(0).getBotName());
-        assertNotEquals( "Albert",game1.getBotList().get(0).getBotName());
+        assertNotEquals( "intelligent",game1.getBotList().get(0).getBotName());
         assertNotEquals( 2,game4.getBotList().size());
         assertNotEquals(game5.getBotList(), null);
     }

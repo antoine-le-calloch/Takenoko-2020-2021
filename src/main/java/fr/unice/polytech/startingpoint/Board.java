@@ -15,7 +15,7 @@ class Board {
             parcel.setCoordinates(coord);
             placedParcels.add(parcel);
             if (Coordinate.getNorm(parcel.getCoordinates(),new Coordinate(0,0,0) )==2){
-                parcel.setIrriguated();
+                parcel.setIrrigated();
             }
             return true;
         }

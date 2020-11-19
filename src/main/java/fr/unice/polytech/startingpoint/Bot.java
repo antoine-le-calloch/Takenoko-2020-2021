@@ -32,7 +32,7 @@ class Bot {
     }
 
     public ArrayList<Coordinate> possibleCoordinates(Board board) {
-        Set<Coordinate> coordArounds = coordinatesAroundBoard(board);
+        ArrayList<Coordinate> coordArounds = coordinatesAroundBoard(board);
         ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();
         for(Coordinate coordinate : coordArounds){
             if(board.playableParcel(coordinate)){
@@ -41,14 +41,15 @@ class Bot {
         return possibleCoordinates;
     }
 
-    public Set<Coordinate> coordinatesAroundBoard(Board board) {
+    public ArrayList<Coordinate> coordinatesAroundBoard(Board board) {
         Set<Coordinate> coordinatesAroundBoard = new HashSet<>();
         for(Parcel parcel : board.getParcel()) {
             ArrayList<Coordinate> coordinatesAround = parcel.getCoordinates().coordinatesAround();
             coordinatesAroundBoard.addAll(coordinatesAround);
         }
-        return coordinatesAroundBoard;
+        return new ArrayList<>(coordinatesAroundBoard);
     }
+
 
 
 

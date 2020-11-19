@@ -16,7 +16,7 @@ public class Mission {
 
     //Verifie si une mission est faite
     int checkMission(Board board){
-        return checkMissionParcel(board)+checkMissionIrriguated(board);
+        return checkMissionParcel(board)+checkMissionIrrigated(board);
     }
 
     //Verifie si une mission parcelle est faite
@@ -37,10 +37,9 @@ public class Mission {
         }
         return 0;
     }
-    int checkMissionIrriguated(Board board){
+    int checkMissionIrrigated(Board board){
         for(Parcel parcel : board.getParcel()){
-            if (parcel.getIrriguated()) {
-                System.out.println("ok");
+            if (parcel.getIrrigated()) {
                 return points;
             }
         }

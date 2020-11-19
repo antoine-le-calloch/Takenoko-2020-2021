@@ -37,7 +37,7 @@ class MissionTest {
         board.putParcel(parcel1,new Coordinate(1,-1,0));
         board.putParcel(parcel2,new Coordinate(0,-1,1));
         board.putParcel(parcel3,new Coordinate(1,-2,1));
-        assertEquals(1,mission.checkMission(board));
+        assertEquals(2,mission.checkMission(board));
     }
 
     @Test void ligneMissionDone(){
@@ -45,11 +45,11 @@ class MissionTest {
         board.putParcel(parcel1,new Coordinate(1,0,-1));
         board.putParcel(parcel2,new Coordinate(1,-1,0));
         board.putParcel(parcel3,new Coordinate(1,-2,1));
-        assertEquals(2,mission2.checkMission(board));
+        assertEquals(4,mission2.checkMission(board));
     }
 
     @Test void noMission(){
         board.putParcel(parcel1,new Coordinate(0,-1,1));
-        assertEquals(0,mission.checkMission(board));
+        assertEquals(1,mission.checkMission(board));
     }
 }

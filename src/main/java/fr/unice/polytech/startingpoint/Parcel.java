@@ -2,7 +2,7 @@ package fr.unice.polytech.startingpoint;
 
 class Parcel {
     private Coordinate coordinates;
-    private boolean irriguated=false;
+    private boolean irrigated=false;
 
     Parcel(){
     }
@@ -14,11 +14,11 @@ class Parcel {
     void setCoordinates(Coordinate coord) {
         coordinates = coord;
     }
-    void setIrriguated() {
-        irriguated=true;
+    void setIrrigated() {
+        irrigated=true;
     }
-    boolean getIrriguated(){
-        return irriguated;
+    boolean getIrrigated(){
+        return irrigated;
     }
 
     Coordinate getCoordinates(){

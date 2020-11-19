@@ -55,7 +55,7 @@ class BotTest {
         assertNotEquals(-1,bot1.getInventoryMission().size());
     }
 
-    /*
+
     @Test void initializeNextCoordinatesNextToCentral(){
         //on génère une liste des 6 tuples de coordonnées possibles
         // à côté de la parcelle centrale
@@ -64,7 +64,7 @@ class BotTest {
         // de cette liste ont une norme de 2 par rapport à la parcelle centrale
         //on vérifie aussi que ces coordonnées sont valides et sont posables
 
-        Set<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
+        ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
         assertEquals(6,nextTocentral.size());
         //Collections.shuffle(nextTocentral);
         Coordinate randomco=nextTocentral.get(0);
@@ -79,7 +79,7 @@ class BotTest {
     @Test void initializeNextCoordinatesAwayFromCentral(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
         board.putParcel(parcel1,new Coordinate(1,0,-1));
-        Set<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
+        ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard(board);
         Collections.shuffle(nextTocentral);
         Coordinate randomco=nextTocentral.get(0);
         Coordinate randomco2=nextTocentral.get(1);
@@ -95,7 +95,7 @@ class BotTest {
         //soit éloignée au max de 18 majorée par une norme de 18
         assertTrue((Coordinate.getNorm(randomco,randomco2)>=2));
         assertFalse((Coordinate.getNorm(randomco,randomco2)>18));
-    }*/
+    }
 
     @Test void possibleCoordinatestest(){
         ArrayList<Coordinate> possibleco = bot1.possibleCoordinates(board);
