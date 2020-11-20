@@ -30,9 +30,6 @@ class GameTest {
     @Test public void bots(){
         assertEquals( 2,game1.getBotList().size() );
         assertEquals( 0,game5.getBotList().size() );
-        assertEquals("random",game1.getBotList().get(0).getBotName());
-        assertEquals(game4.getBotList().get(2).getBotName(),game1.getBotList().get(0).getBotName());
-        assertNotEquals( "intelligent",game1.getBotList().get(0).getBotName());
         assertNotEquals( 2,game4.getBotList().size());
         assertNotEquals(game5.getBotList(), null);
     }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 class Resource {
-    private ArrayList<Mission> deckMission = new ArrayList<>();
-    private ArrayList<Parcel> deckParcel = new ArrayList<>();
+    private final ArrayList<Mission> deckMission = new ArrayList<>();
+    private final ArrayList<Parcel> deckParcel = new ArrayList<>();
 
     Resource(){
         initializedeckParcel();
@@ -48,6 +48,6 @@ class Resource {
     }
 
     ArrayList<Parcel> getParcel(){
-        return (ArrayList<Parcel>) deckParcel.clone();
+        return deckParcel;
     }
 }

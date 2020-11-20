@@ -4,30 +4,34 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class RandomBot extends Bot {
+class RandomBot extends Bot {
     Random random;
+    Resource resource;
+    Board board;
 
-    RandomBot(String botName) {
-        super(botName);
+    RandomBot(Resource resource, Board board) {
+        super(resource, board);
+        this.resource = resource;
+        this.board = board;
         random = new Random();
     }
 
     //Action d'un bot pendant un tour
     @Override
-    void play(Resource resource,Board board){
-        int nb= random.nextInt(2);
+    void Botplay(){
+        int nb = random.nextInt(2);
         if (nb == 0) {
-            drawMission(resource);
+            drawMission();
         }
         else {
-            placeParcel(resource, board);
+            placeParcel();
         }
     }
 
     //place une parcelle aleatoirement sur une case disponible
     @Override
-    void placeParcel(Resource resource, Board board){
-        ArrayList<Coordinate> possibleCoord = possibleCoordinates(board);
+    void placeParcel(){
+        ArrayList<Coordinate> possibleCoord = possibleCoordinates();
         Collections.shuffle(possibleCoord);
         board.putParcel(resource.drawParcel(), possibleCoord.get(0));
     }

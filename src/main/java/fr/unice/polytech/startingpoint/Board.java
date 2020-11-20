@@ -41,6 +41,6 @@ class Board {
     }
 
     ArrayList<Parcel> getParcel(){
-        return (ArrayList<Parcel>) placedParcels.clone();
+        return placedParcels;
     }
 }

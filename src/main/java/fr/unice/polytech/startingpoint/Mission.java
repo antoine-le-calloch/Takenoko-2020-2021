@@ -1,15 +1,12 @@
 package fr.unice.polytech.startingpoint;
 
 import java.lang.String;
-import java.util.Arrays;
 
 public class Mission {
-    private final int iDMission;
     private final int points;
     private final String goal;
 
     Mission(int nbMission, int points, String goal) {
-        this.iDMission = nbMission;
         this.points = points;
         this.goal = goal;
     }

@@ -1,35 +1,36 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 class Bot {
-    private final String botName;
+    private final Resource resource;
+    private final Board board;
     final ArrayList<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
 
-    Bot(String botName) {
-        this.botName = botName;
+    Bot(Resource resource, Board board) {
+        this.resource = resource;
+        this.board = board;
     }
 
     //Action d'un bot pendant un tour
-    void play(Resource resource,Board board){
+    void Botplay(){
         //vide pour les sous classes
     }
 
     //pioche une mission
-    void drawMission(Resource resource){
+    void drawMission(){
         inventoryMission.add(resource.drawMission());
     }
 
     //place une parcelle
-    void placeParcel(Resource resource, Board board){
+    void placeParcel(){
         //vide pour les sous classes
     }
 
-    public ArrayList<Coordinate> possibleCoordinates(Board board) {
-        ArrayList<Coordinate> coordArounds = coordinatesAroundBoard(board);
+    ArrayList<Coordinate> possibleCoordinates() {
+        ArrayList<Coordinate> coordArounds = coordinatesAroundBoard();
         ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();
         for(Coordinate coordinate : coordArounds){
             if(board.playableParcel(coordinate)){
@@ -38,7 +39,7 @@ class Bot {
         return possibleCoordinates;
     }
 
-    public ArrayList<Coordinate> coordinatesAroundBoard(Board board) {
+    ArrayList<Coordinate> coordinatesAroundBoard() {
         Set<Coordinate> coordinatesAroundBoard = new HashSet<>();
         for(Parcel parcel : board.getParcel()) {
             ArrayList<Coordinate> coordinatesAround = parcel.getCoordinates().coordinatesAround();
@@ -52,10 +53,6 @@ class Bot {
 
     void deleteMission(Mission mission) {
         inventoryMission.remove(mission);
-    }
-
-    String getBotName() {
-        return botName;
     }
 
     ArrayList<Mission> getInventoryMission() {

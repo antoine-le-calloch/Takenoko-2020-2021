@@ -8,21 +8,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RandomBotTest {
     private RandomBot rdmBot1;
-    private Resource resource;
     private Board board;
     Parcel parcel1;
 
     @BeforeEach
     public void setUp() {
-        rdmBot1 = new RandomBot("random");
-        resource = new Resource();
+        Resource resource = new Resource();
         board = new Board();
         parcel1 = new Parcel();
+        rdmBot1 = new RandomBot(resource,board);
     }
 
     @Test
     public void parcelIncrease(){
-        rdmBot1.placeParcel(resource, board);
+        rdmBot1.placeParcel();
         assertEquals(2,board.getParcel().size());
     }
 }

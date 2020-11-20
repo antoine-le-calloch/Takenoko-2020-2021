@@ -1,7 +1,5 @@
 package fr.unice.polytech.startingpoint;
 
-import java.util.ArrayList;
-
 class Stat {
     int[] gamesData = new int[2];
 

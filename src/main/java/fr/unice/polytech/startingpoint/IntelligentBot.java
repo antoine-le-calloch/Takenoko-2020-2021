@@ -1,18 +1,22 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
-public class IntelligentBot extends Bot{
-    IntelligentBot(String botName) {
-        super(botName);
+class IntelligentBot extends Bot{
+    Resource resource;
+    Board board;
+
+    IntelligentBot(Resource resource, Board board) {
+        super(resource, board);
+        this.resource = resource;
+        this.board = board;
     }
 
     @Override
-    void play(Resource resource,Board board){
+    void Botplay(){
         if (!haveMission())
-            drawMission(resource);
-        placeParcel(resource,board);
+            drawMission();
+        placeParcel();
     }
 
     boolean haveMission(){
@@ -21,8 +25,8 @@ public class IntelligentBot extends Bot{
 
 
     //place une parcelle sur une case pour finir une ligne / ou pose aleatoirement
-    void placeParcel(Resource resource, Board board){
-        ArrayList<Coordinate> possibleCoord = possibleCoordinates(board);
+    void placeParcel(){
+        ArrayList<Coordinate> possibleCoord = possibleCoordinates();
 
         /*
         for (Coordinate coordinate : possibleCoord) {
@@ -31,7 +35,6 @@ public class IntelligentBot extends Bot{
                                                                                   et coordinate + (2,-2,0)
             alors, on place la parcelle sur cette coordonnées
         }*/
-
 
         board.putParcel(resource.drawParcel(), possibleCoord.get(0));
     }
