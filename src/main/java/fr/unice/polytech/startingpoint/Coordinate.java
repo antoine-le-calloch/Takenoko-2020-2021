@@ -47,15 +47,6 @@ public class Coordinate {
         return coordinatesAround;
     }
 
-    boolean isEqualTo(Coordinate coord){
-        for( int i = 0 ; i < coordinate.length ; i++ ){
-            if(coord.getCoordinate()[i] != this.getCoordinate()[i]){
-                return false;
-            }
-        }
-        return true;
-    }
-
     static int getNorm(Coordinate coord1,Coordinate coord2){
         int norm = 0;
         for( int i = 0; i < coord1.getCoordinate().length; i++){
@@ -69,7 +60,7 @@ public class Coordinate {
     }
 
 
-    @Override
+    @Override //remplace le equals - il verifie maintenant ce qu'on veut
     public boolean equals(Object obj){
         if (this == obj)
             return true;

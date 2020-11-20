@@ -49,7 +49,7 @@ public class Mission {
     //Verifie si une parcelle est placé aux coordonnées qu'on lui donne additioné à un offset
     boolean isPlaced(Coordinate coord, Coordinate offset,Board board){
         for(Parcel parcel : board.getParcel()) {
-            if (parcel.getCoordinates().isEqualTo(new Coordinate(coord,offset)))
+            if (parcel.getCoordinates().equals(new Coordinate(coord,offset)))
                 return true;
         }
         return false;
