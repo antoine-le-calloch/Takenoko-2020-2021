@@ -20,7 +20,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void coorEquals(){;
+    public void coorEquals(){
         assertEquals(co2, co1);
         assertNotEquals(co3, co2);
     }

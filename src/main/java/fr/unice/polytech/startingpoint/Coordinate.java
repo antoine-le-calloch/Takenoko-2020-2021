@@ -22,6 +22,7 @@ public class Coordinate {
         }
     }
 
+    //addition de coordonnées
     Coordinate(int x,int y,int z,Coordinate ... coordinates){
         coordinate = new int[3];
         coordinate[0] = x;

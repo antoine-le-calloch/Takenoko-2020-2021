@@ -8,7 +8,7 @@ class Game {
     private final ArrayList<Bot> botList = new ArrayList<>();
     private final int[] score_bots;
     private final int[] mission_done;
-    private int nbMissions = 1;
+    private int nbMissions = 4;
 
     Game(String[] botNames){
         score_bots = new int[botNames.length];

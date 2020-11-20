@@ -34,12 +34,6 @@ class BotTest {
     }
 
     @Test
-    public void parcelIncrease(){
-        bot1.placeParcel(resource, board);
-        assertEquals(2,board.getParcel().size());
-    }
-
-    @Test
     public void missionIncrease(){
         bot1.drawMission(resource);
         assertEquals(1,bot1.getInventoryMission().size());

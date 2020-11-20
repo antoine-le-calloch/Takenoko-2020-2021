@@ -7,7 +7,7 @@ import java.util.Set;
 
 class Bot {
     private final String botName;
-    private final ArrayList<Mission> inventoryMission = new ArrayList<>();
+    final ArrayList<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
 
     Bot(String botName) {
         this.botName = botName;
@@ -15,8 +15,7 @@ class Bot {
 
     //Action d'un bot pendant un tour
     void play(Resource resource,Board board){
-        drawMission(resource);
-        placeParcel(resource,board);
+        //vide pour les sous classes
     }
 
     //pioche une mission
@@ -26,9 +25,7 @@ class Bot {
 
     //place une parcelle
     void placeParcel(Resource resource, Board board){
-        ArrayList<Coordinate> possibleCoord = possibleCoordinates(board);
-        Collections.shuffle(possibleCoord);
-        board.putParcel(resource.drawParcel(), possibleCoord.get(0));
+        //vide pour les sous classes
     }
 
     public ArrayList<Coordinate> possibleCoordinates(Board board) {
