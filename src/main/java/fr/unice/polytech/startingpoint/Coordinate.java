@@ -35,17 +35,18 @@ public class Coordinate {
         }
     }
 
-    //return une array des coordonnées autour de la coordonnées passé en parametre
-    public ArrayList<Coordinate> coordinatesAround() {
+    //return une array des coordonnées autour de la coordonnées passé en parametre  STATIC
+    ArrayList<Coordinate> coordinatesAround() {
         ArrayList<Coordinate> coordinatesAround = new ArrayList<>();
-        coordinatesAround.add(new Coordinate(0,-1,1,this));
         coordinatesAround.add(new Coordinate(1,-1,0,this));
         coordinatesAround.add(new Coordinate(1,0,-1,this));
         coordinatesAround.add(new Coordinate(0,1,-1,this));
         coordinatesAround.add(new Coordinate(-1,1,0,this));
         coordinatesAround.add(new Coordinate(-1,0,1,this));
+        coordinatesAround.add(new Coordinate(0,-1,1,this));
         return coordinatesAround;
     }
+
 
     static int getNorm(Coordinate coord1,Coordinate coord2){
         int norm = 0;

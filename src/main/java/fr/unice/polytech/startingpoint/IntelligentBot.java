@@ -16,9 +16,7 @@ class IntelligentBot extends Bot{
     void Botplay(){
         if (!haveMission())
             drawMission();
-        if ( coordinateMakingLine().size() > 0)
-            placeParcel(coordinateMakingLine());
-        placeParcel(possibleCoordinates());
+        wherePutParcel();
     }
 
     boolean haveMission(){
@@ -26,35 +24,31 @@ class IntelligentBot extends Bot{
     }
 
 
-    //creer une liste des coordonnée possible qui peuvent faire une ligne
-    ArrayList<Coordinate> coordinateMakingLine() {
+    //creer une liste des coordonnée possible qui peuvent faire une forme
+    ArrayList<Coordinate> coordinateMakingGoal(Coordinate offset1, Coordinate offset2 /* + couleur*/) {
         ArrayList<Coordinate> possibleCoord = possibleCoordinates();
         ArrayList<Coordinate> coordMakingLine = new ArrayList<>();
         for (Coordinate coordinate : possibleCoord) {
             for( Parcel parcel : board.getParcel()) {
-                if (parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), new Coordinate(0, -1, 1)))
-                        && parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), new Coordinate(0, -2, 2)))) {
-                    coordMakingLine.add(coordinate); //c'est moche
+                if (parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), offset1)) // + bonne couleur
+                        && parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), offset2))) {
+                    coordMakingLine.add(coordinate);
                 }
             }
         }
         return coordMakingLine;
+    }
 
-    } //problème evident de code redondant par exemple :
-
-    //creer une liste des coordonnée possible qui peuvent faire un triangle
-    ArrayList<Coordinate> coordinateMakingTriangle() {
-        ArrayList<Coordinate> possibleCoord = possibleCoordinates();
-        ArrayList<Coordinate> coordMakingTriangle = new ArrayList<>();
-        for (Coordinate coordinate : possibleCoord) {
-            for( Parcel parcel : board.getParcel()) {
-                if (parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), new Coordinate(1, -1, 0)))
-                        && parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), new Coordinate(1, 0, -1)))) {
-                    coordMakingTriangle.add(coordinate); //c'est moche
+    void wherePutParcel() {
+        for (Mission mission : inventoryMission) {
+            if (mission.getGoal().equals("line"))
+                if (coordinateMakingGoal(new Coordinate(0, 1, -1), new Coordinate(0, -1, 1)).size() > 0) {
+                    // on doit verifier que la liste n'est pas vide
+                    placeParcel(coordinateMakingGoal(new Coordinate(0, 1, -1), new Coordinate(0, -1, 1)));
+                    return;
                 }
-            }
         }
-        return coordMakingTriangle;
+        placeParcel(possibleCoordinates());
     }
 
 }

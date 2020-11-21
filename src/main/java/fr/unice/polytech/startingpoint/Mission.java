@@ -51,4 +51,6 @@ public class Mission {
         }
         return false;
     }
+
+    String getGoal(){ return goal;}
 }
