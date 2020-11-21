@@ -33,61 +33,40 @@ class BotTest {
     @Test
     public void missionIncrease(){
         bot1.drawMission();
-        //assertEquals(1,bot1.getInventoryMission().size());
+        assertEquals(1,bot1.getInventoryMission().size());
     }
 
     @Test
     public void missionDecrease(){
-        /*bot1.drawMission();
+        bot1.drawMission();
         Mission todelete = bot1.getInventoryMission().get(0);
         bot1.deleteMission(todelete);
         assertEquals(0,bot1.getInventoryMission().size());
         bot1.deleteMission(todelete);
-        assertNotEquals(-1,bot1.getInventoryMission().size());*/
+        assertNotEquals(-1,bot1.getInventoryMission().size());
     }
 
 
     @Test void initializeNextCoordinatesNextToCentral(){
-        //on génère une liste des 6 tuples de coordonnées possibles
-        // à côté de la parcelle centrale
-        //on mélange la liste
-        //toutes les coordonnées
-        // de cette liste ont une norme de 2 par rapport à la parcelle centrale
-        //on vérifie aussi que ces coordonnées sont valides et sont posables
-
         ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard();
-
         assertEquals(6,nextTocentral.size());
-        //Collections.shuffle(nextTocentral);
         Coordinate randomco=nextTocentral.get(0);
         assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
         int[] tabco = randomco.getCoordinate();
         int sumco=tabco[0]+tabco[1]+tabco[2];
         assertEquals(0,sumco);
-        assertTrue(board.playableParcel(randomco));
-
     }
 
     @Test void initializeNextCoordinatesAwayFromCentral(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
-        board.putParcel(parcel1,new Coordinate(1,0,-1));
-
-        ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard();
-        Collections.shuffle(nextTocentral);
-        Coordinate randomco=nextTocentral.get(0);
-        Coordinate randomco2=nextTocentral.get(1);
+        ArrayList<Coordinate> awayFromcentral = bot1.coordinatesAroundBoard();
+        Collections.shuffle(awayFromcentral);
+        Coordinate randomco=awayFromcentral.get(0);
         int [] tabco= randomco.getCoordinate();
-        int [] tabco2= randomco.getCoordinate();
         int sumco=tabco[0]+tabco[1]+tabco[2];
-        int sumco2=tabco2[0]+tabco2[1]+tabco2[2];
-        assertEquals(sumco2,sumco);
+        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)<19);
+        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)>1);
         assertEquals(0,sumco);
-        //la norme doit être comprise entre 2 et 18
-        //en effet si on regarde le plateau parmis toutes les parcelles dasn next coordinates dans cette exemple
-        // soit une case est à côté l'une de l'autre minoré par une  norme de 2
-        //soit éloignée au max de 18 majorée par une norme de 18
-        assertTrue((Coordinate.getNorm(randomco,randomco2)>=2));
-        assertFalse((Coordinate.getNorm(randomco,randomco2)>18));
     }
 
     @Test void possibleCoordinatestest(){

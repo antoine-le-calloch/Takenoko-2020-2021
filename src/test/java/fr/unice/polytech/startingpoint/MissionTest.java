@@ -18,7 +18,7 @@ class MissionTest {
     @BeforeEach void setUp(){
         mission=new Mission(1,1,"triangle");
         mission2=new Mission(2,2,"ligne");
-        mission3=new Mission(3,1,"ligne");
+        mission3=new Mission(3,2,"irrigated");
         board = new Board();
         parcel1 = new Parcel();
         parcel2 = new Parcel();
@@ -37,19 +37,43 @@ class MissionTest {
         board.putParcel(parcel1,new Coordinate(1,-1,0));
         board.putParcel(parcel2,new Coordinate(0,-1,1));
         board.putParcel(parcel3,new Coordinate(1,-2,1));
-        assertEquals(2,mission.checkMission(board));
+        assertEquals(1,mission.checkMissionParcel(board));
     }
+
 
     @Test void ligneMissionDone(){
         board.putParcel(parcel4,new Coordinate(0,-1,1));
         board.putParcel(parcel1,new Coordinate(1,0,-1));
         board.putParcel(parcel2,new Coordinate(1,-1,0));
         board.putParcel(parcel3,new Coordinate(1,-2,1));
-        assertEquals(4,mission2.checkMission(board));
+        assertEquals(2,mission2.checkMissionParcel(board));
+    }
+
+
+
+    @Test void wrongTriangle(){
+        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        board.putParcel(parcel4,new Coordinate(0,1,-1));
+        assertEquals(0,mission.checkMissionParcel(board));
+    }
+
+    @Test void toShortLine(){
+        board.putParcel(parcel4,new Coordinate(0,-1,1));
+        assertEquals(0,mission2.checkMissionParcel(board));
     }
 
     @Test void noMission(){
         board.putParcel(parcel1,new Coordinate(0,-1,1));
-        assertEquals(1,mission.checkMission(board));
+        System.out.println(board.getParcel().size());
+        assertEquals(0,mission2.checkMissionParcel(board));
+        assertEquals(0,mission.checkMissionParcel(board));
     }
+
+    @Test void missionIrrigated(){
+        assertNotEquals(2,mission3.checkMissionIrrigated(board));
+        board.putParcel(parcel1,new Coordinate(0,-1,1));
+        assertEquals(2,mission3.checkMissionIrrigated(board));
+    }
+
+
 }

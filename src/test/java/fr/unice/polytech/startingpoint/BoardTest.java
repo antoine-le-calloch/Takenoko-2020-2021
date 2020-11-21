@@ -41,16 +41,6 @@ public class BoardTest {
     @Test
     public void wrongPlacementOnCentralParcel(){
         assertFalse(board.putParcel(parcel1,new Coordinate(0,0,0)));
-    } @Test
-
-    //On  vérifie le fait qu'une parcelle
-    // pour être posée loin du centre,
-    // doit avoir au moins 2 parcelles voisines
-    public void PlacementAwayFromCentralParcel(){
-        board.putParcel(parcel1,new Coordinate(1,-1,0));
-        board.putParcel(parcel2,new Coordinate(1,0,-1));
-        assertFalse(board.playableParcel(new Coordinate(2,-2,0)));
-        assertTrue(board.playableParcel(new Coordinate(2,-1,-1)));
     }
 
     @Test
@@ -58,6 +48,9 @@ public class BoardTest {
         assertFalse(board.putParcel(parcel2,new Coordinate(3,0,-3)));
     }
 
+    //On  vérifie le fait qu'une parcelle
+    // pour être posée loin du centre,
+    // doit avoir au moins 2 parcelles voisines
     @Test
     public void goodPlacementNextToNormalParcels(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
@@ -65,6 +58,10 @@ public class BoardTest {
         assertTrue(board.putParcel(parcel3,new Coordinate(2,-1,-1)));
     }
 
+
+    //On  vérifie le fait qu'une parcelle
+    // pour être posée loin du centre,
+    // doit avoir au moins 2 parcelles voisines
     @Test
     public void wrongPlacementNextToNormalParcels(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
@@ -76,7 +73,19 @@ public class BoardTest {
     void normTesting(){
         board.playableParcel(new Coordinate(1,-1,0));
         assertEquals(2,Coordinate.getNorm(new Coordinate(1,-1,0),new Coordinate(1,0,-1)));
-        assertNotEquals(-18,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(3,0,-3)));
+        assertNotEquals(17,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(3,0,-3)));
         assertEquals(0,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(0,0,0)));
+    }
+
+    @Test void irrigationFromCentral(){
+        board.putParcel(parcel1,new Coordinate(0,-1,1));
+        assertTrue(parcel1.getIrrigated());
+    }
+
+    @Test void noIrrigationFromCentral(){
+        board.putParcel(parcel1,new Coordinate(0,-1,1));
+        board.putParcel(parcel2,new Coordinate(1,-1,0));
+        board.putParcel(parcel3,new Coordinate(1,-2,1));
+        assertFalse(parcel3.getIrrigated());
     }
 }
