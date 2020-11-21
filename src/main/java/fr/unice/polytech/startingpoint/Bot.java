@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,9 +25,10 @@ class Bot {
         inventoryMission.add(resource.drawMission());
     }
 
-    //place une parcelle
-    void placeParcel(){
-        //vide pour les sous classes
+    //place une parcelle dans une coordonnée de la liste donnée
+    void placeParcel(ArrayList<Coordinate> listCoord){
+        Collections.shuffle(listCoord);
+        board.putParcel(resource.drawParcel(), listCoord.get(0));
     }
 
     void placeCanal(){

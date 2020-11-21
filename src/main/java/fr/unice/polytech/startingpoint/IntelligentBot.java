@@ -16,7 +16,9 @@ class IntelligentBot extends Bot{
     void Botplay(){
         if (!haveMission())
             drawMission();
-        placeParcel();
+        if ( coordinateMakingLine().size() > 0)
+            placeParcel(coordinateMakingLine());
+        placeParcel(possibleCoordinates());
     }
 
     boolean haveMission(){
@@ -24,20 +26,35 @@ class IntelligentBot extends Bot{
     }
 
 
-    //place une parcelle sur une case pour finir une ligne / ou pose aleatoirement
-    void placeParcel(){
+    //creer une liste des coordonnée possible qui peuvent faire une ligne
+    ArrayList<Coordinate> coordinateMakingLine() {
         ArrayList<Coordinate> possibleCoord = possibleCoordinates();
-
-        /*
+        ArrayList<Coordinate> coordMakingLine = new ArrayList<>();
         for (Coordinate coordinate : possibleCoord) {
-            if (board.getParcel().contains())
-            si la liste placedparcel possède une parcelle qui a comme coordonnées : coordinate + (1,-1,0)
-                                                                                  et coordinate + (2,-2,0)
-            alors, on place la parcelle sur cette coordonnées
-        }*/
+            for( Parcel parcel : board.getParcel()) {
+                if (parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), new Coordinate(0, -1, 1)))
+                        && parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), new Coordinate(0, -2, 2)))) {
+                    coordMakingLine.add(coordinate); //c'est moche
+                }
+            }
+        }
+        return coordMakingLine;
 
-        board.putParcel(resource.drawParcel(), possibleCoord.get(0));
+    } //problème evident de code redondant par exemple :
+
+    //creer une liste des coordonnée possible qui peuvent faire un triangle
+    ArrayList<Coordinate> coordinateMakingTriangle() {
+        ArrayList<Coordinate> possibleCoord = possibleCoordinates();
+        ArrayList<Coordinate> coordMakingTriangle = new ArrayList<>();
+        for (Coordinate coordinate : possibleCoord) {
+            for( Parcel parcel : board.getParcel()) {
+                if (parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), new Coordinate(1, -1, 0)))
+                        && parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), new Coordinate(1, 0, -1)))) {
+                    coordMakingTriangle.add(coordinate); //c'est moche
+                }
+            }
+        }
+        return coordMakingTriangle;
     }
-
 
 }

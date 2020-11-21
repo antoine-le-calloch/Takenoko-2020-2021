@@ -24,15 +24,10 @@ class RandomBot extends Bot {
             drawMission();
         }
         else {
-            placeParcel();
+            placeParcel(possibleCoordinates()); // placera une parcelle sur une case d'une coordonée qui est dans la lite
         }
     }
 
-    //place une parcelle aleatoirement sur une case disponible
-    @Override
-    void placeParcel(){
-        ArrayList<Coordinate> possibleCoord = possibleCoordinates();
-        Collections.shuffle(possibleCoord);
-        board.putParcel(resource.drawParcel(), possibleCoord.get(0));
-    }
+
+
 }
