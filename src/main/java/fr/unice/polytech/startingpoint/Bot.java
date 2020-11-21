@@ -29,6 +29,10 @@ class Bot {
         //vide pour les sous classes
     }
 
+    void placeCanal(){
+
+    }
+
     ArrayList<Coordinate> possibleCoordinates() {
         ArrayList<Coordinate> coordArounds = coordinatesAroundBoard();
         ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();

@@ -10,6 +10,7 @@ public class BoardTest {
     Parcel parcel1;
     Parcel parcel2;
     Parcel parcel3;
+    Canal canal;
 
     @BeforeEach
     public void initialize(){
@@ -18,6 +19,7 @@ public class BoardTest {
         parcel1 = new Parcel();
         parcel2 = new Parcel();
         parcel3 = new Parcel();
+        canal = new Canal();
     }
 
     @Test
@@ -87,5 +89,14 @@ public class BoardTest {
         board.putParcel(parcel2,new Coordinate(1,-1,0));
         board.putParcel(parcel3,new Coordinate(1,-2,1));
         assertFalse(parcel3.getIrrigated());
+    }
+
+    @Test void irrigationBycanals(){
+        board.putParcel(parcel1,new Coordinate(0,-1,1));
+        board.putParcel(parcel2,new Coordinate(1,-1,0));
+        board.putParcel(parcel3,new Coordinate(1,-2,1));
+        assertTrue(!parcel3.getIrrigated());
+        board.putCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-2,1));
+        assertTrue(parcel3.getIrrigated());
     }
 }

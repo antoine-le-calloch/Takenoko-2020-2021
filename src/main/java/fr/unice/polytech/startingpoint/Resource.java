@@ -6,6 +6,9 @@ import java.util.Collections;
 class Resource {
     private final ArrayList<Mission> deckMission = new ArrayList<>();
     private final ArrayList<Parcel> deckParcel = new ArrayList<>();
+    private final ArrayList<Canal> deckCanal=new ArrayList<>();
+
+
 
     Resource(){
         initializedeckParcel();
@@ -45,6 +48,19 @@ class Resource {
         Mission mission = deckMission.get(0);
         deckMission.remove(mission);
         return mission;
+    }
+
+
+    private void initializedeckCanal(){
+        int nbCanal = 27;
+        for (int i = 0; i < nbCanal; i++){
+            deckCanal.add(new Canal());
+        }
+    }
+    Canal drawCanal(){
+        Canal canal = deckCanal.get(0);
+        deckCanal.remove(canal);
+        return canal;
     }
 
     ArrayList<Parcel> getParcel(){
