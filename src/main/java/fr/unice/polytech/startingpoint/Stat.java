@@ -1,35 +1,46 @@
 package fr.unice.polytech.startingpoint;
 
 class Stat {
-    private final int NB_PLAYER = 2;
-    private final int nbGame;
-    private final int[] points = new int[NB_PLAYER];
-    private final int[] winRate = new int[NB_PLAYER];
+    private final int NB_PLAYER;
+    private final int NB_GAME;
+    private final int[] points;
+    private final int[] winRate;
 
-    Stat(int NB_GAME){
-        nbGame = NB_GAME;
+    Stat(int NB_GAME, int NB_PLAYER){
+        this.NB_GAME = NB_GAME;
+        this.NB_PLAYER = NB_PLAYER;
+        points = new int[NB_PLAYER];
+        winRate = new int[NB_PLAYER];
     }
 
     void add(int[] data) {
-        getWinner(data);
+        setWinner(data);
         for (int i = 0; i < NB_PLAYER; i++) {
             points[i] += data[i];
         }
     }
 
     //return le message final
-    void getWinner(int[] score){
-        if(score[0]>score[1]) {
-            winRate[0]++;
+    void setWinner(int[] score){
+        int bestScore = 0;
+        for (int i = 0; i < NB_PLAYER; i++) {
+            if(score[i] > bestScore) {
+                bestScore=score[i];
+            }
         }
-        else if (score[0]<score[1]){
-            winRate[1]++;
+        for (int i = 0; i < NB_PLAYER; i++) {
+            if(score[i] == bestScore) {
+                winRate[i]++;
+            }
         }
     }
 
     //affiche le message
     public String toString(){
-        return  "Joueur 1 : " + winRate[0]/(nbGame/100.0) + "% win rate with a " + (points[0]*1.0)/nbGame + " points average\n" +
-                "Joueur 2 : " + winRate[1]/(nbGame/100.0) + "% win rate with a " + (points[1]*1.0)/nbGame + " points average";
+        String displayStat = "";
+        for (int i = 0; i < NB_PLAYER; i++) {
+            displayStat += "Joueur " + (i+1) + " : " + winRate[i]/(NB_GAME/100.0) + "% win rate with a " + (points[i]*1.0)/NB_GAME + " points average\n";
+        }
+        return  displayStat;
     }
 }
