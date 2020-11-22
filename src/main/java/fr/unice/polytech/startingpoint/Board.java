@@ -29,16 +29,22 @@ class Board {
     }
 
     boolean playableCanal(Coordinate coord, Coordinate coord2){
+        if( !(isplacedParcel(coord) && isplacedParcel(coord2)) ){
+            return false;
+        }
+        else if (Coordinate.getNorm(coord,coord2)!=2) {
+            return false;
+        }
+        else if(placedCanals.size()==0 && ((Coordinate.getNorm(coord2,new Coordinate(0,0,0) ) > 2) || (Coordinate.getNorm(coord,new Coordinate(0,0,0) ) > 2))){
+            return false;
+        }
         for (Canal placedCanal : placedCanals) {
             Coordinate[] cocanal=placedCanal.getCoordinatesCanal();
-
-            if( (cocanal[0]==coord && cocanal[1]==coord2) || (cocanal[0]==coord2 && cocanal[1]==coord)){
+            if( (cocanal[0].equals(coord) && cocanal[1].equals(coord2)) || (cocanal[0].equals(coord2) && cocanal[1].equals(coord))){
                 return false;
             }
-            else if( !(isplacedParcel(coord) && isplacedParcel(coord2)) ){
-                return false;
-            }
-            else if (Coordinate.getNorm(coord,coord2)!=2) {
+            if( ( ((cocanal[0].equals(coord)) && (Coordinate.getNorm(coord2, cocanal[1]) != 2)) || ((cocanal[0].equals(coord2)) && (Coordinate.getNorm(coord2, cocanal[1]) != 2)) ) )
+            {
                 return false;
             }
         }
@@ -76,6 +82,7 @@ class Board {
         return (nbParcelAround > 1);
     }
 
+    //Renvoie un true si une parcelle est posée aux coordonnées pasées en paramètres
     boolean isplacedParcel(Coordinate coordinate){
         for (Parcel placedParcel : placedParcels) {
             if(placedParcel.getCoordinates().equals(coordinate))
@@ -83,6 +90,8 @@ class Board {
         }
         return false;
     }
+
+    //Obtient une parcelle par des coordonnées données
     Parcel getParcelbyCo(Coordinate coordinate){
         for (Parcel placedParcel : placedParcels) {
             if(placedParcel.getCoordinates().equals(coordinate))
