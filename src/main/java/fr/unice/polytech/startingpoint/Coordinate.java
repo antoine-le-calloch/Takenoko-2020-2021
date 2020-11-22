@@ -15,10 +15,8 @@ public class Coordinate {
 
     Coordinate(Coordinate ... coordinates){
         coordinate = new int[]{0,0,0};
-        for( int i = 0 ; i < coordinates[0].getCoordinate().length ; i++ ){
-            for( int j = 0 ; j < coordinates.length ; j++ ){
-                coordinate[i] += coordinates[j].getCoordinate()[i];
-            }
+        for( int i = 0, j = 0 ; i < coordinates[0].getCoordinate().length && j < coordinates.length  ; i++, j++){
+            coordinate[i] += coordinates[j].getCoordinate()[i];
         }
     }
 

@@ -28,6 +28,7 @@ class IntelligentBot extends Bot{
     ArrayList<Coordinate> coordinateMakingGoal(Coordinate offset1, Coordinate offset2 /* + couleur*/) {
         ArrayList<Coordinate> possibleCoord = possibleCoordinatesParcel();
         ArrayList<Coordinate> coordMakingLine = new ArrayList<>();
+
         for (Coordinate coordinate : possibleCoord) {
             for( Parcel parcel : board.getParcel()) {
                 if (parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), offset1)) // + bonne couleur
@@ -41,12 +42,11 @@ class IntelligentBot extends Bot{
 
     void wherePutParcel() {
         for (Mission mission : inventoryMission) {
-            if (mission.getGoal().equals("line"))
-                if (coordinateMakingGoal(new Coordinate(0, 1, -1), new Coordinate(0, -1, 1)).size() > 0) {
-                    // on doit verifier que la liste n'est pas vide
-                    placeParcel(coordinateMakingGoal(new Coordinate(0, 1, -1), new Coordinate(0, -1, 1)));
-                    return;
-                }
+            if (mission.getGoal().equals("line") && coordinateMakingGoal(new Coordinate(0, 1, -1), new Coordinate(0, -1, 1)).size() > 0) {
+                // on doit verifier que la liste n'est pas vide
+                placeParcel(coordinateMakingGoal(new Coordinate(0, 1, -1), new Coordinate(0, -1, 1)));
+                return;
+            }
         }
         placeParcel(possibleCoordinatesParcel());
     }

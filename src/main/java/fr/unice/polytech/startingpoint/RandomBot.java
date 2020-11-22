@@ -28,7 +28,7 @@ class RandomBot extends Bot {
                 placeCanal(possibleCoordinatesCanal());
         }
         else {
-            placeParcel(possibleCoordinatesParcel()); // placera une parcelle sur une case d'une coordonée qui est dans la lite
+            placeParcel(possibleCoordinatesParcel()); // placera une parcelle sur une case d'une coordonée qui est dans la liste
         }
     }
 
