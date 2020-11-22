@@ -35,7 +35,7 @@ class Game {
 
         if(turnLeft == nbBot) {
             for (int mission : mission_done) {
-                if (mission >= 4) {
+                if (mission >= 2) {
                     turnLeft--;
                 }
             }

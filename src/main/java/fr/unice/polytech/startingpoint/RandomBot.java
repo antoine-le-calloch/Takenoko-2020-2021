@@ -20,14 +20,14 @@ class RandomBot extends Bot {
     @Override
     void Botplay(){
         int nb = random.nextInt(3);
-        if (nb == 0) {
+        if (nb == 0 && resource.getMission().size() > 0) {
             drawMission();
         }
-        else if (nb ==1) {
+        else if (nb ==1 && resource.getCanal().size() > 0) {
             if (possibleCoordinatesCanal().size() > 0)
                 placeCanal(possibleCoordinatesCanal());
         }
-        else {
+        else if (resource.getParcel().size() > 0){
             placeParcel(possibleCoordinatesParcel()); // placera une parcelle sur une case d'une coordonée qui est dans la liste
         }
     }

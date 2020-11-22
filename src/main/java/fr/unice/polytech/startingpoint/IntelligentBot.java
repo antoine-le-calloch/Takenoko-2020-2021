@@ -14,9 +14,10 @@ class IntelligentBot extends Bot{
 
     @Override
     void Botplay(){
-        if (!haveMission())
+        if (!haveMission() && resource.getMission().size() > 0)
             drawMission();
-        wherePutParcel();
+        if (resource.getParcel().size() > 0)
+            wherePutParcel();
     }
 
     boolean haveMission(){
@@ -25,26 +26,22 @@ class IntelligentBot extends Bot{
 
 
     //creer une liste des coordonnée possible qui peuvent faire une forme
-    ArrayList<Coordinate> coordinateMakingGoal(Coordinate offset1, Coordinate offset2 /* + couleur*/) {
+    ArrayList<Coordinate> coordinateMakingGoal(String goal /* + couleur*/) {
         ArrayList<Coordinate> possibleCoord = possibleCoordinatesParcel();
         ArrayList<Coordinate> coordMakingLine = new ArrayList<>();
-
         for (Coordinate coordinate : possibleCoord) {
-            for( Parcel parcel : board.getParcel()) {
-                if (parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), offset1)) // + bonne couleur
-                        && parcel.getCoordinates().equals(new Coordinate(parcel.getCoordinates(), offset2))) {
+                if (board.checkGoal(goal,coordinate, false))
                     coordMakingLine.add(coordinate);
-                }
             }
-        }
         return coordMakingLine;
     }
 
+    //Pour chaque mission, cherche les cases disponible pour finir la forme
     void wherePutParcel() {
         for (Mission mission : inventoryMission) {
-            if (mission.getGoal().equals("line") && coordinateMakingGoal(new Coordinate(0, 1, -1), new Coordinate(0, -1, 1)).size() > 0) {
+            if (coordinateMakingGoal(mission.getGoal()).size() > 0) {
                 // on doit verifier que la liste n'est pas vide
-                placeParcel(coordinateMakingGoal(new Coordinate(0, 1, -1), new Coordinate(0, -1, 1)));
+                placeParcel(coordinateMakingGoal(mission.getGoal()));
                 return;
             }
         }

@@ -68,4 +68,10 @@ class Resource {
     ArrayList<Parcel> getParcel(){
         return deckParcel;
     }
+    ArrayList<Canal> getCanal(){
+        return deckCanal;
+    }
+    ArrayList<Mission> getMission(){
+        return deckMission;
+    }
 }
