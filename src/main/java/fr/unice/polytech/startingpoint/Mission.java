@@ -13,28 +13,17 @@ public class Mission {
 
     //Verifie si une mission est faite
     int checkMission(Board board){
-        return checkMissionParcel(board)+checkMissionIrrigated(board);
+        return checkMissionParcel(board);
     }
 
     //Verifie si une mission parcelle est faite
     int checkMissionParcel(Board board){
         for (Parcel parcel : board.getParcel()) {
-            if (board.checkGoal(goal,parcel.getCoordinates()))
+            if (board.checkGoal(goal,parcel.getCoordinates(),true))
                 return points;
         }
         return 0;
     }
-
-
-    int checkMissionIrrigated(Board board){
-        for(Parcel parcel : board.getParcel()){
-            if (parcel.getIrrigated()) {
-                return points;
-            }
-        }
-        return 0;
-    }
-
 
     String getGoal(){ return goal;}
 }

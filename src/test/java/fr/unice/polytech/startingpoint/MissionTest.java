@@ -50,7 +50,6 @@ class MissionTest {
     }
 
 
-/*
     @Test void wrongTriangle(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
         board.putParcel(parcel4,new Coordinate(0,1,-1));
@@ -67,13 +66,6 @@ class MissionTest {
         System.out.println(board.getParcel().size());
         assertEquals(0,mission2.checkMissionParcel(board));
         assertEquals(0,mission.checkMissionParcel(board));
-    }*/
-
-    @Test void missionIrrigated(){
-        assertNotEquals(2,mission3.checkMissionIrrigated(board));
-        board.putParcel(parcel1,new Coordinate(0,-1,1));
-        assertEquals(2,mission3.checkMissionIrrigated(board));
     }
-
 
 }

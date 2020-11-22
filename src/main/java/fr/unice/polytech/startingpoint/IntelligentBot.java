@@ -14,9 +14,10 @@ class IntelligentBot extends Bot{
 
     @Override
     void Botplay(){
-        if (!haveMission())
+        if (!haveMission() && resource.getMission().size() > 0)
             drawMission();
-        wherePutParcel();
+        if (resource.getParcel().size() > 0)
+            wherePutParcel();
     }
 
     boolean haveMission(){
@@ -29,7 +30,7 @@ class IntelligentBot extends Bot{
         ArrayList<Coordinate> possibleCoord = possibleCoordinatesParcel();
         ArrayList<Coordinate> coordMakingLine = new ArrayList<>();
         for (Coordinate coordinate : possibleCoord) {
-                if (board.checkGoal(goal,coordinate))
+                if (board.checkGoal(goal,coordinate, false))
                     coordMakingLine.add(coordinate);
             }
         return coordMakingLine;

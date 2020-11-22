@@ -5,13 +5,15 @@ import java.util.zip.CheckedOutputStream;
 
 class Board {
     private final ArrayList<Parcel> placedParcels = new ArrayList<>();
+    private final ArrayList<Coordinate> irrigatedParcels = new ArrayList<>();
     private final ArrayList<Canal> placedCanals = new ArrayList<>();
 
     Board(){
         placedParcels.add(new Parcel(new Coordinate(0,0,0)));
     }
 
-   boolean putCanal(Canal canal, Coordinate coord, Coordinate coord2){
+    //place un canal et ajoute les parcel irrigé dans le set
+    boolean putCanal(Canal canal, Coordinate coord, Coordinate coord2){
         if(playableCanal(coord,coord2)){
             canal.setCoordinates(coord,coord2);
             Parcel parcel=getParcelbyCo(coord);
@@ -19,14 +21,16 @@ class Board {
             placedCanals.add(canal);
             if(!parcel.getIrrigated()) {
                 parcel.setIrrigated();
+                irrigatedParcels.add(parcel.getCoordinates());
             }
             if(!parcel2.getIrrigated()) {
                 parcel2.setIrrigated();
+                irrigatedParcels.add(parcel.getCoordinates());
             }
             return true;
         }
         return false;
-    }
+     }
 
     boolean playableCanal(Coordinate coord, Coordinate coord2){
         if( !(isplacedParcel(coord) && isplacedParcel(coord2)) ){
@@ -100,12 +104,23 @@ class Board {
         return null;
     }
 
-    boolean checkGoal(String goal, Coordinate coordinate){
+    boolean checkGoal(String goal, Coordinate coordinate, Boolean needToIrrigated){
         if (goal.equals("triangle")) {
-            if (isPlaced(coordinate ,new Coordinate(1,-1,0)) && isPlaced(coordinate ,new Coordinate(1,0,-1)))
+            if (needToIrrigated) {
+                if (isPlaced(coordinate ,new Coordinate(1,-1,0)) && irrigatedParcels.contains(new Coordinate(coordinate,new Coordinate(1,-1,0)))
+                        && isPlaced(coordinate ,new Coordinate(1,0,-1)) && irrigatedParcels.contains(new Coordinate(coordinate,new Coordinate(1,0,-1))))
+                    return true;
+            }
+            else if (isPlaced(coordinate ,new Coordinate(1,-1,0)) && isPlaced(coordinate ,new Coordinate(1,0,-1)))
                 return true;
         }
         if (goal.equals("ligne")) {
+            if (needToIrrigated) {
+                if (isPlaced(coordinate ,new Coordinate(0,-1,1)) && irrigatedParcels.contains(new Coordinate(coordinate,new Coordinate(0,-1,1)))
+                        && isPlaced(coordinate ,new Coordinate(0,1,-1)) && irrigatedParcels.contains(new Coordinate(coordinate,new Coordinate(0,1,-1))))
+                    return true;
+            }
+            else
             if (isPlaced(coordinate ,new Coordinate(0,-1,1)) && isPlaced(coordinate ,new Coordinate(0,1,-1)))
                 return true;
         }
@@ -121,7 +136,6 @@ class Board {
         }
         return false;
     }
-
 
 
     ArrayList<Parcel> getParcel(){

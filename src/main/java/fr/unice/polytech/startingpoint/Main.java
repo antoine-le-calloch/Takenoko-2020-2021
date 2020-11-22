@@ -3,7 +3,7 @@ package fr.unice.polytech.startingpoint;
 public class Main {
 
     public static void main(String... args) {
-        final int NB_GAME = 1000;
+        final int NB_GAME = 1;
         Stat statGame = new Stat(NB_GAME); //creation des statistiques de l'ensemble des parties
 
         for (int i = 0; i < NB_GAME; i++) {
