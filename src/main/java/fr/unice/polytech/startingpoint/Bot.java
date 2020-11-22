@@ -31,11 +31,13 @@ class Bot {
         board.putParcel(resource.drawParcel(), listCoord.get(0));
     }
 
-    void placeCanal(){
-
+    //place un canal sur une coordonnée contenue dans une liste donnée
+    void placeCanal(ArrayList<Coordinate[]> listCoord){
+        Collections.shuffle(listCoord);
+        board.putCanal(resource.drawCanal(), listCoord.get(0)[0],listCoord.get(0)[1]);
     }
 
-    ArrayList<Coordinate> possibleCoordinates() {
+    ArrayList<Coordinate> possibleCoordinatesParcel() {
         ArrayList<Coordinate> coordArounds = coordinatesAroundBoard();
         ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();
         for(Coordinate coordinate : coordArounds){
@@ -43,6 +45,17 @@ class Bot {
                 possibleCoordinates.add(coordinate); }
         }
         return possibleCoordinates;
+    }
+
+    ArrayList<Coordinate[]> possibleCoordinatesCanal(){
+        Set<Coordinate[]> possibleCoordinates = new HashSet<>();
+        for(Parcel parcel1 : board.getParcel()){
+            for(Parcel parcel2 : board.getParcel()){
+                if (board.playableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
+                    possibleCoordinates.add(new Coordinate[] {parcel1.getCoordinates(),parcel2.getCoordinates()});
+            }
+        }
+        return new ArrayList<>(possibleCoordinates);
     }
 
     ArrayList<Coordinate> coordinatesAroundBoard() {
@@ -53,6 +66,8 @@ class Bot {
         }
         return new ArrayList<>(coordinatesAroundBoard);
     }
+
+
 
 
 

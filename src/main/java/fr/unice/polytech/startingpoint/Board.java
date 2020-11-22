@@ -103,4 +103,8 @@ class Board {
     ArrayList<Parcel> getParcel(){
         return placedParcels;
     }
+
+    ArrayList<Canal> getCanal(){
+        return placedCanals;
+    }
 }

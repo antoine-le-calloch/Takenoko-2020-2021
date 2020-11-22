@@ -26,7 +26,7 @@ class IntelligentBot extends Bot{
 
     //creer une liste des coordonnée possible qui peuvent faire une forme
     ArrayList<Coordinate> coordinateMakingGoal(Coordinate offset1, Coordinate offset2 /* + couleur*/) {
-        ArrayList<Coordinate> possibleCoord = possibleCoordinates();
+        ArrayList<Coordinate> possibleCoord = possibleCoordinatesParcel();
         ArrayList<Coordinate> coordMakingLine = new ArrayList<>();
         for (Coordinate coordinate : possibleCoord) {
             for( Parcel parcel : board.getParcel()) {
@@ -48,7 +48,7 @@ class IntelligentBot extends Bot{
                     return;
                 }
         }
-        placeParcel(possibleCoordinates());
+        placeParcel(possibleCoordinatesParcel());
     }
 
 }

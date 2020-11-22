@@ -65,13 +65,15 @@ class BotTest {
         int [] tabco= randomco.getCoordinate();
         int sumco=tabco[0]+tabco[1]+tabco[2];
         assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)<19);
-        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)>1);
+        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)>0);
         assertEquals(0,sumco);
     }
 
-    @Test void possibleCoordinatestest(){
-        ArrayList<Coordinate> possibleco = bot1.possibleCoordinates();
+    @Test void possibleCoordinatesParceltest(){
+        ArrayList<Coordinate> possibleco = bot1.possibleCoordinatesParcel();
         Collections.shuffle(possibleco);
         assertTrue(board.playableParcel(possibleco.get(0)));
     }
+
+   
 }

@@ -13,6 +13,7 @@ class Resource {
     Resource(){
         initializedeckParcel();
         initializedeckMission();
+        initializedeckCanal();
     }
 
     //Creation de toutes les parcelles et on les ajoute dans le deck parcelles
@@ -57,6 +58,7 @@ class Resource {
             deckCanal.add(new Canal());
         }
     }
+
     Canal drawCanal(){
         Canal canal = deckCanal.get(0);
         deckCanal.remove(canal);
