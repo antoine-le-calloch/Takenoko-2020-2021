@@ -81,6 +81,13 @@ public class BoardTest {
         assertEquals(0,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(0,0,0)));
     }
 
+    @Test void getParcelbyCotesting(){
+        board.putParcel(parcel1,new Coordinate(0,-1,1));
+        parcel2=board.getParcelbyCo(new Coordinate(0,-1,1));
+        assertEquals(parcel1,parcel2);
+        assertEquals(null,board.getParcelbyCo(new Coordinate(1,-1,0)));
+    }
+
     @Test void irrigationFromCentral(){
         board.putParcel(parcel1,new Coordinate(0,-1,1));
         assertTrue(parcel1.getIrrigated());
@@ -107,6 +114,7 @@ public class BoardTest {
         board.putParcel(parcel2,new Coordinate(1,-1,0));
         board.putCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
         assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
+        assertFalse(board.playableCanal(new Coordinate(1,-1,0),new Coordinate(0,-1,1)));
     }
     @Test void wrongPlacementCanalawayFromcentral(){
         board.putParcel(parcel1,new Coordinate(0,-1,1));
@@ -125,9 +133,10 @@ public class BoardTest {
         assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(0,-2,2)));
     }
 
-    @Test void invalideCoordinates(){
-        assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(0,-1,1)));
-        assertFalse(board.playableCanal(new Coordinate(1,-1,0),new Coordinate(-1,1,0)));
+    @Test void invalideCoordinatesforCanal(){
+        assertFalse(board.putCanal(canal,new Coordinate(0,-1,1),new Coordinate(0,-1,1)));
+        assertFalse(board.putCanal(canal,new Coordinate(1,-1,0),new Coordinate(-1,1,0)));
+        assertFalse(board.putCanal(canal,new Coordinate(1,-1,0),new Coordinate(2,0,-2)));
     }
 
     @Test void parcelInexistantsoNoCanal(){

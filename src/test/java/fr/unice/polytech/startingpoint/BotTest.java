@@ -12,14 +12,16 @@ class BotTest {
     private Bot bot1;
     private Bot bot2;
     private Board board;
-    Parcel parcel1;
-    Parcel parcel2;
+    private Parcel parcel1;
+    private Canal canal;
+
+
 
     @BeforeEach public void setUp(){
         Resource resource = new Resource();
         board = new Board();
         parcel1 = new Parcel();
-        parcel2 = new Parcel();
+        canal = new Canal();
         bot1 = new Bot(resource,board);
         bot2 = new Bot(resource,board);
     }
@@ -73,6 +75,27 @@ class BotTest {
         ArrayList<Coordinate> possibleco = bot1.possibleCoordinatesParcel();
         Collections.shuffle(possibleco);
         assertTrue(board.playableParcel(possibleco.get(0)));
+    }
+    @Test void notPossibleCoordinatesCanal(){
+        ArrayList<Coordinate[]> possiblecanals = bot1.possibleCoordinatesCanal();
+        assertEquals(possiblecanals.size(),0);
+        board.putParcel(parcel1,new Coordinate(2,-2,0));
+        board.putCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));
+        ArrayList<Coordinate[]>possiblecanals2=bot1.possibleCoordinatesCanal();
+        assertEquals(possiblecanals2.size(),0);
+    }
+    @Test void possibleCoordinatesCanal(){
+        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        ArrayList<Coordinate[]>possiblecanals=bot1.possibleCoordinatesCanal();
+        Collections.shuffle(possiblecanals);
+        Coordinate[] tabco =possiblecanals.get(0);
+        assertEquals(true, board.playableCanal(tabco[0],tabco[1]));
+    }
+
+    @Test void placeCanaltest(){
+        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        bot1.placeCanal(bot1.possibleCoordinatesCanal());
+        assertTrue(!board.playableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0)));
     }
 
    

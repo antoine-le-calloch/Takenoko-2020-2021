@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
+import com.sun.nio.sctp.AbstractNotificationHandler;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -54,6 +56,10 @@ public class Coordinate {
             norm += (coord1.getCoordinate()[i] - coord2.getCoordinate()[i]) * (coord1.getCoordinate()[i] - coord2.getCoordinate()[i]);
         }
         return norm;
+    }
+
+    public String toString(){
+        return coordinate[0] + " " +coordinate[1] +" "+ coordinate[2] ;
     }
 
     int[] getCoordinate() {
