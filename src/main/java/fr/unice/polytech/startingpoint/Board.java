@@ -100,6 +100,30 @@ class Board {
         return null;
     }
 
+    boolean checkGoal(String goal, Coordinate coordinate){
+        if (goal.equals("triangle")) {
+            if (isPlaced(coordinate ,new Coordinate(1,-1,0)) && isPlaced(coordinate ,new Coordinate(1,0,-1)))
+                return true;
+        }
+        if (goal.equals("ligne")) {
+            if (isPlaced(coordinate ,new Coordinate(0,-1,1)) && isPlaced(coordinate ,new Coordinate(0,1,-1)))
+                return true;
+        }
+        return false;
+    }
+
+
+    //Verifie si une parcelle est placé aux coordonnées qu'on lui donne additioné à un offset
+    boolean isPlaced(Coordinate coord, Coordinate offset){
+        for(Parcel parcel : placedParcels) {
+            if (parcel.getCoordinates().equals(new Coordinate(coord,offset)))
+                return true;
+        }
+        return false;
+    }
+
+
+
     ArrayList<Parcel> getParcel(){
         return placedParcels;
     }
