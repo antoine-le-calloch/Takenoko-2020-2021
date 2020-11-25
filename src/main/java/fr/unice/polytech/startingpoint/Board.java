@@ -14,6 +14,7 @@ class Board {
 
     //place un canal et ajoute les parcel irrigé dans le set
     boolean putCanal(Canal canal, Coordinate coord, Coordinate coord2){
+
         if(playableCanal(coord,coord2)){
             canal.setCoordinates(coord,coord2);
             Parcel parcel=getParcelbyCo(coord);
@@ -32,36 +33,49 @@ class Board {
         return false;
      }
 
-    boolean playableCanal(Coordinate coord, Coordinate coord2){
-        if( !(isplacedParcel(coord) && isplacedParcel(coord2)) ){
+    boolean playableCanal(Coordinate toplacecoord1, Coordinate toplacecoord2){
+
+        if( !(isplacedParcel(toplacecoord1) && isplacedParcel(toplacecoord2)) ){
             return false;
         }
-        else if (Coordinate.getNorm(coord,coord2)!=2) {
+        if( placedCanals.size()==0 && (!isNextoCentral(toplacecoord1) || (!isNextoCentral(toplacecoord2)) )){
             return false;
         }
-        else if(placedCanals.size()==0 && ((Coordinate.getNorm(coord2,new Coordinate(0,0,0) ) > 2) || (Coordinate.getNorm(coord,new Coordinate(0,0,0) ) > 2))){
+        if (toplacecoord1.equals(new Coordinate(0,0,0)) || toplacecoord2.equals(new Coordinate(0,0,0)))
             return false;
-        }
+
         for (Canal placedCanal : placedCanals) {
-            Coordinate[] cocanal=placedCanal.getCoordinatesCanal();
-            if( (cocanal[0].equals(coord) && cocanal[1].equals(coord2)) || (cocanal[0].equals(coord2) && cocanal[1].equals(coord))){
+
+            Coordinate[] coordscanalplaced=placedCanal.getCoordinatesCanal();
+            if( placedCanal.sameDoublecoordinates(toplacecoord1,toplacecoord2)){
                 return false;
             }
-            if( ( ((cocanal[0].equals(coord)) && (Coordinate.getNorm(coord2, cocanal[1]) != 2)) || ((cocanal[0].equals(coord2)) && (Coordinate.getNorm(coord2, cocanal[1]) != 2)) ) )
-            {
+            if(  ((coordscanalplaced[0].equals(toplacecoord1)) && (!coNextToEachother(toplacecoord2,coordscanalplaced[1]))) || ((coordscanalplaced[0].equals(toplacecoord2)) && (!coNextToEachother(toplacecoord1,coordscanalplaced[1]))) ) {
                 return false;
             }
         }
         return true;
     }
 
+    // renvoie true si une coordonée est à côté d'une autre
+    boolean coNextToEachother(Coordinate coord1,Coordinate coord2){
+
+        return (Coordinate.getNorm(coord1, coord2)) == 2;
+
+    }
+    boolean isNextoCentral(Coordinate coord){
+        return (Coordinate.getNorm(coord,new Coordinate(0,0,0))) == 2;
+    }
+
+
+
     //Place une parcelle sur le board (quand cela est possible)
     boolean putParcel(Parcel parcel,Coordinate coord){
         if(playableParcel(coord)){
             parcel.setCoordinates(coord);
             placedParcels.add(parcel);
-            placedCoords.add(parcel.getCoordinates());
-            if (Coordinate.getNorm(parcel.getCoordinates(),new Coordinate(0,0,0) )==2){
+            placedCoords.add(coord);
+            if (isNextoCentral(coord)){
                 parcel.setIrrigated();
             }
             return true;
@@ -105,11 +119,11 @@ class Board {
         return null;
     }
 
-    ArrayList<Parcel> getParcels(){
+    ArrayList<Parcel> getPlacedparcels(){
         return placedParcels;
     }
 
-    ArrayList<Canal> getCanal(){
+    ArrayList<Canal> getPlacedcanals(){
         return placedCanals;
     }
 

@@ -1,7 +1,5 @@
 package fr.unice.polytech.startingpoint;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 class RandomBot extends Bot {
@@ -18,18 +16,21 @@ class RandomBot extends Bot {
 
     //Action d'un bot pendant un tour
     @Override
-    void Botplay(){
+    void botplay(){
         int nb = random.nextInt(3);
         if (nb == 0 && resource.getMission().size() > 0) {
             drawMission();
         }
         else if (nb ==1 && resource.getCanal().size() > 0) {
             if (possibleCoordinatesCanal().size() > 0)
-                placeCanal(possibleCoordinatesCanal());
+                placeRandomcanal(possibleCoordinatesCanal());
         }
         else if (resource.getParcel().size() > 0){
-            placeParcel(possibleCoordinatesParcel()); // placera une parcelle sur une case d'une coordonée qui est dans la liste
+            placeRandomparcel(possibleCoordinatesParcel());
+            // placera une parcelle sur une case d'une coordonée qui est dans la liste
         }
+        if(resource.getCanal().size()>0 && possibleCoordinatesCanal().size()>0)
+            placeRandomcanal(possibleCoordinatesCanal());
     }
 
 

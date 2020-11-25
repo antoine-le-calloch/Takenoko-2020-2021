@@ -23,8 +23,8 @@ class Game {
         int numBot = 0;
         turnLeft = nbBot;
 
-        while(isContinue() != 0) {
-            botList.get(numBot).Botplay();
+        while(isContinue() != 0 && (!isoutofsources())) {
+            botList.get(numBot).botplay();
             missionDone(numBot);
             numBot = (numBot+1) % nbBot;
         }
@@ -44,8 +44,20 @@ class Game {
         else
             turnLeft--;
 
+
         return turnLeft;
+
     }
+
+    boolean isoutofsources(){
+        if (resource.getMission().size()==0)
+            return true;
+        if(resource.getParcel().size()==0)
+            return true;
+        return false;
+    }
+
+
 
     /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
     il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/

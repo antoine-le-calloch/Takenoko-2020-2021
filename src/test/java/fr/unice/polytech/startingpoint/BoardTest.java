@@ -27,13 +27,13 @@ public class BoardTest {
     @Test
     public void goodParcelPlacementSoParcelIncrease(){
         board.putParcel(resource.drawParcel(),new Coordinate(1,-1,0));
-        assertEquals(2,board.getParcels().size());
+        assertEquals(2,board.getPlacedparcels().size());
     }
 
     @Test
     public void wrongParcelPlacementSoNoParcelIncrease(){
         board.putParcel(resource.drawParcel(),new Coordinate(0,0,0));
-        assertEquals(1,board.getParcels().size());
+        assertEquals(1,board.getPlacedparcels().size());
     }
 
     @Test

@@ -27,7 +27,7 @@ class Resource {
     //Creation de toutes les missions et on les ajoute dans le deck missions
     private void initializedeckMission() {
         int nbMission = 32;
-        for (int i = 0; i < nbMission / 4; i++) {
+        for (int i = 0; i < nbMission / 2; i++) {
             deckMission.add(new Mission(1, 2, "triangle"));
             deckMission.add(new Mission(2, 3, "line"));
 
