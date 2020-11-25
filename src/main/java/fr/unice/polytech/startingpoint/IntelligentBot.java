@@ -77,4 +77,23 @@ class IntelligentBot extends Bot{
         }
         return ParcelToPlaceToDoForm;
     }
+
+    boolean PutCanal() {
+        for(Parcel parcel : board.getParcels()){
+            for(Coordinate[] canal : possibleCoordinatesCanal()){
+                if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){
+                    board.putCanal(resource.drawCanal(),canal[0],canal[1]);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    void placeParcel(ArrayList<Coordinate> listCoord) {
+        if(!PutCanal()){
+            super.placeParcel(listCoord);
+        }
+    }
 }
