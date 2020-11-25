@@ -16,14 +16,49 @@ public class Mission {
         return checkMissionParcel(board);
     }
 
-    //Verifie si une mission parcelle est faite
-    int checkMissionParcel(Board board){
-        for (Parcel parcel : board.getParcel()) {
-            if (board.checkGoal(goal,parcel.getCoordinates(),true))
+    String getGoal(){ return goal;}
+
+
+
+    int checkMissionParcel(Board board) {
+        switch (goal) {
+            case "triangle":
+                return checkTriangle(board);
+            case "ligne":
+                return checkLine(board);
+            default: return 0;
+        }
+    }
+
+
+
+    int checkLine(Board board) {
+        for (Parcel parcel : board.getParcels()) {
+            if (   board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(0,1,-1))) &&
+                    board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(0,2,-2)))) {
                 return points;
+            }
         }
         return 0;
     }
 
-    String getGoal(){ return goal;}
+    int checkTriangle(Board board) {
+        for (Parcel parcel : board.getParcels()) {
+            if (   board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(1,-1,0))) &&
+                    board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(1,0,-1)))) {
+                return points;
+            }
+        }
+        return 0;
+    }
+
+
+    //Verifie si une parcelle est placé aux coordonnées qu'on lui donne additioné à un offset
+    boolean isPlaced(Coordinate coord, Coordinate offset,Board board){
+        for(Parcel parcel : board.getParcels()) {
+            if (parcel.getCoordinates().equals(new Coordinate(coord,offset)))
+                return true;
+        }
+        return false;
+    }
 }

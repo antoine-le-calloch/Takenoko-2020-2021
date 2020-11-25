@@ -1,12 +1,11 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
-import java.util.zip.CheckedOutputStream;
 
 class Board {
     private final ArrayList<Parcel> placedParcels = new ArrayList<>();
-    private final ArrayList<Coordinate> placedCoord = new ArrayList<>();
-    private final ArrayList<Coordinate> irrigatedParcels = new ArrayList<>();
+    private final ArrayList<Coordinate> placedCoords = new ArrayList<>();
+    final ArrayList<Coordinate> irrigatedParcels = new ArrayList<>();
     private final ArrayList<Canal> placedCanals = new ArrayList<>();
 
     Board(){
@@ -61,7 +60,7 @@ class Board {
         if(playableParcel(coord)){
             parcel.setCoordinates(coord);
             placedParcels.add(parcel);
-            placedCoord.add(parcel.getCoordinates());
+            placedCoords.add(parcel.getCoordinates());
             if (Coordinate.getNorm(parcel.getCoordinates(),new Coordinate(0,0,0) )==2){
                 parcel.setIrrigated();
             }
@@ -106,41 +105,7 @@ class Board {
         return null;
     }
 
-    boolean checkGoal(String goal, Coordinate coordinate, Boolean needToIrrigated){
-        if (goal.equals("triangle")) {
-            if (needToIrrigated) {
-                if (isPlaced(coordinate ,new Coordinate(1,-1,0)) && irrigatedParcels.contains(new Coordinate(coordinate,new Coordinate(1,-1,0)))
-                        && isPlaced(coordinate ,new Coordinate(1,0,-1)) && irrigatedParcels.contains(new Coordinate(coordinate,new Coordinate(1,0,-1))))
-                    return true;
-            }
-            else if (isPlaced(coordinate ,new Coordinate(1,-1,0)) && isPlaced(coordinate ,new Coordinate(1,0,-1)))
-                return true;
-        }
-        if (goal.equals("ligne")) {
-            if (needToIrrigated) {
-                if (isPlaced(coordinate ,new Coordinate(0,-1,1)) && irrigatedParcels.contains(new Coordinate(coordinate,new Coordinate(0,-1,1)))
-                        && isPlaced(coordinate ,new Coordinate(0,1,-1)) && irrigatedParcels.contains(new Coordinate(coordinate,new Coordinate(0,1,-1))))
-                    return true;
-            }
-            else
-            if (isPlaced(coordinate ,new Coordinate(0,-1,1)) && isPlaced(coordinate ,new Coordinate(0,1,-1)))
-                return true;
-        }
-        return false;
-    }
-
-
-    //Verifie si une parcelle est placé aux coordonnées qu'on lui donne additioné à un offset
-    boolean isPlaced(Coordinate coord, Coordinate offset){
-        for(Parcel parcel : placedParcels) {
-            if (parcel.getCoordinates().equals(new Coordinate(coord,offset)))
-                return true;
-        }
-        return false;
-    }
-
-
-    ArrayList<Parcel> getParcel(){
+    ArrayList<Parcel> getParcels(){
         return placedParcels;
     }
 
@@ -149,6 +114,6 @@ class Board {
     }
 
     ArrayList<Coordinate> getPlacedCoord(){
-        return placedCoord;
+        return placedCoords;
     }
 }
