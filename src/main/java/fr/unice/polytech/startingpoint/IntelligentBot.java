@@ -41,7 +41,7 @@ class IntelligentBot extends Bot{
         for (Coordinate coord : allCoordinate()) {
             ParcelToPlaceToDoForm = ParcelToPlaceToDoForm(coord.getCoordinate(),form);
 
-            if(ParcelToPlaceToDoForm.size() == 1 && !ParcelToPlaceToDoForm.contains(null))
+            if(ParcelToPlaceToDoForm.size() == 1 && ParcelToPlaceToDoForm.get(0) != null)
                 return ParcelToPlaceToDoForm.get(0);
             /*else if(ParcelToPlaceToDoForm.size() == 2 && ParcelToPlaceToDoForm.get(0) != null)
                 return ParcelToPlaceToDoForm.get(0);
@@ -60,7 +60,7 @@ class IntelligentBot extends Bot{
 
         for (int i = 0; i < 3; i++) {
             if(x == 0 && y == 0 && z == 0)
-                return new ArrayList<>();
+                return ParcelToPlaceToDoForm;
             if(form.equals("line")) {
                 if (board.playableParcel(new Coordinate(x, y, z)))
                     ParcelToPlaceToDoForm.add(new Coordinate(x, y, z));
