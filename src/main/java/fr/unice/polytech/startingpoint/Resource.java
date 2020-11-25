@@ -29,9 +29,7 @@ class Resource {
         int nbMission = 32;
         for (int i = 0; i < nbMission / 4; i++) {
             deckMission.add(new Mission(1, 2, "triangle"));
-            deckMission.add(new Mission(2, 3, "ligne"));
-            deckMission.add(new Mission(3, 1, "irriguated"));
-            deckMission.add(new Mission(3, 1, "irriguated"));
+            deckMission.add(new Mission(2, 3, "line"));
 
         }
         Collections.shuffle(deckMission);
