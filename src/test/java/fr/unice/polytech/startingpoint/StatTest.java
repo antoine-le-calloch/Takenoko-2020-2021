@@ -29,14 +29,14 @@ public class StatTest {
     }
 
     @Test
-    public void P1Winner2P(){
+    public void p1Winner2P(){
         stat1Game2P.add(p1w);
         assertEquals("Joueur 1 : 100.0% win rate with a 2.0 points average\n" +
                 "Joueur 2 : 0.0% win rate with a 1.0 points average\n",stat1Game2P.toString());
     }
 
     @Test
-    public void P2Winner2P(){
+    public void p2Winner2P(){
         stat1Game2P.add(p2w);
         assertEquals("Joueur 1 : 0.0% win rate with a 1.0 points average\n" +
                 "Joueur 2 : 100.0% win rate with a 2.0 points average\n",stat1Game2P.toString());
@@ -50,7 +50,7 @@ public class StatTest {
     }
 
     @Test
-    public void P1Win700GameLose3002P(){
+    public void p1Win700GameLose3002P(){
         for (int i = 0; i < 700; i++) {
             stat1000Game2P.add(p1w);
         }
@@ -62,7 +62,7 @@ public class StatTest {
     }
 
     @Test
-    public void P1Win700GameLose3004P(){
+    public void p1Win700GameLose3004P(){
         for (int i = 0; i < 700; i++) {
             stat1000Game4P.add(p1w4P);
         }

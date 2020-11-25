@@ -56,8 +56,8 @@ class Bot {
 
     ArrayList<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
-        for(Parcel parcel1 : board.getParcel()){
-            for(Parcel parcel2 : board.getParcel()){
+        for(Parcel parcel1 : board.getParcels()){
+            for(Parcel parcel2 : board.getParcels()){
                 if (board.playableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
                     possibleCoordinates.add(new Coordinate[] {parcel1.getCoordinates(),parcel2.getCoordinates()});
             }
@@ -67,7 +67,7 @@ class Bot {
 
     ArrayList<Coordinate> coordinatesAroundBoard() {
         Set<Coordinate> coordinatesAroundBoard = new HashSet<>();
-        for(Parcel parcel : board.getParcel()) {
+        for(Parcel parcel : board.getParcels()) {
             ArrayList<Coordinate> coordinatesAround = parcel.getCoordinates().coordinatesAround();
             coordinatesAroundBoard.addAll(coordinatesAround);
         }
