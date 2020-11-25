@@ -5,6 +5,7 @@ import java.util.zip.CheckedOutputStream;
 
 class Board {
     private final ArrayList<Parcel> placedParcels = new ArrayList<>();
+    private final ArrayList<Coordinate> placedCoord = new ArrayList<>();
     private final ArrayList<Coordinate> irrigatedParcels = new ArrayList<>();
     private final ArrayList<Canal> placedCanals = new ArrayList<>();
 
@@ -60,6 +61,7 @@ class Board {
         if(playableParcel(coord)){
             parcel.setCoordinates(coord);
             placedParcels.add(parcel);
+            placedCoord.add(parcel.getCoordinates());
             if (Coordinate.getNorm(parcel.getCoordinates(),new Coordinate(0,0,0) )==2){
                 parcel.setIrrigated();
             }
@@ -144,5 +146,9 @@ class Board {
 
     ArrayList<Canal> getCanal(){
         return placedCanals;
+    }
+
+    ArrayList<Coordinate> getPlacedCoord(){
+        return placedCoord;
     }
 }

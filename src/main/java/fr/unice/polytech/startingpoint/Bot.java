@@ -47,6 +47,13 @@ class Bot {
         return possibleCoordinates;
     }
 
+    //renvoie une liste de toute les coordonnées des parcels placé et à placer
+    ArrayList<Coordinate> allCoordinate(){
+        ArrayList<Coordinate> allCoordinate = new ArrayList<>(possibleCoordinatesParcel());
+        allCoordinate.addAll(board.getPlacedCoord());
+        return allCoordinate;
+    }
+
     ArrayList<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
         for(Parcel parcel1 : board.getParcel()){
@@ -66,11 +73,6 @@ class Bot {
         }
         return new ArrayList<>(coordinatesAroundBoard);
     }
-
-
-
-
-
 
     void deleteMission(Mission mission) {
         inventoryMission.remove(mission);
