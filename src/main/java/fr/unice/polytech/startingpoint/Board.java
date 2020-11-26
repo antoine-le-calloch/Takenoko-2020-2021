@@ -40,12 +40,12 @@ class Board {
 
     boolean playableCanal(Coordinate toplacecoord1, Coordinate toplacecoord2){
 
-        if( isFree(toplacecoord1) || isFree(toplacecoord2)){
+        if(!isParcel(toplacecoord1) || !isParcel(toplacecoord2))
             return false;
-        }
-        if( placedCanals.size()==0 && (!isNextoCentral(toplacecoord1) || (!isNextoCentral(toplacecoord2)) )){
+
+        if( placedCanals.size()==0 && (!isNextoCentral(toplacecoord1) || (!isNextoCentral(toplacecoord2)) ))
             return false;
-        }
+
         if (toplacecoord1.equals(new Coordinate(0,0,0)) || toplacecoord2.equals(new Coordinate(0,0,0)))
             return false;
 
@@ -87,7 +87,7 @@ class Board {
             if(coord.isCentral())
                 newParcel.setIrrigated();
 
-            if(playableParcel(coord) || newCoord.isCentral())
+            if(freeParcel(coord))
                 freePlaces.add(coord);
             allPlaces.add(newCoord);
         }
@@ -102,17 +102,18 @@ class Board {
         return null;
     }
 
-    //Renvoie true si une parcelle est posée aux coordonnées pasées en paramètres
-    boolean isFree(Coordinate coordinate){
-
-        return !occupiedPlaces.contains(coordinate);
+    boolean isParcel(Coordinate coord){
+        return occupiedPlaces.contains(coord);
     }
 
-    boolean playableParcel(Coordinate coord){
+    //Renvoie true si une parcelle est libre aux coordonnées pasées en paramètres
+    boolean freeParcel(Coordinate coord){
         int nbParcelAround = 0;
         for(Coordinate coordAround : coord.coordinatesAround()) {
-            if(!isFree(coordAround))
+            if(occupiedPlaces.contains(coordAround))
                 nbParcelAround++;
+            if(coordAround.isCentral())
+                return true;
         }
         return nbParcelAround>1;
     }

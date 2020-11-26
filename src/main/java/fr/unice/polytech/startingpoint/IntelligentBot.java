@@ -65,13 +65,13 @@ class IntelligentBot extends Bot{
                 return parcelToPlaceToDoForm;
 
             if(form.equals("line")) {
-                if (board.isFree(new Coordinate(x, y, z)))
+                if (!board.isParcel(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
                 y--;
                 z++;
             }
             else if(form.equals("triangle")) {
-                if(board.isFree(new Coordinate(x, y, z)))
+                if(!board.isParcel(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
                 x = x - 1 + (2 * i); //x-- pour la parcel 2, x++ pour la parcel 3
                 y = y - i; //y pour la parcel 2, y-- pour la parcel 3

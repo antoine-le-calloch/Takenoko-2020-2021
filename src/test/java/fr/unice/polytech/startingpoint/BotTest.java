@@ -50,7 +50,7 @@ class BotTest {
 
 
     @Test void initializeNextCoordinatesNextToCentral(){
-        ArrayList<Coordinate> nextTocentral = board.getAllPlaces();
+        ArrayList<Coordinate> nextTocentral = board.getFreePlaces();
         assertEquals(6,nextTocentral.size());
         Coordinate randomco=nextTocentral.get(0);
         assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
@@ -61,20 +61,20 @@ class BotTest {
 
     @Test void initializeNextCoordinatesAwayFromCentral(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
-        ArrayList<Coordinate> awayFromcentral = board.getAllPlaces();
-        Collections.shuffle(awayFromcentral);
-        Coordinate randomco=awayFromcentral.get(0);
-        int [] tabco= randomco.getCoordinate();
+        ArrayList<Coordinate> awayFromCentral = board.getAllPlaces();
+        Collections.shuffle(awayFromCentral);
+        Coordinate randomCo=awayFromCentral.get(0);
+        int [] tabco= randomCo.getCoordinate();
         int sumco=tabco[0]+tabco[1]+tabco[2];
-        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)<19);
-        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)>=0);
+        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomCo)<19);
+        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomCo)>=0);
         assertEquals(0,sumco);
     }
 
     @Test void possibleCoordinatesParceltest(){
-        ArrayList<Coordinate> possibleco = board.getAllPlaces();
-        Collections.shuffle(possibleco);
-        assertTrue(board.isFree(possibleco.get(0)));
+        ArrayList<Coordinate> possibleCo = board.getFreePlaces();
+        Collections.shuffle(possibleCo);
+        assertTrue(board.freeParcel(possibleCo.get(0)));
     }
     @Test void notPossibleCoordinatesCanal(){
         ArrayList<Coordinate[]> possiblecanals = bot1.possibleCoordinatesCanal();
