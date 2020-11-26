@@ -63,7 +63,7 @@ class MissionTest {
 
     @Test void noMission(){
         board.putParcel(parcel1,new Coordinate(0,-1,1));
-        System.out.println(board.getPlacedparcels().size());
+        System.out.println(board.getPlacedParcels().size());
         assertEquals(0,mission2.checkMissionParcel(board));
         assertEquals(0,mission.checkMissionParcel(board));
     }

@@ -34,4 +34,12 @@ public class CoordinateTest {
         assertFalse(freeCoordinate.add(co3));
     }
 
+    @Test
+    public void coordinatesAroundCo1(){
+        Set<Coordinate> freeCoordinate = new HashSet<>();
+        assertTrue(freeCoordinate.add(co1));
+        assertTrue(freeCoordinate.add(co3));
+        assertFalse(freeCoordinate.add(co2));
+        assertFalse(freeCoordinate.add(co3));
+    }
 }

@@ -13,6 +13,7 @@ class Stat {
         nbWinNbEquality = new int[NB_PLAYER*2];
     }
 
+    //ajoute les stats d'une nouvelles game
     void add(int[] data) {
         setWinner(data);
         for (int i = 0; i < NB_PLAYER; i++) {
@@ -20,7 +21,7 @@ class Stat {
         }
     }
 
-    //return le message final
+    //Set le nombre de victoire et d'égalité pour chaque player
     void setWinner(int[] score){
         int bestScore = 0;
         int nbWinner = 0;
@@ -47,11 +48,24 @@ class Stat {
             }
     }
 
+    //return le win rate du joueur [joueur]
+    double getWinRate(int joueur){
+        return nbWinNbEquality[joueur]/(NB_GAME/100.0);
+    }
+
+    double getequalityRate(int joueur){
+        return nbWinNbEquality[joueur+NB_PLAYER]/(NB_GAME/100.0);
+    }
+
+    double getpointsAverage(int joueur){
+        return (points[joueur]*1.0)/NB_GAME;
+    }
+
     //affiche le message
     public String toString(){
         String displayStat = "";
         for (int i = 0; i < NB_PLAYER; i++) {
-            displayStat += "Joueur " + (i+1) + " : " + nbWinNbEquality[i]/(NB_GAME/100.0) + "% win rate and " + nbWinNbEquality[i+NB_PLAYER]/(NB_GAME/100.0) + "% equality rate with a " + (points[i]*1.0)/NB_GAME + " points average\n";
+            displayStat += "Joueur "+(i+1)+" : "+getWinRate(i)+"% win rate and "+getequalityRate(i)+"% equality rate with a "+getpointsAverage(i)+" points average\n";
         }
         return  displayStat;
     }

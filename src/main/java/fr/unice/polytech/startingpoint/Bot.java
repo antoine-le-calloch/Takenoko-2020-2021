@@ -1,9 +1,6 @@
 package fr.unice.polytech.startingpoint;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 class Bot {
     private final Resource resource;
@@ -16,7 +13,7 @@ class Bot {
     }
 
     //Action d'un bot pendant un tour
-    void botplay(){
+    void botPlay(){
         //vide pour les sous classes
     }
 
@@ -26,38 +23,21 @@ class Bot {
     }
 
     //place une parcelle dans une coordonnée de la liste donnée
-    void placeRandomparcel(ArrayList<Coordinate> listCoord){
+    void placeRandomParcel(ArrayList<Coordinate> listCoord){
         Collections.shuffle(listCoord);
         board.putParcel(resource.drawParcel(), listCoord.get(0));
     }
 
     //place un canal sur une coordonnée contenue dans une liste donnée
-    void placeRandomcanal(ArrayList<Coordinate[]> listCoord){
+    void placeRandomCanal(ArrayList<Coordinate[]> listCoord) {
         Collections.shuffle(listCoord);
-        board.putCanal(resource.drawCanal(), listCoord.get(0)[0],listCoord.get(0)[1]);
-    }
-
-    ArrayList<Coordinate> possibleCoordinatesParcel() {
-        ArrayList<Coordinate> coordArounds = coordinatesAroundBoard();
-        ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();
-        for(Coordinate coordinate : coordArounds){
-            if(board.playableParcel(coordinate)){
-                possibleCoordinates.add(coordinate); }
-        }
-        return possibleCoordinates;
-    }
-
-    //renvoie une liste de toute les coordonnées des parcels placé et à placer
-    ArrayList<Coordinate> allCoordinate(){
-        ArrayList<Coordinate> allCoordinate = new ArrayList<>(possibleCoordinatesParcel());
-        allCoordinate.addAll(board.getPlacedCoord());
-        return allCoordinate;
+        board.putCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
     }
 
     ArrayList<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
-        for(Parcel parcel1 : board.getPlacedparcels()){
-            for(Parcel parcel2 : board.getPlacedparcels()){
+        for(Parcel parcel1 : board.getPlacedParcels()){
+            for(Parcel parcel2 : board.getPlacedParcels()){
                 if (board.playableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
                     possibleCoordinates.add(new Coordinate[] {parcel1.getCoordinates(),parcel2.getCoordinates()});
             }
@@ -65,20 +45,11 @@ class Bot {
         return new ArrayList<Coordinate[]>(possibleCoordinates);
     }
 
-    ArrayList<Coordinate> coordinatesAroundBoard() {
-        Set<Coordinate> coordinatesAroundBoard = new HashSet<>();
-        for(Parcel parcel : board.getPlacedparcels()) {
-            ArrayList<Coordinate> coordinatesAround = parcel.getCoordinates().coordinatesAround();
-            coordinatesAroundBoard.addAll(coordinatesAround);
-        }
-        return new ArrayList<>(coordinatesAroundBoard);
-    }
-
     void deleteMission(Mission mission) {
         inventoryMission.remove(mission);
     }
 
     ArrayList<Mission> getInventoryMission() {
-        return (ArrayList<Mission>) inventoryMission.clone();
+        return new ArrayList<>(inventoryMission);
     }
 }

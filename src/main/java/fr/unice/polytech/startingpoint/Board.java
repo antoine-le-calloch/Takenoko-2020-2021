@@ -1,15 +1,20 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 class Board {
+    private final HashSet<Coordinate> allPlaces = new HashSet<>();
+    private final HashSet<Coordinate> freePlaces = new HashSet<>();
+    private final ArrayList<Coordinate> occupiedPlaces = new ArrayList<>();
+
+
     private final ArrayList<Parcel> placedParcels = new ArrayList<>();
-    private final ArrayList<Coordinate> placedCoords = new ArrayList<>();
     final ArrayList<Coordinate> irrigatedParcels = new ArrayList<>();
     private final ArrayList<Canal> placedCanals = new ArrayList<>();
 
     Board(){
-        placedParcels.add(new Parcel(new Coordinate(0,0,0)));
+        putParcel(new Parcel(),new Coordinate(0,0,0));
     }
 
     //place un canal et ajoute les parcel irrigé dans le set
@@ -17,8 +22,8 @@ class Board {
 
         if(playableCanal(coord,coord2)){
             canal.setCoordinates(coord,coord2);
-            Parcel parcel=getParcelbyCo(coord);
-            Parcel parcel2=getParcelbyCo(coord2);
+            Parcel parcel= getParcelByCo(coord);
+            Parcel parcel2= getParcelByCo(coord2);
             placedCanals.add(canal);
             if(!parcel.getIrrigated()) {
                 parcel.setIrrigated();
@@ -35,7 +40,7 @@ class Board {
 
     boolean playableCanal(Coordinate toplacecoord1, Coordinate toplacecoord2){
 
-        if( !(isplacedParcel(toplacecoord1) && isplacedParcel(toplacecoord2)) ){
+        if( isFree(toplacecoord1) || isFree(toplacecoord2)){
             return false;
         }
         if( placedCanals.size()==0 && (!isNextoCentral(toplacecoord1) || (!isNextoCentral(toplacecoord2)) )){
@@ -59,59 +64,33 @@ class Board {
 
     // renvoie true si une coordonée est à côté d'une autre
     boolean coNextToEachother(Coordinate coord1,Coordinate coord2){
-
         return (Coordinate.getNorm(coord1, coord2)) == 2;
-
     }
+
+    // renvoie true si une coordonée est à côté du milieu
     boolean isNextoCentral(Coordinate coord){
         return (Coordinate.getNorm(coord,new Coordinate(0,0,0))) == 2;
     }
 
+    //Place une parcelle sur le board
+    void putParcel(Parcel newParcel,Coordinate newCoord){
+        occupiedPlaces.add(newCoord);
+        placedParcels.add(newParcel);
+        freePlaces.remove(newCoord);
+        newParcel.setCoordinates(newCoord);
 
+        for (Coordinate coord : newCoord.coordinatesAround()) {
+            if(coord.isCentral())
+                newParcel.setIrrigated();
 
-    //Place une parcelle sur le board (quand cela est possible)
-    boolean putParcel(Parcel parcel,Coordinate coord){
-        if(playableParcel(coord)){
-            parcel.setCoordinates(coord);
-            placedParcels.add(parcel);
-            placedCoords.add(coord);
-            if (isNextoCentral(coord)){
-                parcel.setIrrigated();
-            }
-            return true;
+            if(isFree(coord))
+                freePlaces.add(coord);
+            allPlaces.add(newCoord);
         }
-        return false;
-    }
-
-    //verifie si on peut poser une parcelle sur le board
-    boolean playableParcel(Coordinate coord){
-        int nbParcelAround = 0;
-        for (Parcel placedParcel : placedParcels) {
-            int norm = Coordinate.getNorm(coord,placedParcel.getCoordinates());
-            if (norm == 0) {
-                return false;
-            }
-            else if (norm == 2) {
-                if (Coordinate.getNorm(new Coordinate(0,0,0),placedParcel.getCoordinates()) == 0) {
-                    nbParcelAround++;
-                }
-                nbParcelAround++;
-            }
-        }
-        return (nbParcelAround > 1);
-    }
-
-    //Renvoie un true si une parcelle est posée aux coordonnées pasées en paramètres
-    boolean isplacedParcel(Coordinate coordinate){
-        for (Parcel placedParcel : placedParcels) {
-            if(placedParcel.getCoordinates().equals(coordinate))
-                return true;
-        }
-        return false;
     }
 
     //Obtient une parcelle par des coordonnées données
-    Parcel getParcelbyCo(Coordinate coordinate){
+    Parcel getParcelByCo(Coordinate coordinate){
         for (Parcel placedParcel : placedParcels) {
             if(placedParcel.getCoordinates().equals(coordinate))
                 return placedParcel;
@@ -119,15 +98,33 @@ class Board {
         return null;
     }
 
-    ArrayList<Parcel> getPlacedparcels(){
+    //Renvoie true si une parcelle est posée aux coordonnées pasées en paramètres
+    boolean isFree(Coordinate coordinate){
+        return !occupiedPlaces.contains(coordinate);
+    }
+
+    //Renvoie une liste des places libres
+    ArrayList<Coordinate> getFreePlaces(){
+        return new ArrayList<>(freePlaces);
+    }
+
+    //Renvoie une liste de toutes les places existantes
+    ArrayList<Coordinate> getAllPlaces(){
+        return new ArrayList<>(allPlaces);
+    }
+
+    //Renvoie une liste des places occupées
+    ArrayList<Coordinate> getOccupiedPlaces(){
+        return occupiedPlaces;
+    }
+
+    //Renvoie une liste des parcels placé
+    ArrayList<Parcel> getPlacedParcels(){
         return placedParcels;
     }
 
-    ArrayList<Canal> getPlacedcanals(){
+    //Renvoie une liste des canaux placé
+    ArrayList<Canal> getPlacedCanals(){
         return placedCanals;
-    }
-
-    ArrayList<Coordinate> getPlacedCoord(){
-        return placedCoords;
     }
 }

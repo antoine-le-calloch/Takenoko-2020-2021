@@ -24,7 +24,7 @@ class Game {
         turnLeft = nbBot;
 
         while(isContinue() != 0 && (!isoutofsources())) {
-            botList.get(numBot).botplay();
+            botList.get(numBot).botPlay();
             missionDone(numBot);
             numBot = (numBot+1) % nbBot;
         }

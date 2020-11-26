@@ -13,16 +13,15 @@ public class RandomBotTest {
 
     @BeforeEach
     public void setUp() {
-        Resource resource = new Resource();
         board = new Board();
         parcel1 = new Parcel();
-        rdmBot1 = new RandomBot(resource,board);
+        rdmBot1 = new RandomBot(new Resource(),board);
     }
 
     @Test
     public void parcelIncrease(){
-        rdmBot1.placeRandomparcel(rdmBot1.possibleCoordinatesParcel());
-        assertEquals(2,board.getPlacedparcels().size());
+        rdmBot1.placeRandomParcel(board.getFreePlaces());
+        assertEquals(2,board.getPlacedParcels().size());
     }
 
 

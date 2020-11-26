@@ -50,7 +50,7 @@ class BotTest {
 
 
     @Test void initializeNextCoordinatesNextToCentral(){
-        ArrayList<Coordinate> nextTocentral = bot1.coordinatesAroundBoard();
+        ArrayList<Coordinate> nextTocentral = board.getAllPlaces();
         assertEquals(6,nextTocentral.size());
         Coordinate randomco=nextTocentral.get(0);
         assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
@@ -61,7 +61,7 @@ class BotTest {
 
     @Test void initializeNextCoordinatesAwayFromCentral(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
-        ArrayList<Coordinate> awayFromcentral = bot1.coordinatesAroundBoard();
+        ArrayList<Coordinate> awayFromcentral = board.getAllPlaces();
         Collections.shuffle(awayFromcentral);
         Coordinate randomco=awayFromcentral.get(0);
         int [] tabco= randomco.getCoordinate();
@@ -72,9 +72,9 @@ class BotTest {
     }
 
     @Test void possibleCoordinatesParceltest(){
-        ArrayList<Coordinate> possibleco = bot1.possibleCoordinatesParcel();
+        ArrayList<Coordinate> possibleco = board.getAllPlaces();
         Collections.shuffle(possibleco);
-        assertTrue(board.playableParcel(possibleco.get(0)));
+        assertTrue(board.isFree(possibleco.get(0)));
     }
     @Test void notPossibleCoordinatesCanal(){
         ArrayList<Coordinate[]> possiblecanals = bot1.possibleCoordinatesCanal();
@@ -89,10 +89,6 @@ class BotTest {
         ArrayList<Coordinate[]>possiblecanals=bot1.possibleCoordinatesCanal();
         Collections.shuffle(possiblecanals);
         Coordinate[] tabco =possiblecanals.get(0);
-        assertEquals(true, board.playableCanal(tabco[0],tabco[1]));
+        assertTrue(board.playableCanal(tabco[0],tabco[1]));
     }
-
-
-
-   
 }

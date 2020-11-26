@@ -16,21 +16,20 @@ class RandomBot extends Bot {
 
     //Action d'un bot pendant un tour
     @Override
-    void botplay(){
+    void botPlay(){
         int nb = random.nextInt(3);
         if (nb == 0 && resource.getMission().size() > 0) {
             drawMission();
         }
         else if (nb ==1 && resource.getCanal().size() > 0) {
             if (possibleCoordinatesCanal().size() > 0)
-                placeRandomcanal(possibleCoordinatesCanal());
+                placeRandomCanal(possibleCoordinatesCanal());
         }
         else if (resource.getParcel().size() > 0){
-            placeRandomparcel(possibleCoordinatesParcel());
-            // placera une parcelle sur une case d'une coordonée qui est dans la liste
+            placeRandomParcel(board.getFreePlaces());// placera aléatoirement une parcelle sur une case libre
         }
         if(resource.getCanal().size()>0 && possibleCoordinatesCanal().size()>0)
-            placeRandomcanal(possibleCoordinatesCanal());
+            placeRandomCanal(possibleCoordinatesCanal());
     }
 
 
