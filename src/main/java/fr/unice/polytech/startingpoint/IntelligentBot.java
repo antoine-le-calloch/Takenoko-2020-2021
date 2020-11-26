@@ -29,41 +29,42 @@ class IntelligentBot extends Bot{
 
     //Pour chaque mission, cherche les cases disponible pour finir la forme
     void putParcel() {
-        Coordinate coord = coordBestForm(inventoryMission.get(0).getGoal());
+        Coordinate coord = BestCoordForForm(inventoryMission.get(0).getGoal());
         if(coord != null)
             board.putParcel(resource.drawParcel(), coord);
         else
             placeRandomParcel(board.getFreePlaces());
     }
 
-    Coordinate coordBestForm(String form){
-        ArrayList<Coordinate> parcelToPlaceToDoForm = new ArrayList<>();
-        ArrayList<Coordinate> BestParcel = new ArrayList<>();
+    Coordinate BestCoordForForm(String form){
+        ArrayList<Coordinate> parcelToPlaceToDoForm;
 
         for (Coordinate coord : board.getAllPlaces()) {
-            parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord.getCoordinate(),form);
+            parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form);
 
-            if(parcelToPlaceToDoForm.size() == 1 && parcelToPlaceToDoForm.get(0) != null)
+            if(parcelToPlaceToDoForm.size() == 1 && board.freeParcel(parcelToPlaceToDoForm.get(0)))
                 return parcelToPlaceToDoForm.get(0);
-            /*else if(parcelToPlaceToDoForm.size() == 2 && parcelToPlaceToDoForm.get(0) != null)
-                return parcelToPlaceToDoForm.get(0);
-            else if(parcelToPlaceToDoForm.size() == 2 && parcelToPlaceToDoForm.get(1) != null)
-                return parcelToPlaceToDoForm.get(1);*/
+
+            else if(parcelToPlaceToDoForm.size() == 2) {
+
+                if (board.freeParcel(parcelToPlaceToDoForm.get(0)))
+                    return parcelToPlaceToDoForm.get(0);
+
+                else if (board.freeParcel(parcelToPlaceToDoForm.get(1)))
+                    return parcelToPlaceToDoForm.get(1);
+            }
         }
         return null;
     }
 
     //renvoie une liste de toute les parcelles pas posé pour faire la forme [form] qui a pour parcel haute [x,y,z]
-    ArrayList<Coordinate> parcelToPlaceToDoForm(int []coord, String form){
+    ArrayList<Coordinate> parcelToPlaceToDoForm(Coordinate coord, String form){
         ArrayList<Coordinate> parcelToPlaceToDoForm = new ArrayList<>();
-        int x = coord[0];
-        int y = coord[1];
-        int z = coord[2];
+        int x = coord.getCoordinate()[0];
+        int y = coord.getCoordinate()[1];
+        int z = coord.getCoordinate()[2];
 
         for (int i = 0; i < 3; i++) {
-            if(x == 0 && y == 0 && z == 0)
-                return parcelToPlaceToDoForm;
-
             if(form.equals("line")) {
                 if (!board.isParcel(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
@@ -93,6 +94,4 @@ class IntelligentBot extends Bot{
         placeRandomCanal(possibleCoordinatesCanal());
         return false;
     }
-
-
 }
