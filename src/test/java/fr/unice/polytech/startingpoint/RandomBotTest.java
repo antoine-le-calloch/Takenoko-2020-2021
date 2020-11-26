@@ -3,7 +3,7 @@ package fr.unice.polytech.startingpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class RandomBotTest {
@@ -21,8 +21,8 @@ public class RandomBotTest {
 
     @Test
     public void parcelIncrease(){
-        rdmBot1.placeParcel(rdmBot1.possibleCoordinatesParcel());
-        assertEquals(2,board.getParcels().size());
+        rdmBot1.placeRandomparcel(rdmBot1.possibleCoordinatesParcel());
+        assertEquals(2,board.getPlacedparcels().size());
     }
 
 

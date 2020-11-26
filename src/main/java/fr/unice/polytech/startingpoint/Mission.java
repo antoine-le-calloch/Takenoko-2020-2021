@@ -33,7 +33,7 @@ public class Mission {
 
 
     int checkLine(Board board) {
-        for (Parcel parcel : board.getParcels()) {
+        for (Parcel parcel : board.getPlacedparcels()) {
             if (   board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(0,1,-1))) &&
                     board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(0,2,-2)))) {
                 return points;
@@ -43,7 +43,7 @@ public class Mission {
     }
 
     int checkTriangle(Board board) {
-        for (Parcel parcel : board.getParcels()) {
+        for (Parcel parcel : board.getPlacedparcels()) {
             if (   board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(1,-1,0))) &&
                     board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(1,0,-1)))) {
                 return points;
@@ -55,7 +55,7 @@ public class Mission {
 
     //Verifie si une parcelle est placé aux coordonnées qu'on lui donne additioné à un offset
     boolean isPlaced(Coordinate coord, Coordinate offset,Board board){
-        for(Parcel parcel : board.getParcels()) {
+        for(Parcel parcel : board.getPlacedparcels()) {
             if (parcel.getCoordinates().equals(new Coordinate(coord,offset)))
                 return true;
         }

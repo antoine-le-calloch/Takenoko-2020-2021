@@ -13,11 +13,13 @@ class IntelligentBot extends Bot{
     }
 
     @Override
-    void Botplay(){
+    void botplay(){
         if (!doDrawMission() && resource.getMission().size() > 0)
             drawMission();
         if (resource.getParcel().size() > 0)
-            PutParcel();
+            putParcel();
+        if(resource.getCanal().size()>0 && possibleCoordinatesCanal().size()>0)
+            putCanal();
     }
 
     //Si le bot n'a pas de mission => true
@@ -26,20 +28,20 @@ class IntelligentBot extends Bot{
     }
 
     //Pour chaque mission, cherche les cases disponible pour finir la forme
-    void PutParcel() {
-        Coordinate coord = CoordBestform(inventoryMission.get(0).getGoal());
+    void putParcel() {
+        Coordinate coord = coordBestform(inventoryMission.get(0).getGoal());
         if(coord != null)
             board.putParcel(resource.drawParcel(), coord);
         else
-            placeParcel(possibleCoordinatesParcel());
+            placeRandomparcel(possibleCoordinatesParcel());
     }
 
-    Coordinate CoordBestform(String form){
+    Coordinate coordBestform(String form){
         ArrayList<Coordinate> ParcelToPlaceToDoForm = new ArrayList<>();
         ArrayList<Coordinate> BestParcel = new ArrayList<>();
 
         for (Coordinate coord : allCoordinate()) {
-            ParcelToPlaceToDoForm = ParcelToPlaceToDoForm(coord.getCoordinate(),form);
+            ParcelToPlaceToDoForm = parcelToPlaceToDoForm(coord.getCoordinate(),form);
 
             if(ParcelToPlaceToDoForm.size() == 1 && ParcelToPlaceToDoForm.get(0) != null)
                 return ParcelToPlaceToDoForm.get(0);
@@ -52,7 +54,7 @@ class IntelligentBot extends Bot{
     }
 
     //renvoie une liste de toute les parcelles pas posé pour faire la forme [form] qui a pour parcel haute [x,y,z]
-    ArrayList<Coordinate> ParcelToPlaceToDoForm(int []coord, String form){
+    ArrayList<Coordinate> parcelToPlaceToDoForm(int []coord, String form){
         ArrayList<Coordinate> ParcelToPlaceToDoForm = new ArrayList<>();
         int x = coord[0];
         int y = coord[1];
@@ -77,4 +79,19 @@ class IntelligentBot extends Bot{
         }
         return ParcelToPlaceToDoForm;
     }
+
+    boolean putCanal() {
+        for(Parcel parcel : board.getPlacedparcels()){
+            for(Coordinate[] canal : possibleCoordinatesCanal()){
+                if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){
+                    board.putCanal(resource.drawCanal(),canal[0],canal[1]);
+                    return true;
+                }
+            }
+        }
+        placeRandomcanal(possibleCoordinatesCanal());
+        return false;
+    }
+
+
 }

@@ -67,7 +67,7 @@ class BotTest {
         int [] tabco= randomco.getCoordinate();
         int sumco=tabco[0]+tabco[1]+tabco[2];
         assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)<19);
-        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)>0);
+        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomco)>=0);
         assertEquals(0,sumco);
     }
 
@@ -92,11 +92,7 @@ class BotTest {
         assertEquals(true, board.playableCanal(tabco[0],tabco[1]));
     }
 
-    @Test void placeCanaltest(){
-        board.putParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.placeCanal(bot1.possibleCoordinatesCanal());
-        assertTrue(!board.playableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0)));
-    }
+
 
    
 }
