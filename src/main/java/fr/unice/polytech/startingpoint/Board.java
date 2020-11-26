@@ -74,16 +74,20 @@ class Board {
 
     //Place une parcelle sur le board
     void putParcel(Parcel newParcel,Coordinate newCoord){
-        occupiedPlaces.add(newCoord);
-        placedParcels.add(newParcel);
-        freePlaces.remove(newCoord);
         newParcel.setCoordinates(newCoord);
+        setBoard(newParcel,newCoord);
+    }
+
+    void setBoard(Parcel newParcel,Coordinate newCoord){
+        placedParcels.add(newParcel);
+        occupiedPlaces.add(newCoord);
+        freePlaces.remove(newCoord);
 
         for (Coordinate coord : newCoord.coordinatesAround()) {
             if(coord.isCentral())
                 newParcel.setIrrigated();
 
-            if(isFree(coord))
+            if(playableParcel(coord) || newCoord.isCentral())
                 freePlaces.add(coord);
             allPlaces.add(newCoord);
         }
@@ -100,7 +104,17 @@ class Board {
 
     //Renvoie true si une parcelle est posée aux coordonnées pasées en paramètres
     boolean isFree(Coordinate coordinate){
+
         return !occupiedPlaces.contains(coordinate);
+    }
+
+    boolean playableParcel(Coordinate coord){
+        int nbParcelAround = 0;
+        for(Coordinate coordAround : coord.coordinatesAround()) {
+            if(!isFree(coordAround))
+                nbParcelAround++;
+        }
+        return nbParcelAround>1;
     }
 
     //Renvoie une liste des places libres
