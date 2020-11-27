@@ -25,7 +25,7 @@ class RandomBot extends Bot {
             if (possibleCoordinatesCanal().size() > 0)
                 placeRandomCanal(possibleCoordinatesCanal());
         }
-        else if (resource.getParcel().size() > 0){
+        else if (board.getFreePlaces().size() > 0){
             placeRandomParcel(board.getFreePlaces());// placera aléatoirement une parcelle sur une case libre
         }
         if(resource.getCanal().size()>0 && possibleCoordinatesCanal().size()>0)

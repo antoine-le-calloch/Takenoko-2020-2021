@@ -27,16 +27,16 @@ public class Coordinate {
 
     //addition de coordonnées
     Coordinate(int[] coordinates1,Coordinate coordinates2) {
-        coordinate = new int[3];
+        coordinate = new int[]{0,0,0};
         for (int i = 0; i < 3; i++)
             coordinate[i] = coordinates1[i] + coordinates2.getCoordinate()[i];
     }
 
     //return une array des coordonnées autour de la coordonnées passé en parametre  STATIC
-    List<Coordinate> coordinatesAround() {
-        List<Coordinate> coordinatesAround = new ArrayList<>();
+    ArrayList<Coordinate> coordinatesAround() {
+        ArrayList<Coordinate> coordinatesAround = new ArrayList<>();
         for (int i = 0; i < 6; i++)
-            coordinatesAround.add(new Coordinate(coordinate,offSets().get(0)));
+            coordinatesAround.add(new Coordinate(coordinate,offSets().get(i)));
         return coordinatesAround;
     }
 
