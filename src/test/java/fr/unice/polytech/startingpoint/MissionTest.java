@@ -71,14 +71,14 @@ class MissionTest {
         board.irrigatedParcels.add(new Coordinate(1,-1,0));
         board.irrigatedParcels.add(new Coordinate(0,-1,1));
         board.irrigatedParcels.add(new Coordinate(1,-2,1));
-        assertTrue(mission.checkTriangle(board,"noColor"));
+        assertTrue(mission.checkTriangle(board));
     }
 
     @Test void triangleNotIrrigated(){ //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(mission.checkTriangle(board,"noColor"));
+        assertFalse(mission.checkTriangle(board));
     }
 
     @Test void ligneOnBoard(){ //check Line
@@ -108,7 +108,7 @@ class MissionTest {
         board.placeParcel(parcel4,new Coordinate(0,1,-1));
         board.irrigatedParcels.add(new Coordinate(1,-1,0));
         board.irrigatedParcels.add(new Coordinate(0,1,-1));
-        assertFalse(mission.checkTriangle(board,"noColor"));
+        assertFalse(mission.checkTriangle(board));
     }
 
     @Test void wrongLine(){ //checkLine

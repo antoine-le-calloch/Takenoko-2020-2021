@@ -25,7 +25,7 @@ public class Mission {
     int checkMissionParcel(Board board) {
         switch (goalForm) {
             case "triangle":
-                if (checkTriangle(board,"rouge"))
+                if (checkTriangle(board))
                     return points;
             case "ligne":
                 if (checkLine(board))
@@ -36,7 +36,7 @@ public class Mission {
     }
 
     //retourne vrai si il y a un triangle sur le plateau
-    boolean checkTriangle(Board board, String goalColor) {
+    boolean checkTriangle(Board board) {
         for (Parcel parcel : board.getPlacedParcels()) {
             if (board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(0))) &&
                     board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(1)))) {
