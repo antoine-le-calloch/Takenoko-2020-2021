@@ -2,7 +2,7 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.*;
 
-class Bot {
+abstract class Bot {
     private final Resource resource;
     private final Board board;
     final ArrayList<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
@@ -13,9 +13,7 @@ class Bot {
     }
 
     //Action d'un bot pendant un tour
-    void botPlay(){
-        //vide pour les sous classes
-    }
+    abstract void botPlay();
 
     //pioche une mission
     void drawMission(){
@@ -42,7 +40,7 @@ class Bot {
                     possibleCoordinates.add(new Coordinate[] {parcel1.getCoordinates(),parcel2.getCoordinates()});
             }
         }
-        return new ArrayList<Coordinate[]>(possibleCoordinates);
+        return new ArrayList<>(possibleCoordinates);
     }
 
     void deleteMission(Mission mission) {

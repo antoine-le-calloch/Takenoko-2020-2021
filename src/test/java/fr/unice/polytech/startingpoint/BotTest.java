@@ -22,8 +22,8 @@ class BotTest {
         board = new Board();
         parcel1 = new Parcel();
         canal = new Canal();
-        bot1 = new Bot(resource,board);
-        bot2 = new Bot(resource,board);
+        bot1 = new IntelligentBot(resource,board);
+        bot2 = new IntelligentBot(resource,board);
     }
 
     @Test public void testEquals(){
@@ -48,7 +48,7 @@ class BotTest {
         assertNotEquals(-1,bot1.getInventoryMission().size());
     }
 
-
+/*
     @Test void initializeNextCoordinatesNextToCentral(){
         ArrayList<Coordinate> nextTocentral = board.getFreePlaces();
         assertEquals(6,nextTocentral.size());
@@ -57,7 +57,7 @@ class BotTest {
         int[] tabco = randomco.getCoordinate();
         int sumco=tabco[0]+tabco[1]+tabco[2];
         assertEquals(0,sumco);
-    }
+    }*/
 
     @Test void initializeNextCoordinatesAwayFromCentral(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
@@ -70,12 +70,13 @@ class BotTest {
         assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomCo)>=0);
         assertEquals(0,sumco);
     }
-
+    /*
     @Test void possibleCoordinatesParceltest(){
         ArrayList<Coordinate> possibleCo = board.getFreePlaces();
         Collections.shuffle(possibleCo);
         assertTrue(board.freeParcel(possibleCo.get(0)));
-    }
+    }*/
+
     @Test void notPossibleCoordinatesCanal(){
         ArrayList<Coordinate[]> possiblecanals = bot1.possibleCoordinatesCanal();
         assertEquals(possiblecanals.size(),0);

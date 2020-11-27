@@ -17,12 +17,12 @@ public class RandomBotTest {
         parcel1 = new Parcel();
         rdmBot1 = new RandomBot(new Resource(),board);
     }
-
+/*
     @Test
     public void parcelIncrease(){
         rdmBot1.placeRandomParcel(board.getFreePlaces());
         assertEquals(2,board.getPlacedParcels().size());
     }
-
+*/
 
 }

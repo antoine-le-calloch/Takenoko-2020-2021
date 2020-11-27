@@ -13,12 +13,9 @@ class MissionTest {
     Board board;
     Mission mission;
     Mission mission2;
-    Mission mission3;
-
     @BeforeEach void setUp(){
-        mission=new Mission(1,1,"triangle");
-        mission2=new Mission(2,2,"ligne");
-        mission3=new Mission(3,2,"irrigated");
+        mission=new Mission(2,"triangle");
+        mission2=new Mission(3,"ligne");
         board = new Board();
         parcel1 = new Parcel();
         parcel2 = new Parcel();
@@ -30,42 +27,40 @@ class MissionTest {
         assertNotEquals(mission,null);
         assertNotEquals(mission,mission2);
         assertEquals(mission,mission);
-        assertNotEquals(mission,mission3);
     }
 
-    @Test void triangleMissionDone(){
+    @Test void checkMissionTriangle(){
         board.putParcel(parcel1,new Coordinate(1,-1,0));
         board.putParcel(parcel2,new Coordinate(0,-1,1));
         board.putParcel(parcel3,new Coordinate(1,-2,1));
-        assertEquals(1,mission.checkMissionParcel(board));
+        board.irrigatedParcels.add(new Coordinate(1,-1,0));
+        board.irrigatedParcels.add(new Coordinate(0,-1,1));
+        board.irrigatedParcels.add(new Coordinate(1,-2,1));
+        assertEquals(2,mission.checkMissionParcel(board));
+        assertEquals(2,mission.checkMission(board));
     }
 
+    @Test void checkNoMissionTriangle(){
+        assertEquals(0,mission.checkMissionParcel(board));
+        assertEquals(0,mission.checkMission(board));
+    }
 
-    @Test void ligneMissionDone(){
+    @Test void ligneOnBoard(){
         board.putParcel(parcel4,new Coordinate(0,-1,1));
         board.putParcel(parcel1,new Coordinate(1,0,-1));
         board.putParcel(parcel2,new Coordinate(1,-1,0));
         board.putParcel(parcel3,new Coordinate(1,-2,1));
-        assertEquals(2,mission2.checkMissionParcel(board));
+        board.irrigatedParcels.add(new Coordinate(0,-1,1));
+        board.irrigatedParcels.add(new Coordinate(1,0,-1));
+        board.irrigatedParcels.add(new Coordinate(1,-1,0));
+        board.irrigatedParcels.add(new Coordinate(1,-2,1));
+        assertEquals(3,mission2.checkMissionParcel(board));
+        assertEquals(3,mission2.checkMission(board));
     }
 
-
-    @Test void wrongTriangle(){
-        board.putParcel(parcel1,new Coordinate(1,-1,0));
-        board.putParcel(parcel4,new Coordinate(0,1,-1));
-        assertEquals(0,mission.checkMissionParcel(board));
-    }
-
-    @Test void toShortLine(){
-        board.putParcel(parcel4,new Coordinate(0,-1,1));
+    @Test void checkNoMissionLigne(){
         assertEquals(0,mission2.checkMissionParcel(board));
-    }
-
-    @Test void noMission(){
-        board.putParcel(parcel1,new Coordinate(0,-1,1));
-        System.out.println(board.getPlacedParcels().size());
-        assertEquals(0,mission2.checkMissionParcel(board));
-        assertEquals(0,mission.checkMissionParcel(board));
+        assertEquals(0,mission2.checkMission(board));
     }
 
 }

@@ -2,16 +2,18 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 class Board {
-    private final HashSet<Coordinate> allPlaces = new HashSet<>();
-    private final HashSet<Coordinate> freePlaces = new HashSet<>();
-    private final ArrayList<Coordinate> occupiedPlaces = new ArrayList<>();
+    private final Set<Coordinate> allPlaces = new HashSet<>();
+    private final Set<Coordinate> freePlaces = new HashSet<>();
+    private final List<Coordinate> occupiedPlaces = new ArrayList<>();
 
 
-    private final ArrayList<Parcel> placedParcels = new ArrayList<>();
-    final ArrayList<Coordinate> irrigatedParcels = new ArrayList<>();
-    private final ArrayList<Canal> placedCanals = new ArrayList<>();
+    private final List<Parcel> placedParcels = new ArrayList<>();
+    final List<Coordinate> irrigatedParcels = new ArrayList<>();
+    private final List<Canal> placedCanals = new ArrayList<>();
 
     Board(){
         putParcel(new Parcel(),new Coordinate(0,0,0));
@@ -118,6 +120,27 @@ class Board {
         return nbParcelAround>1;
     }
 
+    boolean checkLine() {
+        for (Parcel parcel : getPlacedParcels()) {
+            if (   irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(0,1,-1))) &&
+                    irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(0,2,-2)))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean checkTriangle() {
+        for (Parcel parcel : getPlacedParcels()) {
+            if (   irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(1,-1,0))) &&
+                    irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(1,0,-1)))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     //Renvoie une liste des places libres
     ArrayList<Coordinate> getFreePlaces(){
         return new ArrayList<>(freePlaces);
@@ -129,17 +152,17 @@ class Board {
     }
 
     //Renvoie une liste des places occupées
-    ArrayList<Coordinate> getOccupiedPlaces(){
+    List<Coordinate> getOccupiedPlaces(){
         return occupiedPlaces;
     }
 
     //Renvoie une liste des parcels placé
-    ArrayList<Parcel> getPlacedParcels(){
+    List<Parcel> getPlacedParcels(){
         return placedParcels;
     }
 
     //Renvoie une liste des canaux placé
-    ArrayList<Canal> getPlacedCanals(){
+    List<Canal> getPlacedCanals(){
         return placedCanals;
     }
 }

@@ -4,6 +4,7 @@ import com.sun.nio.sctp.AbstractNotificationHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Coordinate {
     private final int[] coordinate;
@@ -24,17 +25,32 @@ public class Coordinate {
         }
     }
 
+    //addition de coordonnées
+    Coordinate(int[] coordinates1,Coordinate coordinates2) {
+        coordinate = new int[3];
+        for (int i = 0; i < 3; i++)
+            coordinate[i] = coordinates1[i] + coordinates2.getCoordinate()[i];
+    }
+
     //return une array des coordonnées autour de la coordonnées passé en parametre  STATIC
-    ArrayList<Coordinate> coordinatesAround() {
-        ArrayList<Coordinate> coordinatesAround = new ArrayList<>();
-        coordinatesAround.add(new Coordinate(coordinate[0]+1,coordinate[1],coordinate[2]-1));
-        coordinatesAround.add(new Coordinate(coordinate[0]+1,coordinate[1]-1,coordinate[2]));
-        coordinatesAround.add(new Coordinate(coordinate[0],coordinate[1]-1,coordinate[2]+1));
-        coordinatesAround.add(new Coordinate(coordinate[0]-1,coordinate[1],coordinate[2]+1));
-        coordinatesAround.add(new Coordinate(coordinate[0]-1,coordinate[1]+1,coordinate[2]));
-        coordinatesAround.add(new Coordinate(coordinate[0],coordinate[1]+1,coordinate[2]-1));
+    List<Coordinate> coordinatesAround() {
+        List<Coordinate> coordinatesAround = new ArrayList<>();
+        for (int i = 0; i < 6; i++)
+            coordinatesAround.add(new Coordinate(coordinate,offSets().get(0)));
         return coordinatesAround;
     }
+
+    static List<Coordinate> offSets() {
+        List<Coordinate> offSets = new ArrayList<>();
+        offSets.add(new Coordinate(1, -1, 0)); //0-2h
+        offSets.add(new Coordinate(1, 0, -1)); //2-4h
+        offSets.add(new Coordinate(0, 1, -1)); //4-6h
+        offSets.add(new Coordinate(-1, 1, 0)); //6-8h
+        offSets.add(new Coordinate(-1, 0, 1)); //8-10h
+        offSets.add(new Coordinate(0, -1, 1)); //10-12h
+        return offSets;
+    }
+
 
     static int getNorm(Coordinate coord1,Coordinate coord2){
         int norm = 0;
