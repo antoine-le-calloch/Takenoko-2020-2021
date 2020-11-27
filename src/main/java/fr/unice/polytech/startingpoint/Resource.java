@@ -26,12 +26,13 @@ class Resource {
 
     //Creation de toutes les missions et on les ajoute dans le deck missions
     private void initializedeckMission() {
-        int nbMission = 32;
+        int nbMission = 35;
         for (int i = 0; i < nbMission / 4; i++) {
-            deckMission.add(new Mission(2, "triangle","red"));
-            deckMission.add(new Mission(3, "triangle","blue"));
-            deckMission.add(new Mission(3, "line","red"));
-            deckMission.add(new Mission(4, "line","blue"));
+            deckMission.add(new ParcelMission(2, "triangle","red"));
+            deckMission.add(new ParcelMission(3, "triangle","blue"));
+            deckMission.add(new ParcelMission(3, "line","red"));
+            deckMission.add(new ParcelMission(4, "line","blue"));
+            deckMission.add(new BambooMission(100000));
         }
         Collections.shuffle(deckMission);
     }
