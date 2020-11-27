@@ -52,7 +52,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void isNottAround() {
+    public void isNotAround() {
         List<Coordinate> coordAround;
         coordAround = co4.coordinatesAround();
         assertFalse(coordAround.contains(new Coordinate(1, 0, -1)));

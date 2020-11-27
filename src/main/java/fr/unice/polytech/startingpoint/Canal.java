@@ -17,8 +17,10 @@ class Canal {
         return new Coordinate[]  { coordinates1, coordinates2 };
     }
 
+
+
     boolean sameDoublecoordinates(Coordinate coord1, Coordinate coord2){
-        return (coordinates1.equals(coord1) && coordinates2.equals(coord2)) || (coordinates1.equals(coord2) && coordinates2.equals(coord1) ) ? true : false;
+        return (coordinates1.equals(coord1) && coordinates2.equals(coord2)) || (coordinates1.equals(coord2) && coordinates2.equals(coord1));
     }
 
 

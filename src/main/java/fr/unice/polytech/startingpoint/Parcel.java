@@ -3,8 +3,10 @@ package fr.unice.polytech.startingpoint;
 class Parcel {
     private Coordinate coordinates;
     private boolean irrigated=false;
+    private final String color;
 
-    Parcel(){
+    Parcel(String color){
+        this.color = color;
     }
 
     void setCoordinates(Coordinate coord) {
@@ -22,4 +24,6 @@ class Parcel {
     Coordinate getCoordinates(){
         return coordinates;
     }
+
+    String getColor() { return color;}
 }

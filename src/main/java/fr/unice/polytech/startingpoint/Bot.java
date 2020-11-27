@@ -20,10 +20,11 @@ abstract class Bot {
         inventoryMission.add(resource.drawMission());
     }
 
+
     //place une parcelle dans une coordonnée de la liste donnée
     void placeRandomParcel(ArrayList<Coordinate> listCoord){
         Collections.shuffle(listCoord);
-        board.putParcel(resource.drawParcel(), listCoord.get(0));
+        board.placeParcel(resource.drawParcel(), listCoord.get(0));
     }
 
     //place un canal sur une coordonnée contenue dans une liste donnée

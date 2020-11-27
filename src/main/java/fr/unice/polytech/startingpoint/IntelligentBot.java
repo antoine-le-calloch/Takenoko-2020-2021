@@ -31,7 +31,7 @@ class IntelligentBot extends Bot{
     void putParcel() {
         Coordinate coord = BestCoordForForm(inventoryMission.get(0).getGoal());
         if(coord != null)
-            board.putParcel(resource.drawParcel(), coord);
+            board.placeParcel(resource.drawParcel(), coord);
         else
             placeRandomParcel(board.getFreePlaces());
     }

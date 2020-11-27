@@ -4,11 +4,13 @@ import java.lang.String;
 
 public class Mission {
     private final int points;
-    private final String goal;
+    private final String goalForm;
+    private final String goalColor;
 
-    Mission(int points, String goal) {
+    Mission(int points, String goalForm, String goalColor) {
         this.points = points;
-        this.goal = goal;
+        this.goalForm = goalForm;
+        this.goalColor = goalColor;
     }
 
     //Verifie si une mission est faite
@@ -16,20 +18,44 @@ public class Mission {
         return checkMissionParcel(board);
     }
 
-    String getGoal(){ return goal;}
+    String getGoal(){ return goalForm;}
 
 
 
     int checkMissionParcel(Board board) {
-        switch (goal) {
+        switch (goalForm) {
             case "triangle":
-                if (board.checkTriangle())
+                if (checkTriangle(board,"rouge"))
                     return points;
             case "ligne":
-                if (board.checkLine())
+                if (checkLine(board))
                     return points;
             default:
                 return 0;
         }
     }
+
+    //retourne vrai si il y a un triangle sur le plateau
+    boolean checkTriangle(Board board, String goalColor) {
+        for (Parcel parcel : board.getPlacedParcels()) {
+            if (board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(0))) &&
+                    board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(1)))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //retourne faux si il y a un triangle sur le plateau
+    boolean checkLine(Board board) {
+        for (Parcel parcel : board.getPlacedParcels()) {
+            if (board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(2))) &&
+                    board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(5)))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

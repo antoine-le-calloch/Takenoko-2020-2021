@@ -20,7 +20,7 @@ class BotTest {
     @BeforeEach public void setUp(){
         Resource resource = new Resource();
         board = new Board();
-        parcel1 = new Parcel();
+        parcel1 = new Parcel("noColor");
         canal = new Canal();
         bot1 = new IntelligentBot(resource,board);
         bot2 = new IntelligentBot(resource,board);
@@ -60,7 +60,7 @@ class BotTest {
     }
 
     @Test void initializeNextCoordinatesAwayFromCentral(){
-        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
         ArrayList<Coordinate> awayFromCentral = board.getAllPlaces();
         Collections.shuffle(awayFromCentral);
         Coordinate randomCo=awayFromCentral.get(0);
@@ -80,13 +80,13 @@ class BotTest {
     @Test void notPossibleCoordinatesCanal(){
         ArrayList<Coordinate[]> possiblecanals = bot1.possibleCoordinatesCanal();
         assertEquals(possiblecanals.size(),0);
-        board.putParcel(parcel1,new Coordinate(2,-2,0));
+        board.placeParcel(parcel1,new Coordinate(2,-2,0));
         board.putCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));
         ArrayList<Coordinate[]>possiblecanals2=bot1.possibleCoordinatesCanal();
         assertEquals(possiblecanals2.size(),0);
     }
     @Test void possibleCoordinatesCanal(){
-        board.putParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
         ArrayList<Coordinate[]>possiblecanals=bot1.possibleCoordinatesCanal();
         Collections.shuffle(possiblecanals);
         Coordinate[] tabco =possiblecanals.get(0);

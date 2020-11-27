@@ -16,7 +16,7 @@ class Board {
     private final List<Canal> placedCanals = new ArrayList<>();
 
     Board(){
-        putParcel(new Parcel(),new Coordinate(0,0,0));
+        placeParcel(new Parcel("noColor"),new Coordinate(0,0,0));
     }
 
     //place un canal et ajoute les parcel irrigé dans le set
@@ -75,7 +75,7 @@ class Board {
     }
 
     //Place une parcelle sur le board
-    void putParcel(Parcel newParcel,Coordinate newCoord){
+    void placeParcel(Parcel newParcel, Coordinate newCoord){
         newParcel.setCoordinates(newCoord);
         setBoard(newParcel,newCoord);
     }
@@ -120,27 +120,6 @@ class Board {
         return nbParcelAround>1;
     }
 
-    //retourne faux si il y a un triangle sur le plateau
-    boolean checkLine() {
-        for (Parcel parcel : getPlacedParcels()) {
-            if (irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(2))) &&
-                    irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(5)))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //retourne vrai si il y a un triangle sur le plateau
-    boolean checkTriangle() {
-        for (Parcel parcel : getPlacedParcels()) {
-            if (irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(0))) &&
-                    irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(1)))) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 
     //Renvoie une liste des places libres
