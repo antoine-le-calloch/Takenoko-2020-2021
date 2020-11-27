@@ -80,6 +80,15 @@ class Board {
         return nbParcelAround>1;
     }
 
+    //Obtient une parcelle par des coordonnées données
+    Parcel getParcelByCo(Coordinate coordinate){
+        for (Parcel placedParcel : placedParcels.values()) {
+            if(placedParcel.getCoordinates().equals(coordinate))
+                return placedParcel;
+        }
+        return null;
+    }
+
     //Renvoie une liste des places libres
     List<Coordinate> getFreePlaces(){
         return new ArrayList<>(freePlaces);

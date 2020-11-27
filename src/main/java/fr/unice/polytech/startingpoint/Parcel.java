@@ -9,9 +9,8 @@ class Parcel {
         this.color = color;
     }
 
-    Parcel setCoordinates(Coordinate coordinate) {
+    void setCoordinates(Coordinate coordinate) {
         coordinates = coordinate;
-        return this;
     }
 
     boolean setIrrigated() {

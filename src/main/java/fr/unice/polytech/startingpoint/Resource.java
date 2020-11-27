@@ -17,10 +17,10 @@ class Resource {
     //Creation de toutes les parcelles et on les ajoute dans le deck parcelles
     private void initializedeckParcel(){
         int nbParcel = 26;
-        deckParcel.add(new Parcel("rouge"));
+        deckParcel.add(new Parcel("red"));
         for (int i = 0; i < nbParcel / 2; i++){
-            deckParcel.add(new Parcel("rouge"));
-            deckParcel.add(new Parcel("bleu"));
+            deckParcel.add(new Parcel("red"));
+            deckParcel.add(new Parcel("blue"));
         }
     }
 
@@ -28,10 +28,10 @@ class Resource {
     private void initializedeckMission() {
         int nbMission = 32;
         for (int i = 0; i < nbMission / 4; i++) {
-            deckMission.add(new Mission(2, "triangle","rouge"));
-            deckMission.add(new Mission(3, "triangle","bleu"));
-            deckMission.add(new Mission(3, "line","rouge"));
-            deckMission.add(new Mission(4, "line","bleu"));
+            deckMission.add(new Mission(2, "triangle","red"));
+            deckMission.add(new Mission(3, "triangle","blue"));
+            deckMission.add(new Mission(3, "line","red"));
+            deckMission.add(new Mission(4, "line","blue"));
         }
         Collections.shuffle(deckMission);
     }
