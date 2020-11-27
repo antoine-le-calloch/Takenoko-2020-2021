@@ -28,17 +28,17 @@ public class BoardTest {
         canal = new Canal();
         canal2 = new Canal();
     }
-/*
+
     @Test
     public void freePlaceInitialStates(){
         ArrayList<Coordinate> newPlaces = board.getFreePlaces();
         assertEquals(new Coordinate(1,-1,0),newPlaces.get(0));
         assertEquals(new Coordinate(0,-1,1),newPlaces.get(1));
-        assertEquals(new Coordinate(-1,1,0),newPlaces.get(2));
-        assertEquals(new Coordinate(0,1,-1),newPlaces.get(3));
+        assertEquals(new Coordinate(0,1,-1),newPlaces.get(2));
+        assertEquals(new Coordinate(-1,1,0),newPlaces.get(3));
         assertEquals(new Coordinate(1,0,-1),newPlaces.get(4));
         assertEquals(new Coordinate(-1,0,1),newPlaces.get(5));
-    }*/
+    }
 
 
     @Test
@@ -59,11 +59,11 @@ public class BoardTest {
         assertEquals(parcel1,parcel2);
         assertNull(board.getParcelByCo(new Coordinate(1,-1,0)));
     }
-/*
+
     @Test void irrigationFromCentral(){
         board.putParcel(parcel1,new Coordinate(0,-1,1));
         assertTrue(parcel1.getIrrigated());
-    }*/
+    }
 
     @Test void noIrrigationFromCentral(){
         board.putParcel(parcel1,new Coordinate(0,-1,1));

@@ -7,16 +7,14 @@ class Parcel {
     Parcel(){
     }
 
-    Parcel(Coordinate coord) {
-        coordinates = coord;
-    }
-
     void setCoordinates(Coordinate coord) {
         coordinates = coord;
     }
+
     void setIrrigated() {
         irrigated=true;
     }
+
     boolean getIrrigated(){
         return irrigated;
     }

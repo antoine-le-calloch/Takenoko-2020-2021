@@ -35,6 +35,13 @@ class Resource {
         Collections.shuffle(deckMission);
     }
 
+    private void initializedeckCanal(){
+        int nbCanal = 27;
+        for (int i = 0; i < nbCanal; i++){
+            deckCanal.add(new Canal());
+        }
+    }
+
     //permet de piocher une parcelle du deck, la parcelle est enlevé du deck
     Parcel drawParcel() {
         Parcel parcel = deckParcel.get(0);
@@ -49,13 +56,6 @@ class Resource {
         return mission;
     }
 
-
-    private void initializedeckCanal(){
-        int nbCanal = 27;
-        for (int i = 0; i < nbCanal; i++){
-            deckCanal.add(new Canal());
-        }
-    }
 
     Canal drawCanal(){
         Canal canal = deckCanal.get(0);

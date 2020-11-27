@@ -120,20 +120,22 @@ class Board {
         return nbParcelAround>1;
     }
 
+    //retourne faux si il y a un triangle sur le plateau
     boolean checkLine() {
         for (Parcel parcel : getPlacedParcels()) {
-            if (   irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(0,1,-1))) &&
-                    irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(0,2,-2)))) {
+            if (irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(2))) &&
+                    irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(5)))) {
                 return true;
             }
         }
         return false;
     }
 
+    //retourne vrai si il y a un triangle sur le plateau
     boolean checkTriangle() {
         for (Parcel parcel : getPlacedParcels()) {
-            if (   irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(1,-1,0))) &&
-                    irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),new Coordinate(1,0,-1)))) {
+            if (irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(0))) &&
+                    irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(1)))) {
                 return true;
             }
         }

@@ -32,21 +32,16 @@ class Game {
 
     //Permet de verifier si un bot à fait suffisament de mission pour que la partie s'arrête
     int isContinue(){
-
         if(turnLeft == nbBot) {
             for (int mission : mission_done) {
-                if (mission >= 2) {
+                if (mission >= 2)
                     turnLeft--;
-                }
             }
             return 1;
         }
         else
             turnLeft--;
-
-
         return turnLeft;
-
     }
 
     boolean isoutofsources(){

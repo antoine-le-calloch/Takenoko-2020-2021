@@ -12,9 +12,33 @@ public class ResourceTest {
         resource = new Resource();
     }
 
+    @Test public void goodInitializeParcel(){
+        assertEquals(27, resource.getParcel().size());
+    }
+
+    @Test public void goodInitializeCanal(){
+        assertEquals(27, resource.getCanal().size());
+    }
+
+    @Test public void goodInitializeMission(){
+        assertEquals(32, resource.getMission().size());
+    }
+
     @Test
     public void parcelDecrease(){
         resource.drawParcel();
         assertEquals(26,resource.getParcel().size());
+    }
+
+    @Test
+    public void canalDecrease(){
+        resource.drawCanal();
+        assertEquals(26,resource.getCanal().size());
+    }
+
+    @Test
+    public void missionDecrease(){
+        resource.drawMission();
+        assertEquals(31,resource.getMission().size());
     }
 }

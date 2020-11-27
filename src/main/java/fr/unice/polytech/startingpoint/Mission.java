@@ -32,8 +32,4 @@ public class Mission {
                 return 0;
         }
     }
-
-
-
-
 }
