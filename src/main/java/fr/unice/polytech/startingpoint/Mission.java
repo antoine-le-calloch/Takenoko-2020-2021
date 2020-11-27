@@ -25,10 +25,10 @@ public class Mission {
     int checkMissionParcel(Board board) {
         switch (goalForm) {
             case "triangle":
-                if (checkTriangleIrrigateWithColor(board))
+                if (checkFormIrrigateWithColor(board,0,1))
                     return points;
             case "ligne":
-                if (checkLineIrrigateWithColor(board))
+                if (checkFormIrrigateWithColor(board,2,5))
                     return points;
             default:
                 return 0;
@@ -36,23 +36,10 @@ public class Mission {
     }
 
     //retourne vrai si il y a un triangle sur le plateau
-    boolean checkTriangleIrrigateWithColor(Board board) {
+    boolean checkFormIrrigateWithColor(Board board, int offset1, int offset2) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
-            Coordinate coord1 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(0));
-            Coordinate coord2 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(1));
-            if (board.getIrrigatedParcels().contains(coord1) && board.getIrrigatedParcels().contains(coord2)) {
-                if (parcel.getColor().equals(goalColor) && board.getParcelByCo(coord1).getColor().equals(goalColor) && board.getParcelByCo(coord2).getColor().equals(goalColor))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    //retourne faux si il y a un triangle sur le plateau
-    boolean checkLineIrrigateWithColor(Board board) {
-        for (Parcel parcel : board.getPlacedParcels().values()) {
-            Coordinate coord1 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(2));
-            Coordinate coord2 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(5));
+            Coordinate coord1 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset1));
+            Coordinate coord2 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset2));
             if (board.getIrrigatedParcels().contains(coord1) && board.getIrrigatedParcels().contains(coord2)) {
                 if (parcel.getColor().equals(goalColor) && board.getParcelByCo(coord1).getColor().equals(goalColor) && board.getParcelByCo(coord2).getColor().equals(goalColor))
                     return true;

@@ -10,10 +10,6 @@ class MissionTest {
     Parcel parcel2;
     Parcel parcel3;
     Parcel parcel4;
-    Parcel parcel5;
-    Parcel parcel6;
-    Parcel parcel7;
-    Parcel parcel8;
     Board board;
     Mission mission1;
     Mission mission2;
@@ -30,10 +26,6 @@ class MissionTest {
         parcel2 = new Parcel("red");
         parcel3 = new Parcel("red");
         parcel4 = new Parcel("red");
-        parcel5 = new Parcel("blue");
-        parcel6 = new Parcel("blue");
-        parcel7 = new Parcel("blue");
-        parcel8 = new Parcel("blue");
     }
 
     @Test void newMission(){
@@ -86,7 +78,7 @@ class MissionTest {
         board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
         board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
         board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
-        assertTrue(mission1.checkTriangleIrrigateWithColor(board));
+        assertTrue(mission1.checkFormIrrigateWithColor(board,0,1));
     }
 
 
@@ -99,7 +91,7 @@ class MissionTest {
         board.getIrrigatedParcels().add(new Coordinate(1,0,-1));
         board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
         board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
-        assertTrue(mission1.checkLineIrrigateWithColor(board));
+        assertTrue(mission1.checkFormIrrigateWithColor(board,2,5));
     }
 
 
@@ -110,7 +102,7 @@ class MissionTest {
         board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
         board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
         board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
-        assertTrue(mission3.checkTriangleIrrigateWithColor(board));
+        assertFalse(mission3.checkFormIrrigateWithColor(board,0,1));
     }
 
 
@@ -123,14 +115,14 @@ class MissionTest {
         board.getIrrigatedParcels().add(new Coordinate(1,0,-1));
         board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
         board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
-        assertTrue(mission3.checkLineIrrigateWithColor(board));
+        assertFalse(mission3.checkFormIrrigateWithColor(board,2,5));
     }
 
     @Test void triangleNotIrrigated(){ //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(mission1.checkTriangleIrrigateWithColor(board));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,0,1));
     }
 
 
@@ -139,7 +131,7 @@ class MissionTest {
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(mission1.checkLineIrrigateWithColor(board));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,2,5));
     }
 
 
@@ -148,7 +140,7 @@ class MissionTest {
         board.placeParcel(parcel4,new Coordinate(0,1,-1));
         board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
         board.getIrrigatedParcels().add(new Coordinate(0,1,-1));
-        assertFalse(mission1.checkTriangleIrrigateWithColor(board));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,0,1));
     }
 
     @Test void wrongLine(){ //checkLine
@@ -156,7 +148,7 @@ class MissionTest {
         board.placeParcel(parcel4,new Coordinate(0,-2,2));
         board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
         board.getIrrigatedParcels().add(new Coordinate(0,-2,2));
-        assertFalse(mission1.checkLineIrrigateWithColor(board));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,2,5));
     }
 
 }
