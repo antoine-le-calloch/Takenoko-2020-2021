@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +32,7 @@ public class BoardTest {
 
     @Test
     public void freePlaceInitialStates(){
-        ArrayList<Coordinate> newPlaces = board.getFreePlaces();
+        List<Coordinate> newPlaces = board.getFreePlaces();
         assertEquals(new Coordinate(1,-1,0),newPlaces.get(0));
         assertEquals(new Coordinate(0,-1,1),newPlaces.get(1));
         assertEquals(new Coordinate(0,1,-1),newPlaces.get(2));
@@ -55,9 +56,9 @@ public class BoardTest {
 
     @Test void getParcelbyCotesting(){
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
-        parcel2=board.getParcelByCo(new Coordinate(0,-1,1));
+        parcel2 = board.getPlacedParcels().get(new Coordinate(0,-1,1));
         assertEquals(parcel1,parcel2);
-        assertNull(board.getParcelByCo(new Coordinate(1,-1,0)));
+        assertNull(board.getPlacedParcels().get(new Coordinate(1,-1,0)));
     }
 
     @Test void irrigationFromCentral(){

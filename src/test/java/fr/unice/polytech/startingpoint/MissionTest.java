@@ -33,9 +33,9 @@ class MissionTest {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.irrigatedParcels.add(new Coordinate(1,-1,0));
-        board.irrigatedParcels.add(new Coordinate(0,-1,1));
-        board.irrigatedParcels.add(new Coordinate(1,-2,1));
+        board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
+        board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
+        board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
         assertEquals(2,mission.checkMissionParcel(board));
         assertEquals(2,mission.checkMission(board));
     }
@@ -50,10 +50,10 @@ class MissionTest {
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.irrigatedParcels.add(new Coordinate(0,-1,1));
-        board.irrigatedParcels.add(new Coordinate(1,0,-1));
-        board.irrigatedParcels.add(new Coordinate(1,-1,0));
-        board.irrigatedParcels.add(new Coordinate(1,-2,1));
+        board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
+        board.getIrrigatedParcels().add(new Coordinate(1,0,-1));
+        board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
+        board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
         assertEquals(3,mission2.checkMissionParcel(board));
         assertEquals(3,mission2.checkMission(board));
     }
@@ -68,9 +68,9 @@ class MissionTest {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.irrigatedParcels.add(new Coordinate(1,-1,0));
-        board.irrigatedParcels.add(new Coordinate(0,-1,1));
-        board.irrigatedParcels.add(new Coordinate(1,-2,1));
+        board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
+        board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
+        board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
         assertTrue(mission.checkTriangle(board));
     }
 
@@ -86,10 +86,10 @@ class MissionTest {
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.irrigatedParcels.add(new Coordinate(0,-1,1));
-        board.irrigatedParcels.add(new Coordinate(1,0,-1));
-        board.irrigatedParcels.add(new Coordinate(1,-1,0));
-        board.irrigatedParcels.add(new Coordinate(1,-2,1));
+        board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
+        board.getIrrigatedParcels().add(new Coordinate(1,0,-1));
+        board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
+        board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
         assertTrue(mission.checkLine(board));
     }
 
@@ -106,16 +106,16 @@ class MissionTest {
     @Test void wrongTriangle(){ //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel4,new Coordinate(0,1,-1));
-        board.irrigatedParcels.add(new Coordinate(1,-1,0));
-        board.irrigatedParcels.add(new Coordinate(0,1,-1));
+        board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
+        board.getIrrigatedParcels().add(new Coordinate(0,1,-1));
         assertFalse(mission.checkTriangle(board));
     }
 
     @Test void wrongLine(){ //checkLine
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
         board.placeParcel(parcel4,new Coordinate(0,-2,2));
-        board.irrigatedParcels.add(new Coordinate(0,-1,1));
-        board.irrigatedParcels.add(new Coordinate(0,-2,2));
+        board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
+        board.getIrrigatedParcels().add(new Coordinate(0,-2,2));
         assertFalse(mission.checkLine(board));
     }
 

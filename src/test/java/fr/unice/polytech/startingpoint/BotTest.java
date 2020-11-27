@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,7 +51,7 @@ class BotTest {
 
 
     @Test void initializeNextCoordinatesNextToCentral(){
-        ArrayList<Coordinate> nextTocentral = board.getFreePlaces();
+        List<Coordinate> nextTocentral = board.getFreePlaces();
         assertEquals(6,nextTocentral.size());
         Coordinate randomco=nextTocentral.get(0);
         assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
@@ -61,7 +62,7 @@ class BotTest {
 
     @Test void initializeNextCoordinatesAwayFromCentral(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        ArrayList<Coordinate> awayFromCentral = board.getAllPlaces();
+        List<Coordinate> awayFromCentral = board.getAllPlaces();
         Collections.shuffle(awayFromCentral);
         Coordinate randomCo=awayFromCentral.get(0);
         int [] tabco= randomCo.getCoordinate();
@@ -72,7 +73,7 @@ class BotTest {
     }
 
     @Test void possibleCoordinatesParceltest(){
-        ArrayList<Coordinate> possibleCo = board.getFreePlaces();
+        List<Coordinate> possibleCo = board.getFreePlaces();
         Collections.shuffle(possibleCo);
         assertTrue(board.freeParcel(possibleCo.get(0)));
     }

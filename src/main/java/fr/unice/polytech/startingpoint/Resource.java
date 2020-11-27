@@ -8,8 +8,6 @@ class Resource {
     private final ArrayList<Parcel> deckParcel = new ArrayList<>();
     private final ArrayList<Canal> deckCanal=new ArrayList<>();
 
-
-
     Resource(){
         initializedeckParcel();
         initializedeckMission();
@@ -18,7 +16,8 @@ class Resource {
 
     //Creation de toutes les parcelles et on les ajoute dans le deck parcelles
     private void initializedeckParcel(){
-        int nbParcel = 27;
+        int nbParcel = 26;
+        deckParcel.add(new Parcel("rouge"));
         for (int i = 0; i < nbParcel / 2; i++){
             deckParcel.add(new Parcel("rouge"));
             deckParcel.add(new Parcel("bleu"));
@@ -68,9 +67,11 @@ class Resource {
     ArrayList<Parcel> getParcel(){
         return deckParcel;
     }
+
     ArrayList<Canal> getCanal(){
         return deckCanal;
     }
+
     ArrayList<Mission> getMission(){
         return deckMission;
     }

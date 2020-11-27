@@ -1,18 +1,11 @@
 package fr.unice.polytech.startingpoint;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 class Board {
-    private final Set<Coordinate> allPlaces = new HashSet<>();
     private final Set<Coordinate> freePlaces = new HashSet<>();
-    private final List<Coordinate> occupiedPlaces = new ArrayList<>();
-
-
-    private final List<Parcel> placedParcels = new ArrayList<>();
-    final List<Coordinate> irrigatedParcels = new ArrayList<>();
+    private final Map<Coordinate,Parcel> placedParcels = new HashMap<>();
+    private final List<Coordinate> irrigatedParcels = new ArrayList<>();
     private final List<Canal> placedCanals = new ArrayList<>();
 
     Board(){
@@ -20,20 +13,14 @@ class Board {
     }
 
     //place un canal et ajoute les parcel irrigé dans le set
-    boolean putCanal(Canal canal, Coordinate coord, Coordinate coord2){
-
-        if(playableCanal(coord,coord2)){
-            canal.setCoordinates(coord,coord2);
-            Parcel parcel= getParcelByCo(coord);
-            Parcel parcel2= getParcelByCo(coord2);
-            placedCanals.add(canal);
-            if(!parcel.getIrrigated()) {
-                parcel.setIrrigated();
-                irrigatedParcels.add(parcel.getCoordinates());
+    boolean putCanal(Canal canal, Coordinate coord1, Coordinate coord2){
+        if(playableCanal(coord1,coord2)){
+            placedCanals.add(canal.setCoordinates(coord1,coord2));
+            if(!placedParcels.get(coord1).setIrrigated()) {
+                irrigatedParcels.add(coord1);
             }
-            if(!parcel2.getIrrigated()) {
-                parcel2.setIrrigated();
-                irrigatedParcels.add(parcel.getCoordinates());
+            if(!placedParcels.get(coord2).setIrrigated()) {
+                irrigatedParcels.add(coord2);
             }
             return true;
         }
@@ -41,11 +28,10 @@ class Board {
      }
 
     boolean playableCanal(Coordinate toplacecoord1, Coordinate toplacecoord2){
-
-        if(!isParcel(toplacecoord1) || !isParcel(toplacecoord2))
+        if(!isPlaced(toplacecoord1) || !isPlaced(toplacecoord2))
             return false;
 
-        if( placedCanals.size()==0 && (!isNextoCentral(toplacecoord1) || (!isNextoCentral(toplacecoord2)) ))
+        if( placedCanals.size()==0 && (!Coordinate.isNextoCentral(toplacecoord1) || (!Coordinate.isNextoCentral(toplacecoord2)) ))
             return false;
 
         if (toplacecoord1.equals(new Coordinate(0,0,0)) || toplacecoord2.equals(new Coordinate(0,0,0)))
@@ -53,66 +39,40 @@ class Board {
 
         for (Canal placedCanal : placedCanals) {
 
-            Coordinate[] coordscanalplaced=placedCanal.getCoordinatesCanal();
-            if( placedCanal.sameDoublecoordinates(toplacecoord1,toplacecoord2)){
+            Coordinate[] coordscanalplaced = placedCanal.getCoordinatesCanal();
+            if( placedCanal.sameDoubleCoordinates(toplacecoord1,toplacecoord2)){
                 return false;
             }
-            if(  ((coordscanalplaced[0].equals(toplacecoord1)) && (!coNextToEachother(toplacecoord2,coordscanalplaced[1]))) || ((coordscanalplaced[0].equals(toplacecoord2)) && (!coNextToEachother(toplacecoord1,coordscanalplaced[1]))) ) {
+            if(  ((coordscanalplaced[0].equals(toplacecoord1)) && (!Coordinate.coNextToEachother(toplacecoord2,coordscanalplaced[1]))) || ((coordscanalplaced[0].equals(toplacecoord2)) && (!Coordinate.coNextToEachother(toplacecoord1,coordscanalplaced[1]))) ) {
                 return false;
             }
         }
         return true;
     }
 
-    // renvoie true si une coordonée est à côté d'une autre
-    boolean coNextToEachother(Coordinate coord1,Coordinate coord2){
-        return (Coordinate.getNorm(coord1, coord2)) == 2;
-    }
-
-    // renvoie true si une coordonée est à côté du milieu
-    boolean isNextoCentral(Coordinate coord){
-        return (Coordinate.getNorm(coord,new Coordinate(0,0,0))) == 2;
-    }
-
     //Place une parcelle sur le board
-    void placeParcel(Parcel newParcel, Coordinate newCoord){
-        newParcel.setCoordinates(newCoord);
-        setBoard(newParcel,newCoord);
-    }
+    void placeParcel(Parcel newParcel, Coordinate newCoordinate){
+        newParcel.setCoordinates(newCoordinate);
+        placedParcels.put(newCoordinate,newParcel);
+        freePlaces.remove(newCoordinate);
 
-    void setBoard(Parcel newParcel,Coordinate newCoord){
-        placedParcels.add(newParcel);
-        occupiedPlaces.add(newCoord);
-        freePlaces.remove(newCoord);
-
-        for (Coordinate coord : newCoord.coordinatesAround()) {
-            if(coord.isCentral())
+        for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
+            if(coordinate.isCentral())
                 newParcel.setIrrigated();
-
-            if(freeParcel(coord))
-                freePlaces.add(coord);
-            allPlaces.add(newCoord);
+            if(freeParcel(coordinate))
+                freePlaces.add(coordinate);
         }
     }
 
-    //Obtient une parcelle par des coordonnées données
-    Parcel getParcelByCo(Coordinate coordinate){
-        for (Parcel placedParcel : placedParcels) {
-            if(placedParcel.getCoordinates().equals(coordinate))
-                return placedParcel;
-        }
-        return null;
-    }
-
-    boolean isParcel(Coordinate coord){
-        return occupiedPlaces.contains(coord);
+    boolean isPlaced(Coordinate coordinate){
+        return placedParcels.keySet().contains(coordinate);
     }
 
     //Renvoie true si une parcelle est libre aux coordonnées pasées en paramètres
     boolean freeParcel(Coordinate coord){
         int nbParcelAround = 0;
         for(Coordinate coordAround : coord.coordinatesAround()) {
-            if(occupiedPlaces.contains(coordAround))
+            if(isPlaced(coordAround))
                 nbParcelAround++;
             if(coordAround.isCentral())
                 return true;
@@ -120,26 +80,24 @@ class Board {
         return nbParcelAround>1;
     }
 
-
-
     //Renvoie une liste des places libres
-    ArrayList<Coordinate> getFreePlaces(){
+    List<Coordinate> getFreePlaces(){
         return new ArrayList<>(freePlaces);
     }
 
-    //Renvoie une liste de toutes les places existantes
-    ArrayList<Coordinate> getAllPlaces(){
-        return new ArrayList<>(allPlaces);
-    }
-
-    //Renvoie une liste des places occupées
-    List<Coordinate> getOccupiedPlaces(){
-        return occupiedPlaces;
+    List<Coordinate> getAllPlaces() {
+        List<Coordinate> allPlaces = new ArrayList<>(placedParcels.keySet());
+        allPlaces.addAll(getFreePlaces());
+        return allPlaces;
     }
 
     //Renvoie une liste des parcels placé
-    List<Parcel> getPlacedParcels(){
+    Map<Coordinate,Parcel> getPlacedParcels(){
         return placedParcels;
+    }
+
+    List<Coordinate> getIrrigatedParcels() {
+        return irrigatedParcels;
     }
 
     //Renvoie une liste des canaux placé

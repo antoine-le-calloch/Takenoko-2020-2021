@@ -22,7 +22,7 @@ abstract class Bot {
 
 
     //place une parcelle dans une coordonnée de la liste donnée
-    void placeRandomParcel(ArrayList<Coordinate> listCoord){
+    void placeRandomParcel(List<Coordinate> listCoord){
         Collections.shuffle(listCoord);
         board.placeParcel(resource.drawParcel(), listCoord.get(0));
     }
@@ -35,8 +35,8 @@ abstract class Bot {
 
     ArrayList<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
-        for(Parcel parcel1 : board.getPlacedParcels()){
-            for(Parcel parcel2 : board.getPlacedParcels()){
+        for(Parcel parcel1 : board.getPlacedParcels().values()){
+            for(Parcel parcel2 : board.getPlacedParcels().values()){
                 if (board.playableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
                     possibleCoordinates.add(new Coordinate[] {parcel1.getCoordinates(),parcel2.getCoordinates()});
             }

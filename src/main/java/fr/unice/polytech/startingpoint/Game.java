@@ -52,8 +52,6 @@ class Game {
         return false;
     }
 
-
-
     /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
     il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
     void missionDone(int idBot) {

@@ -66,13 +66,13 @@ class IntelligentBot extends Bot{
 
         for (int i = 0; i < 3; i++) {
             if(form.equals("line")) {
-                if (!board.isParcel(new Coordinate(x, y, z)))
+                if (!board.isPlaced(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
                 y--;
                 z++;
             }
             else if(form.equals("triangle")) {
-                if(!board.isParcel(new Coordinate(x, y, z)))
+                if(!board.isPlaced(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
                 x = x - 1 + (2 * i); //x-- pour la parcel 2, x++ pour la parcel 3
                 y = y - i; //y pour la parcel 2, y-- pour la parcel 3
@@ -83,7 +83,7 @@ class IntelligentBot extends Bot{
     }
 
     boolean putCanal() {
-        for(Parcel parcel : board.getPlacedParcels()){
+        for(Parcel parcel : board.getPlacedParcels().values()){
             for(Coordinate[] canal : possibleCoordinatesCanal()){
                 if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){
                     board.putCanal(resource.drawCanal(),canal[0],canal[1]);

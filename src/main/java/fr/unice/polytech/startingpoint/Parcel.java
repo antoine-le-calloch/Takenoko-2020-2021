@@ -2,19 +2,23 @@ package fr.unice.polytech.startingpoint;
 
 class Parcel {
     private Coordinate coordinates;
-    private boolean irrigated=false;
+    private boolean irrigated = false;
     private final String color;
 
     Parcel(String color){
         this.color = color;
     }
 
-    void setCoordinates(Coordinate coord) {
-        coordinates = coord;
+    Parcel setCoordinates(Coordinate coordinate) {
+        coordinates = coordinate;
+        return this;
     }
 
-    void setIrrigated() {
-        irrigated=true;
+    boolean setIrrigated() {
+        if (!irrigated){
+            return irrigated = true;
+        }
+        return false;
     }
 
     boolean getIrrigated(){
@@ -25,5 +29,7 @@ class Parcel {
         return coordinates;
     }
 
-    String getColor() { return color;}
+    String getColor() {
+        return color;
+    }
 }

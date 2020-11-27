@@ -31,7 +31,4 @@ class RandomBot extends Bot {
         if(resource.getCanal().size()>0 && possibleCoordinatesCanal().size()>0)
             placeRandomCanal(possibleCoordinatesCanal());
     }
-
-
-
 }

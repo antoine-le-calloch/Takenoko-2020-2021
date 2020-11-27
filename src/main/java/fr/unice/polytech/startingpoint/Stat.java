@@ -53,11 +53,11 @@ class Stat {
         return nbWinNbEquality[joueur]/(NB_GAME/100.0);
     }
 
-    double getequalityRate(int joueur){
+    double getEqualityRate(int joueur){
         return nbWinNbEquality[joueur+NB_PLAYER]/(NB_GAME/100.0);
     }
 
-    double getpointsAverage(int joueur){
+    double getPointsAverage(int joueur){
         return (points[joueur]*1.0)/NB_GAME;
     }
 
@@ -65,7 +65,7 @@ class Stat {
     public String toString(){
         String displayStat = "";
         for (int i = 0; i < NB_PLAYER; i++) {
-            displayStat += "Joueur "+(i+1)+" : "+getWinRate(i)+"% win rate and "+getequalityRate(i)+"% equality rate with a "+getpointsAverage(i)+" points average\n";
+            displayStat += "Joueur "+(i+1)+" : "+getWinRate(i)+"% win rate and "+ getEqualityRate(i)+"% equality rate with a "+ getPointsAverage(i)+" points average\n";
         }
         return  displayStat;
     }

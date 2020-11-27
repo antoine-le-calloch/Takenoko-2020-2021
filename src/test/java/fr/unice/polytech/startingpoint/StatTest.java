@@ -42,11 +42,11 @@ public class StatTest {
         assertEquals(100,stat1Game2P.getWinRate(0));
         assertEquals(0,stat1Game2P.getWinRate(1));
 
-        assertEquals(0,stat1Game2P.getequalityRate(0));
-        assertEquals(0,stat1Game2P.getequalityRate(1));
+        assertEquals(0,stat1Game2P.getEqualityRate(0));
+        assertEquals(0,stat1Game2P.getEqualityRate(1));
 
-        assertEquals(2,stat1Game2P.getpointsAverage(0));
-        assertEquals(1,stat1Game2P.getpointsAverage(1));
+        assertEquals(2,stat1Game2P.getPointsAverage(0));
+        assertEquals(1,stat1Game2P.getPointsAverage(1));
     }
 
     @Test
@@ -55,11 +55,11 @@ public class StatTest {
         assertEquals(0,stat1Game2P.getWinRate(0));
         assertEquals(100,stat1Game2P.getWinRate(1));
 
-        assertEquals(0,stat1Game2P.getequalityRate(0));
-        assertEquals(0,stat1Game2P.getequalityRate(1));
+        assertEquals(0,stat1Game2P.getEqualityRate(0));
+        assertEquals(0,stat1Game2P.getEqualityRate(1));
 
-        assertEquals(1,stat1Game2P.getpointsAverage(0));
-        assertEquals(2,stat1Game2P.getpointsAverage(1));
+        assertEquals(1,stat1Game2P.getPointsAverage(0));
+        assertEquals(2,stat1Game2P.getPointsAverage(1));
     }
 
     @Test
@@ -68,11 +68,11 @@ public class StatTest {
         assertEquals(0,stat1Game2P.getWinRate(0));
         assertEquals(0,stat1Game2P.getWinRate(1));
 
-        assertEquals(100,stat1Game2P.getequalityRate(0));
-        assertEquals(100,stat1Game2P.getequalityRate(1));
+        assertEquals(100,stat1Game2P.getEqualityRate(0));
+        assertEquals(100,stat1Game2P.getEqualityRate(1));
 
-        assertEquals(1,stat1Game2P.getpointsAverage(0));
-        assertEquals(1,stat1Game2P.getpointsAverage(1));
+        assertEquals(1,stat1Game2P.getPointsAverage(0));
+        assertEquals(1,stat1Game2P.getPointsAverage(1));
     }
 
     @Test
@@ -86,11 +86,11 @@ public class StatTest {
         assertEquals(70,stat1000Game2P.getWinRate(0));
         assertEquals(30,stat1000Game2P.getWinRate(1));
 
-        assertEquals(0,stat1000Game2P.getequalityRate(0));
-        assertEquals(0,stat1000Game2P.getequalityRate(1));
+        assertEquals(0,stat1000Game2P.getEqualityRate(0));
+        assertEquals(0,stat1000Game2P.getEqualityRate(1));
 
-        assertEquals(1.7,stat1000Game2P.getpointsAverage(0));
-        assertEquals(1.3,stat1000Game2P.getpointsAverage(1));
+        assertEquals(1.7,stat1000Game2P.getPointsAverage(0));
+        assertEquals(1.3,stat1000Game2P.getPointsAverage(1));
     }
 
     @Test
@@ -107,15 +107,15 @@ public class StatTest {
         assertEquals(0,stat1000Game4P.getWinRate(2));
         assertEquals(0,stat1000Game4P.getWinRate(3));
 
-        assertEquals(0,stat1000Game4P.getequalityRate(0));
-        assertEquals(0,stat1000Game4P.getequalityRate(1));
-        assertEquals(0,stat1000Game4P.getequalityRate(2));
-        assertEquals(0,stat1000Game4P.getequalityRate(3));
+        assertEquals(0,stat1000Game4P.getEqualityRate(0));
+        assertEquals(0,stat1000Game4P.getEqualityRate(1));
+        assertEquals(0,stat1000Game4P.getEqualityRate(2));
+        assertEquals(0,stat1000Game4P.getEqualityRate(3));
 
-        assertEquals(6.9,stat1000Game4P.getpointsAverage(0));
-        assertEquals(5.6,stat1000Game4P.getpointsAverage(1));
-        assertEquals(3.3,stat1000Game4P.getpointsAverage(2));
-        assertEquals(1.6,stat1000Game4P.getpointsAverage(3));
+        assertEquals(6.9,stat1000Game4P.getPointsAverage(0));
+        assertEquals(5.6,stat1000Game4P.getPointsAverage(1));
+        assertEquals(3.3,stat1000Game4P.getPointsAverage(2));
+        assertEquals(1.6,stat1000Game4P.getPointsAverage(3));
     }
 
     @Test

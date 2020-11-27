@@ -18,9 +18,9 @@ public class Mission {
         return checkMissionParcel(board);
     }
 
-    String getGoal(){ return goalForm;}
-
-
+    String getGoal(){
+        return goalForm;
+    }
 
     int checkMissionParcel(Board board) {
         switch (goalForm) {
@@ -37,9 +37,9 @@ public class Mission {
 
     //retourne vrai si il y a un triangle sur le plateau
     boolean checkTriangle(Board board) {
-        for (Parcel parcel : board.getPlacedParcels()) {
-            if (board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(0))) &&
-                    board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(1)))) {
+        for (Parcel parcel : board.getPlacedParcels().values()) {
+            if (board.getIrrigatedParcels().contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(0))) &&
+                    board.getIrrigatedParcels().contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(1)))) {
                 return true;
             }
         }
@@ -48,14 +48,12 @@ public class Mission {
 
     //retourne faux si il y a un triangle sur le plateau
     boolean checkLine(Board board) {
-        for (Parcel parcel : board.getPlacedParcels()) {
-            if (board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(2))) &&
-                    board.irrigatedParcels.contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(5)))) {
+        for (Parcel parcel : board.getPlacedParcels().values()) {
+            if (board.getIrrigatedParcels().contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(2))) &&
+                    board.getIrrigatedParcels().contains(new Coordinate(parcel.getCoordinates(),Coordinate.offSets().get(5)))) {
                 return true;
             }
         }
         return false;
     }
-
-
 }

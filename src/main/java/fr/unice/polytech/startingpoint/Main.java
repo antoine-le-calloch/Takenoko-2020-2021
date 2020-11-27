@@ -1,8 +1,5 @@
 package fr.unice.polytech.startingpoint;
 
-import java.util.ArrayList;
-import java.util.*;
-
 public class Main {
 
     public static void main(String... args) {
@@ -15,6 +12,7 @@ public class Main {
             game.play();
             statGame.add(game.getData());
         }
+
         System.out.println(statGame);
     }
 }
