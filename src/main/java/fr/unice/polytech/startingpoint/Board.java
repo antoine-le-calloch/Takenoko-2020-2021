@@ -64,6 +64,7 @@ class Board {
         }
     }
 
+    //Renvoie true si une parcel est possé aux coordonnées [coordinate]
     boolean isPlaced(Coordinate coordinate){
         return placedParcels.keySet().contains(coordinate);
     }
@@ -94,9 +95,11 @@ class Board {
         return new ArrayList<>(freePlaces);
     }
 
+    //Renvoie une liste de toute les places occupées et libre mais jouable
     List<Coordinate> getAllPlaces() {
         List<Coordinate> allPlaces = new ArrayList<>(placedParcels.keySet());
         allPlaces.addAll(getFreePlaces());
+        allPlaces.remove(new Coordinate(0,0,0));
         return allPlaces;
     }
 
@@ -105,6 +108,7 @@ class Board {
         return placedParcels;
     }
 
+    //Renvoie une liste des parcels irrigée
     List<Coordinate> getIrrigatedParcels() {
         return irrigatedParcels;
     }

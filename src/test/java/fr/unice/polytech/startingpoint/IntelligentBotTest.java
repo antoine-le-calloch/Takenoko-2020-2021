@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class IntelligentBotTest {
 
@@ -15,15 +15,81 @@ class IntelligentBotTest {
     }
 
     @Test
-    public void formLine1ParcelLeft(){
-        /*IntelligentBot intelBot = mock(board.class);
-        Coordinate coord = intelBot.coordBestForm("Line");
+    public void placesForLineStartAtCoord1LineEmpty(){
+        Board board1 = new Board();
+        IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
+        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelToPlaceToDoForm(new Coordinate(1,0,-1),"line"));
 
-        ArrayList<Coordinate> allCoordinate(){
-            ArrayList<Coordinate> allCoordinate = new ArrayList<>(possibleCoordinatesParcel());
-            allCoordinate.addAll(board.getPlacedCoord());
-            return allCoordinate;
-        }*/
+        assertEquals(3,placesForLine.size());
+        assertEquals(new Coordinate(1,0,-1),placesForLine.get(0));
+        assertEquals(new Coordinate(1,-1,0),placesForLine.get(1));
+        assertEquals(new Coordinate(1,-2,1),placesForLine.get(2));
     }
 
+    @Test
+    public void placesForTriangleStartAtCoord1TriangleEmpty(){
+        Board board1 = new Board();
+        IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
+        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelToPlaceToDoForm(new Coordinate(1,-1,0),"triangle"));
+
+        assertEquals(3,placesForLine.size());
+        assertEquals(new Coordinate(1,-1,0),placesForLine.get(0));
+        assertEquals(new Coordinate(0,-1,1),placesForLine.get(1));
+        assertEquals(new Coordinate(1,-2,1),placesForLine.get(2));
+    }
+
+    @Test
+    public void placesForLineStartAtCoord1LineFull(){
+        Board board1 = new Board();
+        board1.placeParcel(new Parcel("no"), new Coordinate(1,0,-1));
+        board1.placeParcel(new Parcel("no"), new Coordinate(1,-1,0));
+        board1.placeParcel(new Parcel("no"), new Coordinate(1,-2,1));
+        IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
+        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelToPlaceToDoForm(new Coordinate(1,0,-1),"line"));
+
+        assertEquals(0,placesForLine.size());
+    }
+
+    @Test
+    public void placesForTriangleStartAtCoord1TriangleFull(){
+        Board board1 = new Board();
+        board1.placeParcel(new Parcel("no"), new Coordinate(1,-1,0));
+        board1.placeParcel(new Parcel("no"), new Coordinate(0,-1,1));
+        board1.placeParcel(new Parcel("no"), new Coordinate(1,-2,1));
+        IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
+        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelToPlaceToDoForm(new Coordinate(1,-1,0),"triangle"));
+
+        assertEquals(0,placesForLine.size());
+    }
+
+    @Test
+    public void lineform_1ParcelLeft(){
+        Board board1 = new Board();
+        IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
+        board1.placeParcel(new Parcel("no"), new Coordinate(1,0,-1));//parcel haute
+        board1.placeParcel(new Parcel("no"), new Coordinate(1,-1,0));//parcel milieu
+        board1.placeParcel(new Parcel("no"), new Coordinate(0,-1,1));//deuxième parcel à coté de la parcel du bas
+
+        Coordinate coord = smartBot.bestCoordForForm("line");
+
+        assertEquals(new Coordinate(1,-2,1),coord);//parcel du bas
+    }
+
+    @Test
+    public void lineform_2ParcelLeft_MidPlacePossible(){
+        Board board1 = new Board();
+        IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
+
+        board1.placeParcel(new Parcel("no"), new Coordinate(1,0,-1));//parcel haute
+
+        assertEquals(new Coordinate(1,-1,0),smartBot.bestCoordForForm("line"));//parcel milieu
+    }
+
+    @Test
+    public void lineform_3ParcelLeft(){
+        Board board1 = new Board();
+        IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
+
+        assertNull(smartBot.bestCoordForForm("line"));
+    }
 }

@@ -35,8 +35,8 @@ public class BoardTest {
         List<Coordinate> newPlaces = board.getFreePlaces();
         assertEquals(new Coordinate(1,-1,0),newPlaces.get(0));
         assertEquals(new Coordinate(0,-1,1),newPlaces.get(1));
-        assertEquals(new Coordinate(0,1,-1),newPlaces.get(2));
-        assertEquals(new Coordinate(-1,1,0),newPlaces.get(3));
+        assertEquals(new Coordinate(-1,1,0),newPlaces.get(2));
+        assertEquals(new Coordinate(0,1,-1),newPlaces.get(3));
         assertEquals(new Coordinate(1,0,-1),newPlaces.get(4));
         assertEquals(new Coordinate(-1,0,1),newPlaces.get(5));
     }

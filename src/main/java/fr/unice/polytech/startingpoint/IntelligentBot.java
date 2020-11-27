@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class IntelligentBot extends Bot{
     Resource resource;
@@ -29,18 +30,16 @@ class IntelligentBot extends Bot{
 
     //Pour chaque mission, cherche les cases disponible pour finir la forme
     void putParcel() {
-        Coordinate coord = BestCoordForForm(inventoryMission.get(0).getGoal());
+        Coordinate coord = bestCoordForForm(inventoryMission.get(0).getGoal());
         if(coord != null)
             board.placeParcel(resource.drawParcel(), coord);
         else
             placeRandomParcel(board.getFreePlaces());
     }
 
-    Coordinate BestCoordForForm(String form){
-        ArrayList<Coordinate> parcelToPlaceToDoForm;
-
+    Coordinate bestCoordForForm(String form){
         for (Coordinate coord : board.getAllPlaces()) {
-            parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form);
+            List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form);
 
             if(parcelToPlaceToDoForm.size() == 1 && board.freeParcel(parcelToPlaceToDoForm.get(0)))
                 return parcelToPlaceToDoForm.get(0);
@@ -65,6 +64,9 @@ class IntelligentBot extends Bot{
         int z = coord.getCoordinate()[2];
 
         for (int i = 0; i < 3; i++) {
+            if(x==0 && y==0 && z==0)
+                return new ArrayList<>();
+
             if(form.equals("line")) {
                 if (!board.isPlaced(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
