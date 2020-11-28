@@ -44,6 +44,7 @@ class Game {
         return turnLeft;
     }
 
+    //Renvoie true si l'une ou plusieurs des ressources sont épuisées
     boolean isoutofsources(){
         if (resource.getMission().size()==0)
             return true;
@@ -66,6 +67,7 @@ class Game {
         }
     }
 
+    //Initialise les robots en fonction de leur nom associé passé en paramètre
     void initializeBot(String[] botNames){
         for (int i=0; i<nbBot; i++) {
             if (botNames[i].equals("random"))
@@ -75,14 +77,17 @@ class Game {
         }
     }
 
+    //Renvoie l'objet contenant les ressources
     Resource getResource() {
         return resource;
     }
 
+    //Renvoie la liste des robots
     ArrayList<Bot> getBotList() {
         return botList;
     }
 
+    //Renvoie les scores des robots de la partie actuelle
     int[] getData() {
         return score_bots;
     }

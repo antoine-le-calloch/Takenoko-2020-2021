@@ -11,21 +11,25 @@ class ParcelMission extends Mission{
         this.goalColor = goalColor;
     }
 
-    //Verifie si une mission est faite
+    //Vérifie si une mission est faite
     @Override
     int checkMission(Board board){
         return checkMissionParcel(board);
     }
+
+    //Renvoie l'objectif de la mission
     @Override
     String getGoal(){
         return goalForm;
     }
 
+    //Renvoie la couleur de la mission
     @Override
     String getColor() {
         return goalColor;
     }
 
+    //Renvoie le nombre de points que les missions rapportent si elles ont été accomplies
     int checkMissionParcel(Board board) {
         switch (goalForm) {
             case "triangle":
@@ -45,13 +49,12 @@ class ParcelMission extends Mission{
             Coordinate coord1 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset1));
             Coordinate coord2 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset2));
             if (board.getIrrigatedParcels().contains(coord1) && board.getIrrigatedParcels().contains(coord2)) {
-                if (parcel.getColor().equals(goalColor) && board.getParcelByCo(coord1).getColor().equals(goalColor) && board.getParcelByCo(coord2).getColor().equals(goalColor))
+                if (parcel.getColor().equals(goalColor)
+                        && board.getPlacedParcels().get(coord1).getColor().equals(goalColor)
+                        && board.getPlacedParcels().get(coord2).getColor().equals(goalColor))
                     return true;
             }
         }
         return false;
     }
-
-
-
 }

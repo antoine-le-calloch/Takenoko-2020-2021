@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint;
 
 class BambooMission extends Mission{
-
     BambooMission(int points){
         super(points);
     }

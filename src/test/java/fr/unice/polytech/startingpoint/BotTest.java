@@ -3,7 +3,6 @@ package fr.unice.polytech.startingpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +13,7 @@ class BotTest {
     private Bot bot2;
     private Board board;
     private Parcel parcel1;
+    private Parcel parcel2;
     private Canal canal;
 
 
@@ -22,6 +22,7 @@ class BotTest {
         Resource resource = new Resource();
         board = new Board();
         parcel1 = new Parcel("noColor");
+        parcel2 = new Parcel("noColor");
         canal = new Canal();
         bot1 = new IntelligentBot(resource,board);
         bot2 = new IntelligentBot(resource,board);
@@ -51,7 +52,7 @@ class BotTest {
 
 
     @Test void initializeNextCoordinatesNextToCentral(){
-        List<Coordinate> nextTocentral = board.getFreePlaces();
+        List<Coordinate> nextTocentral = board.getPlayablePlaces();
         assertEquals(6,nextTocentral.size());
         Coordinate randomco=nextTocentral.get(0);
         assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
@@ -72,25 +73,26 @@ class BotTest {
         assertEquals(0,sumco);
     }
 
-    @Test void possibleCoordinatesParceltest(){
-        List<Coordinate> possibleCo = board.getFreePlaces();
+    @Test void possibleCoordinatesParcelTest(){
+        List<Coordinate> possibleCo = board.getPlayablePlaces();
         Collections.shuffle(possibleCo);
-        assertTrue(board.freeParcel(possibleCo.get(0)));
+        assertTrue(board.playableParcel(possibleCo.get(0)));
     }
 
     @Test void notPossibleCoordinatesCanal(){
-        ArrayList<Coordinate[]> possiblecanals = bot1.possibleCoordinatesCanal();
-        assertEquals(possiblecanals.size(),0);
+        List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
+        assertEquals(possibleCanals.size(),0);
         board.placeParcel(parcel1,new Coordinate(2,-2,0));
-        board.putCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));
-        ArrayList<Coordinate[]>possiblecanals2=bot1.possibleCoordinatesCanal();
-        assertEquals(possiblecanals2.size(),0);
+        board.placeCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));
+        List<Coordinate[]>possibleCanals2 = bot1.possibleCoordinatesCanal();
+        assertEquals(possibleCanals2.size(),0);
     }
     @Test void possibleCoordinatesCanal(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        ArrayList<Coordinate[]>possiblecanals=bot1.possibleCoordinatesCanal();
-        Collections.shuffle(possiblecanals);
-        Coordinate[] tabco =possiblecanals.get(0);
+        board.placeParcel(parcel2,new Coordinate(1,0,-1));
+        List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
+        Collections.shuffle(possibleCanals);
+        Coordinate[] tabco = possibleCanals.get(0);
         assertTrue(board.playableCanal(tabco[0],tabco[1]));
     }
 }

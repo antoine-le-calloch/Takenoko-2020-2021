@@ -13,7 +13,7 @@ class Stat {
         nbWinNbEquality = new int[NB_PLAYER*2];
     }
 
-    //ajoute les stats d'une nouvelles game
+    //Ajoute les stats d'une nouvelles parties
     void add(int[] data) {
         setWinner(data);
         for (int i = 0; i < NB_PLAYER; i++) {
@@ -21,7 +21,7 @@ class Stat {
         }
     }
 
-    //Set le nombre de victoire et d'égalité pour chaque player
+    //Fixe le nombre de victoires et d'égalités pour chaque joueur
     void setWinner(int[] score){
         int bestScore = 0;
         int nbWinner = 0;
@@ -48,20 +48,22 @@ class Stat {
             }
     }
 
-    //return le win rate du joueur [joueur]
+    //Renvoie le taux de victoire du joueur passé en paramètre
     double getWinRate(int joueur){
         return nbWinNbEquality[joueur]/(NB_GAME/100.0);
     }
 
+    //Renvoie le taux d'égalité du joueur passé en paramètre
     double getEqualityRate(int joueur){
         return nbWinNbEquality[joueur+NB_PLAYER]/(NB_GAME/100.0);
     }
 
+    //Renvoie le nombres de points moyens du joueur passé en paramètre
     double getPointsAverage(int joueur){
         return (points[joueur]*1.0)/NB_GAME;
     }
 
-    //affiche le message
+    //Renvoie les statistiques des parties sous forme de String
     public String toString(){
         String displayStat = "";
         for (int i = 0; i < NB_PLAYER; i++) {

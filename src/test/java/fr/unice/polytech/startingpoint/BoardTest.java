@@ -3,7 +3,6 @@ package fr.unice.polytech.startingpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +31,7 @@ public class BoardTest {
 
     @Test
     public void freePlaceInitialStates(){
-        List<Coordinate> newPlaces = board.getFreePlaces();
+        List<Coordinate> newPlaces = board.getPlayablePlaces();
         assertEquals(new Coordinate(1,-1,0),newPlaces.get(0));
         assertEquals(new Coordinate(0,-1,1),newPlaces.get(1));
         assertEquals(new Coordinate(-1,1,0),newPlaces.get(2));
@@ -77,15 +76,15 @@ public class BoardTest {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.putCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
-        board.putCanal(canal2,new Coordinate(0,-1,1),new Coordinate(1,-2,1));
+        board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
+        board.placeCanal(canal2,new Coordinate(0,-1,1),new Coordinate(1,-2,1));
         assertTrue(parcel3.getIrrigated());
     }
 
     @Test void canalAboveanAnother(){
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.putCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
+        board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
         assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
         assertFalse(board.playableCanal(new Coordinate(1,-1,0),new Coordinate(0,-1,1)));
     }
@@ -99,23 +98,18 @@ public class BoardTest {
     @Test void wrongPlacementCanal(){
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.placeParcel(parcel4,new Coordinate(0,-2,2));
-        board.putCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
+        board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
         assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(0,-2,2)));
     }
 
     @Test void invalideCoordinatesforCanal(){
-        assertFalse(board.putCanal(canal,new Coordinate(0,-1,1),new Coordinate(0,-1,1)));
-        assertFalse(board.putCanal(canal,new Coordinate(1,-1,0),new Coordinate(-1,1,0)));
-        assertFalse(board.putCanal(canal,new Coordinate(1,-1,0),new Coordinate(2,0,-2)));
+        assertFalse(board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(0,-1,1)));
+        assertFalse(board.placeCanal(canal,new Coordinate(1,-1,0),new Coordinate(-1,1,0)));
+        assertFalse(board.placeCanal(canal,new Coordinate(1,-1,0),new Coordinate(2,0,-2)));
     }
 
     @Test void parcelInexistantsoNoCanal(){
         assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
         assertFalse(board.playableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0)));
     }
-
-
-
 }

@@ -146,12 +146,12 @@ public class ParcelMissionTest {
     }
 
     @Test void wrongLine(){ //checkLine
-        board.placeParcel(parcel4,new Coordinate(0,-1,1));
+        board.placeParcel(parcel1,new Coordinate(0,-1,1));
+        board.placeParcel(parcel2,new Coordinate(1,-1,0));
+        board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.placeParcel(parcel4,new Coordinate(0,-2,2));
         board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
         board.getIrrigatedParcels().add(new Coordinate(0,-2,2));
         assertFalse(mission1.checkFormIrrigateWithColor(board,2,5));
     }
-
 }
-

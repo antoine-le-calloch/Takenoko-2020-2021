@@ -3,77 +3,27 @@ package fr.unice.polytech.startingpoint;
 import java.util.*;
 
 class Board {
-    private final Set<Coordinate> freePlaces = new HashSet<>();
-    private final Map<Coordinate,Parcel> placedParcels = new HashMap<>();
+    private final Set<Coordinate> playablePlaces = new HashSet<>();
+    private final Map<Coordinate, Parcel> placedParcels = new HashMap<>();
     private final List<Coordinate> irrigatedParcels = new ArrayList<>();
-    private final List<Canal> placedCanals = new ArrayList<>();
+    private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
 
-    Board(){
-        placeParcel(new Parcel("noColor"),new Coordinate(0,0,0));
+    Board() {
+        initializeCenter();
     }
 
-    //place un canal et ajoute les parcel irrigé dans le set
-    boolean putCanal(Canal canal, Coordinate coord1, Coordinate coord2){
-        if(playableCanal(coord1,coord2)){
-            placedCanals.add(canal.setCoordinates(coord1,coord2));
-            if(!placedParcels.get(coord1).setIrrigated()) {
-                irrigatedParcels.add(coord1);
-            }
-            if(!placedParcels.get(coord2).setIrrigated()) {
-                irrigatedParcels.add(coord2);
-            }
-            return true;
-        }
-        return false;
-     }
-
-    boolean playableCanal(Coordinate toplacecoord1, Coordinate toplacecoord2){
-        if(!isPlaced(toplacecoord1) || !isPlaced(toplacecoord2))
-            return false;
-
-        if( placedCanals.size()==0 && (!Coordinate.isNextoCentral(toplacecoord1) || (!Coordinate.isNextoCentral(toplacecoord2)) ))
-            return false;
-
-        if (toplacecoord1.equals(new Coordinate(0,0,0)) || toplacecoord2.equals(new Coordinate(0,0,0)))
-            return false;
-
-        for (Canal placedCanal : placedCanals) {
-
-            Coordinate[] coordscanalplaced = placedCanal.getCoordinatesCanal();
-            if( placedCanal.sameDoubleCoordinates(toplacecoord1,toplacecoord2)){
-                return false;
-            }
-            if(  ((coordscanalplaced[0].equals(toplacecoord1)) && (!Coordinate.coNextToEachother(toplacecoord2,coordscanalplaced[1]))) || ((coordscanalplaced[0].equals(toplacecoord2)) && (!Coordinate.coNextToEachother(toplacecoord1,coordscanalplaced[1]))) ) {
-                return false;
-            }
-        }
-        return true;
+    //Initialise la case centrale
+    private void initializeCenter() {
+        placedParcels.put(new Coordinate(0, 0, 0),new Parcel("noColor").setCoordinates(new Coordinate(0, 0, 0)));
+        irrigatedParcels.add(new Coordinate(0, 0, 0));
+        playablePlaces.addAll(Coordinate.offSets());
     }
 
-    //Place une parcelle sur le board
-    void placeParcel(Parcel newParcel, Coordinate newCoordinate){
-        newParcel.setCoordinates(newCoordinate);
-        placedParcels.put(newCoordinate,newParcel);
-        freePlaces.remove(newCoordinate);
-
-        for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
-            if(coordinate.isCentral())
-                newParcel.setIrrigated();
-            if(freeParcel(coordinate))
-                freePlaces.add(coordinate);
-        }
-    }
-
-    //Renvoie true si une parcel est possé aux coordonnées [coordinate]
-    boolean isPlaced(Coordinate coordinate){
-        return placedParcels.keySet().contains(coordinate);
-    }
-
-    //Renvoie true si une parcelle est libre aux coordonnées pasées en paramètres
-    boolean freeParcel(Coordinate coord){
+    //Renvoie true si une parcelle peut être placée à la coordonnée passée en paramètre
+    boolean playableParcel(Coordinate coord){
         int nbParcelAround = 0;
         for(Coordinate coordAround : coord.coordinatesAround()) {
-            if(isPlaced(coordAround))
+            if(isPlacedParcel(coordAround))
                 nbParcelAround++;
             if(coordAround.isCentral())
                 return true;
@@ -81,40 +31,92 @@ class Board {
         return nbParcelAround>1;
     }
 
-    //Obtient une parcelle par des coordonnées données
-    Parcel getParcelByCo(Coordinate coordinate){
-        for (Parcel placedParcel : placedParcels.values()) {
-            if(placedParcel.getCoordinates().equals(coordinate))
-                return placedParcel;
+    //Renvoie true si un canal peut être placé aux coordonnées passées en paramètre
+    boolean playableCanal(Coordinate toPlaceCoordinate1, Coordinate toPlaceCoordinate2) {
+        if ( !isPlacedCanal(toPlaceCoordinate1, toPlaceCoordinate2) ){
+            if ( toPlaceCoordinate1.isNextTo(toPlaceCoordinate2) ){
+                if ( isPlacedParcel(toPlaceCoordinate1) && isPlacedParcel(toPlaceCoordinate2) ){
+                    if ( toPlaceCoordinate1.isNextTo(new Coordinate(0, 0, 0)) && toPlaceCoordinate2.isNextTo(new Coordinate(0, 0, 0)) ) {
+                        return true;
+                    }
+                    for ( Coordinate coordinate : Coordinate.getInCommonAroundCoordinates(toPlaceCoordinate1, toPlaceCoordinate2) ) {
+                        if ( isPlacedCanal(toPlaceCoordinate1, coordinate) )
+                            return true;
+                        if ( isPlacedCanal(toPlaceCoordinate2, coordinate) )
+                            return true;
+                    }
+                }
+            }
         }
-        return null;
+        return false;
     }
 
-    //Renvoie une liste des places libres
-    List<Coordinate> getFreePlaces(){
-        return new ArrayList<>(freePlaces);
+    //Place une parcelle sur le board si les conditions le permettent
+    boolean placeParcel(Parcel newParcel, Coordinate newCoordinate){
+        if(playableParcel(newCoordinate)){
+            placedParcels.put(newCoordinate,newParcel.setCoordinates(newCoordinate));
+            playablePlaces.remove(newCoordinate);
+            for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
+                if(coordinate.isCentral())
+                    newParcel.setIrrigated();
+                if(playableParcel(coordinate))
+                    playablePlaces.add(coordinate);
+            }
+            return true;
+        }
+        return false;
     }
 
-    //Renvoie une liste de toute les places occupées et libre mais jouable
+    //Place un canal sur le board si les conditions le permettent
+    boolean placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) {
+        if (playableCanal(coordinate1, coordinate2)) {
+            placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
+            if (!placedParcels.get(coordinate1).setIrrigated()) {
+                irrigatedParcels.add(coordinate1);
+            }
+            if (!placedParcels.get(coordinate2).setIrrigated()) {
+                irrigatedParcels.add(coordinate2);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    //Renvoie true si une parcelle est posées aux coordonnées passées en paramètre
+    boolean isPlacedParcel(Coordinate coordinate){
+        return placedParcels.containsKey(coordinate);
+    }
+
+    //Renvoie true si un canal est posé aux coordonnées passées en paramètre
+    boolean isPlacedCanal(Coordinate coordinate1,Coordinate coordinate2){
+        return placedCanals.containsKey(Coordinate.getSortedSet(coordinate1,coordinate2));
+    }
+
+    //Renvoie une liste des places jouables
+    List<Coordinate> getPlayablePlaces(){
+        return new ArrayList<>(playablePlaces);
+    }
+
+    //Renvoie une liste de toutes les places occupées et jouables
     List<Coordinate> getAllPlaces() {
         List<Coordinate> allPlaces = new ArrayList<>(placedParcels.keySet());
-        allPlaces.addAll(getFreePlaces());
+        allPlaces.addAll(getPlayablePlaces());
         allPlaces.remove(new Coordinate(0,0,0));
         return allPlaces;
     }
 
-    //Renvoie une liste des parcels placé
+    //Renvoie une map des parcelles placées
     Map<Coordinate,Parcel> getPlacedParcels(){
         return placedParcels;
     }
 
-    //Renvoie une liste des parcels irrigée
+    //Renvoie une liste des parcelles irriguées
     List<Coordinate> getIrrigatedParcels() {
         return irrigatedParcels;
     }
 
-    //Renvoie une liste des canaux placé
-    List<Canal> getPlacedCanals(){
+    //Renvoie une map des canaux placés
+    Map<SortedSet<Coordinate>,Canal> getPlacedCanals(){
         return placedCanals;
     }
 }

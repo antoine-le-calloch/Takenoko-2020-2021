@@ -34,22 +34,22 @@ class IntelligentBot extends Bot{
         if(coord != null)
             board.placeParcel(resource.drawParcel(), coord);
         else
-            placeRandomParcel(board.getFreePlaces());
+            placeRandomParcel(board.getPlayablePlaces());
     }
 
     Coordinate bestCoordForForm(String form){
         for (Coordinate coord : board.getAllPlaces()) {
             List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form);
 
-            if(parcelToPlaceToDoForm.size() == 1 && board.freeParcel(parcelToPlaceToDoForm.get(0)))
+            if(parcelToPlaceToDoForm.size() == 1 && board.playableParcel(parcelToPlaceToDoForm.get(0)))
                 return parcelToPlaceToDoForm.get(0);
 
             else if(parcelToPlaceToDoForm.size() == 2) {
 
-                if (board.freeParcel(parcelToPlaceToDoForm.get(0)))
+                if (board.playableParcel(parcelToPlaceToDoForm.get(0)))
                     return parcelToPlaceToDoForm.get(0);
 
-                else if (board.freeParcel(parcelToPlaceToDoForm.get(1)))
+                else if (board.playableParcel(parcelToPlaceToDoForm.get(1)))
                     return parcelToPlaceToDoForm.get(1);
             }
         }
@@ -68,13 +68,13 @@ class IntelligentBot extends Bot{
                 return new ArrayList<>();
 
             if(form.equals("line")) {
-                if (!board.isPlaced(new Coordinate(x, y, z)))
+                if (!board.isPlacedParcel(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
                 y--;
                 z++;
             }
             else if(form.equals("triangle")) {
-                if(!board.isPlaced(new Coordinate(x, y, z)))
+                if(!board.isPlacedParcel(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
                 x = x - 1 + (2 * i); //x-- pour la parcel 2, x++ pour la parcel 3
                 y = y - i; //y pour la parcel 2, y-- pour la parcel 3
@@ -88,7 +88,7 @@ class IntelligentBot extends Bot{
         for(Parcel parcel : board.getPlacedParcels().values()){
             for(Coordinate[] canal : possibleCoordinatesCanal()){
                 if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){
-                    board.putCanal(resource.drawCanal(),canal[0],canal[1]);
+                    board.placeCanal(resource.drawCanal(),canal[0],canal[1]);
                     return true;
                 }
             }

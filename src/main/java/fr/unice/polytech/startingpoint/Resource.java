@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 class Resource {
     private final ArrayList<Mission> deckMission = new ArrayList<>();
@@ -14,7 +15,7 @@ class Resource {
         initializedeckCanal();
     }
 
-    //Creation de toutes les parcelles et on les ajoute dans le deck parcelles
+    //Création de toutes les parcelles et on les ajoute dans le deck parcelles
     private void initializedeckParcel(){
         int nbParcel = 26;
         deckParcel.add(new Parcel("red"));
@@ -24,19 +25,19 @@ class Resource {
         }
     }
 
-    //Creation de toutes les missions et on les ajoute dans le deck missions
+    //Création de toutes les missions et on les ajoute dans le deck missions
     private void initializedeckMission() {
-        int nbMission = 35;
+        int nbMission = 32;
         for (int i = 0; i < nbMission / 4; i++) {
             deckMission.add(new ParcelMission(2, "triangle","red"));
             deckMission.add(new ParcelMission(3, "triangle","blue"));
             deckMission.add(new ParcelMission(3, "line","red"));
             deckMission.add(new ParcelMission(4, "line","blue"));
-            deckMission.add(new BambooMission(100000));
         }
         Collections.shuffle(deckMission);
     }
 
+    //Initialise le deck des canaux
     private void initializedeckCanal(){
         int nbCanal = 27;
         for (int i = 0; i < nbCanal; i++){
@@ -44,36 +45,39 @@ class Resource {
         }
     }
 
-    //permet de piocher une parcelle du deck, la parcelle est enlevé du deck
+    //Pioche une parcelle du deck
     Parcel drawParcel() {
         Parcel parcel = deckParcel.get(0);
         deckParcel.remove(parcel);
         return parcel;
     }
 
-    //permet de piocher une mission du deck, la mission est enlevé du deck
+    //Pioche une mission du deck
     Mission drawMission() {
         Mission mission = deckMission.get(0);
         deckMission.remove(mission);
         return mission;
     }
 
-
+    //Pioche un canal du deck
     Canal drawCanal(){
         Canal canal = deckCanal.get(0);
         deckCanal.remove(canal);
         return canal;
     }
 
-    ArrayList<Parcel> getParcel(){
+    //Renvoie la liste du deck de parcelles
+    List<Parcel> getParcel(){
         return deckParcel;
     }
 
-    ArrayList<Canal> getCanal(){
+    //Renvoie la liste du deck de canaux
+    List<Canal> getCanal(){
         return deckCanal;
     }
 
-    ArrayList<Mission> getMission(){
+    //Renvoie la liste du deck de missions
+    List<Mission> getMission(){
         return deckMission;
     }
 }

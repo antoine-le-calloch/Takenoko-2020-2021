@@ -43,9 +43,10 @@ class IntelligentBotTest {
         Board board1 = new Board();
         board1.placeParcel(new Parcel("no"), new Coordinate(1,0,-1));
         board1.placeParcel(new Parcel("no"), new Coordinate(1,-1,0));
+        board1.placeParcel(new Parcel("no"), new Coordinate(0,-1,1));
         board1.placeParcel(new Parcel("no"), new Coordinate(1,-2,1));
         IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
-        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelToPlaceToDoForm(new Coordinate(1,0,-1),"line"));
+        List<Coordinate> placesForLine = smartBot.parcelToPlaceToDoForm(new Coordinate(1,0,-1),"line");
 
         assertEquals(0,placesForLine.size());
     }
@@ -57,7 +58,7 @@ class IntelligentBotTest {
         board1.placeParcel(new Parcel("no"), new Coordinate(0,-1,1));
         board1.placeParcel(new Parcel("no"), new Coordinate(1,-2,1));
         IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
-        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelToPlaceToDoForm(new Coordinate(1,-1,0),"triangle"));
+        List<Coordinate> placesForLine = smartBot.parcelToPlaceToDoForm(new Coordinate(1,-1,0),"triangle");
 
         assertEquals(0,placesForLine.size());
     }

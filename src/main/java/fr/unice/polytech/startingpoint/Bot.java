@@ -15,39 +15,42 @@ abstract class Bot {
     //Action d'un bot pendant un tour
     abstract void botPlay();
 
-    //pioche une mission
+    //Pioche une mission
     void drawMission(){
         inventoryMission.add(resource.drawMission());
     }
 
 
-    //place une parcelle dans une coordonnée de la liste donnée
+    //Place une parcelle à une coordonnée de la liste passé en paramètre
     void placeRandomParcel(List<Coordinate> listCoord){
         Collections.shuffle(listCoord);
         board.placeParcel(resource.drawParcel(), listCoord.get(0));
     }
 
-    //place un canal sur une coordonnée contenue dans une liste donnée
-    void placeRandomCanal(ArrayList<Coordinate[]> listCoord) {
+    //Place un canal à une coordonnée de la liste passé en paramètre
+    void placeRandomCanal(List<Coordinate[]> listCoord) {
         Collections.shuffle(listCoord);
-        board.putCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
+        board.placeCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
     }
 
-    ArrayList<Coordinate[]> possibleCoordinatesCanal(){
+    //Renvoie une liste des coordonnées possibles pour les canaux
+    List<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
         for(Parcel parcel1 : board.getPlacedParcels().values()){
             for(Parcel parcel2 : board.getPlacedParcels().values()){
                 if (board.playableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
-                    possibleCoordinates.add(new Coordinate[] {parcel1.getCoordinates(),parcel2.getCoordinates()});
+                    possibleCoordinates.add(new Coordinate[]{parcel1.getCoordinates(),parcel2.getCoordinates()});
             }
         }
         return new ArrayList<>(possibleCoordinates);
     }
 
+    //Supprime la mission passée en paramètre de l'inventaire des missions
     void deleteMission(Mission mission) {
         inventoryMission.remove(mission);
     }
 
+    //Renvoie la liste de l'inventaire des missions
     ArrayList<Mission> getInventoryMission() {
         return new ArrayList<>(inventoryMission);
     }
