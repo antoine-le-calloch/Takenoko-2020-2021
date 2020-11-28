@@ -16,11 +16,9 @@ class Parcel {
     }
 
     //Renvoie true si la parcelle vient d'être irriguée
-    boolean setIrrigated() {
-        if (!irrigated){
-            return irrigated = true;
-        }
-        return false;
+    Coordinate setIrrigated() {
+        irrigated = true;
+        return coordinates;
     }
 
     //Renvoie si la parcelle est irriguée ou non
