@@ -5,7 +5,7 @@ import java.util.*;
 class Board {
     private final Set<Coordinate> playablePlaces = new HashSet<>();
     private final Map<Coordinate, Parcel> placedParcels = new HashMap<>();
-    private final List<Coordinate> irrigatedParcels = new ArrayList<>();
+    private final Set<Coordinate> irrigatedParcels = new HashSet<>();
     private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
 
     Board() {
@@ -74,12 +74,13 @@ class Board {
     boolean placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) {
         if (playableCanal(coordinate1, coordinate2)) {
             placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
-            if (!placedParcels.get(coordinate1).setIrrigated()) {
-                irrigatedParcels.add(coordinate1);
+
+            if (!placedParcels.get(coordinate1).getIrrigated()) {
+                irrigatedParcels.add(placedParcels.get(coordinate1).setIrrigated());
                 getPlacedParcels().get(coordinate1).addBamboo(); //ajoute un bamboo
             }
-            if (!placedParcels.get(coordinate2).setIrrigated()) {
-                irrigatedParcels.add(coordinate2);
+            if (!placedParcels.get(coordinate2).getIrrigated()) {
+                irrigatedParcels.add(placedParcels.get(coordinate2).setIrrigated());
                 getPlacedParcels().get(coordinate2).addBamboo(); //ajoute un bamboo
             }
             return true;
@@ -97,17 +98,21 @@ class Board {
         return placedCanals.containsKey(Coordinate.getSortedSet(coordinate1,coordinate2));
     }
 
+    void irrigatedParcelsAdd(Coordinate coordinate) {
+        irrigatedParcels.add(coordinate);
+    }
+
     //Renvoie une liste des places jouables
     List<Coordinate> getPlayablePlaces(){
-        return new ArrayList<>(playablePlaces);
+        return new ArrayList(playablePlaces);
     }
 
     //Renvoie une liste de toutes les places occupées et jouables
     List<Coordinate> getAllPlaces() {
-        List<Coordinate> allPlaces = new ArrayList<>(placedParcels.keySet());
+        Set<Coordinate> allPlaces = new HashSet<>(placedParcels.keySet());
         allPlaces.addAll(getPlayablePlaces());
         allPlaces.remove(new Coordinate(0,0,0));
-        return allPlaces;
+        return new ArrayList(allPlaces);
     }
 
     //Renvoie une map des parcelles placées
@@ -117,7 +122,7 @@ class Board {
 
     //Renvoie une liste des parcelles irriguées
     List<Coordinate> getIrrigatedParcels() {
-        return irrigatedParcels;
+        return new ArrayList(irrigatedParcels);
     }
 
     //Renvoie une map des canaux placés

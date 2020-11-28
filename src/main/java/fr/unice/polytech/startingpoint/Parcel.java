@@ -17,11 +17,9 @@ class Parcel {
     }
 
     //Renvoie true si la parcelle vient d'être irriguée
-    boolean setIrrigated() {
-        if (!irrigated){
-            return irrigated = true;
-        }
-        return false;
+    Coordinate setIrrigated() {
+        irrigated = true;
+        return coordinates;
     }
 
     //ajoute un bamboo sur la parcelle
