@@ -13,7 +13,7 @@ class ParcelMission extends Mission{
 
     //Vérifie si une mission est faite
     @Override
-    int checkMission(Board board){
+    int checkMission(Board board, Bot bot){
         return checkMissionParcel(board);
     }
 

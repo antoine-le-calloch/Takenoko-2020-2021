@@ -95,4 +95,25 @@ class BotTest {
         Coordinate[] tabco = possibleCanals.get(0);
         assertTrue(board.playableCanal(tabco[0],tabco[1]));
     }
+
+    @Test void notExistPossibleCoordinatesBamboo(){
+        assertEquals(null, bot1.possibleCoordinatesBamboo());
+    }
+
+    @Test void ExistPossibleCoordinatesBamboo(){
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        assertTrue(parcel1.getIrrigated());
+        assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesBamboo());
+    }
+
+    @Test void moveKoala(){
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        bot1.moveKoala(bot1.possibleCoordinatesBamboo());
+        assertEquals(1,bot1.inventoryBamboo[0]);
+        assertEquals(0, parcel1.getNbBamboo());
+
+    }
+
+
+
 }

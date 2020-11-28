@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint;
 class Parcel {
     private Coordinate coordinates;
     private boolean irrigated = false;
+    private int nbBamboo = 0;
     private final String color;
 
     Parcel(String color){
@@ -22,6 +23,17 @@ class Parcel {
         }
         return false;
     }
+
+    //ajoute un bamboo sur la parcelle
+    void addBamboo(){ nbBamboo += 1;}
+
+    //supprime un bamboo de la parcelle
+    void delBamboo(){
+        if (nbBamboo > 0)
+            nbBamboo -= 1;
+    }
+
+    int getNbBamboo(){return nbBamboo;}
 
     //Renvoie si la parcelle est irriguée ou non
     boolean getIrrigated(){

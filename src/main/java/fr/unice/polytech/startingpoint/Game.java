@@ -11,6 +11,8 @@ class Game {
     private final int nbBot;
     private int turnLeft;
 
+    static final int NB_MISSION = 4;
+
     Game(String[] botNames){
         nbBot = botNames.length;
         score_bots = new int[nbBot];
@@ -34,7 +36,7 @@ class Game {
     int isContinue(){
         if(turnLeft == nbBot) {
             for (int mission : mission_done) {
-                if (mission >= 2)
+                if (mission >= NB_MISSION)
                     turnLeft--;
             }
             return 1;
@@ -58,7 +60,7 @@ class Game {
     void missionDone(int idBot) {
         int count;
         for(Mission mission : botList.get(idBot).getInventoryMission()){
-            count = mission.checkMission(board);
+            count = mission.checkMission(board,botList.get(idBot));
             if( count != 0){
                 mission_done[idBot]++;
                 score_bots[idBot] += count;

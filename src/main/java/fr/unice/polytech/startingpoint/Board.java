@@ -57,8 +57,11 @@ class Board {
             placedParcels.put(newCoordinate,newParcel.setCoordinates(newCoordinate));
             playablePlaces.remove(newCoordinate);
             for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
-                if(coordinate.isCentral())
+                if(coordinate.isCentral()) {
+                    getPlacedParcels().get(newCoordinate).addBamboo();
+                    irrigatedParcels.add(newCoordinate);
                     newParcel.setIrrigated();
+                }
                 if(playableParcel(coordinate))
                     playablePlaces.add(coordinate);
             }
@@ -67,15 +70,17 @@ class Board {
         return false;
     }
 
-    //Place un canal sur le board si les conditions le permettent
+    //Place un canal sur le board si les conditions le permettent (ajoute un bamboo sur les nouvelles parcelles irrigués)
     boolean placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) {
         if (playableCanal(coordinate1, coordinate2)) {
             placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
             if (!placedParcels.get(coordinate1).setIrrigated()) {
                 irrigatedParcels.add(coordinate1);
+                getPlacedParcels().get(coordinate1).addBamboo(); //ajoute un bamboo
             }
             if (!placedParcels.get(coordinate2).setIrrigated()) {
                 irrigatedParcels.add(coordinate2);
+                getPlacedParcels().get(coordinate2).addBamboo(); //ajoute un bamboo
             }
             return true;
         }

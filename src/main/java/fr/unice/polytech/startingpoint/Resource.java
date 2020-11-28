@@ -32,7 +32,8 @@ class Resource {
             deckMission.add(new ParcelMission(2, "triangle","red"));
             deckMission.add(new ParcelMission(3, "triangle","blue"));
             deckMission.add(new ParcelMission(3, "line","red"));
-            deckMission.add(new ParcelMission(4, "line","blue"));
+            //deckMission.add(new ParcelMission(4, "line","blue"));
+            deckMission.add(new BambooMission(1000000));
         }
         Collections.shuffle(deckMission);
     }

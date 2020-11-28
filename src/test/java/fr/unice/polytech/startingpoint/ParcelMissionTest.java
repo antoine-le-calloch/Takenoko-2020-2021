@@ -11,10 +11,13 @@ public class ParcelMissionTest {
     Parcel parcel3;
     Parcel parcel4;
     Board board;
+    Resource resource;
     ParcelMission mission1;
     ParcelMission mission2;
     ParcelMission mission3;
     ParcelMission mission4;
+    RandomBot bot;
+
 
     @BeforeEach
     void setUp(){
@@ -23,10 +26,12 @@ public class ParcelMissionTest {
         mission3 = new ParcelMission(2,"triangle","blue");
         mission4 = new ParcelMission(3,"ligne","blue");
         board = new Board();
+        resource = new Resource();
         parcel1 = new Parcel("red");
         parcel2 = new Parcel("red");
         parcel3 = new Parcel("red");
         parcel4 = new Parcel("red");
+        bot = new RandomBot(resource, board);
     }
 
     @Test
@@ -44,12 +49,12 @@ public class ParcelMissionTest {
         board.getIrrigatedParcels().add(new Coordinate(0,-1,1));
         board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
         assertEquals(2, mission1.checkMissionParcel(board));
-        assertEquals(2, mission1.checkMission(board));
+        assertEquals(2, mission1.checkMission(board,bot));
     }
 
     @Test void checkNoMissionTriangle(){
         assertEquals(0, mission1.checkMissionParcel(board));
-        assertEquals(0, mission1.checkMission(board));
+        assertEquals(0, mission1.checkMission(board,bot));
     }
 
 
@@ -63,13 +68,13 @@ public class ParcelMissionTest {
         board.getIrrigatedParcels().add(new Coordinate(1,-1,0));
         board.getIrrigatedParcels().add(new Coordinate(1,-2,1));
         assertEquals(3,mission2.checkMissionParcel(board));
-        assertEquals(3,mission2.checkMission(board));
+        assertEquals(3,mission2.checkMission(board,bot));
     }
 
 
     @Test void checkNoMissionLigne(){
         assertEquals(0,mission2.checkMissionParcel(board));
-        assertEquals(0,mission2.checkMission(board));
+        assertEquals(0,mission2.checkMission(board,bot));
     }
 
 

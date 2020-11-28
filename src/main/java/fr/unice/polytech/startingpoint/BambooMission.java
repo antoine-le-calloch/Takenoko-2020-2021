@@ -6,8 +6,12 @@ class BambooMission extends Mission{
     }
 
     @Override
-    int checkMission(Board board) {
-        return points;
+    int checkMission(Board board, Bot bot) {
+        if(bot.inventoryBamboo[0] >0) {
+            bot.deleteBamboo();
+            return points;
+        }
+        return 0;
     }
 
     @Override
