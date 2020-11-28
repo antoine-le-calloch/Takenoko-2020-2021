@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 class IntelligentBot extends Bot{
-    Resource resource;
-    Board board;
+    private Resource resource;
+    private Board board;
 
     IntelligentBot(Resource resource, Board board) {
         super(resource, board);
@@ -25,12 +25,12 @@ class IntelligentBot extends Bot{
 
     //Si le bot n'a pas de mission => true
     boolean doDrawMission(){
-        return inventoryMission.size() > 1;
+        return getInventoryMission().size() > 1;
     }
 
     //Pour chaque mission, cherche les cases disponible pour finir la forme
     void putParcel() {
-        Coordinate coord = bestCoordForForm(inventoryMission.get(0).getGoal());
+        Coordinate coord = bestCoordForForm(getInventoryMission().get(0).getGoal());
         if(coord != null)
             board.placeParcel(resource.drawParcel(), coord);
         else

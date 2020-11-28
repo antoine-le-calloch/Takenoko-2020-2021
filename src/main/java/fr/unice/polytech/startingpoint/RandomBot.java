@@ -3,9 +3,9 @@ package fr.unice.polytech.startingpoint;
 import java.util.Random;
 
 class RandomBot extends Bot {
-    Random random;
-    Resource resource;
-    Board board;
+    private Random random;
+    private Resource resource;
+    private Board board;
 
     RandomBot(Resource resource, Board board) {
         super(resource, board);

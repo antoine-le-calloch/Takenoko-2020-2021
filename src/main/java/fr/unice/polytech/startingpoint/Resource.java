@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 class Resource {
-    private final ArrayList<Mission> deckMission = new ArrayList<>();
-    private final ArrayList<Parcel> deckParcel = new ArrayList<>();
-    private final ArrayList<Canal> deckCanal=new ArrayList<>();
+    private final List<Mission> deckMission = new ArrayList<>();
+    private final List<Parcel> deckParcel = new ArrayList<>();
+    private final List<Canal> deckCanal = new ArrayList<>();
 
     Resource(){
         initializedeckParcel();

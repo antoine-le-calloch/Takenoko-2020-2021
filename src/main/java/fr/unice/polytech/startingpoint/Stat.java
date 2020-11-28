@@ -25,7 +25,7 @@ class Stat {
     void setWinner(int[] score){
         int bestScore = 0;
         int nbWinner = 0;
-        int []Winner = new int[NB_PLAYER];
+        int[] Winner = new int[NB_PLAYER];
         
         for (int i = 0; i < NB_PLAYER; i++) {
             if(score[i] > bestScore) {

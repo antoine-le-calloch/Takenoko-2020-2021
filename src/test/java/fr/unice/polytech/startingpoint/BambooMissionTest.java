@@ -3,6 +3,8 @@ package fr.unice.polytech.startingpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BambooMissionTest {
@@ -11,7 +13,6 @@ public class BambooMissionTest {
     BambooMission mission1;
     BambooMission mission2;
     RandomBot bot;
-
 
     @BeforeEach
     void setUp(){
@@ -24,15 +25,14 @@ public class BambooMissionTest {
 
     @Test
     void missionComplete(){
-        bot.inventoryBamboo[0] = 5;
+        IntStream.range(0, 5).forEach(i -> bot.addBamboo());
         assertEquals(2,mission1.checkMission(board,bot));
-        assertEquals(4,bot.inventoryBamboo[0]);
+        assertEquals(4,bot.getInventoryBamboo()[0]);
     }
 
     @Test
     void missionIncomplete(){
-        bot.inventoryBamboo[0] = 0;
         assertEquals(0,mission1.checkMission(board,bot));
-        assertEquals(0,bot.inventoryBamboo[0]);
+        assertEquals(0,bot.getInventoryBamboo()[0]);
     }
 }

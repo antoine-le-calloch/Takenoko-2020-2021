@@ -16,22 +16,28 @@ class Parcel {
         return this;
     }
 
-    //Renvoie true si la parcelle vient d'être irriguée
+    //Renvoie les coordonnées de la parcelle après l'avoir irrigué et lui avoir ajouté un bambou si elle ne l'était pas avant
     Coordinate setIrrigated() {
+        if(!irrigated)
+            addBamboo();
         irrigated = true;
         return coordinates;
     }
 
-    //ajoute un bamboo sur la parcelle
-    void addBamboo(){ nbBamboo += 1;}
-
-    //supprime un bamboo de la parcelle
-    void delBamboo(){
-        if (nbBamboo > 0)
-            nbBamboo -= 1;
+    //Ajoute un bamboo à la parcelle
+    void addBamboo(){
+        nbBamboo ++;
     }
 
-    int getNbBamboo(){return nbBamboo;}
+    //Supprime un bambou de la parcelle
+    void delBamboo(){
+        if (nbBamboo > 0)
+            nbBamboo --;
+    }
+
+    int getNbBamboo(){
+        return nbBamboo;
+    }
 
     //Renvoie si la parcelle est irriguée ou non
     boolean getIrrigated(){

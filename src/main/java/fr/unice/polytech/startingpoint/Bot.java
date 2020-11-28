@@ -5,8 +5,8 @@ import java.util.*;
 abstract class Bot {
     private final Resource resource;
     private final Board board;
-    final ArrayList<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
-    int[] inventoryBamboo = new int[] {0}; // liste de bamboo -> qu'une seule couleur pour l'instant
+    private final List<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
+    private int[] inventoryBamboo = new int[] {0}; // liste de bamboo -> qu'une seule couleur pour l'instant
 
     Bot(Resource resource, Board board) {
         this.resource = resource;
@@ -23,7 +23,7 @@ abstract class Bot {
 
     void moveKoala(Coordinate coordinate){
         board.getPlacedParcels().get(coordinate).delBamboo();
-        inventoryBamboo[0] += 1;
+        addBamboo();
     }
 
     Coordinate possibleCoordinatesBamboo(){
@@ -34,9 +34,14 @@ abstract class Bot {
         return null;
     }
 
+    //Ajoute un bambou à l'inventaire
+    void addBamboo(){
+        inventoryBamboo[0]++;
+    }
 
+    //Retire un bambou àe l'inventaire
     void deleteBamboo(){
-        inventoryBamboo[0] -= 1;
+        inventoryBamboo[0]--;
     }
 
     //Place une parcelle à une coordonnée de la liste passé en paramètre
@@ -68,6 +73,10 @@ abstract class Bot {
         inventoryMission.remove(mission);
     }
 
+    //Renvoie l'inventaire de bambou
+    int[] getInventoryBamboo() {
+        return inventoryBamboo.clone();
+    }
 
     //Renvoie la liste de l'inventaire des missions
     ArrayList<Mission> getInventoryMission() {
