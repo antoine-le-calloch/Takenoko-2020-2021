@@ -2,10 +2,11 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 class IntelligentBot extends Bot{
-    private Resource resource;
-    private Board board;
+    private final Resource resource;
+    private final Board board;
 
     IntelligentBot(Resource resource, Board board) {
         super(resource, board);
@@ -28,18 +29,19 @@ class IntelligentBot extends Bot{
         return getInventoryMission().size() > 1;
     }
 
-    //Pour chaque mission, cherche les cases disponible pour finir la forme
+    //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     void putParcel() {
-        Coordinate coord = bestCoordForForm(getInventoryMission().get(0).getGoal());
-        if(coord != null)
-            board.placeParcel(resource.drawParcel(), coord);
-        else
-            placeRandomParcel(board.getPlayablePlaces());
+        String form = getInventoryMission().get(0).getGoal();
+        String color = getInventoryMission().get(0).getColor();
+
+        board.placeParcel(resource.drawParcel(), bestCoordForForm(form,color));
     }
 
-    Coordinate bestCoordForForm(String form){
+    //renvoie la coord de la pièce a poser pour terminer le plus vite une forme [form], ou renvoie une coord random
+    Coordinate bestCoordForForm(String form, String color){
+        Random rand = new Random();
         for (Coordinate coord : board.getAllPlaces()) {
-            List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form);
+            List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form,color);
 
             if(parcelToPlaceToDoForm.size() == 1 && board.playableParcel(parcelToPlaceToDoForm.get(0)))
                 return parcelToPlaceToDoForm.get(0);
@@ -53,18 +55,20 @@ class IntelligentBot extends Bot{
                     return parcelToPlaceToDoForm.get(1);
             }
         }
-        return null;
+
+        int rdmListPlace = rand.nextInt(board.getPlayablePlaces().size());
+        return board.getPlayablePlaces().get(rdmListPlace);
     }
 
     //renvoie une liste de toute les parcelles pas posé pour faire la forme [form] qui a pour parcel haute [x,y,z]
-    ArrayList<Coordinate> parcelToPlaceToDoForm(Coordinate coord, String form){
+    ArrayList<Coordinate> parcelToPlaceToDoForm(Coordinate coord, String form, String color){
         ArrayList<Coordinate> parcelToPlaceToDoForm = new ArrayList<>();
         int x = coord.getCoordinate()[0];
         int y = coord.getCoordinate()[1];
         int z = coord.getCoordinate()[2];
 
         for (int i = 0; i < 3; i++) {
-            if(x==0 && y==0 && z==0)
+            if((x==0 && y==0 && z==0) || (board.isPlacedParcel(coord) && !board.getPlacedParcels().get(coord).getColor().equals(color)))
                 return new ArrayList<>();
 
             if(form.equals("line")) {
