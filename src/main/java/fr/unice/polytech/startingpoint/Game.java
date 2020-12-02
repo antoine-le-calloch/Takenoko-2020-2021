@@ -13,7 +13,7 @@ class Game {
 
     static final int NB_MISSION = 4;
 
-    Game(String[] botNames){
+    Game(String[] botNames) throws ExceptionTakenoko {
         nbBot = botNames.length;
         score_bots = new int[nbBot];
         mission_done = new int[nbBot];
@@ -70,12 +70,17 @@ class Game {
     }
 
     //Initialise les robots en fonction de leur nom associé passé en paramètre
-    void initializeBot(String[] botNames){
+    void initializeBot(String[] botNames) throws ExceptionTakenoko {
         for (int i=0; i<nbBot; i++) {
-            if (botNames[i].equals("random"))
-                botList.add(new RandomBot(resource, board));
-            else if (botNames[i].equals("intelligent"))
+            switch (botNames[i]) {
+                case "random":
+                    botList.add(new RandomBot(resource, board));
+                    break;
+                case "intelligent":
                     botList.add(new IntelligentBot(resource, board));
+                    break;
+                default: throw new ExceptionTakenoko("invalid bot's name");
+            }
         }
     }
 

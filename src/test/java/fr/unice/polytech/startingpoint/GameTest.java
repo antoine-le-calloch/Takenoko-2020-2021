@@ -11,7 +11,7 @@ class GameTest {
     Game game4;
     Game game5;
 
-    @BeforeEach public void Setup(){
+    @BeforeEach public void Setup() throws ExceptionTakenoko {
         game1 = new Game(new String[]{"random","intelligent"});
         game2 = new Game(new String[]{"intelligent","intelligent"});
         game3 = new Game(new String[]{"intelligent"});
@@ -25,6 +25,20 @@ class GameTest {
         assertNotEquals(game1,game4);
         assertNotEquals(game1,game5);
         assertNotEquals(game1,null);
+    }
+
+    @Test public void wrongBotName(){
+        Exception exception = assertThrows(ExceptionTakenoko.class, () -> {new Game(new String[]{"ranom","intelgent"});});
+        assertEquals(exception.getMessage(), "invalid bot's name");
+        Exception exception2 = assertThrows(ExceptionTakenoko.class, () -> {new Game(new String[]{""});});
+        assertEquals(exception2.getMessage(), "invalid bot's name");
+    }
+
+    @Test public void goodBotName() throws ExceptionTakenoko {
+        game1 = new Game(new String[]{"random","intelligent"});
+        game1 = new Game(new String[]{"random"});
+        game1 = new Game(new String[]{"intelligent"});
+
     }
 
     @Test public void bots(){
