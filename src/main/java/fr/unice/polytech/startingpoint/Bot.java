@@ -3,10 +3,10 @@ package fr.unice.polytech.startingpoint;
 import java.util.*;
 
 abstract class Bot {
-    private final Resource resource;
-    private final Board board;
-    private final List<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
-    private int[] inventoryBamboo = new int[] {0}; // liste de bamboo -> qu'une seule couleur pour l'instant
+    protected final Resource resource;
+    protected final Board board;
+    protected final List<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
+    protected int[] inventoryBamboo = new int[] {0}; // liste de bamboo -> qu'une seule couleur pour l'instant
 
     Bot(Resource resource, Board board) {
         this.resource = resource;

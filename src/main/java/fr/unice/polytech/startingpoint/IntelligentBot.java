@@ -5,13 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 class IntelligentBot extends Bot{
-    private final Resource resource;
-    private final Board board;
 
     IntelligentBot(Resource resource, Board board) {
         super(resource, board);
-        this.resource = resource;
-        this.board = board;
     }
 
     @Override
@@ -39,47 +35,49 @@ class IntelligentBot extends Bot{
 
     //renvoie la coord de la pièce a poser pour terminer le plus vite une forme [form], ou renvoie une coord random
     Coordinate bestCoordForForm(String form, String color){
-        Random rand = new Random();
+        Coordinate bestCoord = board.getPlayablePlaces().get(0);
+        int minNeedPartels = 3;
+
         for (Coordinate coord : board.getAllPlaces()) {
             List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form,color);
 
-            if(parcelToPlaceToDoForm.size() == 1 && board.playableParcel(parcelToPlaceToDoForm.get(0)))
-                return parcelToPlaceToDoForm.get(0);
-
-            else if(parcelToPlaceToDoForm.size() == 2) {
+            if(parcelToPlaceToDoForm.size() == 1 && board.playableParcel(parcelToPlaceToDoForm.get(0))) {
+                bestCoord = parcelToPlaceToDoForm.get(0);
+                minNeedPartels = 1;
+            }
+            else if(parcelToPlaceToDoForm.size() == 2 && minNeedPartels > 1) {
 
                 if (board.playableParcel(parcelToPlaceToDoForm.get(0)))
-                    return parcelToPlaceToDoForm.get(0);
+                    bestCoord = parcelToPlaceToDoForm.get(0);
 
                 else if (board.playableParcel(parcelToPlaceToDoForm.get(1)))
-                    return parcelToPlaceToDoForm.get(1);
+                    bestCoord = parcelToPlaceToDoForm.get(1);
             }
         }
-
-        int rdmListPlace = rand.nextInt(board.getPlayablePlaces().size());
-        return board.getPlayablePlaces().get(rdmListPlace);
+        return bestCoord;
     }
 
     //renvoie une liste de toute les parcelles pas posé pour faire la forme [form] qui a pour parcel haute [x,y,z]
-    ArrayList<Coordinate> parcelToPlaceToDoForm(Coordinate coord, String form, String color){
+    ArrayList<Coordinate> parcelToPlaceToDoForm(Coordinate coordHight, String form, String color){
         ArrayList<Coordinate> parcelToPlaceToDoForm = new ArrayList<>();
-        int x = coord.getCoordinate()[0];
-        int y = coord.getCoordinate()[1];
-        int z = coord.getCoordinate()[2];
+        int x = coordHight.getCoordinate()[0];
+        int y = coordHight.getCoordinate()[1];
+        int z = coordHight.getCoordinate()[2];
 
         for (int i = 0; i < 3; i++) {
+            Coordinate coord = new Coordinate(x, y, z);
             if((x==0 && y==0 && z==0) || (board.isPlacedParcel(coord) && !board.getPlacedParcels().get(coord).getColor().equals(color)))
                 return new ArrayList<>();
 
             if(form.equals("line")) {
-                if (!board.isPlacedParcel(new Coordinate(x, y, z)))
-                    parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
+                if (!board.isPlacedParcel(coord))
+                    parcelToPlaceToDoForm.add(coord);
                 y--;
                 z++;
             }
             else if(form.equals("triangle")) {
-                if(!board.isPlacedParcel(new Coordinate(x, y, z)))
-                    parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
+                if(!board.isPlacedParcel(coord))
+                    parcelToPlaceToDoForm.add(coord);
                 x = x - 1 + (2 * i); //x-- pour la parcel 2, x++ pour la parcel 3
                 y = y - i; //y pour la parcel 2, y-- pour la parcel 3
                 z = z + 1 - i; //z++ pour la parcel 2, z pour la parcel 3

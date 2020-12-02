@@ -7,6 +7,7 @@ class Board {
     private final Map<Coordinate, Parcel> placedParcels = new HashMap<>();
     private final Set<Coordinate> irrigatedParcels = new HashSet<>();
     private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
+    private final Set<Coordinate> allPlaces = new HashSet<>();
 
     Board() {
         initializeCenter();
@@ -55,6 +56,9 @@ class Board {
         if(playableParcel(newCoordinate)){
             placedParcels.put(newCoordinate,newParcel.setCoordinates(newCoordinate));
             playablePlaces.remove(newCoordinate);
+            allPlaces.add(newCoordinate);
+            allPlaces.addAll(newCoordinate.coordinatesAround());
+
             for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
                 if(coordinate.isCentral()) {
                     irrigatedParcels.add(newParcel.setIrrigated());
@@ -99,15 +103,13 @@ class Board {
 
     //Renvoie une liste des places jouables
     List<Coordinate> getPlayablePlaces(){
-        return new ArrayList(playablePlaces);
+        return new ArrayList<>(playablePlaces);
     }
 
-    //Renvoie une liste de toutes les places occupées et jouables
+    //Renvoie une liste de toutes les places occupé et autour des parcels jouées
     List<Coordinate> getAllPlaces() {
-        Set<Coordinate> allPlaces = new HashSet<>(placedParcels.keySet());
-        allPlaces.addAll(getPlayablePlaces());
         allPlaces.remove(new Coordinate(0,0,0));
-        return new ArrayList(allPlaces);
+        return new ArrayList<>(allPlaces);
     }
 
     //Renvoie une map des parcelles placées
@@ -117,7 +119,7 @@ class Board {
 
     //Renvoie une liste des parcelles irriguées
     List<Coordinate> getIrrigatedParcels() {
-        return new ArrayList(irrigatedParcels);
+        return new ArrayList<>(irrigatedParcels);
     }
 
     //Renvoie une map des canaux placés
