@@ -1,15 +1,15 @@
 package fr.unice.polytech.startingpoint;
 
-class BambooMission extends Mission{
-    BambooMission(int points){
+class PeasantMission extends Mission{
+    PeasantMission(int points){
         super(points);
     }
 
     @Override
     int checkMission(Board board, Bot bot) {
-        if(bot.getInventoryBamboo()[0] > 0) {
-            bot.deleteBamboo();
-            return points;
+        for (Parcel parcel : board.getPlacedParcels().values()) {
+            if (parcel.getNbBamboo() == 2)
+                return points;
         }
         return 0;
     }

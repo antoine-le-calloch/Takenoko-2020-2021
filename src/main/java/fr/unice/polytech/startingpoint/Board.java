@@ -4,6 +4,7 @@ import java.util.*;
 
 class Board {
     private final Panda panda;
+    private final Peasant peasant;
 
     private final Set<Coordinate> playablePlaces = new HashSet<>();
     private final Map<Coordinate, Parcel> placedParcels = new HashMap<>();
@@ -13,6 +14,7 @@ class Board {
     Board() {
         initializeCenter();
         panda = new Panda();
+        peasant = new Peasant();
     }
 
     //Initialise la case centrale
@@ -140,7 +142,11 @@ class Board {
         return placedCanals;
     }
 
-    public Panda getPanda() {
+    Panda getPanda() {
         return panda;
+    }
+
+    Peasant getPeasant() {
+        return peasant;
     }
 }

@@ -7,17 +7,17 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BambooMissionTest {
+public class PandaMissionTest {
     Board board;
     Resource resource;
-    BambooMission mission1;
-    BambooMission mission2;
+    PandaMission mission1;
+    PandaMission mission2;
     RandomBot bot;
 
     @BeforeEach
     void setUp(){
-        mission1 = new BambooMission(2);
-        mission2 = new BambooMission(3);
+        mission1 = new PandaMission(2);
+        mission2 = new PandaMission(3);
         board = new Board();
         resource = new Resource();
         bot = new RandomBot(resource, board);

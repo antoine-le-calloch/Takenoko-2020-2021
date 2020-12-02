@@ -103,20 +103,20 @@ class BotTest {
 
     @Test
     public void notExistPossibleCoordinatesBamboo(){
-        assertEquals(null, bot1.possibleCoordinatesBamboo());
+        assertEquals(null, bot1.possibleCoordinatesPanda());
     }
 
     @Test
     public void ExistPossibleCoordinatesBamboo(){
         board.isPlacedParcel(parcel1,new Coordinate(1,-1,0));
         assertTrue(parcel1.getIrrigated());
-        assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesBamboo());
+        assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesPanda());
     }
 
     @Test
     public void moveKoala(){
         board.isPlacedParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.movePanda(bot1.possibleCoordinatesBamboo());
+        bot1.movePanda(bot1.possibleCoordinatesPanda());
         assertEquals(1,bot1.getInventoryBamboo()[0]);
         assertEquals(0, parcel1.getNbBamboo());
     }

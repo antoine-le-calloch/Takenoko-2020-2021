@@ -27,7 +27,20 @@ abstract class Bot {
         }
     }
 
-    Coordinate possibleCoordinatesBamboo(){
+    void movePeasant(Coordinate coordinate){
+        board.isMovedCharacter(board.getPeasant(),coordinate);
+    }
+
+    //temporaire
+    Coordinate possibleCoordinatesPeasant(){
+        for(Parcel parcel1 : board.getPlacedParcels().values()) {
+            if (parcel1.getNbBamboo() == 1)
+                return parcel1.getCoordinates();
+        }
+        return null;
+    }
+
+    Coordinate possibleCoordinatesPanda(){
         for(Parcel parcel1 : board.getPlacedParcels().values()) {
             if (parcel1.getNbBamboo() > 0)
                 return parcel1.getCoordinates();

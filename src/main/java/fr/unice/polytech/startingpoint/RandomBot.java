@@ -17,18 +17,22 @@ class RandomBot extends Bot {
     //Action d'un bot pendant un tour
     @Override
     void botPlay(){
-        int nb = random.nextInt(3);
+        int nb = random.nextInt(5);
         if (nb == 0 && resource.getMission().size() > 0) {   // pioche mission
             drawMission();
         }
         else if (nb ==1 && resource.getCanal().size() > 0) {  // place canal
             if (possibleCoordinatesCanal().size() > 0)
                 placeRandomCanal(possibleCoordinatesCanal());
-        }
+        }/*
         else if (nb ==2 && board.getPlayablePlaces().size() > 0){ // place parcel
             placeRandomParcel(board.getPlayablePlaces());
         }
-        else if (possibleCoordinatesCanal() != null)
+        else if (nb == 3 && possibleCoordinatesBamboo() != null) {
             movePanda(possibleCoordinatesBamboo());
+        }*/
+        else if (possibleCoordinatesPeasant() != null) {
+            movePeasant(possibleCoordinatesPeasant());
+        }
     }
 }

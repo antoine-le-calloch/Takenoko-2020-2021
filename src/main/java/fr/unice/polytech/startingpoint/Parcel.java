@@ -25,8 +25,12 @@ class Parcel {
     }
 
     //Ajoute un bamboo à la parcelle
-    void addBamboo(){
-        nbBamboo ++;
+    boolean addBamboo(){
+        if (nbBamboo < 5){
+            nbBamboo ++;
+            return true;
+        }
+        return false;
     }
 
     //Supprime un bambou de la parcelle
