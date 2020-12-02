@@ -16,7 +16,7 @@ class IntelligentBot extends Bot{
 
     @Override
     void botPlay(){
-        if (!doDrawMission() && resource.getMission().size() > 0)
+        if (!doDrawMission() && resource.getNbMission() > 0)
             drawMission();
         if (resource.getParcel().size() > 0)
             putParcel();

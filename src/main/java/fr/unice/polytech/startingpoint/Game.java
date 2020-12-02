@@ -48,7 +48,7 @@ class Game {
 
     //Renvoie true si l'une ou plusieurs des ressources sont épuisées
     boolean isoutofsources(){
-        if (resource.getMission().size()==0)
+        if (resource.getNbMission()==0)
             return true;
         if(resource.getParcel().size()==0)
             return true;

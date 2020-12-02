@@ -18,7 +18,7 @@ abstract class Bot {
 
     //Pioche une mission
     void drawMission(){
-        inventoryMission.add(resource.drawMission());
+        inventoryMission.add(resource.drawMission("parcel"));
     }
 
     void movePanda(Coordinate coordinate){
