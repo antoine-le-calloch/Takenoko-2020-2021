@@ -115,6 +115,11 @@ class Resource {
     }
 
     //Renvoie la liste du deck de canaux
+    int getNbMissionParcel(){
+        return deckMissionParcel.size();
+    }
+
+    //Renvoie la liste du deck de canaux
     List<Canal> getCanal(){
         return deckCanal;
     }

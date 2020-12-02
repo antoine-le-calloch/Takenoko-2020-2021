@@ -3,14 +3,10 @@ package fr.unice.polytech.startingpoint;
 import java.util.Random;
 
 class RandomBot extends Bot {
-    private Random random;
-    private Resource resource;
-    private Board board;
+    private final Random random;
 
     RandomBot(Resource resource, Board board) {
         super(resource, board);
-        this.resource = resource;
-        this.board = board;
         random = new Random();
     }
 
@@ -18,7 +14,7 @@ class RandomBot extends Bot {
     @Override
     void botPlay(){
         int nb = random.nextInt(5);
-        if (nb == 0 && resource.getNbMission() > 0) {   // pioche mission
+        if (nb == 0 && resource.getNbMissionParcel() > 0) {   // pioche mission
             drawMission();
         }
         else if (nb ==1 && resource.getCanal().size() > 0) {  // place canal

@@ -25,7 +25,7 @@ class Game {
         int numBot = 0;
         turnLeft = nbBot;
 
-        while(isContinue() != 0 && (!isoutofsources())) {
+        while(isContinue() != 0 && (!isOutOfSources())) {
             botList.get(numBot).botPlay();
             missionDone(numBot);
             numBot = (numBot+1) % nbBot;
@@ -47,7 +47,7 @@ class Game {
     }
 
     //Renvoie true si l'une ou plusieurs des ressources sont épuisées
-    boolean isoutofsources(){
+    boolean isOutOfSources(){
         if (resource.getNbMission()==0)
             return true;
         if(resource.getParcel().size()==0)

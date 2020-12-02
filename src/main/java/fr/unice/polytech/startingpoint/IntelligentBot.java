@@ -11,7 +11,7 @@ class IntelligentBot extends Bot{
 
     @Override
     void botPlay(){
-        if (!doDrawMission() && resource.getNbMission() > 0)
+        if (!doDrawMission() && resource.getNbMissionParcel() > 0)
             drawMission();
         if (resource.getParcel().size() > 0)
             putParcel();
@@ -21,7 +21,7 @@ class IntelligentBot extends Bot{
 
     //Si le bot n'a pas de mission => true
     boolean doDrawMission(){
-        return getInventoryMission().size() > 1;
+        return getInventoryMission().size() > 5;
     }
 
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
@@ -29,8 +29,12 @@ class IntelligentBot extends Bot{
         ParcelMission mission = (ParcelMission) getInventoryMission().get(0);
         String form = mission.getGoal();
         String color = mission.getColor();
+        Parcel newParcel = resource.drawParcel();
 
-        board.placeParcel(resource.drawParcel(), bestCoordForForm(form,color));
+        if(newParcel.getColor().equals(color))
+            board.placeParcel(newParcel, bestCoordForForm(form,color));
+        else
+            board.placeParcel(newParcel, board.getPlayablePlaces().get(1));
     }
 
     //renvoie la coord de la pièce a poser pour terminer le plus vite une forme [form], ou renvoie une coord random
