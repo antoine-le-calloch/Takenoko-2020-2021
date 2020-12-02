@@ -12,7 +12,4 @@ abstract class Mission {
     //Verifie si une mission est faite
     abstract int checkMission(Board board, Bot bot);
 
-    abstract String getGoal();
-
-    abstract String getColor();
 }

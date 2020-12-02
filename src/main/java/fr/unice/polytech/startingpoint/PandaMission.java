@@ -17,14 +17,4 @@ class PandaMission extends Mission{
         }
         return 0;
     }
-
-    @Override
-    String getGoal() {
-        return "null";
-    }
-
-    @Override
-    String getColor() {
-        return "null";
-    }
 }
