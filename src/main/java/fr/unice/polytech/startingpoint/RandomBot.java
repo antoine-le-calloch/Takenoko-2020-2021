@@ -29,7 +29,7 @@ class RandomBot extends Bot {
         }
         else if (possibleCoordinatesCharacter().size() != 0) {
             randomMovePeasant(possibleCoordinatesCharacter());
-        }
-*/
+        }*/
+
     }
 }

@@ -33,9 +33,11 @@ class ParcelMission extends Mission{
             case "triangle":
                 if (checkFormIrrigateWithColor(board,0,1))
                     return points;
+                return 0;
             case "ligne":
                 if (checkFormIrrigateWithColor(board,2,5))
                     return points;
+                return 0;
             default:
                 return 0;
         }

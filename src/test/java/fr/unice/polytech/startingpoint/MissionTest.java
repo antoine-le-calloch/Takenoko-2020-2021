@@ -16,8 +16,8 @@ class MissionTest {
     @BeforeEach void setUp(){
         mission1 = new ParcelMission(2,"triangle","red");
         mission2 = new ParcelMission(3,"ligne","red");
-        mission3 = new PandaMission(0);
-        mission4 = new PandaMission(1);
+        mission3 = new PandaMission(0, "red");
+        mission4 = new PandaMission(1, "red");
         mission5 = new PeasantMission(0);
         mission6 = new PeasantMission(1);
     }

@@ -13,26 +13,54 @@ public class PandaMissionTest {
     PandaMission mission1;
     PandaMission mission2;
     RandomBot bot;
+    Parcel parcel1;
+    Parcel parcel2;
 
     @BeforeEach
     void setUp(){
-        mission1 = new PandaMission(2);
-        mission2 = new PandaMission(3);
+        mission1 = new PandaMission(2, "red");
+        mission2 = new PandaMission(3, "red");
         board = new Board();
         resource = new Resource();
         bot = new RandomBot(resource, board);
+        parcel1 = new Parcel("red");
+        parcel2 = new Parcel("blue");
     }
 
     @Test
-    void missionComplete(){
-        IntStream.range(0, 5).forEach(i -> bot.addBamboo());
+    void missionCompleteGoodColor(){
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel red
+        IntStream.range(0, 5).forEach(i -> {
+            try {
+                bot.addBamboo(parcel1.getColor());
+            } catch (ExceptionTakenoko exceptionTakenoko) {
+                exceptionTakenoko.printStackTrace();
+            }
+        });
         assertEquals(2,mission1.checkMissionPanda(bot));
         assertEquals(4,bot.getInventoryBamboo()[0]);
         assertEquals(2,mission1.checkMission(board, bot));
     }
 
     @Test
-    void missionIncomplete(){
+    void missionIncompleteBadColor(){
+        board.placeParcel(parcel2,new Coordinate(1,-1,0)); // parcel blue
+        IntStream.range(0, 5).forEach(i -> {
+            try {
+                bot.addBamboo(parcel2.getColor());
+            } catch (ExceptionTakenoko exceptionTakenoko) {
+                exceptionTakenoko.printStackTrace();
+            }
+        });
+        assertEquals(0,bot.getInventoryBamboo()[0]);
+        assertEquals(5,bot.getInventoryBamboo()[1]);
+        assertEquals(0,mission1.checkMissionPanda(bot));
+        //assertEquals(4,bot.getInventoryBamboo()[1]);
+        //assertEquals(0,mission1.checkMission(board, bot));
+    }
+
+    @Test
+    void missionIncompleteNoBamboo(){
         assertEquals(0,mission1.checkMissionPanda(bot));
         assertEquals(0,bot.getInventoryBamboo()[0]);
     }

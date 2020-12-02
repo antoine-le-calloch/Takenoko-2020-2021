@@ -6,7 +6,7 @@ abstract class Bot {
     protected final Resource resource;
     protected final Board board;
     protected final List<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
-    protected int[] inventoryBamboo = new int[] {0}; // liste de bamboo -> qu'une seule couleur pour l'instant
+    protected int[] inventoryBamboo = new int[] {0,0}; // liste de bamboo -> red [0] / blue [1]
 
     Bot(Resource resource, Board board) {
         this.resource = resource;
@@ -22,9 +22,9 @@ abstract class Bot {
     }
 
     //Fait bouger le panda
-    void movePanda(Coordinate coordinate){
+    void movePanda(Coordinate coordinate) throws ExceptionTakenoko {
         if(board.moveCharacter(board.getPanda(),coordinate)){
-            addBamboo();
+            addBamboo(board.getPlacedParcels().get(coordinate).getColor());
         }
     }
 
@@ -34,13 +34,21 @@ abstract class Bot {
     }
 
     //Ajoute un bambou à l'inventaire
-    void addBamboo(){
-        inventoryBamboo[0]++;
+    void addBamboo(String color) throws ExceptionTakenoko {
+        switch (color) {
+            case "red" :
+                inventoryBamboo[0]++;
+                break;
+            case "blue" :
+                inventoryBamboo[1]++;
+                break;
+            default: throw new ExceptionTakenoko("invalid color");
+        }
     }
 
     //Retire un bambou àe l'inventaire
-    void deleteBamboo(){
-        inventoryBamboo[0]--;
+    void deleteBamboo(int i){
+        inventoryBamboo[i]--;
     }
 
     //Place une parcelle à une coordonnée de la liste passée en paramètre

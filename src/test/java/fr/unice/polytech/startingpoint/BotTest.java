@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +22,7 @@ class BotTest {
     public void setUp(){
         resource = new Resource();
         board = new Board();
-        parcel1 = new Parcel("noColor");
+        parcel1 = new Parcel("blue");
         parcel2 = new Parcel("noColor");
         canal = new Canal();
         bot1 = new IntelligentBot(resource,board);
@@ -127,5 +128,20 @@ class BotTest {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         bot1.randomMovePeasant(bot1.possibleCoordinatesCharacter());
         assertEquals(2,parcel1.getNbBamboo());
+    }
+
+    @Test
+    public void addInventoryMission() throws ExceptionTakenoko {
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
+        bot1.addBamboo(parcel1.getColor());
+        assertEquals(0,bot1.getInventoryBamboo()[0]);
+        assertEquals(1,bot1.getInventoryBamboo()[1]);
+    }
+
+    @Test
+    public void addInventoryMissionNoColor() throws ExceptionTakenoko {
+        board.placeParcel(parcel2, new Coordinate(1, -1, 0));  // parcel nColor
+        Exception exception = assertThrows(ExceptionTakenoko.class, () -> {bot1.addBamboo(parcel2.getColor());});
+        assertEquals(exception.getMessage(), "invalid color");
     }
 }

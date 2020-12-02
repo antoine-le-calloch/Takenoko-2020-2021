@@ -50,8 +50,10 @@ class Resource {
     //Initialise le deck des mission panda
     private void initializedeckMissionPanda(){
         int nbMissionParcel = 15;
-        for (int i = 0; i < nbMissionParcel; i++){
-            deckMissionPanda.add(new PandaMission(3));
+        deckMissionPanda.add(new PandaMission(3,"blue"));
+        for (int i = 0; i < nbMissionParcel / 2; i++){
+            deckMissionPanda.add(new PandaMission(3,"red"));
+            deckMissionPanda.add(new PandaMission(3,"blue"));
         }
         Collections.shuffle(deckMissionPanda);
     }
