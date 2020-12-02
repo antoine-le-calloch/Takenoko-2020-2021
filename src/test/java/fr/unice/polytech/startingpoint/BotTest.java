@@ -63,7 +63,7 @@ class BotTest {
 
     @Test
     public void initializeNextCoordinatesAwayFromCentral(){
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.isPlacedParcel(parcel1,new Coordinate(1,-1,0));
         List<Coordinate> awayFromCentral = board.getAllPlaces();
         Collections.shuffle(awayFromCentral);
         Coordinate randomCo=awayFromCentral.get(0);
@@ -78,27 +78,27 @@ class BotTest {
     public void possibleCoordinatesParcelTest(){
         List<Coordinate> possibleCo = board.getPlayablePlaces();
         Collections.shuffle(possibleCo);
-        assertTrue(board.playableParcel(possibleCo.get(0)));
+        assertTrue(board.isPlayableParcel(possibleCo.get(0)));
     }
 
     @Test
     public void notPossibleCoordinatesCanal(){
         List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
         assertEquals(possibleCanals.size(),0);
-        board.placeParcel(parcel1,new Coordinate(2,-2,0));
-        board.placeCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));
+        board.isPlacedParcel(parcel1,new Coordinate(2,-2,0));
+        board.isPlacedCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));
         List<Coordinate[]>possibleCanals2 = bot1.possibleCoordinatesCanal();
         assertEquals(possibleCanals2.size(),0);
     }
 
     @Test
     public void possibleCoordinatesCanal(){
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
+        board.isPlacedParcel(parcel1,new Coordinate(1,-1,0));
+        board.isPlacedParcel(parcel2,new Coordinate(1,0,-1));
         List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
         Collections.shuffle(possibleCanals);
         Coordinate[] tabco = possibleCanals.get(0);
-        assertTrue(board.playableCanal(tabco[0],tabco[1]));
+        assertTrue(board.isPlayableCanal(tabco[0],tabco[1]));
     }
 
     @Test
@@ -108,15 +108,15 @@ class BotTest {
 
     @Test
     public void ExistPossibleCoordinatesBamboo(){
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.isPlacedParcel(parcel1,new Coordinate(1,-1,0));
         assertTrue(parcel1.getIrrigated());
         assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesBamboo());
     }
 
     @Test
     public void moveKoala(){
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.moveKoala(bot1.possibleCoordinatesBamboo());
+        board.isPlacedParcel(parcel1,new Coordinate(1,-1,0));
+        bot1.movePanda(bot1.possibleCoordinatesBamboo());
         assertEquals(1,bot1.getInventoryBamboo()[0]);
         assertEquals(0, parcel1.getNbBamboo());
     }

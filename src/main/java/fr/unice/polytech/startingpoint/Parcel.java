@@ -30,9 +30,12 @@ class Parcel {
     }
 
     //Supprime un bambou de la parcelle
-    void delBamboo(){
-        if (nbBamboo > 0)
+    boolean delBamboo(){
+        if (nbBamboo > 0){
             nbBamboo --;
+            return true;
+        }
+        return false;
     }
 
     int getNbBamboo(){

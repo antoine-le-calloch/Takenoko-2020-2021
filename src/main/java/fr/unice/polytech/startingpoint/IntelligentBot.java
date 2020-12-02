@@ -34,7 +34,7 @@ class IntelligentBot extends Bot{
         String form = getInventoryMission().get(0).getGoal();
         String color = getInventoryMission().get(0).getColor();
 
-        board.placeParcel(resource.drawParcel(), bestCoordForForm(form,color));
+        board.isPlacedParcel(resource.drawParcel(), bestCoordForForm(form,color));
     }
 
     //renvoie la coord de la pièce a poser pour terminer le plus vite une forme [form], ou renvoie une coord random
@@ -43,15 +43,15 @@ class IntelligentBot extends Bot{
         for (Coordinate coord : board.getAllPlaces()) {
             List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form,color);
 
-            if(parcelToPlaceToDoForm.size() == 1 && board.playableParcel(parcelToPlaceToDoForm.get(0)))
+            if(parcelToPlaceToDoForm.size() == 1 && board.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
                 return parcelToPlaceToDoForm.get(0);
 
             else if(parcelToPlaceToDoForm.size() == 2) {
 
-                if (board.playableParcel(parcelToPlaceToDoForm.get(0)))
+                if (board.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
                     return parcelToPlaceToDoForm.get(0);
 
-                else if (board.playableParcel(parcelToPlaceToDoForm.get(1)))
+                else if (board.isPlayableParcel(parcelToPlaceToDoForm.get(1)))
                     return parcelToPlaceToDoForm.get(1);
             }
         }
@@ -92,7 +92,7 @@ class IntelligentBot extends Bot{
         for(Parcel parcel : board.getPlacedParcels().values()){
             for(Coordinate[] canal : possibleCoordinatesCanal()){
                 if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){
-                    board.placeCanal(resource.drawCanal(),canal[0],canal[1]);
+                    board.isPlacedCanal(resource.drawCanal(),canal[0],canal[1]);
                     return true;
                 }
             }

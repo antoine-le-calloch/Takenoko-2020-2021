@@ -21,9 +21,10 @@ abstract class Bot {
         inventoryMission.add(resource.drawMission());
     }
 
-    void moveKoala(Coordinate coordinate){
-        board.getPlacedParcels().get(coordinate).delBamboo();
-        addBamboo();
+    void movePanda(Coordinate coordinate){
+        if(board.isMovedCharacter(board.getPanda(),coordinate)){
+            addBamboo();
+        }
     }
 
     Coordinate possibleCoordinatesBamboo(){
@@ -47,13 +48,13 @@ abstract class Bot {
     //Place une parcelle à une coordonnée de la liste passé en paramètre
     void placeRandomParcel(List<Coordinate> listCoord){
         Collections.shuffle(listCoord);
-        board.placeParcel(resource.drawParcel(), listCoord.get(0));
+        board.isPlacedParcel(resource.drawParcel(), listCoord.get(0));
     }
 
     //Place un canal à une coordonnée de la liste passé en paramètre
     void placeRandomCanal(List<Coordinate[]> listCoord) {
         Collections.shuffle(listCoord);
-        board.placeCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
+        board.isPlacedCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
     }
 
     //Renvoie une liste des coordonnées possibles pour les canaux
@@ -61,7 +62,7 @@ abstract class Bot {
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
         for(Parcel parcel1 : board.getPlacedParcels().values()){
             for(Parcel parcel2 : board.getPlacedParcels().values()){
-                if (board.playableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
+                if (board.isPlayableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
                     possibleCoordinates.add(new Coordinate[]{parcel1.getCoordinates(),parcel2.getCoordinates()});
             }
         }

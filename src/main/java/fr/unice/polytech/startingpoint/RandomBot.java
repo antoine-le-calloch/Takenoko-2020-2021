@@ -29,6 +29,6 @@ class RandomBot extends Bot {
             placeRandomParcel(board.getPlayablePlaces());
         }
         else if (possibleCoordinatesCanal() != null)
-            moveKoala(possibleCoordinatesBamboo());
+            movePanda(possibleCoordinatesBamboo());
     }
 }
