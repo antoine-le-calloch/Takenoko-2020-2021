@@ -78,7 +78,7 @@ class BotTest {
     public void possibleCoordinatesParcelTest(){
         List<Coordinate> possibleCo = board.getPlayablePlaces();
         Collections.shuffle(possibleCo);
-        assertTrue(board.playableParcel(possibleCo.get(0)));
+        assertTrue(board.isPlayableParcel(possibleCo.get(0)));
     }
 
     @Test
@@ -98,26 +98,34 @@ class BotTest {
         List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
         Collections.shuffle(possibleCanals);
         Coordinate[] tabco = possibleCanals.get(0);
-        assertTrue(board.playableCanal(tabco[0],tabco[1]));
+        assertTrue(board.isPlayableCanal(tabco[0],tabco[1]));
     }
 
     @Test
     public void notExistPossibleCoordinatesBamboo(){
-        assertEquals(null, bot1.possibleCoordinatesBamboo());
+        assertEquals(null, bot1.possibleCoordinatesPanda());
     }
 
     @Test
     public void ExistPossibleCoordinatesBamboo(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         assertTrue(parcel1.getIrrigated());
-        assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesBamboo());
+        assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesPanda());
     }
 
     @Test
-    public void moveKoala(){
+    public void movePanda(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.moveKoala(bot1.possibleCoordinatesBamboo());
+        bot1.movePanda(bot1.possibleCoordinatesPanda());
         assertEquals(1,bot1.getInventoryBamboo()[0]);
         assertEquals(0, parcel1.getNbBamboo());
     }
+
+    @Test
+    public void movePeasant(){
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        bot1.movePeasant(bot1.possibleCoordinatesPanda());
+        assertEquals(2,parcel1.getNbBamboo());
+    }
+
 }

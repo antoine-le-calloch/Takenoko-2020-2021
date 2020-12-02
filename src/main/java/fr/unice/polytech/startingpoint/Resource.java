@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 class Resource {
-    private final List<Mission> deckMission = new ArrayList<>();
+    private final List<Mission> deckMissionParcel = new ArrayList<>();
+    private final List<Mission> deckMissionPanda = new ArrayList<>();
+    private final List<Mission> deckMissionPeasant = new ArrayList<>();
     private final List<Parcel> deckParcel = new ArrayList<>();
     private final List<Canal> deckCanal = new ArrayList<>();
 
@@ -27,16 +29,42 @@ class Resource {
 
     //Création de toutes les missions et on les ajoute dans le deck missions
     private void initializedeckMission() {
-        int nbMission = 32;
-        for (int i = 0; i < nbMission / 4; i++) {
-            deckMission.add(new ParcelMission(2, "triangle","red"));
-            deckMission.add(new ParcelMission(3, "triangle","blue"));
-            deckMission.add(new ParcelMission(3, "line","red"));
-            //deckMission.add(new ParcelMission(4, "line","blue"));
-            deckMission.add(new BambooMission(1000000));
-        }
-        Collections.shuffle(deckMission);
+        initializedeckMissionParcel();
+        initializedeckMissionPanda();
+        initializedeckMissionPeasant();
     }
+
+    //Initialise le deck des mission parcelles
+    private void initializedeckMissionParcel(){
+        int nbMissionParcel = 15;
+        for (int i = 0; i < nbMissionParcel / 5; i++){
+            deckMissionParcel.add(new ParcelMission(2, "triangle","red"));
+            deckMissionParcel.add(new ParcelMission(3, "triangle","blue"));
+            deckMissionParcel.add(new ParcelMission(3, "line","red"));
+            deckMissionParcel.add(new ParcelMission(4, "line","blue"));
+            deckMissionParcel.add(new ParcelMission(4, "line","blue"));
+        }
+        Collections.shuffle(deckMissionParcel);
+    }
+
+    //Initialise le deck des mission panda
+    private void initializedeckMissionPanda(){
+        int nbMissionParcel = 15;
+        for (int i = 0; i < nbMissionParcel; i++){
+            deckMissionPanda.add(new PandaMission(3));
+        }
+        Collections.shuffle(deckMissionPanda);
+    }
+
+    //Initialise le deck des mission peasant
+    private void initializedeckMissionPeasant(){
+        int nbMissionParcel = 15;
+        for (int i = 0; i < nbMissionParcel; i++){
+            deckMissionPeasant.add(new PeasantMission(4));
+        }
+        Collections.shuffle(deckMissionPeasant);
+    }
+
 
     //Initialise le deck des canaux
     private void initializedeckCanal(){
@@ -54,10 +82,24 @@ class Resource {
     }
 
     //Pioche une mission du deck
-    Mission drawMission() {
-        Mission mission = deckMission.get(0);
-        deckMission.remove(mission);
-        return mission;
+    Mission drawMission(String type) {
+        Mission mission = null;
+        switch (type) {
+            case "parcel":
+                mission = deckMissionParcel.get(0);
+                deckMissionParcel.remove(mission);
+                return mission;
+            case "panda":
+                mission = deckMissionPanda.get(0);
+                deckMissionPanda.remove(mission);
+                return mission;
+            case "peasant":
+                mission = deckMissionPeasant.get(0);
+                deckMissionPeasant.remove(mission);
+                return mission;
+            default:
+                return mission;
+        }
     }
 
     //Pioche un canal du deck
@@ -78,7 +120,7 @@ class Resource {
     }
 
     //Renvoie la liste du deck de missions
-    List<Mission> getMission(){
-        return deckMission;
+    int getNbMission(){
+        return deckMissionPanda.size() + deckMissionParcel.size() + deckMissionPeasant.size();
     }
 }

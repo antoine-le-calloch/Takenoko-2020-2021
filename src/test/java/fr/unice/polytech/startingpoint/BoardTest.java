@@ -85,21 +85,21 @@ public class BoardTest {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
-        assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
-        assertFalse(board.playableCanal(new Coordinate(1,-1,0),new Coordinate(0,-1,1)));
+        assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
+        assertFalse(board.isPlayableCanal(new Coordinate(1,-1,0),new Coordinate(0,-1,1)));
     }
     @Test void wrongPlacementCanalawayFromcentral(){
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(1,-2,1)));
+        assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-2,1)));
     }
 
     @Test void wrongPlacementCanal(){
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
-        assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(0,-2,2)));
+        assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(0,-2,2)));
     }
 
     @Test void invalideCoordinatesforCanal(){
@@ -109,7 +109,7 @@ public class BoardTest {
     }
 
     @Test void parcelInexistantsoNoCanal(){
-        assertFalse(board.playableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
-        assertFalse(board.playableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0)));
+        assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
+        assertFalse(board.isPlayableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0)));
     }
 }

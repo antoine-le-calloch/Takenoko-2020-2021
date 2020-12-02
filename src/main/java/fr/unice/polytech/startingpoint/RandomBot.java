@@ -17,8 +17,8 @@ class RandomBot extends Bot {
     //Action d'un bot pendant un tour
     @Override
     void botPlay(){
-        int nb = random.nextInt(3);
-        if (nb == 0 && resource.getMission().size() > 0) {   // pioche mission
+        int nb = random.nextInt(5);
+        if (nb == 0 && resource.getNbMission() > 0) {   // pioche mission
             drawMission();
         }
         else if (nb ==1 && resource.getCanal().size() > 0) {  // place canal
@@ -28,7 +28,11 @@ class RandomBot extends Bot {
         else if (nb ==2 && board.getPlayablePlaces().size() > 0){ // place parcel
             placeRandomParcel(board.getPlayablePlaces());
         }
-        else if (possibleCoordinatesCanal() != null)
-            moveKoala(possibleCoordinatesBamboo());
+        else if (nb == 3 && possibleCoordinatesPanda() != null) {
+            movePanda(possibleCoordinatesPanda());
+        }
+        else if (possibleCoordinatesPeasant() != null) {
+            movePeasant(possibleCoordinatesPeasant());
+        }
     }
 }

@@ -18,13 +18,11 @@ class ParcelMission extends Mission{
     }
 
     //Renvoie l'objectif de la mission
-    @Override
     String getGoal(){
         return goalForm;
     }
 
     //Renvoie la couleur de la mission
-    @Override
     String getColor() {
         return goalColor;
     }

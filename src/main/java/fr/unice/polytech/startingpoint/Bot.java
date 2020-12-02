@@ -18,15 +18,29 @@ abstract class Bot {
 
     //Pioche une mission
     void drawMission(){
-        inventoryMission.add(resource.drawMission());
+        inventoryMission.add(resource.drawMission("parcel"));
     }
 
-    void moveKoala(Coordinate coordinate){
-        board.getPlacedParcels().get(coordinate).delBamboo();
-        addBamboo();
+    void movePanda(Coordinate coordinate){
+        if(board.movedCharacter(board.getPanda(),coordinate)){
+            addBamboo();
+        }
     }
 
-    Coordinate possibleCoordinatesBamboo(){
+    void movePeasant(Coordinate coordinate){
+        board.movedCharacter(board.getPeasant(),coordinate);
+    }
+
+    //temporaire
+    Coordinate possibleCoordinatesPeasant(){
+        for(Parcel parcel1 : board.getPlacedParcels().values()) {
+            if (parcel1.getNbBamboo() == 1)
+                return parcel1.getCoordinates();
+        }
+        return null;
+    }
+
+    Coordinate possibleCoordinatesPanda(){
         for(Parcel parcel1 : board.getPlacedParcels().values()) {
             if (parcel1.getNbBamboo() > 0)
                 return parcel1.getCoordinates();
@@ -61,7 +75,7 @@ abstract class Bot {
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
         for(Parcel parcel1 : board.getPlacedParcels().values()){
             for(Parcel parcel2 : board.getPlacedParcels().values()){
-                if (board.playableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
+                if (board.isPlayableCanal(parcel1.getCoordinates(),parcel2.getCoordinates()))
                     possibleCoordinates.add(new Coordinate[]{parcel1.getCoordinates(),parcel2.getCoordinates()});
             }
         }

@@ -21,7 +21,7 @@ public class ResourceTest {
     }
 
     @Test public void goodInitializeMission(){
-        assertEquals(32, resource.getMission().size());
+        assertEquals(45, resource.getNbMission());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ResourceTest {
 
     @Test
     public void missionDecrease(){
-        resource.drawMission();
-        assertEquals(31,resource.getMission().size());
+        resource.drawMission("panda");
+        assertEquals(44,resource.getNbMission());
     }
 }

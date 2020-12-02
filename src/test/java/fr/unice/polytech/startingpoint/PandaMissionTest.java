@@ -7,17 +7,17 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BambooMissionTest {
+public class PandaMissionTest {
     Board board;
     Resource resource;
-    BambooMission mission1;
-    BambooMission mission2;
+    PandaMission mission1;
+    PandaMission mission2;
     RandomBot bot;
 
     @BeforeEach
     void setUp(){
-        mission1 = new BambooMission(2);
-        mission2 = new BambooMission(3);
+        mission1 = new PandaMission(2);
+        mission2 = new PandaMission(3);
         board = new Board();
         resource = new Resource();
         bot = new RandomBot(resource, board);
@@ -26,13 +26,14 @@ public class BambooMissionTest {
     @Test
     void missionComplete(){
         IntStream.range(0, 5).forEach(i -> bot.addBamboo());
-        assertEquals(2,mission1.checkMission(board,bot));
+        assertEquals(2,mission1.checkMissionPanda(bot));
         assertEquals(4,bot.getInventoryBamboo()[0]);
+        assertEquals(2,mission1.checkMission(board, bot));
     }
 
     @Test
     void missionIncomplete(){
-        assertEquals(0,mission1.checkMission(board,bot));
+        assertEquals(0,mission1.checkMissionPanda(bot));
         assertEquals(0,bot.getInventoryBamboo()[0]);
     }
 }

@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 class IntelligentBot extends Bot{
 
@@ -12,7 +11,7 @@ class IntelligentBot extends Bot{
 
     @Override
     void botPlay(){
-        if (!doDrawMission() && resource.getMission().size() > 0)
+        if (!doDrawMission() && resource.getNbMission() > 0)
             drawMission();
         if (resource.getParcel().size() > 0)
             putParcel();
@@ -27,8 +26,9 @@ class IntelligentBot extends Bot{
 
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     void putParcel() {
-        String form = getInventoryMission().get(0).getGoal();
-        String color = getInventoryMission().get(0).getColor();
+        ParcelMission mission = (ParcelMission) getInventoryMission().get(0);
+        String form = mission.getGoal();
+        String color = mission.getColor();
 
         board.placeParcel(resource.drawParcel(), bestCoordForForm(form,color));
     }
@@ -41,16 +41,16 @@ class IntelligentBot extends Bot{
         for (Coordinate coord : board.getAllPlaces()) {
             List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form,color);
 
-            if(parcelToPlaceToDoForm.size() == 1 && board.playableParcel(parcelToPlaceToDoForm.get(0))) {
+            if(parcelToPlaceToDoForm.size() == 1 && board.isPlayableParcel(parcelToPlaceToDoForm.get(0))) {
                 bestCoord = parcelToPlaceToDoForm.get(0);
                 minNeedPartels = 1;
             }
             else if(parcelToPlaceToDoForm.size() == 2 && minNeedPartels > 1) {
 
-                if (board.playableParcel(parcelToPlaceToDoForm.get(0)))
+                if (board.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
                     bestCoord = parcelToPlaceToDoForm.get(0);
 
-                else if (board.playableParcel(parcelToPlaceToDoForm.get(1)))
+                else if (board.isPlayableParcel(parcelToPlaceToDoForm.get(1)))
                     bestCoord = parcelToPlaceToDoForm.get(1);
             }
         }
