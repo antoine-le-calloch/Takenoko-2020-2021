@@ -1,14 +1,16 @@
 package fr.unice.polytech.startingpoint;
 
-class PandaMission extends Mission{
+class PandaMission implements Mission{
+    final int points;
     String color;
+
     PandaMission(int points, String color){
-        super(points);
         this.color = color;
+        this.points = points;
     }
 
     @Override
-    int checkMission(Board board, Bot bot) {
+    public int checkMission(Board board, Bot bot) {
         return checkMissionPanda(bot);
     }
 

@@ -2,14 +2,9 @@ package fr.unice.polytech.startingpoint;
 
 import java.lang.String;
 
-abstract class Mission {
-    final int points;
-
-    Mission(int points) {
-        this.points = points;
-    }
+interface Mission {
 
     //Verifie si une mission est faite
-    abstract int checkMission(Board board, Bot bot);
+    int checkMission(Board board, Bot bot);
 
 }

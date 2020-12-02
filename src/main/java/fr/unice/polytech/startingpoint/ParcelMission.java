@@ -1,19 +1,20 @@
 package fr.unice.polytech.startingpoint;
 
 
-class ParcelMission extends Mission{
+class ParcelMission implements Mission{
+    final int points;
     private final String goalForm;
     private final String goalColor;
 
     ParcelMission(int points, String goalForm, String goalColor) {
-        super(points);
         this.goalForm = goalForm;
         this.goalColor = goalColor;
+        this.points = points;
     }
 
     //Vérifie si une mission est faite
     @Override
-    int checkMission(Board board, Bot bot){
+    public int checkMission(Board board, Bot bot){
         return checkMissionParcel(board);
     }
 

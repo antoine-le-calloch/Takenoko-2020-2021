@@ -1,12 +1,13 @@
 package fr.unice.polytech.startingpoint;
 
-class PeasantMission extends Mission{
+class PeasantMission implements Mission{
+    final int points;
     PeasantMission(int points){
-        super(points);
+        this.points = points;
     }
 
     @Override
-    int checkMission(Board board, Bot bot) {
+    public int checkMission(Board board, Bot bot) {
         return checkMissionPeasant(board);
     }
 
