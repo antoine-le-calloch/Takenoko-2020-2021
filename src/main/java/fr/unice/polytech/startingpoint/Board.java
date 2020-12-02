@@ -20,7 +20,7 @@ class Board {
 
     //Initialise la case centrale
     private void initializeCenter() {
-        placedParcels.put(new Coordinate(0, 0, 0),new Parcel("noColor",new Coordinate(0, 0, 0)));
+        placedParcels.put(new Coordinate(0, 0, 0),new Parcel("noColor").setCoordinates(new Coordinate(0, 0, 0)));
         playablePlaces.addAll(Coordinate.offSets());
     }
 
