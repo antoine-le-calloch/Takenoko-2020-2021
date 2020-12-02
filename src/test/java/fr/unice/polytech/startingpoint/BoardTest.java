@@ -112,4 +112,21 @@ public class BoardTest {
         assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
         assertFalse(board.isPlayableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0)));
     }
+
+    @Test
+    void goodMoveCharacter(){
+        board.placeParcel(new Parcel("color"), new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel("color"), new Coordinate(1,0,-1));
+        board.placeParcel(new Parcel("color"), new Coordinate(2,-1,-1));
+        assertTrue(board.moveCharacter(board.getPanda(),new Coordinate(1,-1,0)));
+        assertTrue(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
+    }
+
+    @Test
+    void wrongMoveCharacter(){
+        board.placeParcel(new Parcel("color"), new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel("color"), new Coordinate(1,0,-1));
+        board.placeParcel(new Parcel("color"), new Coordinate(2,-1,-1));
+        assertFalse(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
+    }
 }

@@ -12,13 +12,14 @@ class BotTest {
     private Bot bot1;
     private Bot bot2;
     private Board board;
+    private Resource resource;
     private Parcel parcel1;
     private Parcel parcel2;
     private Canal canal;
 
     @BeforeEach
     public void setUp(){
-        Resource resource = new Resource();
+        resource = new Resource();
         board = new Board();
         parcel1 = new Parcel("noColor");
         parcel2 = new Parcel("noColor");
@@ -103,29 +104,28 @@ class BotTest {
 
     @Test
     public void notExistPossibleCoordinatesBamboo(){
-        assertEquals(null, bot1.possibleCoordinatesPanda());
+        assertEquals(0,bot1.possibleCoordinatesCharacter().size());
     }
 
     @Test
     public void ExistPossibleCoordinatesBamboo(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         assertTrue(parcel1.getIrrigated());
-        assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesPanda());
+        assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesCharacter().get(0));
     }
 
     @Test
     public void movePanda(){
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.movePanda(bot1.possibleCoordinatesPanda());
+        assertTrue(board.placeParcel(parcel1,new Coordinate(1,-1,0)));
+        bot1.randomMovePanda(bot1.possibleCoordinatesCharacter());
         assertEquals(1,bot1.getInventoryBamboo()[0]);
-        assertEquals(0, parcel1.getNbBamboo());
+        assertEquals(0,parcel1.getNbBamboo());
     }
 
     @Test
     public void movePeasant(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.movePeasant(bot1.possibleCoordinatesPanda());
+        bot1.randomMovePeasant(bot1.possibleCoordinatesCharacter());
         assertEquals(2,parcel1.getNbBamboo());
     }
-
 }

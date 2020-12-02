@@ -4,7 +4,7 @@ abstract class Character {
     private Coordinate coordinate;
 
     Character(){
-        new Coordinate(0,0,0);
+        coordinate = new Coordinate(0,0,0);
     }
 
     void setCoordinate(Coordinate coordinate) {

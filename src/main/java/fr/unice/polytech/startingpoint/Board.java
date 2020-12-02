@@ -20,7 +20,7 @@ class Board {
 
     //Initialise la case centrale
     private void initializeCenter() {
-        placedParcels.put(new Coordinate(0, 0, 0),new Parcel("noColor").setCoordinates(new Coordinate(0, 0, 0)));
+        placedParcels.put(new Coordinate(0, 0, 0),new Parcel("noColor",new Coordinate(0, 0, 0)));
         playablePlaces.addAll(Coordinate.offSets());
     }
 
@@ -55,8 +55,18 @@ class Board {
     }
 
     //Renvoie true si un character peut être placé aux coordonnées passées en paramètre
-    boolean isMovableCharacter(Coordinate characterCoordinates, Coordinate coordinate){
-        return true;
+    boolean isMovableCharacter(Character character, Coordinate coordinate){
+        Coordinate characterCoordinates = character.getCoordinate();
+        if(placedParcels.containsKey(coordinate) && coordinate.isOnTheSameLine(characterCoordinates)){
+            if(!characterCoordinates.isNextTo(coordinate)){
+                for(Coordinate coord : Coordinate.getAllCoordinatesBetween(characterCoordinates,coordinate)){
+                    if(!placedParcels.containsKey(coord))
+                        return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     //Place une parcelle sur le board si les conditions le permettent
@@ -68,9 +78,8 @@ class Board {
             allPlaces.addAll(newCoordinate.coordinatesAround());
 
             for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
-                if(coordinate.isCentral()) {
+                if(coordinate.isCentral())
                     irrigatedParcels.add(newParcel.setIrrigated());
-                }
                 if(isPlayableParcel(coordinate))
                     playablePlaces.add(coordinate);
             }
@@ -95,8 +104,9 @@ class Board {
         return false;
     }
 
-    boolean movedCharacter(Character character, Coordinate coordinate){
-        if(isMovableCharacter(character.getCoordinate(),coordinate)){
+    //Fait bouger un personnage et effectue son action si les conditions le permettent
+    boolean moveCharacter(Character character, Coordinate coordinate){
+        if(isMovableCharacter(character,coordinate)){
             character.setCoordinate(coordinate);
             character.action(coordinate,this);
             return true;

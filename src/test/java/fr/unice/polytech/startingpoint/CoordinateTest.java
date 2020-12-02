@@ -60,10 +60,24 @@ public class CoordinateTest {
         assertFalse(coordAround.contains(new Coordinate(0, 0, 0)));
     }
 
-    @Test public void goodNorm(){
+    @Test
+    public void goodNorm(){
         assertEquals(0,Coordinate.getNorm(co1,co1));
         assertEquals(6,Coordinate.getNorm(co1,co3));
         assertEquals(14,Coordinate.getNorm(co1,co4));
     }
 
+    @Test
+    public void onTheSameLine(){
+        assertTrue(new Coordinate(0,0,0).isOnTheSameLine(new Coordinate(1,-1,0)));
+        assertTrue(new Coordinate(0,0,0).isOnTheSameLine(new Coordinate(0,2,-2)));
+        assertTrue(new Coordinate(3,-1,-2).isOnTheSameLine(new Coordinate(-2,-1,3)));
+    }
+
+    @Test
+    public void notOnTheSameLine(){
+        assertFalse(new Coordinate(0,0,0).isOnTheSameLine(new Coordinate(1,-2,1)));
+        assertFalse(new Coordinate(1,-1,0).isOnTheSameLine(new Coordinate(0,2,-2)));
+        assertFalse(new Coordinate(-2,-1,3).isOnTheSameLine(new Coordinate(2,1,-3)));
+    }
 }

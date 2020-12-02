@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.*;
-import java.util.zip.CheckedOutputStream;
 
 public class Coordinate {
     private final int[] coordinate;
@@ -10,11 +9,11 @@ public class Coordinate {
         coordinate = new int[]{x,y,z};
     }
 
-    Coordinate(Coordinate ... coordinates){
+    Coordinate(Coordinate ... cs){
         coordinate = new int[]{0,0,0};
         for(int i = 0; i < coordinate.length; i++){
-            for(Coordinate coord : coordinates){
-                coordinate[i] += coord.getCoordinate()[i];
+            for(Coordinate c : cs){
+                coordinate[i] += c.getCoordinate()[i];
             }
         }
     }
@@ -27,6 +26,26 @@ public class Coordinate {
     //Renvoie si la coordonnée actuelle est centrale
     boolean isCentral() {
         return this.equals(new Coordinate(0,0,0));
+    }
+
+    //Renvoie true si les coordonnées sont sur la même ligne
+    boolean isOnTheSameLine(Coordinate c) {
+        int nbSameCoordinate = 0;
+        for(int i = 0; i < coordinate.length ; i++){
+            if(c.coordinate[i] == coordinate[i]){
+                nbSameCoordinate++;
+            }
+        }
+        return nbSameCoordinate == 1;
+    }
+
+    //Renvoie l'opposé de la coordonnée actuelle
+    Coordinate negative() {
+        Coordinate c = new Coordinate(this);
+        for(int i = 0 ; i < coordinate.length ; i++){
+            c.coordinate[i] = -c.coordinate[i];
+        }
+        return c;
     }
 
     //Renvoie un clone des coordonnées sous forme d'une liste d'entiers
@@ -42,11 +61,45 @@ public class Coordinate {
         return coordinatesAround;
     }
 
+    //Renvoie les coordonnées entre deux coordonnées si elles sont sur la même ligne
+    static List<Coordinate> getAllCoordinatesBetween(Coordinate coordinate1, Coordinate coordinate2) {
+        if(coordinate1.isOnTheSameLine(coordinate2)){
+            Coordinate unitVector = getUnitVector(coordinate1,coordinate2);
+            Coordinate coordinate = new Coordinate(coordinate1,unitVector);
+            List<Coordinate> coordinateBetween = new ArrayList<>();
+            while(!coordinate.equals(coordinate2)){
+                coordinateBetween.add(coordinate);
+                coordinate = new Coordinate(coordinate1,unitVector);
+            }
+            return coordinateBetween;
+        }
+        return new ArrayList<>();
+    }
+
     //Renvoie une liste des coordonnées en commun autour des deux coordonnées passées en paramètre  STATIC
     static List<Coordinate> getInCommonAroundCoordinates(Coordinate c1, Coordinate c2){
         List<Coordinate> inCommonCoordinates = new ArrayList<>(c1.coordinatesAround());
         inCommonCoordinates.retainAll(c2.coordinatesAround());
         return inCommonCoordinates;
+    }
+
+    //Renvoie le vecteur unitaire entre les deux coordonnées
+    static Coordinate getUnitVector(Coordinate c1, Coordinate c2){
+        Coordinate vector = getVector(c1, c2);
+        Coordinate unitVector = new Coordinate(0,0,0);
+        int lowestDistance = getNorm(vector, new Coordinate(0,0,0));
+        for(Coordinate offSet : Coordinate.offSets()){
+            if(getNorm(vector,offSet) < lowestDistance){
+                lowestDistance = getNorm(vector,offSet);
+                unitVector = offSet;
+            }
+        }
+        return unitVector;
+    }
+
+    //Renvoie le vecteur liant les deux coordonnées
+    static Coordinate getVector(Coordinate c1,Coordinate c2){
+        return new Coordinate(c1,c2.negative());
     }
 
     //Renvoie la norme au carré du vecteur reliant les deux coordonnées passées en paramètre  STATIC
@@ -72,7 +125,7 @@ public class Coordinate {
 
     //Renvoie un SortedSet contenant les coordonnées passées en paramètre avec l'outil de comparaison mis à jour pour le type des coordonnées
     static SortedSet<Coordinate> getSortedSet(Coordinate c1, Coordinate c2){
-        SortedSet<Coordinate> sortedSet = new TreeSet<>( new Comparator<Coordinate>() {
+        SortedSet<Coordinate> sortedSet = new TreeSet<>(new Comparator<Coordinate>(){
             @Override
             public int compare(Coordinate o1, Coordinate o2) {
                 for(int i = 0 ; i < o1.coordinate.length ; i++){
@@ -90,7 +143,7 @@ public class Coordinate {
 
     //Renvoie true si les deux coordonnées sont identiques
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (!(obj instanceof Coordinate))
