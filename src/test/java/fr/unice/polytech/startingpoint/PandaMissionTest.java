@@ -26,13 +26,14 @@ public class PandaMissionTest {
     @Test
     void missionComplete(){
         IntStream.range(0, 5).forEach(i -> bot.addBamboo());
-        assertEquals(2,mission1.checkMission(board,bot));
+        assertEquals(2,mission1.checkMissionPanda(bot));
         assertEquals(4,bot.getInventoryBamboo()[0]);
+        assertEquals(2,mission1.checkMission(board, bot));
     }
 
     @Test
     void missionIncomplete(){
-        assertEquals(0,mission1.checkMission(board,bot));
+        assertEquals(0,mission1.checkMissionPanda(bot));
         assertEquals(0,bot.getInventoryBamboo()[0]);
     }
 }

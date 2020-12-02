@@ -27,7 +27,7 @@ class Board {
     boolean isPlayableParcel(Coordinate coord){
         int nbParcelAround = 0;
         for(Coordinate coordAround : coord.coordinatesAround()) {
-            if(isPlacedParcel(coordAround))
+            if(placedParcel(coordAround))
                 nbParcelAround++;
             if(coordAround.isCentral())
                 return true;
@@ -37,16 +37,16 @@ class Board {
 
     //Renvoie true si un canal peut être placé aux coordonnées passées en paramètre
     boolean isPlayableCanal(Coordinate toPlaceCoordinate1, Coordinate toPlaceCoordinate2) {
-        if ( !isPlacedCanal(toPlaceCoordinate1, toPlaceCoordinate2) &&
+        if ( !placedCanal(toPlaceCoordinate1, toPlaceCoordinate2) &&
                 toPlaceCoordinate1.isNextTo(toPlaceCoordinate2) &&
-                isPlacedParcel(toPlaceCoordinate1) && isPlacedParcel(toPlaceCoordinate2) ) {
+                placedParcel(toPlaceCoordinate1) && placedParcel(toPlaceCoordinate2) ) {
             if (toPlaceCoordinate1.isNextTo(new Coordinate(0, 0, 0)) && toPlaceCoordinate2.isNextTo(new Coordinate(0, 0, 0))) {
                 return true;
             }
             for (Coordinate coordinate : Coordinate.getInCommonAroundCoordinates(toPlaceCoordinate1, toPlaceCoordinate2)) {
-                if (isPlacedCanal(toPlaceCoordinate1, coordinate))
+                if (placedCanal(toPlaceCoordinate1, coordinate))
                     return true;
-                if (isPlacedCanal(toPlaceCoordinate2, coordinate))
+                if (placedCanal(toPlaceCoordinate2, coordinate))
                     return true;
             }
         }
@@ -59,7 +59,7 @@ class Board {
     }
 
     //Place une parcelle sur le board si les conditions le permettent
-    boolean isPlacedParcel(Parcel newParcel, Coordinate newCoordinate){
+    boolean placedParcel(Parcel newParcel, Coordinate newCoordinate){
         if(isPlayableParcel(newCoordinate)){
             placedParcels.put(newCoordinate,newParcel.setCoordinates(newCoordinate));
             playablePlaces.remove(newCoordinate);
@@ -76,7 +76,7 @@ class Board {
     }
 
     //Place un canal sur le board si les conditions le permettent
-    boolean isPlacedCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) {
+    boolean placedCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) {
         if (isPlayableCanal(coordinate1, coordinate2)) {
             placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
 
@@ -91,7 +91,7 @@ class Board {
         return false;
     }
 
-    boolean isMovedCharacter(Character character, Coordinate coordinate){
+    boolean movedCharacter(Character character, Coordinate coordinate){
         if(isMovableCharacter(character.getCoordinate(),coordinate)){
             character.setCoordinate(coordinate);
             character.action(coordinate,this);
@@ -101,12 +101,12 @@ class Board {
     }
 
     //Renvoie true si une parcelle est posées aux coordonnées passées en paramètre
-    boolean isPlacedParcel(Coordinate coordinate){
+    boolean placedParcel(Coordinate coordinate){
         return placedParcels.containsKey(coordinate);
     }
 
     //Renvoie true si un canal est posé aux coordonnées passées en paramètre
-    boolean isPlacedCanal(Coordinate coordinate1,Coordinate coordinate2){
+    boolean placedCanal(Coordinate coordinate1, Coordinate coordinate2){
         return placedCanals.containsKey(Coordinate.getSortedSet(coordinate1,coordinate2));
     }
 

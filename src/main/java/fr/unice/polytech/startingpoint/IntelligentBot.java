@@ -34,7 +34,7 @@ class IntelligentBot extends Bot{
         String form = getInventoryMission().get(0).getGoal();
         String color = getInventoryMission().get(0).getColor();
 
-        board.isPlacedParcel(resource.drawParcel(), bestCoordForForm(form,color));
+        board.placedParcel(resource.drawParcel(), bestCoordForForm(form,color));
     }
 
     //renvoie la coord de la pièce a poser pour terminer le plus vite une forme [form], ou renvoie une coord random
@@ -68,17 +68,17 @@ class IntelligentBot extends Bot{
         int z = coord.getCoordinate()[2];
 
         for (int i = 0; i < 3; i++) {
-            if((x==0 && y==0 && z==0) || (board.isPlacedParcel(coord) && !board.getPlacedParcels().get(coord).getColor().equals(color)))
+            if((x==0 && y==0 && z==0) || (board.placedParcel(coord) && !board.getPlacedParcels().get(coord).getColor().equals(color)))
                 return new ArrayList<>();
 
             if(form.equals("line")) {
-                if (!board.isPlacedParcel(new Coordinate(x, y, z)))
+                if (!board.placedParcel(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
                 y--;
                 z++;
             }
             else if(form.equals("triangle")) {
-                if(!board.isPlacedParcel(new Coordinate(x, y, z)))
+                if(!board.placedParcel(new Coordinate(x, y, z)))
                     parcelToPlaceToDoForm.add(new Coordinate(x, y, z));
                 x = x - 1 + (2 * i); //x-- pour la parcel 2, x++ pour la parcel 3
                 y = y - i; //y pour la parcel 2, y-- pour la parcel 3
@@ -92,7 +92,7 @@ class IntelligentBot extends Bot{
         for(Parcel parcel : board.getPlacedParcels().values()){
             for(Coordinate[] canal : possibleCoordinatesCanal()){
                 if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){
-                    board.isPlacedCanal(resource.drawCanal(),canal[0],canal[1]);
+                    board.placedCanal(resource.drawCanal(),canal[0],canal[1]);
                     return true;
                 }
             }

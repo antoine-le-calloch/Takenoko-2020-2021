@@ -7,6 +7,10 @@ class PandaMission extends Mission{
 
     @Override
     int checkMission(Board board, Bot bot) {
+        return checkMissionPanda(bot);
+    }
+
+    int checkMissionPanda(Bot bot){
         if(bot.getInventoryBamboo()[0] > 0) {
             bot.deleteBamboo();
             return points;

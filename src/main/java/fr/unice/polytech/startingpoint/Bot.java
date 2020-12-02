@@ -6,7 +6,7 @@ abstract class Bot {
     private final Resource resource;
     private final Board board;
     private final List<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
-    private int[] inventoryBamboo = new int[] {0}; // liste de bamboo -> qu'une seule couleur pour l'instant
+    private final int[] inventoryBamboo = new int[] {0}; // liste de bamboo -> qu'une seule couleur pour l'instant
 
     Bot(Resource resource, Board board) {
         this.resource = resource;
@@ -22,13 +22,13 @@ abstract class Bot {
     }
 
     void movePanda(Coordinate coordinate){
-        if(board.isMovedCharacter(board.getPanda(),coordinate)){
+        if(board.movedCharacter(board.getPanda(),coordinate)){
             addBamboo();
         }
     }
 
     void movePeasant(Coordinate coordinate){
-        board.isMovedCharacter(board.getPeasant(),coordinate);
+        board.movedCharacter(board.getPeasant(),coordinate);
     }
 
     //temporaire
@@ -61,13 +61,13 @@ abstract class Bot {
     //Place une parcelle à une coordonnée de la liste passé en paramètre
     void placeRandomParcel(List<Coordinate> listCoord){
         Collections.shuffle(listCoord);
-        board.isPlacedParcel(resource.drawParcel(), listCoord.get(0));
+        board.placedParcel(resource.drawParcel(), listCoord.get(0));
     }
 
     //Place un canal à une coordonnée de la liste passé en paramètre
     void placeRandomCanal(List<Coordinate[]> listCoord) {
         Collections.shuffle(listCoord);
-        board.isPlacedCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
+        board.placedCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
     }
 
     //Renvoie une liste des coordonnées possibles pour les canaux

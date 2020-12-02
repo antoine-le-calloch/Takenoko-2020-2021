@@ -26,7 +26,7 @@ class Parcel {
 
     //Ajoute un bamboo à la parcelle
     boolean addBamboo(){
-        if (nbBamboo < 5){
+        if (nbBamboo < 4){
             nbBamboo ++;
             return true;
         }

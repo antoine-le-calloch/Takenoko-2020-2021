@@ -41,10 +41,10 @@ class IntelligentBotTest {
     @Test
     public void placesForLineStartAtCoord1LineFull(){
         Board board1 = new Board();
-        board1.isPlacedParcel(new Parcel("no"), new Coordinate(1,0,-1));
-        board1.isPlacedParcel(new Parcel("no"), new Coordinate(1,-1,0));
-        board1.isPlacedParcel(new Parcel("no"), new Coordinate(0,-1,1));
-        board1.isPlacedParcel(new Parcel("no"), new Coordinate(1,-2,1));
+        board1.placedParcel(new Parcel("no"), new Coordinate(1,0,-1));
+        board1.placedParcel(new Parcel("no"), new Coordinate(1,-1,0));
+        board1.placedParcel(new Parcel("no"), new Coordinate(0,-1,1));
+        board1.placedParcel(new Parcel("no"), new Coordinate(1,-2,1));
         IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
         List<Coordinate> placesForLine = smartBot.parcelToPlaceToDoForm(new Coordinate(1,0,-1),"line","red");
 
@@ -54,9 +54,9 @@ class IntelligentBotTest {
     @Test
     public void placesForTriangleStartAtCoord1TriangleFull(){
         Board board1 = new Board();
-        board1.isPlacedParcel(new Parcel("no"), new Coordinate(1,-1,0));
-        board1.isPlacedParcel(new Parcel("no"), new Coordinate(0,-1,1));
-        board1.isPlacedParcel(new Parcel("no"), new Coordinate(1,-2,1));
+        board1.placedParcel(new Parcel("no"), new Coordinate(1,-1,0));
+        board1.placedParcel(new Parcel("no"), new Coordinate(0,-1,1));
+        board1.placedParcel(new Parcel("no"), new Coordinate(1,-2,1));
         IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
         List<Coordinate> placesForLine = smartBot.parcelToPlaceToDoForm(new Coordinate(1,-1,0),"triangle","red");
 
@@ -67,9 +67,9 @@ class IntelligentBotTest {
     public void lineform_1ParcelLeft(){
         Board board1 = new Board();
         IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
-        board1.isPlacedParcel(new Parcel("red"), new Coordinate(1,0,-1));//parcel haute
-        board1.isPlacedParcel(new Parcel("red"), new Coordinate(1,-1,0));//parcel milieu
-        board1.isPlacedParcel(new Parcel("no"), new Coordinate(0,-1,1));//deuxième parcel à coté de la parcel du bas
+        board1.placedParcel(new Parcel("red"), new Coordinate(1,0,-1));//parcel haute
+        board1.placedParcel(new Parcel("red"), new Coordinate(1,-1,0));//parcel milieu
+        board1.placedParcel(new Parcel("no"), new Coordinate(0,-1,1));//deuxième parcel à coté de la parcel du bas
 
         Coordinate coord = smartBot.bestCoordForForm("line","red");
 
@@ -81,7 +81,7 @@ class IntelligentBotTest {
         Board board1 = new Board();
         IntelligentBot smartBot = new IntelligentBot(new Resource(),board1);
 
-        board1.isPlacedParcel(new Parcel("red"), new Coordinate(1,0,-1));//parcel haute
+        board1.placedParcel(new Parcel("red"), new Coordinate(1,0,-1));//parcel haute
 
         assertEquals(new Coordinate(1,-1,0),smartBot.bestCoordForForm("line","red"));//parcel milieu
     }

@@ -43,7 +43,7 @@ public class BoardTest {
 
     @Test
     public void goodParcelPlacementSoParcelIncrease(){
-        board.isPlacedParcel(resource.drawParcel(),new Coordinate(1,-1,0));
+        board.placedParcel(resource.drawParcel(),new Coordinate(1,-1,0));
         assertEquals(2,board.getPlacedParcels().size());
     }
     @Test
@@ -54,58 +54,58 @@ public class BoardTest {
     }
 
     @Test void getParcelbyCotesting(){
-        board.isPlacedParcel(parcel1,new Coordinate(0,-1,1));
+        board.placedParcel(parcel1,new Coordinate(0,-1,1));
         parcel2 = board.getPlacedParcels().get(new Coordinate(0,-1,1));
         assertEquals(parcel1,parcel2);
         assertNull(board.getPlacedParcels().get(new Coordinate(1,-1,0)));
     }
 
     @Test void irrigationFromCentral(){
-        board.isPlacedParcel(parcel1,new Coordinate(0,-1,1));
+        board.placedParcel(parcel1,new Coordinate(0,-1,1));
         assertTrue(parcel1.getIrrigated());
     }
 
     @Test void noIrrigationFromCentral(){
-        board.isPlacedParcel(parcel1,new Coordinate(0,-1,1));
-        board.isPlacedParcel(parcel2,new Coordinate(1,-1,0));
-        board.isPlacedParcel(parcel3,new Coordinate(1,-2,1));
+        board.placedParcel(parcel1,new Coordinate(0,-1,1));
+        board.placedParcel(parcel2,new Coordinate(1,-1,0));
+        board.placedParcel(parcel3,new Coordinate(1,-2,1));
         assertFalse(parcel3.getIrrigated());
     }
 
     @Test void irrigationBycanals(){
-        board.isPlacedParcel(parcel1,new Coordinate(0,-1,1));
-        board.isPlacedParcel(parcel2,new Coordinate(1,-1,0));
-        board.isPlacedParcel(parcel3,new Coordinate(1,-2,1));
-        board.isPlacedCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
-        board.isPlacedCanal(canal2,new Coordinate(0,-1,1),new Coordinate(1,-2,1));
+        board.placedParcel(parcel1,new Coordinate(0,-1,1));
+        board.placedParcel(parcel2,new Coordinate(1,-1,0));
+        board.placedParcel(parcel3,new Coordinate(1,-2,1));
+        board.placedCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
+        board.placedCanal(canal2,new Coordinate(0,-1,1),new Coordinate(1,-2,1));
         assertTrue(parcel3.getIrrigated());
     }
 
     @Test void canalAboveanAnother(){
-        board.isPlacedParcel(parcel1,new Coordinate(0,-1,1));
-        board.isPlacedParcel(parcel2,new Coordinate(1,-1,0));
-        board.isPlacedCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
+        board.placedParcel(parcel1,new Coordinate(0,-1,1));
+        board.placedParcel(parcel2,new Coordinate(1,-1,0));
+        board.placedCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
         assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
         assertFalse(board.isPlayableCanal(new Coordinate(1,-1,0),new Coordinate(0,-1,1)));
     }
     @Test void wrongPlacementCanalawayFromcentral(){
-        board.isPlacedParcel(parcel1,new Coordinate(0,-1,1));
-        board.isPlacedParcel(parcel2,new Coordinate(1,-1,0));
-        board.isPlacedParcel(parcel3,new Coordinate(1,-2,1));
+        board.placedParcel(parcel1,new Coordinate(0,-1,1));
+        board.placedParcel(parcel2,new Coordinate(1,-1,0));
+        board.placedParcel(parcel3,new Coordinate(1,-2,1));
         assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-2,1)));
     }
 
     @Test void wrongPlacementCanal(){
-        board.isPlacedParcel(parcel1,new Coordinate(0,-1,1));
-        board.isPlacedParcel(parcel2,new Coordinate(1,-1,0));
-        board.isPlacedCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
+        board.placedParcel(parcel1,new Coordinate(0,-1,1));
+        board.placedParcel(parcel2,new Coordinate(1,-1,0));
+        board.placedCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
         assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(0,-2,2)));
     }
 
     @Test void invalideCoordinatesforCanal(){
-        assertFalse(board.isPlacedCanal(canal,new Coordinate(0,-1,1),new Coordinate(0,-1,1)));
-        assertFalse(board.isPlacedCanal(canal,new Coordinate(1,-1,0),new Coordinate(-1,1,0)));
-        assertFalse(board.isPlacedCanal(canal,new Coordinate(1,-1,0),new Coordinate(2,0,-2)));
+        assertFalse(board.placedCanal(canal,new Coordinate(0,-1,1),new Coordinate(0,-1,1)));
+        assertFalse(board.placedCanal(canal,new Coordinate(1,-1,0),new Coordinate(-1,1,0)));
+        assertFalse(board.placedCanal(canal,new Coordinate(1,-1,0),new Coordinate(2,0,-2)));
     }
 
     @Test void parcelInexistantsoNoCanal(){
