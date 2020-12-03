@@ -21,12 +21,12 @@ class IntelligentBot extends Bot{
 
     //Si le bot n'a pas de mission => true
     boolean doDrawMission(){
-        return getInventoryMission().size() > 5;
+        return getInventory().getMission().size() > 5;
     }
 
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     void putParcel() {
-        ParcelMission mission = (ParcelMission) getInventoryMission().get(0);
+        ParcelMission mission = (ParcelMission) getInventory().getMission().get(0);
         Form form = mission.getGoal();
         Color color = mission.getColor();
         Parcel newParcel = resource.drawParcel();

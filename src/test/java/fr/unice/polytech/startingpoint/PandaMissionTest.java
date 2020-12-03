@@ -31,14 +31,10 @@ public class PandaMissionTest {
     void missionCompleteGoodColor(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel red
         IntStream.range(0, 5).forEach(i -> {
-            try {
-                bot.addBamboo(parcel1.getColor());
-            } catch (ExceptionTakenoko exceptionTakenoko) {
-                exceptionTakenoko.printStackTrace();
-            }
+            bot.addBamboo(parcel1.getColor());
         });
         assertEquals(2,mission1.checkMissionPanda(bot));
-        assertEquals(4,bot.getInventoryBamboo()[0]);
+        assertEquals(4,bot.getInventory().getBamboo(Color.RED));
         assertEquals(2,mission1.checkMission(board, bot));
     }
 
@@ -46,22 +42,16 @@ public class PandaMissionTest {
     void missionIncompleteBadColor(){
         board.placeParcel(parcel2,new Coordinate(1,-1,0)); // parcel blue
         IntStream.range(0, 5).forEach(i -> {
-            try {
-                bot.addBamboo(parcel2.getColor());
-            } catch (ExceptionTakenoko exceptionTakenoko) {
-                exceptionTakenoko.printStackTrace();
-            }
+            bot.addBamboo(parcel2.getColor());
         });
-        assertEquals(0,bot.getInventoryBamboo()[0]);
-        assertEquals(5,bot.getInventoryBamboo()[1]);
+        assertEquals(0,bot.getInventory().getBamboo(Color.RED));
+        assertEquals(5,bot.getInventory().getBamboo(Color.BLUE));
         assertEquals(0,mission1.checkMissionPanda(bot));
-        //assertEquals(4,bot.getInventoryBamboo()[1]);
-        //assertEquals(0,mission1.checkMission(board, bot));
     }
 
     @Test
     void missionIncompleteNoBamboo(){
         assertEquals(0,mission1.checkMissionPanda(bot));
-        assertEquals(0,bot.getInventoryBamboo()[0]);
+        assertEquals(0,bot.getInventory().getBamboo(Color.RED));
     }
 }

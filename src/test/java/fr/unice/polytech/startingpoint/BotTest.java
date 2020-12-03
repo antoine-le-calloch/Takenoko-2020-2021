@@ -3,9 +3,10 @@ package fr.unice.polytech.startingpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,17 +40,17 @@ class BotTest {
     @Test
     public void missionIncrease(){
         bot1.drawMission();
-        assertEquals(1,bot1.getInventoryMission().size());
+        assertEquals(1,bot1.getInventory().getMission().size());
     }
 
     @Test
     public void missionDecrease(){
         bot1.drawMission();
-        Mission todelete = bot1.getInventoryMission().get(0);
-        bot1.deleteMission(todelete);
-        assertEquals(0,bot1.getInventoryMission().size());
-        bot1.deleteMission(todelete);
-        assertNotEquals(-1,bot1.getInventoryMission().size());
+        Mission toDelete = bot1.getInventory().getMission().get(0);
+        bot1.subMission(toDelete);
+        assertEquals(0,bot1.getInventory().getMission().size());
+        bot1.subMission(toDelete);
+        assertNotEquals(-1,bot1.getInventory().getMission().size());
     }
 
     @Test
@@ -119,7 +120,7 @@ class BotTest {
     public void movePanda(){
         assertTrue(board.placeParcel(parcel1,new Coordinate(1,-1,0)));
         bot1.randomMovePanda(bot1.possibleCoordinatesCharacter());
-        assertEquals(1,bot1.getInventoryBamboo()[0]);
+        assertEquals(1,bot1.getInventory().getBamboo()[0]);
         assertEquals(0,parcel1.getNbBamboo());
     }
 
@@ -131,17 +132,10 @@ class BotTest {
     }
 
     @Test
-    public void addInventoryMission() throws ExceptionTakenoko {
+    public void addInventoryMission(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
         bot1.addBamboo(parcel1.getColor());
-        assertEquals(0,bot1.getInventoryBamboo()[0]);
-        assertEquals(1,bot1.getInventoryBamboo()[1]);
-    }
-
-    @Test
-    public void addInventoryMissionNoColor() throws ExceptionTakenoko {
-        board.placeParcel(parcel2, new Coordinate(1, -1, 0));  // parcel nColor
-        Exception exception = assertThrows(ExceptionTakenoko.class, () -> {bot1.addBamboo(parcel2.getColor());});
-        assertEquals(exception.getMessage(), "invalid color");
+        assertEquals(0,bot1.getInventory().getBamboo()[0]);
+        assertEquals(1,bot1.getInventory().getBamboo()[1]);
     }
 }

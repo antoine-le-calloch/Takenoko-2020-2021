@@ -5,12 +5,12 @@ import java.util.*;
 abstract class Bot {
     protected final Resource resource;
     protected final Board board;
-    protected final List<Mission> inventoryMission = new ArrayList<>(); // pas de private pour les sous classes
-    protected int[] inventoryBamboo = new int[] {0,0}; // liste de bamboo -> red [0] / blue [1]
+    protected final Inventory inventory;
 
     Bot(Resource resource, Board board) {
         this.resource = resource;
         this.board = board;
+        this.inventory = new Inventory();
     }
 
     //Action d'un bot pendant un tour
@@ -18,11 +18,11 @@ abstract class Bot {
 
     //Pioche une mission
     void drawMission(){
-        inventoryMission.add(resource.drawMission(MissionType.PARCEL));
+        inventory.addMission(resource.drawMission(MissionType.PARCEL));
     }
 
     //Fait bouger le panda
-    void movePanda(Coordinate coordinate) throws ExceptionTakenoko {
+    void movePanda(Coordinate coordinate){
         if(board.moveCharacter(board.getPanda(),coordinate)){
             addBamboo(board.getPlacedParcels().get(coordinate).getColor());
         }
@@ -34,21 +34,13 @@ abstract class Bot {
     }
 
     //Ajoute un bambou à l'inventaire
-    void addBamboo(Color color) throws ExceptionTakenoko {
-        switch (color) {
-            case RED :
-                inventoryBamboo[0]++;
-                break;
-            case BLUE :
-                inventoryBamboo[1]++;
-                break;
-            default: throw new ExceptionTakenoko("invalid color");
-        }
+    void addBamboo(Color color){
+        inventory.addBamboo(color);
     }
 
     //Retire un bambou àe l'inventaire
-    void deleteBamboo(int i){
-        inventoryBamboo[i]--;
+    void deleteBamboo(Color color){
+        inventory.subBamboo(color);
     }
 
     //Place une parcelle à une coordonnée de la liste passée en paramètre
@@ -69,7 +61,7 @@ abstract class Bot {
         int nbBamboo = board.getPlacedParcels().get(listCoord.get(0)).getNbBamboo();
         if(board.moveCharacter(board.getPanda(),listCoord.get(0))){
             if(nbBamboo>0){
-                inventoryBamboo[0] ++;
+                inventory.addBamboo(Color.RED);
             }
         };
     }
@@ -105,18 +97,18 @@ abstract class Bot {
         return new ArrayList<>(possibleCoordinates);
     }
 
-    //Supprime la mission passée en paramètre de l'inventaire des missions
-    void deleteMission(Mission mission) {
-        inventoryMission.remove(mission);
+    //Supprime la liste de missions passées en paramètre de l'inventaire
+    void subMissions(List<Mission> missions) {
+        inventory.subMissions(missions);
     }
 
-    //Renvoie l'inventaire de bambou
-    int[] getInventoryBamboo() {
-        return inventoryBamboo.clone();
+    //Supprime la mission passée en paramètre de l'inventaire
+    void subMission(Mission mission){
+        inventory.subMissions(new ArrayList<>(Collections.singletonList(mission)));
     }
 
-    //Renvoie la liste de l'inventaire des missions
-    ArrayList<Mission> getInventoryMission() {
-        return new ArrayList<>(inventoryMission);
+    //Renvoie l'inventaire
+    Inventory getInventory(){
+        return inventory;
     }
 }

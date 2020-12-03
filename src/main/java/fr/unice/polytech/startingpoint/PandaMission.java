@@ -15,19 +15,8 @@ class PandaMission implements Mission{
     }
 
     int checkMissionPanda(Bot bot){
-        switch (color) {
-            case RED:
-                if (bot.getInventoryBamboo()[0] > 0) {
-                    bot.deleteBamboo(0);
-                    return points;
-                }
-                return 0;
-            case BLUE:
-                if (bot.getInventoryBamboo()[1] > 0) {
-                    bot.deleteBamboo(1);
-                    return points;
-                }
-                return 0;
+        if (bot.inventory.subBamboo(color)){
+            return points;
         }
         return 0;
     }

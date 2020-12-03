@@ -1,11 +1,12 @@
 package fr.unice.polytech.startingpoint;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class Game {
     private final Resource resource = new Resource();
     private final Board board = new Board();
-    private final ArrayList<Bot> botList = new ArrayList<>();
+    private final List<Bot> botList = new ArrayList<>();
     private final int[] scoreBots;
     private final int[] missionDone;
     private final int nbBot;
@@ -58,20 +59,20 @@ class Game {
     /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
     il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
     void missionDone(int idBot) {
+        List<Mission> toRemove = new ArrayList<>();
         int count;
-        for(Mission mission : botList.get(idBot).getInventoryMission()){
-            count = mission.checkMission(board,botList.get(idBot));
-            if( count != 0){
+        for(Mission mission : botList.get(idBot).getInventory().getMission()){
+            if( (count = mission.checkMission(board,botList.get(idBot))) != 0){
                 missionDone[idBot]++;
                 scoreBots[idBot] += count;
-                botList.get(idBot).deleteMission(mission);
+                toRemove.add(mission);
             }
         }
+        botList.get(idBot).subMissions(toRemove);
     }
 
     //Initialise les robots en fonction de leur nom associé passé en paramètre
     void initializeBot(BotName[] botNames){
-
         for (int i=0; i<nbBot; i++) {
             switch (botNames[i]) {
                 case RANDOM:
@@ -90,7 +91,7 @@ class Game {
     }
 
     //Renvoie la liste des robots
-    ArrayList<Bot> getBotList() {
+    List<Bot> getBotList() {
         return botList;
     }
 
