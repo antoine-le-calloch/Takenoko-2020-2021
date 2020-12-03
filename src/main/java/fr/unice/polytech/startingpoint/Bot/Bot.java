@@ -8,6 +8,15 @@ import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.*;
 
+/**
+ * Classe representant les caractéristiques communes entre les bots
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
 public abstract class Bot {
     protected final Resource resource;
     protected final Board board;

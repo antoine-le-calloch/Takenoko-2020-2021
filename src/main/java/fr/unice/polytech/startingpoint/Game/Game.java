@@ -8,6 +8,15 @@ import fr.unice.polytech.startingpoint.Type.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Moteur de jeu, creation d'une partie, fait jouer les bots, verifie les missions faites et termine la partie
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
 public class Game {
     private final Resource resource = new Resource();
     private final Board board = new Board();

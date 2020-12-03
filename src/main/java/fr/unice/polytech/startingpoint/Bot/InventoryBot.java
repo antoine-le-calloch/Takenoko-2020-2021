@@ -6,6 +6,16 @@ import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.*;
 
+/**
+ * Classe representant l'ensemble des inventaires que possède un bot
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
+
 public class InventoryBot {
     private final List<Mission> inventoryMission = new ArrayList<>();
     private final List<Canal> inventoryCanal = new ArrayList<>();

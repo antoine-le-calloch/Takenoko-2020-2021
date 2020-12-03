@@ -13,6 +13,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+/**
+ * Tests unitaires
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
 public class PeasantMissionTest {
     Board board;
     Resource resource;

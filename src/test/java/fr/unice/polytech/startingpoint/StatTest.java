@@ -5,6 +5,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests unitaires
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
 public class StatTest {
     Stat stat1Game1P;
     Stat stat1Game2P;

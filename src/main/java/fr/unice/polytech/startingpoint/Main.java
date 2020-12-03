@@ -3,6 +3,16 @@ package fr.unice.polytech.startingpoint;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
+/**
+ * Main, lance 1000 parties, des statistiques sont affichées
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
+
 public class Main {
 
     public static void main(String... args){

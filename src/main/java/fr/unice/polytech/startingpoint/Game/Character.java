@@ -2,6 +2,15 @@ package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
 
+/**
+ * Classe representant un personnage : le panda ou le paysan
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
 public class Character {
     private final CharacterType characterType;
     private Coordinate coordinate;

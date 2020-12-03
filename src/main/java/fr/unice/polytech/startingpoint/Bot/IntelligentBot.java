@@ -10,6 +10,15 @@ import fr.unice.polytech.startingpoint.Type.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe qui represente un bot bot qui joue intelligemment
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
 public class IntelligentBot extends Bot {
 
     public IntelligentBot(Resource resource, Board board) {

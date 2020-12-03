@@ -2,6 +2,15 @@ package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
 
+/**
+ * Classe representant une parcelle
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
 public class Parcel {
     private Coordinate coordinates;
     private boolean irrigated = false;

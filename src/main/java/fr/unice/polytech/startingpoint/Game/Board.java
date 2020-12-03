@@ -4,6 +4,16 @@ import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.*;
 
+/**
+ * Classe representant le plateau de jeu
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
+
 public class Board {
     private final Character panda;
     private final Character peasant;

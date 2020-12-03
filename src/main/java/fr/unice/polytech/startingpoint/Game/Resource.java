@@ -7,6 +7,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Classe representant les ressources disponibles au cours d'une partie
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
 public class Resource {
     private final List<Mission> deckMissionParcel = new ArrayList<>();
     private final List<Mission> deckMissionPanda = new ArrayList<>();

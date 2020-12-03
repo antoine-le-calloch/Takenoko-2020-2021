@@ -2,6 +2,16 @@ package fr.unice.polytech.startingpoint.Game;
 
 import java.util.*;
 
+/**
+ * Classe representant un canal
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
+
 public class Canal {
     private Coordinate coordinates1;
     private Coordinate coordinates2;

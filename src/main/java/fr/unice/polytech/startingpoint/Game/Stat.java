@@ -1,5 +1,15 @@
 package fr.unice.polytech.startingpoint.Game;
 
+/**
+ * La classe collecte les données de chaque partie et calcule des statistiques
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
+
 public class Stat {
     private final int NB_PLAYER;
     private final int NB_GAME;

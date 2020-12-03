@@ -5,6 +5,16 @@ import fr.unice.polytech.startingpoint.Game.Resource;
 
 import java.util.Random;
 
+/**
+ * Classe qui represente un bot qui joue aleatoirement
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 2020.12.03
+ */
+
+
 public class RandomBot extends Bot {
     private final Random random;
 
