@@ -2,7 +2,7 @@ package fr.unice.polytech.startingpoint;
 
 import java.util.*;
 
-public class Coordinate {
+public class Coordinate implements Comparable<Coordinate> {
     private final int[] coordinate;
 
     Coordinate(int x,int y,int z){
@@ -69,7 +69,7 @@ public class Coordinate {
             List<Coordinate> coordinateBetween = new ArrayList<>();
             while(!coordinate.equals(coordinate2)){
                 coordinateBetween.add(coordinate);
-                coordinate = new Coordinate(coordinate1,unitVector);
+                coordinate = new Coordinate(coordinate,unitVector);
             }
             return coordinateBetween;
         }
@@ -99,7 +99,7 @@ public class Coordinate {
 
     //Renvoie le vecteur liant les deux coordonnées
     static Coordinate getVector(Coordinate c1,Coordinate c2){
-        return new Coordinate(c1,c2.negative());
+        return new Coordinate(c1.negative(),c2);
     }
 
     //Renvoie la norme au carré du vecteur reliant les deux coordonnées passées en paramètre  STATIC
@@ -125,20 +125,14 @@ public class Coordinate {
 
     //Renvoie un SortedSet contenant les coordonnées passées en paramètre avec l'outil de comparaison mis à jour pour le type des coordonnées
     static SortedSet<Coordinate> getSortedSet(Coordinate c1, Coordinate c2){
-        SortedSet<Coordinate> sortedSet = new TreeSet<>(new Comparator<Coordinate>(){
-            @Override
-            public int compare(Coordinate o1, Coordinate o2) {
-                for(int i = 0 ; i < o1.coordinate.length ; i++){
-                    if(o1.coordinate[i] > o2.coordinate[i])
-                        return 1;
-                    if(o1.coordinate[i] < o2.coordinate[i])
-                        return -1;
-                }
-                return 0;
-            }
-        });
+        SortedSet<Coordinate> sortedSet = new TreeSet<>();
         sortedSet.addAll(Arrays.asList(c1,c2));
         return sortedSet;
+    }
+
+    @Override
+    public int compareTo(Coordinate c){
+        return  Arrays.compare(this.coordinate,c.coordinate);
     }
 
     //Renvoie true si les deux coordonnées sont identiques

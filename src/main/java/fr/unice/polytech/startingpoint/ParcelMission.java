@@ -3,10 +3,10 @@ package fr.unice.polytech.startingpoint;
 
 class ParcelMission implements Mission{
     final int points;
-    private final String goalForm;
-    private final String goalColor;
+    private final Form goalForm;
+    private final Color goalColor;
 
-    ParcelMission(int points, String goalForm, String goalColor) {
+    ParcelMission(int points, Form goalForm, Color goalColor) {
         this.goalForm = goalForm;
         this.goalColor = goalColor;
         this.points = points;
@@ -19,23 +19,23 @@ class ParcelMission implements Mission{
     }
 
     //Renvoie l'objectif de la mission
-    String getGoal(){
+    Form getGoal(){
         return goalForm;
     }
 
     //Renvoie la couleur de la mission
-    String getColor() {
+    Color getColor() {
         return goalColor;
     }
 
     //Renvoie le nombre de points que les missions rapportent si elles ont été accomplies
     int checkMissionParcel(Board board) {
         switch (goalForm) {
-            case "triangle":
+            case TRIANGLE:
                 if (checkFormIrrigateWithColor(board,0,1))
                     return points;
                 return 0;
-            case "ligne":
+            case LINE:
                 if (checkFormIrrigateWithColor(board,2,5))
                     return points;
                 return 0;

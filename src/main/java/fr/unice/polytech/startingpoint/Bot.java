@@ -18,7 +18,7 @@ abstract class Bot {
 
     //Pioche une mission
     void drawMission(){
-        inventoryMission.add(resource.drawMission("parcel"));
+        inventoryMission.add(resource.drawMission(MissionType.PARCEL));
     }
 
     //Fait bouger le panda
@@ -34,12 +34,12 @@ abstract class Bot {
     }
 
     //Ajoute un bambou à l'inventaire
-    void addBamboo(String color) throws ExceptionTakenoko {
+    void addBamboo(Color color) throws ExceptionTakenoko {
         switch (color) {
-            case "red" :
+            case RED :
                 inventoryBamboo[0]++;
                 break;
-            case "blue" :
+            case BLUE :
                 inventoryBamboo[1]++;
                 break;
             default: throw new ExceptionTakenoko("invalid color");

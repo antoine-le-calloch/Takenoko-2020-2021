@@ -23,13 +23,12 @@ class RandomBot extends Bot {
         }
         else if (nb ==2 && board.getPlayablePlaces().size() > 0){ // place parcel
             placeRandomParcel(board.getPlayablePlaces());
-        }/*
+        }
         else if (nb == 3 && possibleCoordinatesCharacter().size() != 0) {
             randomMovePanda(possibleCoordinatesCharacter());
         }
         else if (possibleCoordinatesCharacter().size() != 0) {
             randomMovePeasant(possibleCoordinatesCharacter());
-        }*/
-
+        }
     }
 }

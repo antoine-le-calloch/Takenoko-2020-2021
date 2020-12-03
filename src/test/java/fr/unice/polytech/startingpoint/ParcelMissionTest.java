@@ -21,16 +21,16 @@ public class ParcelMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new ParcelMission(2,"triangle","red");
-        mission2 = new ParcelMission(3,"ligne","red");
-        mission3 = new ParcelMission(2,"triangle","blue");
-        mission4 = new ParcelMission(3,"ligne","blue");
+        mission1 = new ParcelMission(2,Form.TRIANGLE,Color.RED);
+        mission2 = new ParcelMission(3,Form.LINE,Color.RED);
+        mission3 = new ParcelMission(2,Form.TRIANGLE,Color.BLUE);
+        mission4 = new ParcelMission(3,Form.LINE,Color.BLUE);
         board = new Board();
         resource = new Resource();
-        parcel1 = new Parcel("red");
-        parcel2 = new Parcel("red");
-        parcel3 = new Parcel("red");
-        parcel4 = new Parcel("red");
+        parcel1 = new Parcel(Color.RED);
+        parcel2 = new Parcel(Color.RED);
+        parcel3 = new Parcel(Color.RED);
+        parcel4 = new Parcel(Color.RED);
         bot = new RandomBot(resource, board);
     }
 

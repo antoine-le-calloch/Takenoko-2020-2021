@@ -22,8 +22,8 @@ class BotTest {
     public void setUp(){
         resource = new Resource();
         board = new Board();
-        parcel1 = new Parcel("blue");
-        parcel2 = new Parcel("noColor");
+        parcel1 = new Parcel(Color.BLUE);
+        parcel2 = new Parcel(Color.NO_COLOR);
         canal = new Canal();
         bot1 = new IntelligentBot(resource,board);
         bot2 = new IntelligentBot(resource,board);

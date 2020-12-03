@@ -18,13 +18,13 @@ public class PandaMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new PandaMission(2, "red");
-        mission2 = new PandaMission(3, "red");
+        mission1 = new PandaMission(2, Color.RED);
+        mission2 = new PandaMission(3, Color.RED);
         board = new Board();
         resource = new Resource();
         bot = new RandomBot(resource, board);
-        parcel1 = new Parcel("red");
-        parcel2 = new Parcel("blue");
+        parcel1 = new Parcel(Color.RED);
+        parcel2 = new Parcel(Color.BLUE);
     }
 
     @Test

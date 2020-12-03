@@ -13,7 +13,7 @@ public class PandaTest {
     @BeforeEach void setUp(){
         panda = new Panda();
         board = new Board();
-        parcel1 = new Parcel("red");
+        parcel1 = new Parcel(Color.RED);
     }
 
     @Test

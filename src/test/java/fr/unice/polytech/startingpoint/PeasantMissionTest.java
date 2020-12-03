@@ -20,7 +20,7 @@ public class PeasantMissionTest {
         mission2 = new PeasantMission(3);
         board = new Board();
         resource = new Resource();
-        parcel1 = new Parcel("red");
+        parcel1 = new Parcel(Color.RED);
         bot = new IntelligentBot(resource,board);
     }
 

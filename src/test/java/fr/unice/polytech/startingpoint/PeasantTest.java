@@ -13,7 +13,7 @@ public class PeasantTest {
     @BeforeEach void setUp(){
         peasant1 = new Peasant();
         board = new Board();
-        parcel1 = new Parcel("red");
+        parcel1 = new Parcel(Color.RED);
     }
 
     @Test

@@ -6,17 +6,17 @@ class Game {
     private final Resource resource = new Resource();
     private final Board board = new Board();
     private final ArrayList<Bot> botList = new ArrayList<>();
-    private final int[] score_bots;
-    private final int[] mission_done;
+    private final int[] scoreBots;
+    private final int[] missionDone;
     private final int nbBot;
     private int turnLeft;
 
     static final int NB_MISSION = 4;
 
-    Game(String[] botNames) throws ExceptionTakenoko {
+    Game(BotName[] botNames) throws ExceptionTakenoko {
         nbBot = botNames.length;
-        score_bots = new int[nbBot];
-        mission_done = new int[nbBot];
+        scoreBots = new int[nbBot];
+        missionDone = new int[nbBot];
         initializeBot(botNames);
     }
 
@@ -35,7 +35,7 @@ class Game {
     //Permet de verifier si un bot à fait suffisament de mission pour que la partie s'arrête
     int isContinue(){
         if(turnLeft == nbBot) {
-            for (int mission : mission_done) {
+            for (int mission : missionDone) {
                 if (mission >= NB_MISSION)
                     turnLeft--;
             }
@@ -62,24 +62,24 @@ class Game {
         for(Mission mission : botList.get(idBot).getInventoryMission()){
             count = mission.checkMission(board,botList.get(idBot));
             if( count != 0){
-                mission_done[idBot]++;
-                score_bots[idBot] += count;
+                missionDone[idBot]++;
+                scoreBots[idBot] += count;
                 botList.get(idBot).deleteMission(mission);
             }
         }
     }
 
     //Initialise les robots en fonction de leur nom associé passé en paramètre
-    void initializeBot(String[] botNames) throws ExceptionTakenoko {
+    void initializeBot(BotName[] botNames){
+
         for (int i=0; i<nbBot; i++) {
             switch (botNames[i]) {
-                case "random":
+                case RANDOM:
                     botList.add(new RandomBot(resource, board));
                     break;
-                case "intelligent":
+                case INTELLIGENT:
                     botList.add(new IntelligentBot(resource, board));
                     break;
-                default: throw new ExceptionTakenoko("invalid bot's name");
             }
         }
     }
@@ -96,6 +96,6 @@ class Game {
 
     //Renvoie les scores des robots de la partie actuelle
     int[] getData() {
-        return score_bots;
+        return scoreBots;
     }
 }

@@ -14,7 +14,7 @@ public class RandomBotTest {
     @BeforeEach
     public void setUp() {
         board = new Board();
-        parcel1 = new Parcel("noColor");
+        parcel1 = new Parcel(Color.NO_COLOR);
         rdmBot1 = new RandomBot(new Resource(),board);
     }
 /*

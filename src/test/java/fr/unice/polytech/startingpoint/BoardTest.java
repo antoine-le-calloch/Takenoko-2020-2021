@@ -21,10 +21,10 @@ public class BoardTest {
     public void initialize(){
         board = new Board();
         resource = new Resource();
-        parcel1 = new Parcel("noColor");
-        parcel2 = new Parcel("noColor");
-        parcel3 = new Parcel("noColor");
-        parcel4 = new Parcel("noColor");
+        parcel1 = new Parcel(Color.NO_COLOR);
+        parcel2 = new Parcel(Color.NO_COLOR);
+        parcel3 = new Parcel(Color.NO_COLOR);
+        parcel4 = new Parcel(Color.NO_COLOR);
         canal = new Canal();
         canal2 = new Canal();
     }
@@ -115,18 +115,18 @@ public class BoardTest {
 
     @Test
     void goodMoveCharacter(){
-        board.placeParcel(new Parcel("color"), new Coordinate(1,-1,0));
-        board.placeParcel(new Parcel("color"), new Coordinate(1,0,-1));
-        board.placeParcel(new Parcel("color"), new Coordinate(2,-1,-1));
+        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(1,0,-1));
+        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(2,-1,-1));
         assertTrue(board.moveCharacter(board.getPanda(),new Coordinate(1,-1,0)));
         assertTrue(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
     }
 
     @Test
     void wrongMoveCharacter(){
-        board.placeParcel(new Parcel("color"), new Coordinate(1,-1,0));
-        board.placeParcel(new Parcel("color"), new Coordinate(1,0,-1));
-        board.placeParcel(new Parcel("color"), new Coordinate(2,-1,-1));
+        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(1,0,-1));
+        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(2,-1,-1));
         assertFalse(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
     }
 }

@@ -3,10 +3,8 @@ package fr.unice.polytech.startingpoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,5 +77,41 @@ public class CoordinateTest {
         assertFalse(new Coordinate(0,0,0).isOnTheSameLine(new Coordinate(1,-2,1)));
         assertFalse(new Coordinate(1,-1,0).isOnTheSameLine(new Coordinate(0,2,-2)));
         assertFalse(new Coordinate(-2,-1,3).isOnTheSameLine(new Coordinate(2,1,-3)));
+    }
+
+
+    @Test
+    public void goodUnitVector(){
+        assertEquals(new Coordinate(1,-1,0),Coordinate.getUnitVector(new Coordinate(0,0,0),new Coordinate(5,-5,0)));
+        assertEquals(new Coordinate(1,-1,0),Coordinate.getUnitVector(new Coordinate(-3,2,1),new Coordinate(2,-3,1)));
+        assertEquals(new Coordinate(0,1,-1),Coordinate.getUnitVector(new Coordinate(2,-3,1),new Coordinate(2,1,-3)));
+    }
+
+    @Test
+    public void wrongUnitVector(){
+        assertNotEquals(new Coordinate(-1,1,0),Coordinate.getUnitVector(new Coordinate(0,0,0),new Coordinate(5,-5,0)));
+        assertNotEquals(new Coordinate(-1,1,0),Coordinate.getUnitVector(new Coordinate(-3,2,1),new Coordinate(2,-3,1)));
+        assertNotEquals(new Coordinate(0,-1,1),Coordinate.getUnitVector(new Coordinate(2,-3,1),new Coordinate(2,1,-3)));
+    }
+
+    @Test
+    public void goodVector(){
+        assertEquals(new Coordinate(5,-5,0),Coordinate.getVector(new Coordinate(0,0,0),new Coordinate(5,-5,0)));
+        assertEquals(new Coordinate(5,-5,0),Coordinate.getVector(new Coordinate(-3,2,1),new Coordinate(2,-3,1)));
+        assertEquals(new Coordinate(0,4,-4),Coordinate.getVector(new Coordinate(2,-3,1),new Coordinate(2,1,-3)));
+    }
+
+    @Test
+    public void wrongVector(){
+        assertNotEquals(new Coordinate(4,-4,0),Coordinate.getVector(new Coordinate(0,0,0),new Coordinate(5,-5,0)));
+        assertNotEquals(new Coordinate(1,-1,0),Coordinate.getVector(new Coordinate(-3,2,1),new Coordinate(2,-3,1)));
+        assertNotEquals(new Coordinate(0,5,-5),Coordinate.getVector(new Coordinate(2,-3,1),new Coordinate(2,1,-3)));
+    }
+
+    @Test
+    public void coordinateBetween(){
+        assertEquals(new ArrayList<>(Collections.singletonList(new Coordinate(1, -1, 0))), Coordinate.getAllCoordinatesBetween(new Coordinate(0,0,0),new Coordinate(2,-2,0)));
+        assertEquals(new ArrayList<>(Collections.singletonList(new Coordinate(-1, -1, 2))), Coordinate.getAllCoordinatesBetween(new Coordinate(-2,0,2),new Coordinate(0,-2,2)));
+        assertEquals(new ArrayList<>(Collections.singletonList(new Coordinate(-3, 1, 2))), Coordinate.getAllCoordinatesBetween(new Coordinate(-3,2,1),new Coordinate(-3,0,3)));
     }
 }

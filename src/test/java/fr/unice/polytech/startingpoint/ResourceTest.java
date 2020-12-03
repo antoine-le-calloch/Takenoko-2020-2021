@@ -13,7 +13,7 @@ public class ResourceTest {
     }
 
     @Test public void goodInitializeParcel(){
-        assertEquals(27, resource.getParcel().size());
+        assertEquals(26, resource.getParcel().size());
     }
 
     @Test public void goodInitializeCanal(){
@@ -27,7 +27,7 @@ public class ResourceTest {
     @Test
     public void parcelDecrease(){
         resource.drawParcel();
-        assertEquals(26,resource.getParcel().size());
+        assertEquals(25,resource.getParcel().size());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ResourceTest {
 
     @Test
     public void missionDecrease(){
-        resource.drawMission("panda");
+        resource.drawMission(MissionType.PANDA);
         assertEquals(44,resource.getNbMission());
     }
 }

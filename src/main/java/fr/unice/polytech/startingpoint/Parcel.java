@@ -4,9 +4,9 @@ class Parcel {
     private Coordinate coordinates;
     private boolean irrigated = false;
     private int nbBamboo = 0;
-    private final String color;
+    private final Color color;
 
-    Parcel(String color){
+    Parcel(Color color){
         this.color = color;
     }
 
@@ -57,7 +57,7 @@ class Parcel {
     }
 
     //Renvoie la couleur de la parcelle
-    String getColor() {
+    Color getColor() {
         return color;
     }
 }
