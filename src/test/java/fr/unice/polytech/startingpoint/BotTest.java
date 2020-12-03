@@ -46,10 +46,11 @@ class BotTest {
     @Test
     public void missionDecrease(){
         bot1.drawMission();
-        Mission toDelete = bot1.getInventory().getMission().get(0);
-        bot1.subMission(toDelete);
+        List<Mission> toDelete = new ArrayList<>();
+        toDelete.add(bot1.getInventory().getMission().get(0));
+        bot1.inventory.subMissions(toDelete);
         assertEquals(0,bot1.getInventory().getMission().size());
-        bot1.subMission(toDelete);
+        bot1.inventory.subMissions(toDelete);
         assertNotEquals(-1,bot1.getInventory().getMission().size());
     }
 
@@ -134,7 +135,7 @@ class BotTest {
     @Test
     public void addInventoryMission(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
-        bot1.addBamboo(parcel1.getColor());
+        bot1.inventory.addBamboo(parcel1.getColor());
         assertEquals(0,bot1.getInventory().getBamboo()[0]);
         assertEquals(1,bot1.getInventory().getBamboo()[1]);
     }

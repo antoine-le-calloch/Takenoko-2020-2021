@@ -14,7 +14,7 @@ class Game {
 
     static final int NB_MISSION = 4;
 
-    Game(BotName[] botNames) throws ExceptionTakenoko {
+    Game(BotName[] botNames){
         nbBot = botNames.length;
         scoreBots = new int[nbBot];
         missionDone = new int[nbBot];
@@ -68,7 +68,7 @@ class Game {
                 toRemove.add(mission);
             }
         }
-        botList.get(idBot).subMissions(toRemove);
+        botList.get(idBot).inventory.subMissions(toRemove);
     }
 
     //Initialise les robots en fonction de leur nom associé passé en paramètre

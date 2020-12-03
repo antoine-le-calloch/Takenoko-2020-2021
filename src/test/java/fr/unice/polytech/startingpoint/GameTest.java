@@ -11,7 +11,7 @@ class GameTest {
     Game game4;
     Game game5;
 
-    @BeforeEach public void Setup() throws ExceptionTakenoko {
+    @BeforeEach public void Setup() {
         game1 = new Game(new BotName[]{BotName.RANDOM,BotName.INTELLIGENT});
         game2 = new Game(new BotName[]{BotName.INTELLIGENT,BotName.INTELLIGENT});
         game3 = new Game(new BotName[]{BotName.INTELLIGENT});

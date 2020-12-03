@@ -31,7 +31,7 @@ public class PandaMissionTest {
     void missionCompleteGoodColor(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel red
         IntStream.range(0, 5).forEach(i -> {
-            bot.addBamboo(parcel1.getColor());
+            bot.inventory.addBamboo(parcel1.getColor());
         });
         assertEquals(2,mission1.checkMissionPanda(bot));
         assertEquals(4,bot.getInventory().getBamboo(Color.RED));
@@ -42,7 +42,7 @@ public class PandaMissionTest {
     void missionIncompleteBadColor(){
         board.placeParcel(parcel2,new Coordinate(1,-1,0)); // parcel blue
         IntStream.range(0, 5).forEach(i -> {
-            bot.addBamboo(parcel2.getColor());
+            bot.inventory.addBamboo(parcel2.getColor());
         });
         assertEquals(0,bot.getInventory().getBamboo(Color.RED));
         assertEquals(5,bot.getInventory().getBamboo(Color.BLUE));

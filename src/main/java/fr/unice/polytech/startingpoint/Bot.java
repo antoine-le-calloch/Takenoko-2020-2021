@@ -16,46 +16,24 @@ abstract class Bot {
     //Action d'un bot pendant un tour
     abstract void botPlay();
 
-    //Pioche une mission
+    //Pioche une mission - ACTION 1
     void drawMission(){
         inventory.addMission(resource.drawMission(MissionType.PARCEL));
     }
 
-    //Fait bouger le panda
-    void movePanda(Coordinate coordinate){
-        if(board.moveCharacter(board.getPanda(),coordinate)){
-            addBamboo(board.getPlacedParcels().get(coordinate).getColor());
-        }
-    }
-
-    //Fait bouger le paysan
-    void movePeasant(Coordinate coordinate){
-        board.moveCharacter(board.getPeasant(),coordinate);
-    }
-
-    //Ajoute un bambou à l'inventaire
-    void addBamboo(Color color){
-        inventory.addBamboo(color);
-    }
-
-    //Retire un bambou àe l'inventaire
-    void deleteBamboo(Color color){
-        inventory.subBamboo(color);
-    }
-
-    //Place une parcelle à une coordonnée de la liste passée en paramètre
+    //Place une parcelle à une coordonnée de la liste passée en paramètre - ACTION 2
     void placeRandomParcel(List<Coordinate> listCoord){
         Collections.shuffle(listCoord);
         board.placeParcel(resource.drawParcel(), listCoord.get(0));
     }
 
-    //Place un canal à une coordonnée de la liste passée en paramètre
+    //Place un canal à une coordonnée de la liste passée en paramètre - ACTION 3
     void placeRandomCanal(List<Coordinate[]> listCoord) {
         Collections.shuffle(listCoord);
         board.placeCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
     }
 
-    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre
+    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4
     void randomMovePanda(List<Coordinate> listCoord) {
         Collections.shuffle(listCoord);
         int nbBamboo = board.getPlacedParcels().get(listCoord.get(0)).getNbBamboo();
@@ -63,10 +41,10 @@ abstract class Bot {
             if(nbBamboo>0){
                 inventory.addBamboo(Color.RED);
             }
-        };
+        }
     }
 
-    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre
+    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 5
     void randomMovePeasant(List<Coordinate> listCoord) {
         Collections.shuffle(listCoord);
         if(!listCoord.isEmpty())
@@ -95,16 +73,6 @@ abstract class Bot {
             }
         }
         return new ArrayList<>(possibleCoordinates);
-    }
-
-    //Supprime la liste de missions passées en paramètre de l'inventaire
-    void subMissions(List<Mission> missions) {
-        inventory.subMissions(missions);
-    }
-
-    //Supprime la mission passée en paramètre de l'inventaire
-    void subMission(Mission mission){
-        inventory.subMissions(new ArrayList<>(Collections.singletonList(mission)));
     }
 
     //Renvoie l'inventaire
