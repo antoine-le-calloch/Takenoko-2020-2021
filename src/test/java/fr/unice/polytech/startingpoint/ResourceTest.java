@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Type.MissionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

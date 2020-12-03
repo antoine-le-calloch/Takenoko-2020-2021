@@ -1,19 +1,25 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.Board.Board;
+import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Character;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
+import fr.unice.polytech.startingpoint.Type.CharacterType;
+import fr.unice.polytech.startingpoint.Type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PeasantTest {
-    Peasant peasant1;
+    Character peasant1;
     Board board;
     Parcel parcel1;
 
     @BeforeEach void setUp(){
-        peasant1 = new Peasant();
+        peasant1 = new Character(CharacterType.PEASANT);
         board = new Board();
-        parcel1 = new Parcel(Color.RED);
+        parcel1 = new Parcel(ColorType.RED);
     }
 
     @Test

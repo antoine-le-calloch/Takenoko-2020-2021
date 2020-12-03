@@ -1,17 +1,22 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Game.Ressource;
+
+
+import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.Game.Board.Object.*;
+import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class Resource {
+public class Resource {
     private final List<Mission> deckMissionParcel = new ArrayList<>();
     private final List<Mission> deckMissionPanda = new ArrayList<>();
     private final List<Mission> deckMissionPeasant = new ArrayList<>();
     private final List<Parcel> deckParcel = new ArrayList<>();
     private final List<Canal> deckCanal = new ArrayList<>();
 
-    Resource(){
+    public Resource(){
         initializeDeckParcel();
         initializeDeckMission();
         initializeDeckCanal();
@@ -21,8 +26,8 @@ class Resource {
     private void initializeDeckParcel(){
         int nbParcel = 26;
         for (int i = 0; i < nbParcel / 2; i++){
-            deckParcel.add(new Parcel(Color.RED));
-            deckParcel.add(new Parcel(Color.BLUE));
+            deckParcel.add(new Parcel(ColorType.RED));
+            deckParcel.add(new Parcel(ColorType.BLUE));
         }
     }
 
@@ -37,11 +42,11 @@ class Resource {
     private void initializeDeckMissionParcel(){
         int nbMissionParcel = 15;
         for (int i = 0; i < nbMissionParcel / 5; i++){
-            deckMissionParcel.add(new ParcelMission(2, Form.TRIANGLE,Color.RED));
-            deckMissionParcel.add(new ParcelMission(3, Form.TRIANGLE,Color.BLUE));
-            deckMissionParcel.add(new ParcelMission(3, Form.LINE,Color.RED));
-            deckMissionParcel.add(new ParcelMission(4, Form.LINE,Color.BLUE));
-            deckMissionParcel.add(new ParcelMission(4, Form.LINE,Color.BLUE));
+            deckMissionParcel.add(new ParcelMission(2, FormType.TRIANGLE, ColorType.RED));
+            deckMissionParcel.add(new ParcelMission(3, FormType.TRIANGLE, ColorType.BLUE));
+            deckMissionParcel.add(new ParcelMission(3, FormType.LINE, ColorType.RED));
+            deckMissionParcel.add(new ParcelMission(4, FormType.LINE, ColorType.BLUE));
+            deckMissionParcel.add(new ParcelMission(4, FormType.LINE, ColorType.BLUE));
         }
         Collections.shuffle(deckMissionParcel);
     }
@@ -49,10 +54,10 @@ class Resource {
     //Initialise le deck des mission panda
     private void initializeDeckMissionPanda(){
         int nbMissionParcel = 15;
-        deckMissionPanda.add(new PandaMission(3,Color.BLUE));
+        deckMissionPanda.add(new PandaMission(3, ColorType.BLUE));
         for (int i = 0; i < nbMissionParcel / 2; i++){
-            deckMissionPanda.add(new PandaMission(3,Color.RED));
-            deckMissionPanda.add(new PandaMission(3,Color.BLUE));
+            deckMissionPanda.add(new PandaMission(3, ColorType.RED));
+            deckMissionPanda.add(new PandaMission(3, ColorType.BLUE));
         }
         Collections.shuffle(deckMissionPanda);
     }
@@ -61,7 +66,7 @@ class Resource {
     private void initializeDeckMissionPeasant(){
         int nbMissionParcel = 15;
         for (int i = 0; i < nbMissionParcel; i++){
-            deckMissionPeasant.add(new PeasantMission(4));
+            deckMissionPeasant.add(new PeasantMission(4, ColorType.RED));
         }
         Collections.shuffle(deckMissionPeasant);
     }
@@ -76,14 +81,14 @@ class Resource {
     }
 
     //Pioche une parcelle du deck
-    Parcel drawParcel() {
+    public Parcel drawParcel() {
         Parcel parcel = deckParcel.get(0);
         deckParcel.remove(parcel);
         return parcel;
     }
 
     //Pioche une mission du deck
-    Mission drawMission(MissionType type){
+    public Mission drawMission(MissionType type){
         Mission mission = null;
         switch (type) {
             case PARCEL:
@@ -103,29 +108,29 @@ class Resource {
     }
 
     //Pioche un canal du deck
-    Canal drawCanal(){
+    public Canal drawCanal(){
         Canal canal = deckCanal.get(0);
         deckCanal.remove(canal);
         return canal;
     }
 
     //Renvoie la liste du deck de parcelles
-    List<Parcel> getParcel(){
+    public List<Parcel> getParcel(){
         return deckParcel;
     }
 
     //Renvoie la liste du deck de canaux
-    int getNbMissionParcel(){
+    public int getNbMissionParcel(){
         return deckMissionParcel.size();
     }
 
     //Renvoie la liste du deck de canaux
-    List<Canal> getCanal(){
+    public List<Canal> getCanal(){
         return deckCanal;
     }
 
     //Renvoie la liste du deck de missions
-    int getNbMission(){
+    public int getNbMission(){
         return deckMissionPanda.size() + deckMissionParcel.size() + deckMissionPeasant.size();
     }
 }

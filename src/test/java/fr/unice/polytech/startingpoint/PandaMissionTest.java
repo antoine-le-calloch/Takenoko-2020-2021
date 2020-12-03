@@ -1,5 +1,12 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.Board.Board;
+import fr.unice.polytech.startingpoint.Game.Bot.*;
+import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
+import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,23 +25,23 @@ public class PandaMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new PandaMission(2, Color.RED);
-        mission2 = new PandaMission(3, Color.RED);
+        mission1 = new PandaMission(2, ColorType.RED);
+        mission2 = new PandaMission(3, ColorType.RED);
         board = new Board();
         resource = new Resource();
         bot = new RandomBot(resource, board);
-        parcel1 = new Parcel(Color.RED);
-        parcel2 = new Parcel(Color.BLUE);
+        parcel1 = new Parcel(ColorType.RED);
+        parcel2 = new Parcel(ColorType.BLUE);
     }
 
     @Test
     void missionCompleteGoodColor(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel red
         IntStream.range(0, 5).forEach(i -> {
-            bot.inventory.addBamboo(parcel1.getColor());
+            bot.getInventory().addBamboo(parcel1.getColor());
         });
         assertEquals(2,mission1.checkMissionPanda(bot));
-        assertEquals(4,bot.getInventory().getBamboo(Color.RED));
+        assertEquals(4,bot.getInventory().getBamboo(ColorType.RED));
         assertEquals(2,mission1.checkMission(board, bot));
     }
 
@@ -42,16 +49,16 @@ public class PandaMissionTest {
     void missionIncompleteBadColor(){
         board.placeParcel(parcel2,new Coordinate(1,-1,0)); // parcel blue
         IntStream.range(0, 5).forEach(i -> {
-            bot.inventory.addBamboo(parcel2.getColor());
+            bot.getInventory().addBamboo(parcel2.getColor());
         });
-        assertEquals(0,bot.getInventory().getBamboo(Color.RED));
-        assertEquals(5,bot.getInventory().getBamboo(Color.BLUE));
+        assertEquals(0,bot.getInventory().getBamboo(ColorType.RED));
+        assertEquals(5,bot.getInventory().getBamboo(ColorType.BLUE));
         assertEquals(0,mission1.checkMissionPanda(bot));
     }
 
     @Test
     void missionIncompleteNoBamboo(){
         assertEquals(0,mission1.checkMissionPanda(bot));
-        assertEquals(0,bot.getInventory().getBamboo(Color.RED));
+        assertEquals(0,bot.getInventory().getBamboo(ColorType.RED));
     }
 }

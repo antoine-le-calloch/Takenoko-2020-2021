@@ -1,12 +1,12 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Stat;
 
-class Stat {
+public class Stat {
     private final int NB_PLAYER;
     private final int NB_GAME;
     private final int[] points;
     private final int[] nbWinNbEquality;
 
-    Stat(int NB_GAME, int NB_PLAYER){
+    public Stat(int NB_GAME, int NB_PLAYER){
         this.NB_GAME = NB_GAME;
         this.NB_PLAYER = NB_PLAYER;
         points = new int[NB_PLAYER];
@@ -14,7 +14,7 @@ class Stat {
     }
 
     //Ajoute les stats d'une nouvelles parties
-    void add(int[] data) {
+    public void add(int[] data) {
         setWinner(data);
         for (int i = 0; i < NB_PLAYER; i++) {
             points[i] += data[i];
@@ -22,7 +22,7 @@ class Stat {
     }
 
     //Fixe le nombre de victoires et d'égalités pour chaque joueur
-    void setWinner(int[] score){
+    public void setWinner(int[] score){
         int bestScore = 0;
         int nbWinner = 0;
         int[] Winner = new int[NB_PLAYER];
@@ -49,17 +49,17 @@ class Stat {
     }
 
     //Renvoie le taux de victoire du joueur passé en paramètre
-    double getWinRate(int joueur){
+    public double getWinRate(int joueur){
         return nbWinNbEquality[joueur]/(NB_GAME/100.0);
     }
 
     //Renvoie le taux d'égalité du joueur passé en paramètre
-    double getEqualityRate(int joueur){
+    public double getEqualityRate(int joueur){
         return nbWinNbEquality[joueur+NB_PLAYER]/(NB_GAME/100.0);
     }
 
     //Renvoie le nombres de points moyens du joueur passé en paramètre
-    double getPointsAverage(int joueur){
+    public double getPointsAverage(int joueur){
         return (points[joueur]*1.0)/NB_GAME;
     }
 

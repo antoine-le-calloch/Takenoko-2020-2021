@@ -1,7 +1,14 @@
 package fr.unice.polytech.startingpoint;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import fr.unice.polytech.startingpoint.Game.Board.*;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Canal;
+import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
+import fr.unice.polytech.startingpoint.Game.Bot.Bot;
+import fr.unice.polytech.startingpoint.Game.Bot.IntelligentBot;
+import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Type.ColorType;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
@@ -10,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BoardTest {
     Resource resource;
     Board board;
+    Bot bot;
     Parcel parcel1;
     Parcel parcel2;
     Parcel parcel3;
@@ -21,17 +29,18 @@ public class BoardTest {
     public void initialize(){
         board = new Board();
         resource = new Resource();
-        parcel1 = new Parcel(Color.NO_COLOR);
-        parcel2 = new Parcel(Color.NO_COLOR);
-        parcel3 = new Parcel(Color.NO_COLOR);
-        parcel4 = new Parcel(Color.NO_COLOR);
+        bot = new IntelligentBot(resource, board);
+        parcel1 = new Parcel(ColorType.NO_COLOR);
+        parcel2 = new Parcel(ColorType.NO_COLOR);
+        parcel3 = new Parcel(ColorType.NO_COLOR);
+        parcel4 = new Parcel(ColorType.NO_COLOR);
         canal = new Canal();
         canal2 = new Canal();
     }
 
     @Test
     public void freePlaceInitialStates(){
-        List<Coordinate> newPlaces = board.getPlayablePlaces();
+        List<Coordinate> newPlaces = bot.possibleCoordinatesParcel();
         assertEquals(new Coordinate(1,-1,0),newPlaces.get(0));
         assertEquals(new Coordinate(0,-1,1),newPlaces.get(1));
         assertEquals(new Coordinate(-1,1,0),newPlaces.get(2));
@@ -115,18 +124,18 @@ public class BoardTest {
 
     @Test
     void goodMoveCharacter(){
-        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(1,-1,0));
-        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(1,0,-1));
-        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(2,-1,-1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,0,-1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(2,-1,-1));
         assertTrue(board.moveCharacter(board.getPanda(),new Coordinate(1,-1,0)));
         assertTrue(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
     }
 
     @Test
     void wrongMoveCharacter(){
-        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(1,-1,0));
-        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(1,0,-1));
-        board.placeParcel(new Parcel(Color.NO_COLOR), new Coordinate(2,-1,-1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,0,-1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(2,-1,-1));
         assertFalse(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
     }
 }

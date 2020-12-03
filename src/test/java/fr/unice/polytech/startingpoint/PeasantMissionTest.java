@@ -1,5 +1,12 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.Board.Board;
+import fr.unice.polytech.startingpoint.Game.Bot.*;
+import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
+import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,11 +23,11 @@ public class PeasantMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new PeasantMission(2);
-        mission2 = new PeasantMission(3);
+        mission1 = new PeasantMission(2, ColorType.RED);
+        mission2 = new PeasantMission(3, ColorType.RED);
         board = new Board();
         resource = new Resource();
-        parcel1 = new Parcel(Color.RED);
+        parcel1 = new Parcel(ColorType.RED);
         bot = new IntelligentBot(resource,board);
     }
 

@@ -1,9 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;

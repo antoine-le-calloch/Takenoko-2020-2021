@@ -1,7 +1,14 @@
 package fr.unice.polytech.startingpoint;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import fr.unice.polytech.startingpoint.Game.Board.Board;
+import fr.unice.polytech.startingpoint.Game.Bot.*;
+import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
+import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Type.ColorType;
+import fr.unice.polytech.startingpoint.Type.FormType;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,16 +28,16 @@ public class ParcelMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new ParcelMission(2,Form.TRIANGLE,Color.RED);
-        mission2 = new ParcelMission(3,Form.LINE,Color.RED);
-        mission3 = new ParcelMission(2,Form.TRIANGLE,Color.BLUE);
-        mission4 = new ParcelMission(3,Form.LINE,Color.BLUE);
+        mission1 = new ParcelMission(2, FormType.TRIANGLE, ColorType.RED);
+        mission2 = new ParcelMission(3, FormType.LINE, ColorType.RED);
+        mission3 = new ParcelMission(2, FormType.TRIANGLE, ColorType.BLUE);
+        mission4 = new ParcelMission(3, FormType.LINE, ColorType.BLUE);
         board = new Board();
         resource = new Resource();
-        parcel1 = new Parcel(Color.RED);
-        parcel2 = new Parcel(Color.RED);
-        parcel3 = new Parcel(Color.RED);
-        parcel4 = new Parcel(Color.RED);
+        parcel1 = new Parcel(ColorType.RED);
+        parcel2 = new Parcel(ColorType.RED);
+        parcel3 = new Parcel(ColorType.RED);
+        parcel4 = new Parcel(ColorType.RED);
         bot = new RandomBot(resource, board);
     }
 

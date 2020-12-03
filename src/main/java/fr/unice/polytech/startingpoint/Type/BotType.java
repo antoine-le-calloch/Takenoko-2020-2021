@@ -1,6 +1,6 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Type;
 
-public enum BotName {
+public enum BotType {
     RANDOM{
         @Override
         public String toString() {

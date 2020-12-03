@@ -1,5 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.*;
+import fr.unice.polytech.startingpoint.Stat.*;
+import fr.unice.polytech.startingpoint.Type.*;
+
 public class Main {
 
     public static void main(String... args){
@@ -8,7 +12,7 @@ public class Main {
         Stat statGame = new Stat(NB_GAME, NB_PLAYER); //creation des statistiques de l'ensemble des parties
 
         for (int i = 0; i < NB_GAME; i++) {
-            Game game = new Game(new BotName[]{BotName.RANDOM,BotName.INTELLIGENT}); //creation d'une partie
+            Game game = new Game(new BotType[]{BotType.RANDOM, BotType.INTELLIGENT}); //creation d'une partie
             game.play();
             statGame.add(game.getData());
         }

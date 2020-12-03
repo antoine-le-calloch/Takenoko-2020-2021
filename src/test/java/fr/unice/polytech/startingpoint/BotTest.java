@@ -1,10 +1,18 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.Board.*;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Canal;
+import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
+import fr.unice.polytech.startingpoint.Game.Bot.Bot;
+import fr.unice.polytech.startingpoint.Game.Bot.IntelligentBot;
+import fr.unice.polytech.startingpoint.Game.Board.Mission.Mission;
+import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,8 +31,8 @@ class BotTest {
     public void setUp(){
         resource = new Resource();
         board = new Board();
-        parcel1 = new Parcel(Color.BLUE);
-        parcel2 = new Parcel(Color.NO_COLOR);
+        parcel1 = new Parcel(ColorType.BLUE);
+        parcel2 = new Parcel(ColorType.NO_COLOR);
         canal = new Canal();
         bot1 = new IntelligentBot(resource,board);
         bot2 = new IntelligentBot(resource,board);
@@ -48,15 +56,15 @@ class BotTest {
         bot1.drawMission();
         List<Mission> toDelete = new ArrayList<>();
         toDelete.add(bot1.getInventory().getMission().get(0));
-        bot1.inventory.subMissions(toDelete);
+        bot1.getInventory().subMissions(toDelete);
         assertEquals(0,bot1.getInventory().getMission().size());
-        bot1.inventory.subMissions(toDelete);
+        bot1.getInventory().subMissions(toDelete);
         assertNotEquals(-1,bot1.getInventory().getMission().size());
     }
 
     @Test
     public void initializeNextCoordinatesNextToCentral(){
-        List<Coordinate> nextTocentral = board.getPlayablePlaces();
+        List<Coordinate> nextTocentral = bot1.possibleCoordinatesParcel();
         assertEquals(6,nextTocentral.size());
         Coordinate randomco=nextTocentral.get(0);
         assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
@@ -68,7 +76,7 @@ class BotTest {
     @Test
     public void initializeNextCoordinatesAwayFromCentral(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        List<Coordinate> awayFromCentral = board.getAllPlaces();
+        List<Coordinate> awayFromCentral = bot1.allPlaces();
         Collections.shuffle(awayFromCentral);
         Coordinate randomCo=awayFromCentral.get(0);
         int [] tabco= randomCo.getCoordinate();
@@ -80,7 +88,7 @@ class BotTest {
 
     @Test
     public void possibleCoordinatesParcelTest(){
-        List<Coordinate> possibleCo = board.getPlayablePlaces();
+        List<Coordinate> possibleCo = bot1.possibleCoordinatesParcel();
         Collections.shuffle(possibleCo);
         assertTrue(board.isPlayableParcel(possibleCo.get(0)));
     }
@@ -135,7 +143,7 @@ class BotTest {
     @Test
     public void addInventoryMission(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
-        bot1.inventory.addBamboo(parcel1.getColor());
+        bot1.getInventory().addBamboo(parcel1.getColor());
         assertEquals(0,bot1.getInventory().getBamboo()[0]);
         assertEquals(1,bot1.getInventory().getBamboo()[1]);
     }

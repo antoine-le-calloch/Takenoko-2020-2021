@@ -1,16 +1,23 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Game.Bot;
+
+import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
+import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.Game.Board.*;
+import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class IntelligentBot extends Bot{
+public class IntelligentBot extends Bot {
 
-    IntelligentBot(Resource resource, Board board) {
+    public IntelligentBot(Resource resource, Board board) {
         super(resource, board);
     }
 
     @Override
-    void botPlay(){
+    public void botPlay(){
         if (!doDrawMission() && resource.getNbMissionParcel() > 0)
             drawMission();
         if (resource.getParcel().size() > 0)
@@ -20,36 +27,36 @@ class IntelligentBot extends Bot{
     }
 
     //Si le bot n'a pas de mission => true
-    boolean doDrawMission(){
+    public boolean doDrawMission(){
         return getInventory().getMission().size() > 5;
     }
 
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
-    void putParcel() {
+    public void putParcel() {
         ParcelMission mission = (ParcelMission) getInventory().getMission().get(0);
-        Form form = mission.getGoal();
-        Color color = mission.getColor();
+        FormType formType = mission.getForm();
+        ColorType colorType = mission.getColor();
         Parcel newParcel = resource.drawParcel();
 
-        if(newParcel.getColor().equals(color))
-            board.placeParcel(newParcel, bestCoordinatesForForm(form,color));
+        if(newParcel.getColor().equals(colorType))
+            board.placeParcel(newParcel, bestCoordinatesForForm(formType, colorType));
         else
-            board.placeParcel(newParcel, board.getPlayablePlaces().get(1));
+            board.placeParcel(newParcel, possibleCoordinatesParcel().get(1));
     }
 
     //renvoie la coord de la pièce a poser pour terminer le plus vite une forme [form], ou renvoie une coord random
-    Coordinate bestCoordinatesForForm(Form form, Color color){
-        Coordinate bestCoordinate = board.getPlayablePlaces().get(0);
-        int minNeedPartels = 3;
+    public Coordinate bestCoordinatesForForm(FormType formType, ColorType colorType){
+        Coordinate bestCoordinate = possibleCoordinatesParcel().get(0);
+        int minNeedParcels = 3;
 
-        for (Coordinate coord : board.getAllPlaces()) {
-            List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(coord,form,color);
+        for (Coordinate c : allPlaces()) {
+            List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(c, formType, colorType);
 
             if(parcelToPlaceToDoForm.size() == 1 && board.isPlayableParcel(parcelToPlaceToDoForm.get(0))) {
                 bestCoordinate = parcelToPlaceToDoForm.get(0);
-                minNeedPartels = 1;
+                minNeedParcels = 1;
             }
-            else if(parcelToPlaceToDoForm.size() == 2 && minNeedPartels > 1) {
+            else if(parcelToPlaceToDoForm.size() == 2 && minNeedParcels > 1) {
 
                 if (board.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
                     bestCoordinate = parcelToPlaceToDoForm.get(0);
@@ -62,18 +69,18 @@ class IntelligentBot extends Bot{
     }
 
     //renvoie une liste de toute les parcelles pas posé pour faire la forme [form] qui a pour parcel haute [x,y,z]
-    List<Coordinate> parcelToPlaceToDoForm(Coordinate c, Form form, Color color){
+    public List<Coordinate> parcelToPlaceToDoForm(Coordinate c, FormType formType, ColorType colorType){
         List<Coordinate> parcelToPlaceToDoForm = new ArrayList<>();
         Coordinate cClone = c;
         for (int i = 0; i < 3; i++) {
-            if((cClone.isCentral()) || (board.isPlacedParcel(cClone) && !board.getPlacedParcels().get(cClone).getColor().equals(color)))
+            if((cClone.isCentral()) || (board.isPlacedParcel(cClone) && !board.getPlacedParcels().get(cClone).getColor().equals(colorType)))
                 return new ArrayList<>();
-            if(form.equals(Form.LINE)) {
+            if(formType.equals(FormType.LINE)) {
                 if (!board.isPlacedParcel(cClone))
                     parcelToPlaceToDoForm.add(cClone);
                 cClone = new Coordinate(cClone,new Coordinate(0,-1,1));
             }
-            else if(form.equals(Form.TRIANGLE)) {
+            else if(formType.equals(FormType.TRIANGLE)) {
                 if(!board.isPlacedParcel(cClone))
                     parcelToPlaceToDoForm.add(cClone);
                 cClone = new Coordinate(cClone,new Coordinate(2*i-1,-i ,1-i));
@@ -82,7 +89,7 @@ class IntelligentBot extends Bot{
         return parcelToPlaceToDoForm;
     }
 
-    boolean putCanal() {
+    public boolean putCanal() {
         for(Parcel parcel : board.getPlacedParcels().values()){
             for(Coordinate[] canal : possibleCoordinatesCanal()){
                 if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){

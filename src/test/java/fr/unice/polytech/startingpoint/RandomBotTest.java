@@ -1,7 +1,11 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.Board.Board;
+import fr.unice.polytech.startingpoint.Game.Bot.RandomBot;
+import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
+import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,7 +18,7 @@ public class RandomBotTest {
     @BeforeEach
     public void setUp() {
         board = new Board();
-        parcel1 = new Parcel(Color.NO_COLOR);
+        parcel1 = new Parcel(ColorType.NO_COLOR);
         rdmBot1 = new RandomBot(new Resource(),board);
     }
 /*

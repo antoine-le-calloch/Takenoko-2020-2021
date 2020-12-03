@@ -1,9 +1,15 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Game;
+
+import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.Game.Bot.*;
+import fr.unice.polytech.startingpoint.Game.Board.*;
+import fr.unice.polytech.startingpoint.Game.Ressource.*;
+import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Game {
+public class Game {
     private final Resource resource = new Resource();
     private final Board board = new Board();
     private final List<Bot> botList = new ArrayList<>();
@@ -14,15 +20,15 @@ class Game {
 
     static final int NB_MISSION = 4;
 
-    Game(BotName[] botNames){
-        nbBot = botNames.length;
+    public Game(BotType[] botTypes){
+        nbBot = botTypes.length;
         scoreBots = new int[nbBot];
         missionDone = new int[nbBot];
-        initializeBot(botNames);
+        initializeBot(botTypes);
     }
 
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
-    void play() {
+    public void play() {
         int numBot = 0;
         turnLeft = nbBot;
 
@@ -34,7 +40,7 @@ class Game {
     }
 
     //Permet de verifier si un bot à fait suffisament de mission pour que la partie s'arrête
-    int isContinue(){
+    public int isContinue(){
         if(turnLeft == nbBot) {
             for (int mission : missionDone) {
                 if (mission >= NB_MISSION)
@@ -48,7 +54,7 @@ class Game {
     }
 
     //Renvoie true si l'une ou plusieurs des ressources sont épuisées
-    boolean isOutOfSources(){
+    public boolean isOutOfSources(){
         if (resource.getNbMission()==0)
             return true;
         if(resource.getParcel().size()==0)
@@ -58,7 +64,7 @@ class Game {
 
     /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
     il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
-    void missionDone(int idBot) {
+    public void missionDone(int idBot) {
         List<Mission> toRemove = new ArrayList<>();
         int count;
         for(Mission mission : botList.get(idBot).getInventory().getMission()){
@@ -68,13 +74,13 @@ class Game {
                 toRemove.add(mission);
             }
         }
-        botList.get(idBot).inventory.subMissions(toRemove);
+        botList.get(idBot).getInventory().subMissions(toRemove);
     }
 
     //Initialise les robots en fonction de leur nom associé passé en paramètre
-    void initializeBot(BotName[] botNames){
+    public void initializeBot(BotType[] botTypes){
         for (int i=0; i<nbBot; i++) {
-            switch (botNames[i]) {
+            switch (botTypes[i]) {
                 case RANDOM:
                     botList.add(new RandomBot(resource, board));
                     break;
@@ -86,17 +92,17 @@ class Game {
     }
 
     //Renvoie l'objet contenant les ressources
-    Resource getResource() {
+    public Resource getResource() {
         return resource;
     }
 
     //Renvoie la liste des robots
-    List<Bot> getBotList() {
+    public List<Bot> getBotList() {
         return botList;
     }
 
     //Renvoie les scores des robots de la partie actuelle
-    int[] getData() {
+    public int[] getData() {
         return scoreBots;
     }
 }

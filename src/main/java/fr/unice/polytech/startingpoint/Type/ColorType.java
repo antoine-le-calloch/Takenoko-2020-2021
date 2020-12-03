@@ -1,6 +1,6 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Type;
 
-public enum Color {
+public enum ColorType {
     RED{
         @Override
         public String toString() {

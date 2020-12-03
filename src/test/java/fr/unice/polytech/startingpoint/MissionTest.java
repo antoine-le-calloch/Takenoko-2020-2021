@@ -1,5 +1,8 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
+import fr.unice.polytech.startingpoint.Type.ColorType;
+import fr.unice.polytech.startingpoint.Type.FormType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,12 +17,12 @@ class MissionTest {
     Mission mission6;
 
     @BeforeEach void setUp(){
-        mission1 = new ParcelMission(2,Form.TRIANGLE,Color.RED);
-        mission2 = new ParcelMission(3,Form.LINE,Color.RED);
-        mission3 = new PandaMission(0, Color.RED);
-        mission4 = new PandaMission(1, Color.RED);
-        mission5 = new PeasantMission(0);
-        mission6 = new PeasantMission(1);
+        mission1 = new ParcelMission(2, FormType.TRIANGLE, ColorType.RED);
+        mission2 = new ParcelMission(3, FormType.LINE, ColorType.RED);
+        mission3 = new PandaMission(0, ColorType.RED);
+        mission4 = new PandaMission(1, ColorType.RED);
+        mission5 = new PeasantMission(0, ColorType.RED);
+        mission6 = new PeasantMission(1, ColorType.RED);
     }
 
     @Test void newMissionParcel(){
