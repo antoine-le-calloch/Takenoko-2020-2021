@@ -1,9 +1,6 @@
-package fr.unice.polytech.startingpoint.Game.Board;
+package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.Game.Board.Object.*;
-import fr.unice.polytech.startingpoint.Game.Board.Coordinate.*;
-import fr.unice.polytech.startingpoint.Game.Board.Object.Character;
 
 import java.util.*;
 
@@ -125,7 +122,7 @@ public class Board {
     }
 
     //Renvoie une map des parcelles placées
-    public Map<Coordinate,Parcel> getPlacedParcels(){
+    public Map<Coordinate, Parcel> getPlacedParcels(){
         return placedParcels;
     }
 
@@ -135,7 +132,7 @@ public class Board {
     }
 
     //Renvoie une map des canaux placés
-    public Map<SortedSet<Coordinate>,Canal> getPlacedCanals(){
+    public Map<SortedSet<Coordinate>, Canal> getPlacedCanals(){
         return placedCanals;
     }
 

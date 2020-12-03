@@ -1,7 +1,7 @@
-package fr.unice.polytech.startingpoint.Game.Bot;
+package fr.unice.polytech.startingpoint.Bot;
 
-import fr.unice.polytech.startingpoint.Game.Board.*;
-import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Game.Board;
+import fr.unice.polytech.startingpoint.Game.Resource;
 
 import java.util.Random;
 

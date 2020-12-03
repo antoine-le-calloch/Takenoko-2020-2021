@@ -1,9 +1,7 @@
-package fr.unice.polytech.startingpoint.Game.Ressource;
+package fr.unice.polytech.startingpoint.Game;
 
 
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.Game.Board.Object.*;
-import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

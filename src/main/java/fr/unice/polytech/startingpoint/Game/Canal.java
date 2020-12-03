@@ -1,6 +1,4 @@
-package fr.unice.polytech.startingpoint.Game.Board.Object;
-
-import fr.unice.polytech.startingpoint.Game.Board.Coordinate.*;
+package fr.unice.polytech.startingpoint.Game;
 
 import java.util.*;
 

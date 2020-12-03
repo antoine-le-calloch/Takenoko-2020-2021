@@ -1,10 +1,10 @@
-package fr.unice.polytech.startingpoint.Game.Bot;
+package fr.unice.polytech.startingpoint.Bot;
 
+import fr.unice.polytech.startingpoint.Game.Board;
+import fr.unice.polytech.startingpoint.Game.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Parcel;
+import fr.unice.polytech.startingpoint.Game.Resource;
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.Game.Board.*;
-import fr.unice.polytech.startingpoint.Game.Ressource.*;
-import fr.unice.polytech.startingpoint.Game.Board.Object.*;
-import fr.unice.polytech.startingpoint.Game.Board.Coordinate.*;
 
 import java.util.*;
 

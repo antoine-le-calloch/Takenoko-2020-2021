@@ -1,8 +1,6 @@
-package fr.unice.polytech.startingpoint.Game.Board.Object;
+package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.Game.Board.*;
-import fr.unice.polytech.startingpoint.Game.Board.Coordinate.*;
 
 public class Character {
     private final CharacterType characterType;

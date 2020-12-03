@@ -1,9 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Game.Board.Board;
-import fr.unice.polytech.startingpoint.Game.Bot.RandomBot;
-import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
-import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Bot.RandomBot;
+import fr.unice.polytech.startingpoint.Game.Board;
+import fr.unice.polytech.startingpoint.Game.Parcel;
+import fr.unice.polytech.startingpoint.Game.Resource;
 import fr.unice.polytech.startingpoint.Type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 

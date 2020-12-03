@@ -1,7 +1,6 @@
-package fr.unice.polytech.startingpoint.Game.Board.Object;
+package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.Game.Board.Coordinate.*;
 
 public class Parcel {
     private Coordinate coordinates;

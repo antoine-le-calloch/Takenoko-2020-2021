@@ -1,6 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
+import fr.unice.polytech.startingpoint.Game.Mission;
+import fr.unice.polytech.startingpoint.Game.PandaMission;
+import fr.unice.polytech.startingpoint.Game.ParcelMission;
+import fr.unice.polytech.startingpoint.Game.PeasantMission;
 import fr.unice.polytech.startingpoint.Type.ColorType;
 import fr.unice.polytech.startingpoint.Type.FormType;
 import org.junit.jupiter.api.BeforeEach;

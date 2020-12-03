@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.Stat;
+package fr.unice.polytech.startingpoint.Game;
 
 public class Stat {
     private final int NB_PLAYER;

@@ -1,9 +1,7 @@
-package fr.unice.polytech.startingpoint.Game.Board.Mission;
+package fr.unice.polytech.startingpoint.Game;
 
+import fr.unice.polytech.startingpoint.Bot.Bot;
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.Game.Bot.*;
-import fr.unice.polytech.startingpoint.Game.Board.*;
-import fr.unice.polytech.startingpoint.Game.Board.Object.*;
 
 public class PeasantMission implements Mission {
     private final int points;

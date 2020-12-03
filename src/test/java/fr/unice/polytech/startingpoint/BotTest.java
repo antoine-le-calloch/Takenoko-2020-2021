@@ -1,13 +1,13 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Game.Board.*;
-import fr.unice.polytech.startingpoint.Game.Board.Object.Canal;
-import fr.unice.polytech.startingpoint.Game.Board.Coordinate.Coordinate;
-import fr.unice.polytech.startingpoint.Game.Board.Object.Parcel;
-import fr.unice.polytech.startingpoint.Game.Bot.Bot;
-import fr.unice.polytech.startingpoint.Game.Bot.IntelligentBot;
-import fr.unice.polytech.startingpoint.Game.Board.Mission.Mission;
-import fr.unice.polytech.startingpoint.Game.Ressource.Resource;
+import fr.unice.polytech.startingpoint.Bot.Bot;
+import fr.unice.polytech.startingpoint.Bot.IntelligentBot;
+import fr.unice.polytech.startingpoint.Game.Board;
+import fr.unice.polytech.startingpoint.Game.Canal;
+import fr.unice.polytech.startingpoint.Game.Coordinate;
+import fr.unice.polytech.startingpoint.Game.Parcel;
+import fr.unice.polytech.startingpoint.Game.Mission;
+import fr.unice.polytech.startingpoint.Game.Resource;
 import fr.unice.polytech.startingpoint.Type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

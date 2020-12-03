@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint;
 
 import fr.unice.polytech.startingpoint.Game.*;
-import fr.unice.polytech.startingpoint.Stat.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 public class Main {

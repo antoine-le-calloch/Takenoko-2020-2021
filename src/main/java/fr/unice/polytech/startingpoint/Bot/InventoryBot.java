@@ -1,8 +1,8 @@
-package fr.unice.polytech.startingpoint.Game.Bot;
+package fr.unice.polytech.startingpoint.Bot;
 
-import fr.unice.polytech.startingpoint.Game.Board.Object.Canal;
+import fr.unice.polytech.startingpoint.Game.Canal;
+import fr.unice.polytech.startingpoint.Game.Mission;
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.Game.Board.Mission.*;
 
 import java.util.*;
 
