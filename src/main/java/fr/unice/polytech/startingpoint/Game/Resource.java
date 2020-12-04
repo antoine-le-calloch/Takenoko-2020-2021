@@ -120,6 +120,12 @@ public class Resource {
         return canal;
     }
 
+    boolean isEmpty(){
+        return (deckMissionPanda.size() + deckMissionParcel.size() + deckMissionPeasant.size() +
+                deckCanal.size() + deckParcel.size() == 0);
+
+    }
+
     //Renvoie la liste du deck de parcelles
     public List<Parcel> getParcel(){
         return deckParcel;
@@ -135,8 +141,4 @@ public class Resource {
         return deckCanal;
     }
 
-    //Renvoie la liste du deck de missions
-    public int getNbMission(){
-        return deckMissionPanda.size() + deckMissionParcel.size() + deckMissionPeasant.size();
-    }
 }

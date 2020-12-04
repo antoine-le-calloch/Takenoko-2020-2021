@@ -22,7 +22,7 @@ public class Main {
         for (int i = 0; i < NB_GAME; i++) {
             Game game = new Game(new BotType[]{BotType.RANDOM, BotType.INTELLIGENT}); //creation d'une partie
             game.play();
-            statGame.add(game.getData());
+            statGame.add(game.getPlayerData());
         }
 
         System.out.println(statGame);

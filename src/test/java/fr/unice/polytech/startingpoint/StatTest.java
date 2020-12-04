@@ -1,6 +1,11 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.PlayerData;
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -18,14 +23,14 @@ public class StatTest {
     Stat stat1000Game2P;
     Stat stat1000Game4P;
 
-    int[] p1w;
+    PlayerData p1w;
 
-    int[] p1w2Player;
-    int[] p2w2Player;
-    int[] equality2Player;
+    PlayerData p1w2Player;
+    PlayerData p2w2Player;
+    PlayerData equality2Player;
 
-    int[] p1w4Player;
-    int[] p2w4Player;
+    PlayerData p1w4Player;
+    PlayerData p2w4Player;
 
     @BeforeEach
     public void initialize(){
@@ -40,7 +45,7 @@ public class StatTest {
         p2w2Player = new int[]{1, 2};
         equality2Player = new int[]{1, 1};
 
-        p1w4Player = new int[]{9, 5, 3, 1};
+        p1w4Player = new PlayerData(9, 5, 3, 1);
         p2w4Player = new int[]{2, 7, 4, 3};
     }
 

@@ -1,5 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
+import fr.unice.polytech.startingpoint.Game.PlayerData;
+
+import java.util.List;
+
 /**
  * La classe collecte les données de chaque partie et calcule des statistiques
  * @author Manuel Enzo
@@ -24,27 +28,27 @@ public class Stat {
     }
 
     //Ajoute les stats d'une nouvelles parties
-    public void add(int[] data) {
-        setWinner(data);
+    public void add(PlayerData gameData) {
+        setWinner(gameData.getScores());
         for (int i = 0; i < NB_PLAYER; i++) {
-            points[i] += data[i];
+            points[i] += gameData.getScores().get(i);
         }
     }
 
     //Fixe le nombre de victoires et d'égalités pour chaque joueur
-    public void setWinner(int[] score){
+    public void setWinner(List<Integer> score){
         int bestScore = 0;
         int nbWinner = 0;
         int[] Winner = new int[NB_PLAYER];
         
         for (int i = 0; i < NB_PLAYER; i++) {
-            if(score[i] > bestScore) {
-                bestScore=score[i];
+            if(score.get(i) > bestScore) {
+                bestScore=score.get(i);
             }
         }
 
         for (int i = 0; i < NB_PLAYER; i++) {
-            if(score[i] == bestScore) {
+            if(score.get(i) == bestScore) {
                 Winner[nbWinner]=i;
                 nbWinner++;
             }
