@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Le Calloch Antoine
  * @version 2020.12.03
  */
-
+/*
 class GameTest {
     Game game1;
     Game game2;
@@ -49,4 +49,4 @@ class GameTest {
         assertNotEquals(game1.getResource(),game2.getResource());
         assertNotEquals(game1.getResource(),null);
     }
-}
+}*/

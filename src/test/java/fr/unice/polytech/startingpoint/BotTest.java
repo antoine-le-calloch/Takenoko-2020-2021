@@ -47,13 +47,13 @@ class BotTest {
 
     @Test
     public void missionIncrease(){
-        bot1.drawMission();
+        bot1.drawMission(MissionType.PARCEL);
         assertEquals(1,bot1.getInventory().getMission().size());
     }
 
     @Test
     public void missionDecrease(){
-        bot1.drawMission();
+        bot1.drawMission(MissionType.PARCEL);
         List<Mission> toDelete = new ArrayList<>();
         toDelete.add(bot1.getInventory().getMission().get(0));
         bot1.getInventory().subMissions(toDelete);

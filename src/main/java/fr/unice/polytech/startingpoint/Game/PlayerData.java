@@ -28,8 +28,14 @@ public class PlayerData {
                 case RANDOM:
                     botData.put(new RandomBot(resource, board), new int[]{0, 0});
                     break;
-                case INTELLIGENT:
+                case PARCELBOT:
                     botData.put(new ParcelBot(resource, board), new int[]{0, 0});
+                    break;
+                case PEASANTBOT:
+                    botData.put(new PeasantBot(resource, board), new int[]{0, 0});
+                    break;
+                case PANDABOT:
+                    botData.put(new PandaBot(resource, board), new int[]{0, 0});
                     break;
             }
         }

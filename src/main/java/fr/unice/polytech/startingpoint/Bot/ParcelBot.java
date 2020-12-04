@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Classe qui represente un bot bot qui joue intelligemment
+ * Classe qui represente un bot qui joue intelligemment en completant seulement des missions parcels
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
@@ -30,7 +30,7 @@ public class ParcelBot extends Bot {
     @Override
     public void botPlay(){
         if (!doDrawMission() && resource.getNbMissionParcel() > 0)
-            drawMission();
+            drawMission(MissionType.PARCEL);
         if (resource.getParcel().size() > 0)
             putParcel();
         if(resource.getCanal().size()>0 && possibleCoordinatesCanal().size()>0)
