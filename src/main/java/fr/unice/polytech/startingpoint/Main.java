@@ -15,10 +15,10 @@ import fr.unice.polytech.startingpoint.Type.*;
 public class Main {
 
     public static void main(String... args){
-        BotType[] botList = new BotType[]{BotType.RANDOM, BotType.RANDOM};
+        BotType[] botList = new BotType[]{BotType.RANDOM, BotType.PARCELBOT};
         Stat statGame = new Stat(botList); //creation des statistiques de l'ensemble des parties
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             Game game = new Game(botList); //creation d'une partie
             game.play();
             statGame.add(game.getPlayerData());

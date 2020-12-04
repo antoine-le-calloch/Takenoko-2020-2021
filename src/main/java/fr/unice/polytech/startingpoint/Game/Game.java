@@ -49,7 +49,7 @@ public class Game {
     il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
     public void missionDone(int numBot) {
         List<Mission> toRemove = new ArrayList<>();
-        int count;
+        int count;  // PB SI LE BOT A PAS DE MISSION
         for(Mission mission : playerData.get(numBot).getInventory().getMission()){
             if( (count = mission.checkMission(board,playerData.get(numBot).getInventory())) != 0){
                 playerData.completedMission(numBot, count);

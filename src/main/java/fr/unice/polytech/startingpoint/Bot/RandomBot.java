@@ -6,8 +6,8 @@ import fr.unice.polytech.startingpoint.Game.Parcel;
 import fr.unice.polytech.startingpoint.Game.Resource;
 import fr.unice.polytech.startingpoint.Type.*;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -46,22 +46,30 @@ public class RandomBot extends Bot {
         }
 
         else if (nb == 1 && resource.getCanal().size() > 0 && resource.getCanal().size() > 0) {  // place canal
-            if (possibleCoordinatesCanal().size() > 0)
-                placeRandomCanal(possibleCoordinatesCanal());
+            if (possibleCoordinatesCanal().size() > 0) {
+                List<Coordinate[]> list = possibleCoordinatesCanal();
+                Collections.shuffle(list);
+                placeCanal(list.get(0));
+            }
         }
 
         else if (nb == 2 && possibleCoordinatesParcel().size() > 0 && resource.getParcel().size() > 0){ // place parcel
             Parcel parcel = drawParcel();
-            Collections.shuffle(possibleCoordinatesParcel());
-            placeParcel(possibleCoordinatesParcel().get(0), parcel);
+            List<Coordinate> list = possibleCoordinatesParcel();
+            Collections.shuffle(list);
+            placeParcel(list.get(0), parcel);
         }
 
         else if (nb == 3 && possibleCoordinatesCharacter().size() != 0) {
-            randomMovePanda(possibleCoordinatesCharacter());
+            List<Coordinate> list = possibleCoordinatesCharacter();
+            Collections.shuffle(list);
+            movePanda(list.get(0));
         }
 
-        else if (possibleCoordinatesCharacter().size() != 0) {
-            randomMovePeasant(possibleCoordinatesCharacter());
+        else if (possibleCoordinatesCharacter().size() != 0 ) {
+            List<Coordinate> list = possibleCoordinatesParcel();
+            Collections.shuffle(list);
+            movePeasant(list.get(0));
         }
     }
 }

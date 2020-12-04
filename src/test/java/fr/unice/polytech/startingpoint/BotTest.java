@@ -128,7 +128,7 @@ class BotTest {
     @Test
     public void movePanda(){
         assertTrue(board.placeParcel(parcel1,new Coordinate(1,-1,0)));
-        bot1.randomMovePanda(bot1.possibleCoordinatesCharacter());
+        bot1.movePanda(bot1.possibleCoordinatesCharacter().get(0));
         //assertEquals(1,bot1.getInventory().getBamboo()[0]);
         //assertEquals(0,parcel1.getNbBamboo());
     }
@@ -136,7 +136,7 @@ class BotTest {
     @Test
     public void movePeasant(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.randomMovePeasant(bot1.possibleCoordinatesCharacter());
+        bot1.movePeasant(bot1.possibleCoordinatesCharacter().get(0));
         assertEquals(2,parcel1.getNbBamboo());
     }
 

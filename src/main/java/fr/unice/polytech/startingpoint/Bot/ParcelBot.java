@@ -27,8 +27,9 @@ public class ParcelBot extends Bot {
         if (resource.getParcel().size() > 0){
             putParcel();
         }
-        if (resource.getCanal().size() > 0 && possibleCoordinatesCanal().size() > 0)
-            placeRandomCanal(possibleCoordinatesCanal());
+        if (resource.getCanal().size() > 0 && possibleCoordinatesCanal().size() > 0) {
+            placeCanal(possibleCoordinatesCanal().get(0));
+        }
     }
 
     //Si le bot n'a pas de mission => true
@@ -46,7 +47,8 @@ public class ParcelBot extends Bot {
         if(newParcel.getColor().equals(colorType))
             placeParcel(bestCoordinatesForForm(formType, colorType),newParcel);
         else {
-            Collections.shuffle(possibleCoordinatesParcel());
+            List<Coordinate> list = possibleCoordinatesParcel();
+            Collections.shuffle(list);
             placeParcel(possibleCoordinatesParcel().get(0), newParcel);
         }
     }
@@ -105,7 +107,7 @@ public class ParcelBot extends Bot {
                 }
             }
         }
-        placeRandomCanal(possibleCoordinatesCanal());
+        placeCanal(possibleCoordinatesCanal().get(0));
         return false;
     }
 }

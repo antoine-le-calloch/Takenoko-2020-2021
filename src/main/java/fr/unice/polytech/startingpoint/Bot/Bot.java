@@ -42,24 +42,18 @@ public abstract class Bot {
         board.placeParcel(parcel, coord);
     }
     //Place un canal à une coordonnée de la liste passée en paramètre - ACTION 3
-    public void placeRandomCanal(List<Coordinate[]> listCoord) {
-        Collections.shuffle(listCoord);
-        if(!listCoord.isEmpty())
-            board.placeCanal(resource.drawCanal() , listCoord.get(0)[0], listCoord.get(0)[1]);
+    public void placeCanal(Coordinate[] coords) {
+        board.placeCanal(resource.drawCanal() , coords[0], coords[1]);
     }
 
     //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4
-    public void randomMovePanda(List<Coordinate> listCoord) {
-        Collections.shuffle(listCoord);
-        if(!listCoord.isEmpty())
-            board.moveCharacter(board.getPeasant(),listCoord.get(0));
+    public void movePanda(Coordinate coord) {
+        board.moveCharacter(board.getPanda(),coord);
     }
 
     //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 5
-    public void randomMovePeasant(List<Coordinate> listCoord) {
-        Collections.shuffle(listCoord);
-        if(!listCoord.isEmpty())
-            board.moveCharacter(board.getPeasant(),listCoord.get(0));
+    public void movePeasant(Coordinate coord) {
+        board.moveCharacter(board.getPeasant(),coord);
     }
 
     //Renvoie une liste de toutes les coordonnées présentes et autour de ces dernières

@@ -22,7 +22,7 @@ public class PeasantBot extends Bot {
     @Override
     public void botPlay() {
         drawMission(MissionType.PEASANT);
-        randomMovePeasant(possibleCoordinatesCharacter());
+        movePeasant(possibleCoordinatesCharacter().get(0));
 
     }
 
