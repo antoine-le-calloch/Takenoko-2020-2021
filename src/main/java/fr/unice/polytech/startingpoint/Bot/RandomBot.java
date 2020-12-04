@@ -1,10 +1,13 @@
 package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Game.Board;
+import fr.unice.polytech.startingpoint.Game.Coordinate;
 import fr.unice.polytech.startingpoint.Game.Parcel;
 import fr.unice.polytech.startingpoint.Game.Resource;
 import fr.unice.polytech.startingpoint.Type.*;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -49,7 +52,8 @@ public class RandomBot extends Bot {
 
         else if (nb == 2 && possibleCoordinatesParcel().size() > 0 && resource.getParcel().size() > 0){ // place parcel
             Parcel parcel = drawParcel();
-            placeRandomParcelFromAList(possibleCoordinatesParcel(), parcel);
+            Collections.shuffle(possibleCoordinatesParcel());
+            placeParcel(possibleCoordinatesParcel().get(0), parcel);
         }
 
         else if (nb == 3 && possibleCoordinatesCharacter().size() != 0) {

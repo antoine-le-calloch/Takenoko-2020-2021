@@ -38,12 +38,9 @@ public abstract class Bot {
     }
 
     //Place une parcelle à une coordonnée de la liste passée en paramètre - ACTION 2
-    public void placeRandomParcelFromAList(List<Coordinate> listCoord, Parcel parcel){
-        Collections.shuffle(listCoord);
-        if(!listCoord.isEmpty())
-            board.placeParcel(parcel, listCoord.get(0));
+    public void placeParcel(Coordinate coord, Parcel parcel){
+        board.placeParcel(parcel, coord);
     }
-
     //Place un canal à une coordonnée de la liste passée en paramètre - ACTION 3
     public void placeRandomCanal(List<Coordinate[]> listCoord) {
         Collections.shuffle(listCoord);

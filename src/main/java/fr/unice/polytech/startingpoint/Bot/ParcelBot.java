@@ -44,9 +44,11 @@ public class ParcelBot extends Bot {
         Parcel newParcel = resource.drawParcel();
 
         if(newParcel.getColor().equals(colorType))
-            placeRandomParcelFromAList(new ArrayList<>(Collections.singletonList(bestCoordinatesForForm(formType, colorType))),newParcel);
-        else
-            board.placeParcel(newParcel, possibleCoordinatesParcel().get(1));
+            placeParcel(bestCoordinatesForForm(formType, colorType),newParcel);
+        else {
+            Collections.shuffle(possibleCoordinatesParcel());
+            placeParcel(possibleCoordinatesParcel().get(0), newParcel);
+        }
     }
 
     //renvoie la coord de la pièce a poser pour terminer le plus vite une forme [form], ou renvoie une coord random
