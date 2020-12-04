@@ -1,9 +1,6 @@
 package fr.unice.polytech.startingpoint.Bot;
 
-import fr.unice.polytech.startingpoint.Game.Board;
-import fr.unice.polytech.startingpoint.Game.Coordinate;
-import fr.unice.polytech.startingpoint.Game.Parcel;
-import fr.unice.polytech.startingpoint.Game.Resource;
+import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.*;
@@ -20,12 +17,12 @@ import java.util.*;
 public abstract class Bot {
     protected final Resource resource;
     protected final Board board;
-    protected final InventoryBot inventoryBot;
+    protected final Inventory inventory;
 
     public Bot(Resource resource, Board board) {
         this.resource = resource;
         this.board = board;
-        this.inventoryBot = new InventoryBot();
+        this.inventory = new Inventory();
     }
 
     //Action d'un bot pendant un tour
@@ -33,7 +30,7 @@ public abstract class Bot {
 
     //Pioche une mission - ACTION 1
     public void drawMission(){
-        inventoryBot.addMission(resource.drawMission(MissionType.PARCEL));
+        inventory.addMission(resource.drawMission(MissionType.PARCEL));
     }
 
     //Place une parcelle à une coordonnée de la liste passée en paramètre - ACTION 2
@@ -54,7 +51,7 @@ public abstract class Bot {
         int nbBamboo = board.getPlacedParcels().get(listCoord.get(0)).getNbBamboo();
         if(board.moveCharacter(board.getPanda(),listCoord.get(0))){
             if(nbBamboo>0){
-                inventoryBot.addBamboo(ColorType.RED);
+                inventory.addBamboo(ColorType.RED);
             }
         }
     }
@@ -116,7 +113,7 @@ public abstract class Bot {
     }
 
     //Renvoie l'inventaire
-    public InventoryBot getInventory(){
-        return inventoryBot;
+    public Inventory getInventory(){
+        return inventory;
     }
 }

@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 /**
@@ -21,7 +20,7 @@ public class ParcelMission extends Mission {
     }
 
     //Renvoie le nombre de points que les missions rapportent si elles ont été accomplies
-    public int checkMission(Board board, InventoryBot inventoryBot) {
+    public int checkMission(Board board, Inventory inventory) {
         switch (formType) {
             case TRIANGLE:
                 if (checkFormIrrigateWithColor(board,0,1))
@@ -39,12 +38,12 @@ public class ParcelMission extends Mission {
     //retourne vrai si il y a un triangle sur le plateau
     public boolean checkFormIrrigateWithColor(Board board, int offset1, int offset2) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
-            Coordinate coord1 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset1));
-            Coordinate coord2 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset2));
-            if (board.getIrrigatedParcels().contains(coord1) && board.getIrrigatedParcels().contains(coord2)) {
-                if (parcel.getColor().equals(colorType)
-                        && board.getPlacedParcels().get(coord1).getColor().equals(colorType)
-                        && board.getPlacedParcels().get(coord2).getColor().equals(colorType))
+            Coordinate c1 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset1));
+            Coordinate c2 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset2));
+            if (board.isPlacedAndIrrigatedParcel(c1) && board.isPlacedAndIrrigatedParcel(c2)){
+                if (parcel.getColor().equals(colorType) &&
+                        board.getPlacedParcels().get(c1).getColor().equals(colorType) &&
+                        board.getPlacedParcels().get(c2).getColor().equals(colorType) )
                     return true;
             }
         }

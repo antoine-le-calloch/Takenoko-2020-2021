@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 /**
@@ -24,7 +23,7 @@ public abstract class Mission {
     }
 
     //Vérifie si la mission est faite
-    public abstract int checkMission(Board board, InventoryBot inventoryBot);
+    public abstract int checkMission(Board board, Inventory inventory);
 
     //Renvoie la couleur de la mission
     public MissionType getMissionType() {

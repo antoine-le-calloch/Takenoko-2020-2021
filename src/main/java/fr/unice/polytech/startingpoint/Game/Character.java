@@ -24,18 +24,11 @@ public class Character {
         this.coordinate = coordinate;
     }
 
-    public Coordinate getCoordinate(){
-        return coordinate;
+    public CharacterType getCharacterType() {
+        return characterType;
     }
 
-    public void action(Coordinate coordinate, Board board) {
-        switch (characterType){
-            case PANDA:
-                board.getPlacedParcels().get(coordinate).delBamboo();
-                break;
-            case PEASANT:
-                board.getPlacedParcels().get(coordinate).addBamboo();
-                break;
-        }
+    public Coordinate getCoordinate(){
+        return coordinate;
     }
 }

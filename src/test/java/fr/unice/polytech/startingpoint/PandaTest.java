@@ -30,7 +30,7 @@ public class PandaTest {
     @Test
     void goodEat() {
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
-        panda.action(parcel1.getCoordinates(),board);
+        board.moveCharacter(panda,parcel1.getCoordinates());
         assertEquals(0,parcel1.getNbBamboo());
     }
 
@@ -38,7 +38,7 @@ public class PandaTest {
     void minEat() {
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
         for (int i = 0; i < 10; i++) {
-            panda.action(parcel1.getCoordinates(),board);
+            board.moveCharacter(panda,parcel1.getCoordinates());
         }
         assertEquals(0,parcel1.getNbBamboo());
     }

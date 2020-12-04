@@ -30,7 +30,7 @@ public class PeasantTest {
     @Test
     void goodGrow() {
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
-        peasant1.action(parcel1.getCoordinates(),board);
+        board.moveCharacter(peasant1,parcel1.getCoordinates());
         assertEquals(2,parcel1.getNbBamboo());
     }
 
@@ -38,7 +38,8 @@ public class PeasantTest {
     void maxGrow() {
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
         for (int i = 0; i < 10; i++) {
-            peasant1.action(parcel1.getCoordinates(),board);
+            board.moveCharacter(peasant1,parcel1.getCoordinates());
+            board.moveCharacter(peasant1,new Coordinate(0,0,0));
         }
         assertEquals(4,parcel1.getNbBamboo());
     }

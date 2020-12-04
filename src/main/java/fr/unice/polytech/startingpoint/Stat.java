@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.Game;
+package fr.unice.polytech.startingpoint;
 
 /**
  * La classe collecte les données de chaque partie et calcule des statistiques

@@ -1,7 +1,5 @@
-package fr.unice.polytech.startingpoint.Bot;
+package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Game.Canal;
-import fr.unice.polytech.startingpoint.Game.Mission;
 import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.*;
@@ -16,12 +14,12 @@ import java.util.*;
  */
 
 
-public class InventoryBot {
+public class Inventory {
     private final List<Mission> inventoryMission = new ArrayList<>();
     private final List<Canal> inventoryCanal = new ArrayList<>();
     private final int[] inventoryBamboo = new int[ColorType.values().length-1];
 
-    public InventoryBot(){
+    public Inventory(){
         for (int nbBamboo : inventoryBamboo){
             nbBamboo = 0;
         }

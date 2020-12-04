@@ -38,7 +38,7 @@ public class PeasantMissionTest {
     @Test
     void missionComplete(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.getPeasant().action(new Coordinate(1,-1,0), board);
+        board.moveCharacter(board.getPeasant(), parcel1.getCoordinates());
         assertEquals(2,mission1.checkMission(board, bot.getInventory()));
     }
 

@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 /**
@@ -18,8 +17,8 @@ public class PandaMission extends Mission {
         super(MissionType.PANDA,colorType,points);
     }
 
-    public int checkMission(Board board, InventoryBot inventoryBot) {
-        if (inventoryBot.subBamboo(colorType)){
+    public int checkMission(Board board, Inventory inventory) {
+        if (inventory.subBamboo(colorType)){
             return points;
         }
         return 0;

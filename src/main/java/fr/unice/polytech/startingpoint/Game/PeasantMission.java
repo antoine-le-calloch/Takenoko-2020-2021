@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 /**
@@ -18,7 +17,7 @@ public class PeasantMission extends Mission {
         super(MissionType.PEASANT,colorType,points);
     }
 
-    public int checkMission(Board board, InventoryBot inventoryBot) {
+    public int checkMission(Board board, Inventory inventory) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
             if (parcel.getNbBamboo() == 2)
                 return points;
