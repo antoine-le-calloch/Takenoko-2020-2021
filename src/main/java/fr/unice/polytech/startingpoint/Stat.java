@@ -1,7 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Game.PlayerData;
+import fr.unice.polytech.startingpoint.Game.*;
+import fr.unice.polytech.startingpoint.Type.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,73 +17,74 @@ import java.util.List;
 
 
 public class Stat {
-    private final int NB_PLAYER;
-    private final int NB_GAME;
-    private final int[] points;
-    private final int[] nbWinNbEquality;
+    private final List<PlayerData> gameData = new ArrayList<>();
+    private final BotType[] botList;
+    private final int[][] botScores;
 
-    public Stat(int NB_GAME, int NB_PLAYER){
-        this.NB_GAME = NB_GAME;
-        this.NB_PLAYER = NB_PLAYER;
-        points = new int[NB_PLAYER];
-        nbWinNbEquality = new int[NB_PLAYER*2];
+    public Stat(BotType[] botList){
+        this.botList = botList;
+        botScores = new int[botList.length][3];
+        for (int i = 0; i < botList.length; i++){
+            for (int j = 0; j < botScores[0].length; j++){
+                botScores[i][j] = 0;
+            }
+        }
     }
 
     //Ajoute les stats d'une nouvelles parties
     public void add(PlayerData gameData) {
-        setWinner(gameData.getScores());
-        for (int i = 0; i < NB_PLAYER; i++) {
-            points[i] += gameData.getScores().get(i);
+        this.gameData.add(gameData);
+        setWinner(getWinner(gameData.getScores()));
+        for (int i = 0; i < gameData.getScores().size(); i++){
+            botScores[i][0] += gameData.getScores().get(i);
         }
     }
 
     //Fixe le nombre de victoires et d'égalités pour chaque joueur
-    public void setWinner(List<Integer> score){
-        int bestScore = 0;
-        int nbWinner = 0;
-        int[] Winner = new int[NB_PLAYER];
-        
-        for (int i = 0; i < NB_PLAYER; i++) {
-            if(score.get(i) > bestScore) {
-                bestScore=score.get(i);
-            }
-        }
-
-        for (int i = 0; i < NB_PLAYER; i++) {
-            if(score.get(i) == bestScore) {
-                Winner[nbWinner]=i;
-                nbWinner++;
-            }
-        }
-
-        if(nbWinner==1)
-            nbWinNbEquality[Winner[0]]++;
+    public void setWinner(List<Integer> winner){
+        if (winner.size() == 1)
+            botScores[winner.get(0)][1]++;
         else
-            for (int i = 0; i < nbWinner; i++) {
-                nbWinNbEquality[Winner[i]+NB_PLAYER]++;
+            for(int win : winner){
+                botScores[win][2]++;
             }
+    }
+
+    //Fixe le nombre de victoires et d'égalités pour chaque joueur
+    public List<Integer> getWinner(List<Integer> scores){
+        int bestScore = 0;
+        List<Integer> winner = new ArrayList<>();
+        for(int score : scores){
+            if (score >= bestScore)
+                bestScore = score;
+        }
+        for(int i = 0; i < botList.length; i++){
+            if (scores.get(i) == bestScore)
+                winner.add(i);
+        }
+        return winner;
     }
 
     //Renvoie le taux de victoire du joueur passé en paramètre
     public double getWinRate(int joueur){
-        return nbWinNbEquality[joueur]/(NB_GAME/100.0);
+        return botScores[joueur][1]/(gameData.size()/100.0);
     }
 
     //Renvoie le taux d'égalité du joueur passé en paramètre
     public double getEqualityRate(int joueur){
-        return nbWinNbEquality[joueur+NB_PLAYER]/(NB_GAME/100.0);
+        return botScores[joueur][2]/(gameData.size()/100.0);
     }
 
     //Renvoie le nombres de points moyens du joueur passé en paramètre
     public double getPointsAverage(int joueur){
-        return (points[joueur]*1.0)/NB_GAME;
+        return (botScores[joueur][0]*1.0)/gameData.size();
     }
 
     //Renvoie les statistiques des parties sous forme de String
     public String toString(){
         String displayStat = "";
-        for (int i = 0; i < NB_PLAYER; i++) {
-            displayStat += "Joueur "+(i+1)+" : "+getWinRate(i)+"% win rate and "+ getEqualityRate(i)+"% equality rate with a "+ getPointsAverage(i)+" points average\n";
+        for (int i = 0; i < botScores.length; i++) {
+            displayStat += "Joueur "+botList[i]+" "+(i+1)+" : "+getWinRate(i)+"% win rate and "+ getEqualityRate(i)+"% equality rate with a "+ getPointsAverage(i)+" points average\n";
         }
         return  displayStat;
     }

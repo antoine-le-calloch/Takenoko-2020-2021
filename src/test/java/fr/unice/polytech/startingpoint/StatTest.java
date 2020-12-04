@@ -34,19 +34,7 @@ public class StatTest {
 
     @BeforeEach
     public void initialize(){
-        stat1Game1P = new Stat(1,1);
-        stat1Game2P = new Stat(1,2);
-        stat1000Game2P = new Stat(1000,2);
-        stat1000Game4P = new Stat(1000,4);
 
-        p1w = new int[]{2};
-
-        p1w2Player = new int[]{2, 1};
-        p2w2Player = new int[]{1, 2};
-        equality2Player = new int[]{1, 1};
-
-        p1w4Player = new PlayerData(9, 5, 3, 1);
-        p2w4Player = new int[]{2, 7, 4, 3};
     }
 
     @Test

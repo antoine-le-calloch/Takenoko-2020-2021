@@ -34,8 +34,8 @@ class BotTest {
         parcel1 = new Parcel(ColorType.BLUE);
         parcel2 = new Parcel(ColorType.NO_COLOR);
         canal = new Canal();
-        bot1 = new IntelligentBot(resource,board);
-        bot2 = new IntelligentBot(resource,board);
+        bot1 = new ParcelBot(resource,board);
+        bot2 = new ParcelBot(resource,board);
     }
 
     @Test

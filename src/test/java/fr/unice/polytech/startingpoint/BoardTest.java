@@ -34,7 +34,7 @@ public class BoardTest {
     public void initialize(){
         board = new Board();
         resource = new Resource();
-        bot = new IntelligentBot(resource, board);
+        bot = new ParcelBot(resource, board);
         parcel1 = new Parcel(ColorType.NO_COLOR);
         parcel2 = new Parcel(ColorType.NO_COLOR);
         parcel3 = new Parcel(ColorType.NO_COLOR);

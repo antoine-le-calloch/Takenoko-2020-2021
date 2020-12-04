@@ -1,14 +1,9 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.Bot;
-import fr.unice.polytech.startingpoint.Bot.IntelligentBot;
-import fr.unice.polytech.startingpoint.Bot.RandomBot;
-import fr.unice.polytech.startingpoint.Type.BotType;
+import fr.unice.polytech.startingpoint.Bot.*;
+import fr.unice.polytech.startingpoint.Type.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Classe stockant les données des joueurs au cours d'une partie
@@ -26,10 +21,6 @@ public class PlayerData {
         initializeBot(botTypes, resource, board);
     }
 
-    PlayerData(int ... score){
-
-    }
-
     //Initialise les robots en fonction de leur nom associé passé en paramètre
     public void initializeBot(BotType[] botTypes, Resource resource, Board board){
         for (BotType botType : botTypes) {
@@ -38,14 +29,17 @@ public class PlayerData {
                     botData.put(new RandomBot(resource, board), new int[]{0, 0});
                     break;
                 case INTELLIGENT:
-                    botData.put(new IntelligentBot(resource, board), new int[]{0, 0});
+                    botData.put(new ParcelBot(resource, board), new int[]{0, 0});
                     break;
             }
         }
     }
 
-    public Bot get(int numBot) {
-        return new ArrayList<>(botData.keySet()).get(numBot);
+    public void completedMission(int numBot, int count) {
+        int[] nb = botData.get(get(numBot));
+        nb[0] ++;
+        nb[1] += count;
+        botData.replace(get(numBot), nb);
     }
 
     int size(){
@@ -66,11 +60,7 @@ public class PlayerData {
         return Score;
     }
 
-    public void completedMission(int numBot, int count) {
-        int[] nb = botData.get(get(numBot));
-        nb[0] ++;
-        nb[1] += count;
-        botData.replace(get(numBot), nb);
+    public Bot get(int numBot) {
+        return new ArrayList<>(botData.keySet()).get(numBot);
     }
-
 }

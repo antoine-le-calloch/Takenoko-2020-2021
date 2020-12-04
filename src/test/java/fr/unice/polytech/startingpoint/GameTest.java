@@ -38,10 +38,10 @@ class GameTest {
     }
 
     @Test public void bots(){
-        assertEquals( 2,game1.getBotList().size() );
-        assertEquals( 0,game5.getBotList().size() );
-        assertNotEquals( 2,game4.getBotList().size());
-        assertNotEquals(game5.getBotList(), null);
+        assertEquals( 2,game1.getPlayerData().getScores().size() );
+        assertEquals( 0,game5.getPlayerData().getScores().size() );
+        assertNotEquals( 2,game4.getPlayerData().getScores().size());
+        assertNotEquals(game5.getPlayerData().getScores(), null);
     }
 
     @Test public void resource(){

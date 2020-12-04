@@ -21,9 +21,9 @@ import java.util.Set;
  * @version 2020.12.03
  */
 
-public class IntelligentBot extends Bot {
+public class ParcelBot extends Bot {
 
-    public IntelligentBot(Resource resource, Board board) {
+    public ParcelBot(Resource resource, Board board) {
         super(resource, board);
     }
 

@@ -45,7 +45,6 @@ public class Game {
         return true;
     }
 
-
     /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
     il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
     public void missionDone(int numBot) {
@@ -59,7 +58,6 @@ public class Game {
         }
         playerData.get(numBot).getInventory().subMissions(toRemove);
     }
-
 
     //Renvoie l'objet contenant les ressources
     public Resource getResource() {
