@@ -97,7 +97,6 @@ public class Resource {
         return null;
     }
 
-
     //Pioche un canal du deck
     public Canal drawCanal(){
         if (deckCanal.size() != 0) {
@@ -107,7 +106,6 @@ public class Resource {
         }
         return null;
     }
-
 
     //Pioche une mission du deck
     public Mission drawMission(MissionType type){
@@ -153,7 +151,7 @@ public class Resource {
     }
 
     //Renvoie la liste du deck de canaux
-    public int getNbMissionParcel(){
+    public int getNbMission(){
         return deckMissionParcel.size() + deckMissionPanda.size() + deckMissionPanda.size();
     }
 

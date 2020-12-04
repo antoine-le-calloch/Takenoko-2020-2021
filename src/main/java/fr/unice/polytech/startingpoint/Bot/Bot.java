@@ -33,10 +33,12 @@ public abstract class Bot {
         inventory.addMission(resource.drawMission(type));
     }
 
-    public Parcel drawParcel() {return resource.drawParcel();}
+    public Parcel drawParcel() {
+        return resource.drawParcel();
+    }
 
     //Place une parcelle à une coordonnée de la liste passée en paramètre - ACTION 2
-    public void placeRandomParcel(List<Coordinate> listCoord, Parcel parcel){
+    public void placeRandomParcelFromAList(List<Coordinate> listCoord, Parcel parcel){
         Collections.shuffle(listCoord);
         if(!listCoord.isEmpty())
             board.placeParcel(parcel, listCoord.get(0));

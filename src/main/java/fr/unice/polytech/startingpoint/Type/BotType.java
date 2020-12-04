@@ -14,28 +14,28 @@ public enum BotType {
     RANDOM{
         @Override
         public String toString() {
-            return "Random";
+            return "Random Bot";
         }
     }
     ,
     PARCELBOT{
         @Override
         public String toString() {
-            return "ParcelBot";
+            return "Parcel Bot";
         }
     }
     ,
     PANDABOT{
         @Override
         public String toString() {
-            return "PandaBot";
+            return "Panda Bot";
         }
     }
     ,
     PEASANTBOT{
         @Override
         public String toString() {
-            return "PeasantBot";
+            return "Peasant Bot";
         }
     }
 

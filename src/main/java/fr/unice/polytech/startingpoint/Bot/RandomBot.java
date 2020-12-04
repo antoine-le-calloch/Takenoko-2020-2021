@@ -16,7 +16,6 @@ import java.util.Random;
  * @version 2020.12.03
  */
 
-
 public class RandomBot extends Bot {
     private final Random random;
     private final Random random2;
@@ -32,14 +31,14 @@ public class RandomBot extends Bot {
     public void botPlay(){
         int nb = random.nextInt(5);
 
-        if (nb == 0 && resource.getNbMissionParcel() > 0) {// pioche mission
+        if (nb == 0 && resource.getNbMission() > 0) {// pioche mission
             int nb2 = random2.nextInt(3);
 
             if (nb2 == 0 && resource.getDeckParcelMission().size() > 0)
                 drawMission(MissionType.PARCEL);
-            if (nb2 == 0 && resource.getDeckPandaMission().size() > 0)
+            if (nb2 == 1 && resource.getDeckPandaMission().size() > 0)
                 drawMission(MissionType.PANDA);
-            if (nb2 == 0 && resource.getDeckPeasantMission().size() > 0)
+            if (nb2 == 2 && resource.getDeckPeasantMission().size() > 0)
                 drawMission(MissionType.PEASANT);
         }
 
@@ -50,7 +49,7 @@ public class RandomBot extends Bot {
 
         else if (nb == 2 && possibleCoordinatesParcel().size() > 0 && resource.getParcel().size() > 0){ // place parcel
             Parcel parcel = drawParcel();
-            placeRandomParcel(possibleCoordinatesParcel(), parcel);
+            placeRandomParcelFromAList(possibleCoordinatesParcel(), parcel);
         }
 
         else if (nb == 3 && possibleCoordinatesCharacter().size() != 0) {

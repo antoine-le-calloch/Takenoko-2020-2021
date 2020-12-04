@@ -34,7 +34,7 @@ public class RandomBotTest {
 
     @Test
     public void parcelIncrease(){
-        rdmBot1.placeRandomParcel(rdmBot1.possibleCoordinatesParcel(), resource.drawParcel());
+        rdmBot1.placeRandomParcelFromAList(rdmBot1.possibleCoordinatesParcel(), resource.drawParcel());
         assertEquals(2,board.getPlacedParcels().size());
     }
 

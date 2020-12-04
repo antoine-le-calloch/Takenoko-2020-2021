@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Le Calloch Antoine
  * @version 2020.12.03
  */
-/*
+
 class GameTest {
     Game game1;
     Game game2;
@@ -22,10 +22,10 @@ class GameTest {
     Game game5;
 
     @BeforeEach public void Setup() {
-        game1 = new Game(new BotType[]{BotType.RANDOM, BotType.INTELLIGENT});
-        game2 = new Game(new BotType[]{BotType.INTELLIGENT, BotType.INTELLIGENT});
-        game3 = new Game(new BotType[]{BotType.INTELLIGENT});
-        game4 = new Game(new BotType[]{BotType.RANDOM, BotType.INTELLIGENT, BotType.RANDOM});
+        game1 = new Game(new BotType[]{BotType.RANDOM, BotType.PARCELBOT});
+        game2 = new Game(new BotType[]{BotType.PARCELBOT, BotType.PARCELBOT});
+        game3 = new Game(new BotType[]{BotType.PARCELBOT});
+        game4 = new Game(new BotType[]{BotType.RANDOM, BotType.PARCELBOT, BotType.RANDOM});
         game5 = new Game(new BotType[]{});
     }
 
@@ -49,4 +49,4 @@ class GameTest {
         assertNotEquals(game1.getResource(),game2.getResource());
         assertNotEquals(game1.getResource(),null);
     }
-}*/
+}

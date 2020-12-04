@@ -15,7 +15,7 @@ import fr.unice.polytech.startingpoint.Type.*;
 public class Main {
 
     public static void main(String... args){
-        BotType[] botList = new BotType[]{BotType.RANDOM, BotType.PARCELBOT};
+        BotType[] botList = new BotType[]{BotType.RANDOM, BotType.RANDOM};
         Stat statGame = new Stat(botList); //creation des statistiques de l'ensemble des parties
 
         for (int i = 0; i < 1000; i++) {

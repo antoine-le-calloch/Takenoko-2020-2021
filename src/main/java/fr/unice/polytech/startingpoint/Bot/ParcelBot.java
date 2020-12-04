@@ -1,16 +1,9 @@
 package fr.unice.polytech.startingpoint.Bot;
 
-import fr.unice.polytech.startingpoint.Game.Board;
-import fr.unice.polytech.startingpoint.Game.Coordinate;
-import fr.unice.polytech.startingpoint.Game.Parcel;
-import fr.unice.polytech.startingpoint.Game.ParcelMission;
-import fr.unice.polytech.startingpoint.Game.Resource;
+import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Classe qui represente un bot qui joue intelligemment en completant seulement des missions parcels
@@ -29,28 +22,18 @@ public class ParcelBot extends Bot {
 
     @Override
     public void botPlay(){
-        if (!doDrawMission() && resource.getNbMissionParcel() > 0)
+        if (doDrawMission() && resource.getDeckParcelMission().size() > 0)
             drawMission(MissionType.PARCEL);
-        if (resource.getParcel().size() > 0)
+        if (resource.getParcel().size() > 0){
             putParcel();
-        if(resource.getCanal().size()>0 && possibleCoordinatesCanal().size()>0)
-            putCanal();
+        }
+        if (resource.getCanal().size() > 0 && possibleCoordinatesCanal().size() > 0)
+            placeRandomCanal(possibleCoordinatesCanal());
     }
 
     //Si le bot n'a pas de mission => true
     public boolean doDrawMission(){
-        return getInventory().getMission().size() > 5;
-    }
-
-    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4
-    public List<Coordinate> strategieMovePanda(List<Coordinate> listCoord) {
-        Set<Coordinate> list = new HashSet<>();
-        for (Coordinate coordinate : listCoord){
-            if (board.getPlacedParcels().get(coordinate).getNbBamboo() > 0){
-                list.add(coordinate);
-            }
-        }
-        return new ArrayList<>(list);
+        return getInventory().getMission().size() <= 5;
     }
 
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
@@ -61,7 +44,7 @@ public class ParcelBot extends Bot {
         Parcel newParcel = resource.drawParcel();
 
         if(newParcel.getColor().equals(colorType))
-            board.placeParcel(newParcel, bestCoordinatesForForm(formType, colorType));
+            placeRandomParcelFromAList(new ArrayList<>(Collections.singletonList(bestCoordinatesForForm(formType, colorType))),newParcel);
         else
             board.placeParcel(newParcel, possibleCoordinatesParcel().get(1));
     }
