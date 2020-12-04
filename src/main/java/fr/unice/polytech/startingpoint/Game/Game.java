@@ -1,8 +1,6 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.Bot;
-import fr.unice.polytech.startingpoint.Bot.IntelligentBot;
-import fr.unice.polytech.startingpoint.Bot.RandomBot;
+import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.ArrayList;

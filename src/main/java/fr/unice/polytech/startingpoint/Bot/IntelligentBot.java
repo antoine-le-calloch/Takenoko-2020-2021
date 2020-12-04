@@ -8,7 +8,9 @@ import fr.unice.polytech.startingpoint.Game.Resource;
 import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Classe qui represente un bot bot qui joue intelligemment
@@ -38,6 +40,17 @@ public class IntelligentBot extends Bot {
     //Si le bot n'a pas de mission => true
     public boolean doDrawMission(){
         return getInventory().getMission().size() > 5;
+    }
+
+    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4
+    public List<Coordinate> strategieMovePanda(List<Coordinate> listCoord) {
+        Set<Coordinate> list = new HashSet<>();
+        for (Coordinate coordinate : listCoord){
+            if (board.getPlacedParcels().get(coordinate).getNbBamboo() > 0){
+                list.add(coordinate);
+            }
+        }
+        return new ArrayList<>(list);
     }
 
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random

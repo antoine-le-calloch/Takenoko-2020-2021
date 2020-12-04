@@ -96,20 +96,19 @@ public class Resource {
 
     //Pioche une mission du deck
     public Mission drawMission(MissionType type){
-        Mission mission = null;
+        Mission mission;
         switch (type) {
             case PARCEL:
-                mission = deckMissionParcel.get(0);
-                deckMissionParcel.remove(0);
-                return mission;
+                mission = deckMissionParcel.remove(0);
+                break;
             case PANDA:
-                mission = deckMissionPanda.get(0);
-                deckMissionPanda.remove(0);
-                return mission;
+                mission = deckMissionPanda.remove(0);
+                break;
             case PEASANT:
-                mission = deckMissionPeasant.get(0);
-                deckMissionPeasant.remove(0);
-                return mission;
+                mission = deckMissionPeasant.remove(0);
+                break;
+            default:
+                return null;
         }
         return mission;
     }

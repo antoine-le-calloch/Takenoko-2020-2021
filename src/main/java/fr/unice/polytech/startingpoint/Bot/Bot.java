@@ -36,32 +36,29 @@ public abstract class Bot {
     //Place une parcelle à une coordonnée de la liste passée en paramètre - ACTION 2
     public void placeRandomParcel(List<Coordinate> listCoord){
         Collections.shuffle(listCoord);
-        board.placeParcel(resource.drawParcel(), listCoord.get(0));
+        if(!listCoord.isEmpty())
+            board.placeParcel(resource.drawParcel() , listCoord.get(0));
     }
 
     //Place un canal à une coordonnée de la liste passée en paramètre - ACTION 3
     public void placeRandomCanal(List<Coordinate[]> listCoord) {
         Collections.shuffle(listCoord);
-        board.placeCanal(resource.drawCanal(), listCoord.get(0)[0], listCoord.get(0)[1]);
+        if(!listCoord.isEmpty())
+            board.placeCanal(resource.drawCanal() , listCoord.get(0)[0], listCoord.get(0)[1]);
     }
 
     //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4
     public void randomMovePanda(List<Coordinate> listCoord) {
         Collections.shuffle(listCoord);
-        int nbBamboo = board.getPlacedParcels().get(listCoord.get(0)).getNbBamboo();
-        if(board.moveCharacter(board.getPanda(),listCoord.get(0))){
-            if(nbBamboo>0){
-                inventory.addBamboo(ColorType.RED);
-            }
-        }
+        if(!listCoord.isEmpty())
+            board.moveCharacter(board.getPeasant(),listCoord.get(0));
     }
 
     //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 5
     public void randomMovePeasant(List<Coordinate> listCoord) {
         Collections.shuffle(listCoord);
         if(!listCoord.isEmpty())
-            board.moveCharacter(board.getPeasant(),listCoord.get(0));{
-        }
+            board.moveCharacter(board.getPeasant(),listCoord.get(0));
     }
 
     //Renvoie une liste de toutes les coordonnées présentes et autour de ces dernières
