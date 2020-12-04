@@ -30,7 +30,7 @@ public class IntelligentBot extends Bot {
     @Override
     public void botPlay(){
         if (!doDrawMission() && resource.getNbMissionParcel() > 0)
-            drawMission();
+            drawMission(MissionType.PARCEL);
         if (resource.getParcel().size() > 0)
             putParcel();
         if(resource.getCanal().size()>0 && possibleCoordinatesCanal().size()>0)

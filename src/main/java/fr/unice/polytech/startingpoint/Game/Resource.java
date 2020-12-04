@@ -89,41 +89,62 @@ public class Resource {
 
     //Pioche une parcelle du deck
     public Parcel drawParcel() {
-        Parcel parcel = deckParcel.get(0);
-        deckParcel.remove(parcel);
-        return parcel;
+        if (deckParcel.size() != 0) {
+            Parcel parcel = deckParcel.get(0);
+            deckParcel.remove(parcel);
+            return parcel;
+        }
+        return null;
     }
+
+
+    //Pioche un canal du deck
+    public Canal drawCanal(){
+        if (deckCanal.size() != 0) {
+            Canal canal = deckCanal.get(0);
+            deckCanal.remove(canal);
+            return canal;
+        }
+        return null;
+    }
+
 
     //Pioche une mission du deck
     public Mission drawMission(MissionType type){
-        Mission mission;
+        Mission mission = null;
         switch (type) {
             case PARCEL:
-                mission = deckMissionParcel.remove(0);
+                if (deckMissionParcel.size() != 0)
+                    mission = deckMissionParcel.remove(0);
                 break;
             case PANDA:
-                mission = deckMissionPanda.remove(0);
+                if (deckMissionPanda.size() != 0)
+                    mission = deckMissionPanda.remove(0);
                 break;
             case PEASANT:
-                mission = deckMissionPeasant.remove(0);
+                if (deckMissionPeasant.size() != 0)
+                    mission = deckMissionPeasant.remove(0);
                 break;
-            default:
-                return null;
         }
         return mission;
     }
 
-    //Pioche un canal du deck
-    public Canal drawCanal(){
-        Canal canal = deckCanal.get(0);
-        deckCanal.remove(canal);
-        return canal;
-    }
-
     boolean isEmpty(){
-        return (deckMissionPanda.size() + deckMissionParcel.size() + deckMissionPeasant.size() +
+        return (deckMissionPanda.size() + deckMissionParcel.size() + deckMissionPanda.size() +
                 deckCanal.size() + deckParcel.size() == 0);
 
+    }
+
+    public List<Mission> getDeckParcelMission(){
+        return deckMissionParcel;
+    }
+
+    public List<Mission> getDeckPandaMission(){
+        return deckMissionPanda;
+    }
+
+    public List<Mission> getDeckPeasantMission(){
+        return deckMissionPeasant;
     }
 
     //Renvoie la liste du deck de parcelles
@@ -133,7 +154,7 @@ public class Resource {
 
     //Renvoie la liste du deck de canaux
     public int getNbMissionParcel(){
-        return deckMissionParcel.size();
+        return deckMissionParcel.size() + deckMissionPanda.size() + deckMissionPanda.size();
     }
 
     //Renvoie la liste du deck de canaux

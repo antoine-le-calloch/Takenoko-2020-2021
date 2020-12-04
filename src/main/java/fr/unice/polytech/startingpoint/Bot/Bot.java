@@ -29,15 +29,17 @@ public abstract class Bot {
     public abstract void botPlay();
 
     //Pioche une mission - ACTION 1
-    public void drawMission(){
-        inventory.addMission(resource.drawMission(MissionType.PARCEL));
+    public void drawMission(MissionType type){
+        inventory.addMission(resource.drawMission(type));
     }
 
+    public Parcel drawParcel() {return resource.drawParcel();}
+
     //Place une parcelle à une coordonnée de la liste passée en paramètre - ACTION 2
-    public void placeRandomParcel(List<Coordinate> listCoord){
+    public void placeRandomParcel(List<Coordinate> listCoord, Parcel parcel){
         Collections.shuffle(listCoord);
         if(!listCoord.isEmpty())
-            board.placeParcel(resource.drawParcel() , listCoord.get(0));
+            board.placeParcel(parcel, listCoord.get(0));
     }
 
     //Place un canal à une coordonnée de la liste passée en paramètre - ACTION 3

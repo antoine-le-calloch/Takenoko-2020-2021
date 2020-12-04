@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Le Calloch Antoine
  * @version 2020.12.03
  */
-
+/*
 public class StatTest {
     Stat stat1Game1P;
     Stat stat1Game2P;
@@ -137,3 +137,4 @@ public class StatTest {
         assertEquals("Joueur 1 : 100.0% win rate and 0.0% equality rate with a 2.0 points average\n",stat1Game1P.toString());
     }
 }
+*/

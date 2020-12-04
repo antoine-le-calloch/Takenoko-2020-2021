@@ -22,17 +22,19 @@ public class RandomBotTest {
     private RandomBot rdmBot1;
     private Board board;
     Parcel parcel1;
+    Resource resource;
 
     @BeforeEach
     public void setUp() {
         board = new Board();
         parcel1 = new Parcel(ColorType.NO_COLOR);
         rdmBot1 = new RandomBot(new Resource(),board);
+        resource = new Resource();
     }
 
     @Test
     public void parcelIncrease(){
-        rdmBot1.placeRandomParcel(rdmBot1.possibleCoordinatesParcel());
+        rdmBot1.placeRandomParcel(rdmBot1.possibleCoordinatesParcel(), resource.drawParcel());
         assertEquals(2,board.getPlacedParcels().size());
     }
 
