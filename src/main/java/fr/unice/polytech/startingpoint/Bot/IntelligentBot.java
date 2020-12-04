@@ -43,7 +43,7 @@ public class IntelligentBot extends Bot {
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     public void putParcel() {
         ParcelMission mission = (ParcelMission) getInventory().getMission().get(0);
-        FormType formType = mission.getForm();
+        FormType formType = mission.getFormType();
         ColorType colorType = mission.getColor();
         Parcel newParcel = resource.drawParcel();
 

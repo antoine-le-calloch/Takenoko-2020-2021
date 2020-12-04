@@ -1,13 +1,8 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Bot.RandomBot;
-import fr.unice.polytech.startingpoint.Game.Board;
-import fr.unice.polytech.startingpoint.Game.Coordinate;
-import fr.unice.polytech.startingpoint.Game.Parcel;
-import fr.unice.polytech.startingpoint.Game.ParcelMission;
-import fr.unice.polytech.startingpoint.Game.Resource;
-import fr.unice.polytech.startingpoint.Type.ColorType;
-import fr.unice.polytech.startingpoint.Type.FormType;
+import fr.unice.polytech.startingpoint.Bot.*;
+import fr.unice.polytech.startingpoint.Game.*;
+import fr.unice.polytech.startingpoint.Type.*;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,10 +32,10 @@ public class ParcelMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new ParcelMission(2, FormType.TRIANGLE, ColorType.RED);
-        mission2 = new ParcelMission(3, FormType.LINE, ColorType.RED);
-        mission3 = new ParcelMission(2, FormType.TRIANGLE, ColorType.BLUE);
-        mission4 = new ParcelMission(3, FormType.LINE, ColorType.BLUE);
+        mission1 = new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE);
+        mission2 = new ParcelMission(ColorType.RED, 3, FormType.LINE);
+        mission3 = new ParcelMission(ColorType.BLUE, 2, FormType.TRIANGLE);
+        mission4 = new ParcelMission(ColorType.BLUE, 3, FormType.LINE);
         board = new Board();
         resource = new Resource();
         parcel1 = new Parcel(ColorType.RED);
@@ -64,13 +59,11 @@ public class ParcelMissionTest {
         board.irrigatedParcelsAdd(new Coordinate(1,-1,0));
         board.irrigatedParcelsAdd(new Coordinate(0,-1,1));
         board.irrigatedParcelsAdd(new Coordinate(1,-2,1));
-        assertEquals(2, mission1.checkMissionParcel(board));
-        assertEquals(2, mission1.checkMission(board,bot));
+        assertEquals(2, mission1.checkMission(board,bot.getInventory()));
     }
 
     @Test void checkNoMissionTriangle(){
-        assertEquals(0, mission1.checkMissionParcel(board));
-        assertEquals(0, mission1.checkMission(board,bot));
+        assertEquals(0, mission1.checkMission(board, bot.getInventory()));
     }
 
 
@@ -83,14 +76,12 @@ public class ParcelMissionTest {
         board.irrigatedParcelsAdd(new Coordinate(1,0,-1));
         board.irrigatedParcelsAdd(new Coordinate(1,-1,0));
         board.irrigatedParcelsAdd(new Coordinate(1,-2,1));
-        assertEquals(3,mission2.checkMissionParcel(board));
-        assertEquals(3,mission2.checkMission(board,bot));
+        assertEquals(3,mission2.checkMission(board,bot.getInventory()));
     }
 
 
     @Test void checkNoMissionLigne(){
-        assertEquals(0,mission2.checkMissionParcel(board));
-        assertEquals(0,mission2.checkMission(board,bot));
+        assertEquals(0,mission2.checkMission(board,bot.getInventory()));
     }
 
 

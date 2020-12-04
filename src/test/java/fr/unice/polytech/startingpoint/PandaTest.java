@@ -1,13 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Game.Board;
-import fr.unice.polytech.startingpoint.Game.Coordinate;
+import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Game.Character;
-import fr.unice.polytech.startingpoint.Game.Parcel;
-import fr.unice.polytech.startingpoint.Type.CharacterType;
-import fr.unice.polytech.startingpoint.Type.ColorType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import fr.unice.polytech.startingpoint.Type.*;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

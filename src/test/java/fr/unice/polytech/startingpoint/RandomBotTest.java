@@ -5,9 +5,9 @@ import fr.unice.polytech.startingpoint.Game.Board;
 import fr.unice.polytech.startingpoint.Game.Parcel;
 import fr.unice.polytech.startingpoint.Game.Resource;
 import fr.unice.polytech.startingpoint.Type.ColorType;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests unitaires
@@ -29,12 +29,11 @@ public class RandomBotTest {
         parcel1 = new Parcel(ColorType.NO_COLOR);
         rdmBot1 = new RandomBot(new Resource(),board);
     }
-/*
+
     @Test
     public void parcelIncrease(){
-        rdmBot1.placeRandomParcel(board.getFreePlaces());
+        rdmBot1.placeRandomParcel(rdmBot1.possibleCoordinatesParcel());
         assertEquals(2,board.getPlacedParcels().size());
     }
-*/
 
 }

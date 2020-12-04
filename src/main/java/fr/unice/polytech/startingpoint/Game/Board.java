@@ -17,19 +17,15 @@ import java.util.*;
 public class Board {
     private final Character panda;
     private final Character peasant;
+
     private final Map<Coordinate, Parcel> placedParcels = new HashMap<>();
     private final Set<Coordinate> irrigatedParcels = new HashSet<>();
     private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
 
     public Board() {
-        initializeCenter();
+        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NO_COLOR).setCoordinates(new Coordinate(0, 0, 0)));
         panda = new Character(CharacterType.PANDA);
         peasant = new Character(CharacterType.PEASANT);
-    }
-
-    //Initialise la case centrale
-    private void initializeCenter() {
-        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NO_COLOR).setCoordinates(new Coordinate(0, 0, 0)));
     }
 
     //Renvoie true si une parcelle peut être placée à la coordonnée passée en paramètre

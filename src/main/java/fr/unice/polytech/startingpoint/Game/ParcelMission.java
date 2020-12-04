@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.Bot;
+import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 /**
@@ -12,24 +12,16 @@ import fr.unice.polytech.startingpoint.Type.*;
  * @version 2020.12.03
  */
 
-public class ParcelMission implements Mission {
-    private final int points;
+public class ParcelMission extends Mission {
     private final FormType formType;
-    private final ColorType colorType;
 
-    public ParcelMission(int points, FormType goalFormType, ColorType goalColorType) {
-        this.formType = goalFormType;
-        this.colorType = goalColorType;
-        this.points = points;
-    }
-
-    //Vérifie si une mission est faite
-    public int checkMission(Board board, Bot bot){
-        return checkMissionParcel(board);
+    public ParcelMission(ColorType colorType, int points,FormType formType) {
+        super(MissionType.PARCEL,colorType,points);
+        this.formType = formType;
     }
 
     //Renvoie le nombre de points que les missions rapportent si elles ont été accomplies
-    public int checkMissionParcel(Board board) {
+    public int checkMission(Board board, InventoryBot inventoryBot) {
         switch (formType) {
             case TRIANGLE:
                 if (checkFormIrrigateWithColor(board,0,1))
@@ -60,12 +52,7 @@ public class ParcelMission implements Mission {
     }
 
     //Renvoie l'objectif de la mission
-    public FormType getForm(){
+    public FormType getFormType(){
         return formType;
-    }
-
-    //Renvoie la couleur de la mission
-    public ColorType getColor() {
-        return colorType;
     }
 }

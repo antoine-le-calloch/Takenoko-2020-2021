@@ -1,20 +1,11 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Bot.Bot;
-import fr.unice.polytech.startingpoint.Bot.IntelligentBot;
-import fr.unice.polytech.startingpoint.Game.Board;
-import fr.unice.polytech.startingpoint.Game.Canal;
-import fr.unice.polytech.startingpoint.Game.Coordinate;
-import fr.unice.polytech.startingpoint.Game.Parcel;
-import fr.unice.polytech.startingpoint.Game.Mission;
-import fr.unice.polytech.startingpoint.Game.Resource;
-import fr.unice.polytech.startingpoint.Type.ColorType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import fr.unice.polytech.startingpoint.Bot.*;
+import fr.unice.polytech.startingpoint.Game.*;
+import fr.unice.polytech.startingpoint.Type.*;
+import org.junit.jupiter.api.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

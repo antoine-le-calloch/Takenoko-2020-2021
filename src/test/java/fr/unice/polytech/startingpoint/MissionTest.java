@@ -1,13 +1,8 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Game.Mission;
-import fr.unice.polytech.startingpoint.Game.PandaMission;
-import fr.unice.polytech.startingpoint.Game.ParcelMission;
-import fr.unice.polytech.startingpoint.Game.PeasantMission;
-import fr.unice.polytech.startingpoint.Type.ColorType;
-import fr.unice.polytech.startingpoint.Type.FormType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import fr.unice.polytech.startingpoint.Game.*;
+import fr.unice.polytech.startingpoint.Type.*;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,12 +24,12 @@ class MissionTest {
     Mission mission6;
 
     @BeforeEach void setUp(){
-        mission1 = new ParcelMission(2, FormType.TRIANGLE, ColorType.RED);
-        mission2 = new ParcelMission(3, FormType.LINE, ColorType.RED);
-        mission3 = new PandaMission(0, ColorType.RED);
-        mission4 = new PandaMission(1, ColorType.RED);
-        mission5 = new PeasantMission(0, ColorType.RED);
-        mission6 = new PeasantMission(1, ColorType.RED);
+        mission1 = new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE);
+        mission2 = new ParcelMission(ColorType.RED, 3, FormType.LINE);
+        mission3 = new PandaMission(ColorType.RED, 0);
+        mission4 = new PandaMission(ColorType.RED, 1);
+        mission5 = new PeasantMission(ColorType.RED, 0);
+        mission6 = new PeasantMission(ColorType.RED, 1);
     }
 
     @Test void newMissionParcel(){

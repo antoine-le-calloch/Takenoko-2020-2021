@@ -1,14 +1,9 @@
 package fr.unice.polytech.startingpoint;
 
-import fr.unice.polytech.startingpoint.Bot.IntelligentBot;
-import fr.unice.polytech.startingpoint.Game.Board;
-import fr.unice.polytech.startingpoint.Game.Coordinate;
-import fr.unice.polytech.startingpoint.Game.Parcel;
-import fr.unice.polytech.startingpoint.Game.PeasantMission;
-import fr.unice.polytech.startingpoint.Game.Resource;
-import fr.unice.polytech.startingpoint.Type.ColorType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import fr.unice.polytech.startingpoint.Bot.*;
+import fr.unice.polytech.startingpoint.Game.*;
+import fr.unice.polytech.startingpoint.Type.*;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -32,8 +27,8 @@ public class PeasantMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new PeasantMission(2, ColorType.RED);
-        mission2 = new PeasantMission(3, ColorType.RED);
+        mission1 = new PeasantMission(ColorType.RED, 2);
+        mission2 = new PeasantMission(ColorType.RED, 3);
         board = new Board();
         resource = new Resource();
         parcel1 = new Parcel(ColorType.RED);
@@ -44,12 +39,11 @@ public class PeasantMissionTest {
     void missionComplete(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.getPeasant().action(new Coordinate(1,-1,0), board);
-        assertEquals(2,mission1.checkMissionPeasant(board));
-        assertEquals(2,mission1.checkMission(board, bot));
+        assertEquals(2,mission1.checkMission(board, bot.getInventory()));
     }
 
     @Test
     void missionIncomplete(){
-        assertNotEquals(2,mission1.checkMissionPeasant(board));
+        assertNotEquals(2,mission1.checkMission(board, bot.getInventory()));
     }
 }

@@ -49,11 +49,11 @@ public class Resource {
     private void initializeDeckMissionParcel(){
         int nbMissionParcel = 15;
         for (int i = 0; i < nbMissionParcel / 5; i++){
-            deckMissionParcel.add(new ParcelMission(2, FormType.TRIANGLE, ColorType.RED));
-            deckMissionParcel.add(new ParcelMission(3, FormType.TRIANGLE, ColorType.BLUE));
-            deckMissionParcel.add(new ParcelMission(3, FormType.LINE, ColorType.RED));
-            deckMissionParcel.add(new ParcelMission(4, FormType.LINE, ColorType.BLUE));
-            deckMissionParcel.add(new ParcelMission(4, FormType.LINE, ColorType.BLUE));
+            deckMissionParcel.add(new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE));
+            deckMissionParcel.add(new ParcelMission(ColorType.BLUE, 3, FormType.TRIANGLE));
+            deckMissionParcel.add(new ParcelMission(ColorType.RED, 3, FormType.LINE));
+            deckMissionParcel.add(new ParcelMission(ColorType.BLUE, 4, FormType.LINE));
+            deckMissionParcel.add(new ParcelMission(ColorType.BLUE, 4, FormType.LINE));
         }
         Collections.shuffle(deckMissionParcel);
     }
@@ -61,10 +61,10 @@ public class Resource {
     //Initialise le deck des mission panda
     private void initializeDeckMissionPanda(){
         int nbMissionParcel = 15;
-        deckMissionPanda.add(new PandaMission(3, ColorType.BLUE));
+        deckMissionPanda.add(new PandaMission(ColorType.BLUE, 3));
         for (int i = 0; i < nbMissionParcel / 2; i++){
-            deckMissionPanda.add(new PandaMission(3, ColorType.RED));
-            deckMissionPanda.add(new PandaMission(3, ColorType.BLUE));
+            deckMissionPanda.add(new PandaMission(ColorType.RED, 3));
+            deckMissionPanda.add(new PandaMission(ColorType.BLUE, 3));
         }
         Collections.shuffle(deckMissionPanda);
     }
@@ -73,7 +73,7 @@ public class Resource {
     private void initializeDeckMissionPeasant(){
         int nbMissionParcel = 15;
         for (int i = 0; i < nbMissionParcel; i++){
-            deckMissionPeasant.add(new PeasantMission(4, ColorType.RED));
+            deckMissionPeasant.add(new PeasantMission(ColorType.RED, 4));
         }
         Collections.shuffle(deckMissionPeasant);
     }

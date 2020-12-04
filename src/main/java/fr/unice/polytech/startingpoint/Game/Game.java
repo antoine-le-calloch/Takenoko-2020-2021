@@ -76,7 +76,7 @@ public class Game {
         List<Mission> toRemove = new ArrayList<>();
         int count;
         for(Mission mission : botList.get(idBot).getInventory().getMission()){
-            if( (count = mission.checkMission(board,botList.get(idBot))) != 0){
+            if( (count = mission.checkMission(board,botList.get(idBot).getInventory())) != 0){
                 missionDone[idBot]++;
                 scoreBots[idBot] += count;
                 toRemove.add(mission);
