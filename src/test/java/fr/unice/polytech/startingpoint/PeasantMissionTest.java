@@ -23,7 +23,7 @@ public class PeasantMissionTest {
     PeasantMission mission1;
     PeasantMission mission2;
     Parcel parcel1;
-    IntelligentBot bot;
+    ParcelBot bot;
 
     @BeforeEach
     void setUp(){
@@ -32,7 +32,7 @@ public class PeasantMissionTest {
         board = new Board();
         resource = new Resource();
         parcel1 = new Parcel(ColorType.RED);
-        bot = new IntelligentBot(resource,board);
+        bot = new ParcelBot(resource,board);
     }
 
     @Test

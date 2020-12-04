@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Classe qui represente un bot bot qui joue intelligemment
+ * Classe qui represente un bot qui joue intelligemment en completant seulement des missions parcels
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
@@ -21,9 +21,9 @@ import java.util.Set;
  * @version 2020.12.03
  */
 
-public class IntelligentBot extends Bot {
+public class ParcelBot extends Bot {
 
-    public IntelligentBot(Resource resource, Board board) {
+    public ParcelBot(Resource resource, Board board) {
         super(resource, board);
     }
 

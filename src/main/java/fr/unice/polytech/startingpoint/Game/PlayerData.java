@@ -1,8 +1,6 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.Bot;
-import fr.unice.polytech.startingpoint.Bot.IntelligentBot;
-import fr.unice.polytech.startingpoint.Bot.RandomBot;
+import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Type.BotType;
 
 import java.util.ArrayList;
@@ -37,8 +35,14 @@ public class PlayerData {
                 case RANDOM:
                     botData.put(new RandomBot(resource, board), new int[]{0, 0});
                     break;
-                case INTELLIGENT:
-                    botData.put(new IntelligentBot(resource, board), new int[]{0, 0});
+                case PARCELBOT:
+                    botData.put(new ParcelBot(resource, board), new int[]{0, 0});
+                    break;
+                case PEASANTBOT:
+                    botData.put(new PeasantBot(resource, board), new int[]{0, 0});
+                    break;
+                case PANDABOT:
+                    botData.put(new PandaBot(resource, board), new int[]{0, 0});
                     break;
             }
         }
