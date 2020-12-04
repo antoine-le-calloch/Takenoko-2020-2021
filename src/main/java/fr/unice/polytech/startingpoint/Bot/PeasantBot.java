@@ -1,8 +1,11 @@
 package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Game.Board;
+import fr.unice.polytech.startingpoint.Game.Coordinate;
 import fr.unice.polytech.startingpoint.Game.Resource;
 import fr.unice.polytech.startingpoint.Type.MissionType;
+
+import java.util.List;
 
 /**
  * Classe qui represente un bot qui joue intelligemment en completant seulement des missions paysans
@@ -21,9 +24,22 @@ public class PeasantBot extends Bot {
 
     @Override
     public void botPlay() {
-        drawMission(MissionType.PEASANT);
-        movePeasant(possibleCoordinatesCharacter().get(0));
+        if (inventory.getMission().size() < 5)
+            drawMission(MissionType.PEASANT);
+        if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
+            movePanda(strategyMovePeasant(possibleCoordinatesPeasant()));
 
     }
+
+    public Coordinate strategyMovePeasant(List<Coordinate> listCoord) {
+        for (Coordinate coordinate : listCoord) {
+            if (board.getPlacedParcels().get(coordinate).getNbBamboo() > 1) {
+                return coordinate;
+            }
+        }
+        return null;
+    }
+
+
 
 }

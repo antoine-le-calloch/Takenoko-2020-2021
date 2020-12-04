@@ -128,9 +128,7 @@ public class Resource {
     }
 
     boolean isEmpty(){
-        return (deckMissionPanda.size() + deckMissionParcel.size() + deckMissionPanda.size() +
-                deckCanal.size() + deckParcel.size() == 0);
-
+        return ((deckCanal.size()==0 || deckParcel.size()==0) || (deckMissionPanda.size()==0 && deckMissionPeasant.size()==0 && deckMissionParcel.size()==0));
     }
 
     public List<Mission> getDeckParcelMission(){

@@ -26,8 +26,8 @@ public class PandaBot extends Bot {
     public void botPlay() {
         if (inventory.getMission().size() < 5)
             drawMission(MissionType.PANDA);
-        if (strategyMovePanda(possibleCoordinatesCharacter()) != null)
-            movePanda(strategyMovePanda(possibleCoordinatesCharacter()));
+        if (strategyMovePanda(possibleCoordinatesPanda()) != null)
+            movePanda(strategyMovePanda(possibleCoordinatesPanda()));
     }
 
     //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4

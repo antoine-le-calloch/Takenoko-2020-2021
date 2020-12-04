@@ -94,10 +94,19 @@ public abstract class Bot {
     }
 
     //Renvoie une liste des coordonnées possibles pour les personnages
-    public List<Coordinate> possibleCoordinatesCharacter(){
+    public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : board.getPlacedParcels().keySet()) {
             if (board.isMovableCharacter(board.getPanda(),c)){
+                possibleCoordinates.add(c);
+            }
+        }
+        return new ArrayList<>(possibleCoordinates);
+    }
+    public List<Coordinate> possibleCoordinatesPeasant(){
+        Set<Coordinate> possibleCoordinates = new HashSet<>();
+        for(Coordinate c : board.getPlacedParcels().keySet()) {
+            if (board.isMovableCharacter(board.getPeasant(),c)){
                 possibleCoordinates.add(c);
             }
         }

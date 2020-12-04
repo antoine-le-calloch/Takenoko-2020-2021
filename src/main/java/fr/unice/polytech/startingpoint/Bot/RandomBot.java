@@ -60,14 +60,14 @@ public class RandomBot extends Bot {
             placeParcel(list.get(0), parcel);
         }
 
-        else if (nb == 3 && possibleCoordinatesCharacter().size() != 0) {
-            List<Coordinate> list = possibleCoordinatesCharacter();
+        else if (nb == 3 && possibleCoordinatesPanda().size() != 0) {
+            List<Coordinate> list = possibleCoordinatesPanda();
             Collections.shuffle(list);
             movePanda(list.get(0));
         }
 
-        else if (possibleCoordinatesCharacter().size() != 0 ) {
-            List<Coordinate> list = possibleCoordinatesParcel();
+        else if (possibleCoordinatesPeasant().size() != 0 ) {
+            List<Coordinate> list = possibleCoordinatesPeasant();
             Collections.shuffle(list);
             movePeasant(list.get(0));
         }
