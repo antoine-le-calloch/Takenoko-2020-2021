@@ -52,7 +52,7 @@ public class PlayerData {
         return botData.size();
     }
 
-    List<Integer> getMissions() {
+    public List<Integer> getMissions() {
         List<Integer> missionsDone = new ArrayList<>();
         for (int[] value : botData.values())
             missionsDone.add(value[0]);
