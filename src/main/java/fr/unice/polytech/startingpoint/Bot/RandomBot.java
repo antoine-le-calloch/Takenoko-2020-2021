@@ -20,13 +20,18 @@ import java.util.Random;
  */
 
 public class RandomBot extends Bot {
-    private final Random random;
-    private final Random random2;
+    private Random random;
+    private Random random2;
 
     public RandomBot(Resource resource, Board board) {
         super(resource, board);
         random = new Random();
         random2 = new Random();
+    }
+
+    public void setRand(Random rand1, Random rand2){
+        random = rand1;
+        random2 = rand2;
     }
 
     //Action d'un bot pendant un tour
