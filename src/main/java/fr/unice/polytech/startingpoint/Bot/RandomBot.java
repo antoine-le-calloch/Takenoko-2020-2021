@@ -32,20 +32,20 @@ public class RandomBot extends Bot {
     //Action d'un bot pendant un tour
     @Override
     public void botPlay(){
-        int nb = random.nextInt(5);
+        int randAction = random.nextInt(5);
 
-        if (nb == 0 && resource.getNbMission() > 0) {// pioche mission
-            int nb2 = 0;//random2.nextInt(3);
-
-            if (nb2 == 0 && resource.getDeckParcelMission().size() > 0)
+        if (randAction == 0 && resource.getNbMission() > 0) {// pioche mission
+            int randMission = random2.nextInt(3);
+            
+            if (randMission == 0 && resource.getDeckParcelMission().size() > 0)
                 drawMission(MissionType.PARCEL);
-            if (nb2 == 1 && resource.getDeckPandaMission().size() > 0)
+            if (randMission == 1 && resource.getDeckPandaMission().size() > 0)
                 drawMission(MissionType.PANDA);
-            if (nb2 == 2 && resource.getDeckPeasantMission().size() > 0)
+            if (randMission == 2 && resource.getDeckPeasantMission().size() > 0)
                 drawMission(MissionType.PEASANT);
         }
 
-        else if (nb == 1 && resource.getCanal().size() > 0 && resource.getCanal().size() > 0) {  // place canal
+        else if (randAction == 1 && resource.getCanal().size() > 0 && resource.getCanal().size() > 0) {  // place canal
             if (possibleCoordinatesCanal().size() > 0) {
                 List<Coordinate[]> list = possibleCoordinatesCanal();
                 Collections.shuffle(list);
@@ -53,14 +53,14 @@ public class RandomBot extends Bot {
             }
         }
 
-        else if (nb == 2 && possibleCoordinatesParcel().size() > 0 && resource.getParcel().size() > 0){ // place parcel
+        else if (randAction == 2 && possibleCoordinatesParcel().size() > 0 && resource.getParcel().size() > 0){ // place parcel
             Parcel parcel = drawParcel();
             List<Coordinate> list = possibleCoordinatesParcel();
             Collections.shuffle(list);
             placeParcel(list.get(0), parcel);
         }
 
-        else if (nb == 3 && possibleCoordinatesPanda().size() != 0) {
+        else if (randAction == 3 && possibleCoordinatesPanda().size() != 0) {
             List<Coordinate> list = possibleCoordinatesPanda();
             Collections.shuffle(list);
             movePanda(list.get(0));
