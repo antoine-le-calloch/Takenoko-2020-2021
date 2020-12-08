@@ -30,7 +30,7 @@ public class PandaBot extends Bot {
                 movePanda(strategyMovePanda(possibleCoordinatesPanda()));
     }
 
-    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4
+    //Bouge le panda sur la première parcel de la liste occupé par au moins un banbou
     public Coordinate strategyMovePanda(List<Coordinate> listCoord) {
         for (Coordinate coordinate : listCoord) {
             if (board.getPlacedParcels().get(coordinate).getNbBamboo() > 0) {

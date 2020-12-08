@@ -27,8 +27,7 @@ public class PeasantBot extends Bot {
         if (inventory.getMission().size() < 5 && resource.getDeckPeasantMission().size() > 0)
             drawMission(MissionType.PEASANT);
         else if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
-            movePanda(strategyMovePeasant(possibleCoordinatesPeasant()));
-
+            movePeasant(strategyMovePeasant(possibleCoordinatesPeasant()));
     }
 
     public Coordinate strategyMovePeasant(List<Coordinate> listCoord) {
@@ -39,7 +38,4 @@ public class PeasantBot extends Bot {
         }
         return null;
     }
-
-
-
 }
