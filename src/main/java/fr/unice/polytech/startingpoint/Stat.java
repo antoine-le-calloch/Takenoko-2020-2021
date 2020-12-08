@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,6 +66,11 @@ public class Stat {
         return winner;
     }
 
+    //Renvoie le nombres de points moyens du joueur passé en paramètre
+    public double getPointsAverage(int joueur){
+        return (botScores[joueur][0]*1.0)/gameData.size();
+    }
+
     //Renvoie le taux de victoire du joueur passé en paramètre
     public double getWinRate(int joueur){
         return botScores[joueur][1]/(gameData.size()/100.0);
@@ -75,17 +81,12 @@ public class Stat {
         return botScores[joueur][2]/(gameData.size()/100.0);
     }
 
-    //Renvoie le nombres de points moyens du joueur passé en paramètre
-    public double getPointsAverage(int joueur){
-        return (botScores[joueur][0]*1.0)/gameData.size();
-    }
-
     //Renvoie les statistiques des parties sous forme de String
     public String toString(){
-        String displayStat = "";
+        StringBuilder displayStat = new StringBuilder();
         for (int i = 0; i < botScores.length; i++) {
-            displayStat += "Joueur "+botList[i]+" : "+getWinRate(i)+"% win rate and "+ getEqualityRate(i)+"% equality rate with a "+ getPointsAverage(i)+" points average\n";
+            displayStat.append("Joueur " + botList[i] + " : " + getWinRate(i) + "% win rate and " + getEqualityRate(i) + "% equality rate with a " + getPointsAverage(i) + " points average\n");
         }
-        return  displayStat;
+        return displayStat.toString();
     }
 }

@@ -17,7 +17,7 @@ import java.util.*;
 public class PlayerData {
     private final Map<Bot,int []>  botData = new HashMap<>(); // Bot - int[ nbMission , score]
 
-    PlayerData(BotType[] botTypes, Resource resource, Board board) {
+    public PlayerData(BotType[] botTypes, Resource resource, Board board) {
         initializeBot(botTypes, resource, board);
     }
 
