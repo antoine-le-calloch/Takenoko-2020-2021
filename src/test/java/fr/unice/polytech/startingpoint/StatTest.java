@@ -176,8 +176,6 @@ public class StatTest {
     @Test
     public void p1W1PToString(){
         statGame1P.add(p1w);
-        assertEquals(100,statGame1P.getWinRate(0));
-        assertEquals(0,statGame1P.getEqualityRate(0));
-        assertEquals(2,statGame1P.getPointsAverage(0));
+        assertEquals("Joueur Random Bot : 100.0% win rate and 0.0% equality rate with a 2.0 points average\n",statGame1P.toString());
     }
 }
