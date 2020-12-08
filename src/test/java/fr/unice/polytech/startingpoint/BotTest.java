@@ -139,12 +139,4 @@ class BotTest {
         bot1.movePeasant(bot1.possibleCoordinatesPanda().get(0));
         assertEquals(2,parcel1.getNbBamboo());
     }
-
-    @Test
-    public void addInventoryMission(){
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
-        bot1.getInventory().addBamboo(parcel1.getColor());
-        assertEquals(0,bot1.getInventory().getBamboo()[0]);
-        assertEquals(1,bot1.getInventory().getBamboo()[1]);
-    }
 }

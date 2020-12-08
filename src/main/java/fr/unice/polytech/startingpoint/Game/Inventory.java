@@ -58,7 +58,4 @@ public class Inventory {
         return inventoryMission;
     }
 
-    public List<Canal> getCanal() {
-        return inventoryCanal;
-    }
 }
