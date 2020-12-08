@@ -124,12 +124,12 @@ public class Coordinate implements Comparable<Coordinate> {
     //Renvoie une liste des offSets possibles autour d'une coordonnée  STATIC
     public static List<Coordinate> offSets() {
         List<Coordinate> offSets = new ArrayList<>();
-        offSets.add(new Coordinate(1, 0, -1)); //0-2h
-        offSets.add(new Coordinate(1, -1, 0)); //2-4h
-        offSets.add(new Coordinate(0, -1, 1)); //4-6h
-        offSets.add(new Coordinate(-1, 0, 1)); //6-8h
-        offSets.add(new Coordinate(-1, 1, 0)); //8-10h
-        offSets.add(new Coordinate(0, 1, -1)); //10-12h
+        offSets.add(new Coordinate(1, 0, -1)); //0. 0-2h
+        offSets.add(new Coordinate(1, -1, 0)); //1. 2-4h
+        offSets.add(new Coordinate(0, -1, 1)); //2. 4-6h
+        offSets.add(new Coordinate(-1, 0, 1)); //3. 6-8h
+        offSets.add(new Coordinate(-1, 1, 0)); //4. 8-10h
+        offSets.add(new Coordinate(0, 1, -1)); //5. 10-12h
         return offSets;
     }
 

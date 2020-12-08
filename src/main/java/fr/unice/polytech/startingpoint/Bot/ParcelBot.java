@@ -56,16 +56,16 @@ public class ParcelBot extends Bot {
     //renvoie la coord de la pièce a poser pour terminer le plus vite une forme [form], ou renvoie une coord random
     public Coordinate bestCoordinatesForForm(FormType formType, ColorType colorType){
         Coordinate bestCoordinate = possibleCoordinatesParcel().get(0);
-        int minNeedParcels = 3;
+        int minTurnToEndForm = 3;
 
-        for (Coordinate c : allPlaces()) {
-            List<Coordinate> parcelToPlaceToDoForm = parcelToPlaceToDoForm(c, formType, colorType);
+        for (Coordinate HightCoord : allPlaces()) {
+            List<Coordinate> parcelToPlaceToDoForm = parcelsToPlaceToDoForm(HightCoord, formType, colorType);
 
             if(parcelToPlaceToDoForm.size() == 1 && board.isPlayableParcel(parcelToPlaceToDoForm.get(0))) {
                 bestCoordinate = parcelToPlaceToDoForm.get(0);
-                minNeedParcels = 1;
+                minTurnToEndForm = 1;
             }
-            else if(parcelToPlaceToDoForm.size() == 2 && minNeedParcels > 1) {
+            else if(parcelToPlaceToDoForm.size() == 2 && minTurnToEndForm > 1) {
 
                 if (board.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
                     bestCoordinate = parcelToPlaceToDoForm.get(0);
@@ -78,24 +78,25 @@ public class ParcelBot extends Bot {
     }
 
     //renvoie une liste de toute les parcelles pas posé pour faire la forme [form] qui a pour parcel haute [x,y,z]
-    public List<Coordinate> parcelToPlaceToDoForm(Coordinate c, FormType formType, ColorType colorType){
-        List<Coordinate> parcelToPlaceToDoForm = new ArrayList<>();
-        Coordinate cClone = c;
+    public List<Coordinate> parcelsToPlaceToDoForm(Coordinate coord, FormType formType, ColorType colorType){
+        List<Coordinate> parcelsToPlaceToDoForm = new ArrayList<>();
+
         for (int i = 0; i < 3; i++) {
-            if((cClone.isCentral()) || (board.isPlacedParcel(cClone) && !board.getPlacedParcels().get(cClone).getColor().equals(colorType)))
+            if((coord.isCentral()) || (board.isPlacedParcel(coord) && !board.getPlacedParcels().get(coord).getColor().equals(colorType)))
                 return new ArrayList<>();
+
             if(formType.equals(FormType.LINE)) {
-                if (!board.isPlacedParcel(cClone))
-                    parcelToPlaceToDoForm.add(cClone);
-                cClone = new Coordinate(cClone,new Coordinate(0,-1,1));
+                if (!board.isPlacedParcel(coord))
+                    parcelsToPlaceToDoForm.add(coord);
+                coord = new Coordinate(coord,Coordinate.offSets().get(2));
             }
             else if(formType.equals(FormType.TRIANGLE)) {
-                if(!board.isPlacedParcel(cClone))
-                    parcelToPlaceToDoForm.add(cClone);
-                cClone = new Coordinate(cClone,new Coordinate(2*i-1,-i ,1-i));
+                if(!board.isPlacedParcel(coord))
+                    parcelsToPlaceToDoForm.add(coord);
+                coord = new Coordinate(coord,Coordinate.offSets().get((2+i*3)%6));//
             }
         }
-        return parcelToPlaceToDoForm;
+        return parcelsToPlaceToDoForm;
     }
 
     public boolean putCanal() {

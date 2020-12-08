@@ -84,7 +84,7 @@ public class Stat {
     public String toString(){
         String displayStat = "";
         for (int i = 0; i < botScores.length; i++) {
-            displayStat += "Joueur "+botList[i]+" "+(i+1)+" : "+getWinRate(i)+"% win rate and "+ getEqualityRate(i)+"% equality rate with a "+ getPointsAverage(i)+" points average\n";
+            displayStat += "Joueur "+botList[i]+" : "+getWinRate(i)+"% win rate and "+ getEqualityRate(i)+"% equality rate with a "+ getPointsAverage(i)+" points average\n";
         }
         return  displayStat;
     }
