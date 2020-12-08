@@ -28,40 +28,40 @@ class ParcelBotTest {
 
     @BeforeEach
     public void setUp() {
-        coordinate = new Coordinate(1, -1, 0);
-        coordinate2 = new Coordinate(1, 0, -1);
-        coordinate3=new Coordinate(1,-2,1);
+        coordinate = new Coordinate(1, 0, -1); //0-2h
+        coordinate2 = new Coordinate(1, -1, 0); //2-4h
+        coordinate3=new Coordinate(1,-2,1); //4h éloigné de un
     }
 
     @Test
     public void placesForLineStartAtCoord1Line_Empty() {
         Board board1 = new Board();
         ParcelBot smartBot = new ParcelBot(new Resource(), board1);
-        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelsToPlaceToDoForm(coordinate2, FormType.LINE, ColorType.RED));
+        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelsToPlaceToDoForm(coordinate, FormType.LINE, ColorType.RED));
 
         assertEquals(3, placesForLine.size());
-        assertEquals(coordinate2, placesForLine.get(0));
-        assertEquals(coordinate, placesForLine.get(1));
+        assertEquals(coordinate, placesForLine.get(0));
+        assertEquals(coordinate2, placesForLine.get(1));
         assertEquals(coordinate3, placesForLine.get(2));
     }
 
     @Test
     public void placesForTriangleStartAtCoord1Triangle_Empty() {
         Board board1 = new Board();
-        ParcelBot smartBot = new ParcelBot(new Resource(), board1);
-        List<Coordinate> placesForLine = new ArrayList<>(smartBot.parcelsToPlaceToDoForm(coordinate, FormType.TRIANGLE, ColorType.RED));
+        ParcelBot parcelBot = new ParcelBot(new Resource(), board1);
+        List<Coordinate> placesForTriangle = new ArrayList<>(parcelBot.parcelsToPlaceToDoForm(coordinate2, FormType.TRIANGLE, ColorType.RED));
 
-        assertEquals(3, placesForLine.size());
-        assertEquals(coordinate, placesForLine.get(0));
-        assertEquals(new Coordinate(0, -1, 1), placesForLine.get(1));
-        assertEquals(coordinate3, placesForLine.get(2));
+        assertEquals(3, placesForTriangle.size());
+        assertEquals(coordinate2, placesForTriangle.get(0));
+        assertEquals(coordinate3, placesForTriangle.get(1));
+        assertEquals(new Coordinate(0, -1, 1), placesForTriangle.get(2));
     }
 
     @Test
     public void placesForLineStartAtCoord1Line_1Parcel() {
         Board board1 = new Board();
         ParcelBot smartBot = new ParcelBot(new Resource(), board1);
-        board1.placeParcel(new Parcel(ColorType.RED),coordinate2);//parcel haute
+        board1.placeParcel(new Parcel(ColorType.RED), coordinate);//parcel haute
 
         List<Coordinate> placesForLine = smartBot.parcelsToPlaceToDoForm(new Coordinate(1, 0, -1), FormType.LINE, ColorType.RED);
 
@@ -72,9 +72,9 @@ class ParcelBotTest {
     public void placesForTriangleStartAtCoord1Triangle_1Parcel() {
         Board board1 = new Board();
         ParcelBot smartBot = new ParcelBot(new Resource(), board1);
-        board1.placeParcel(new Parcel(ColorType.RED), coordinate);//parcel haute
+        board1.placeParcel(new Parcel(ColorType.RED), coordinate2);//parcel haute
 
-        List<Coordinate> placesForLine = smartBot.parcelsToPlaceToDoForm(coordinate, FormType.LINE, ColorType.RED);
+        List<Coordinate> placesForLine = smartBot.parcelsToPlaceToDoForm(coordinate2, FormType.LINE, ColorType.RED);
 
         assertEquals(2, placesForLine.size());
     }
@@ -85,8 +85,8 @@ class ParcelBotTest {
     @Test
     public void placesForLineStartAtCoord1Line_Full() {
         Board board1 = new Board();
-        board1.placeParcel(new Parcel(ColorType.NO_COLOR),coordinate2);
         board1.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate);
+        board1.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate2);
         board1.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(0, -1, 1));
         board1.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate3);
         ParcelBot smartBot = new ParcelBot(new Resource(), board1);
@@ -98,11 +98,11 @@ class ParcelBotTest {
     @Test
     public void placesForTriangleStartAtCoord1Triangle_Full() {
         Board board1 = new Board();
-        board1.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate);
+        board1.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate2);
         board1.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(0, -1, 1));
         board1.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate3);
         ParcelBot smartBot = new ParcelBot(new Resource(), board1);
-        List<Coordinate> placesForLine = smartBot.parcelsToPlaceToDoForm(coordinate, FormType.TRIANGLE, ColorType.RED);
+        List<Coordinate> placesForLine = smartBot.parcelsToPlaceToDoForm(coordinate2, FormType.TRIANGLE, ColorType.RED);
 
         assertEquals(0, placesForLine.size());
     }
@@ -111,8 +111,8 @@ class ParcelBotTest {
     public void lineform_1ParcelLeft() {
         Board board1 = new Board();
         ParcelBot smartBot = new ParcelBot(new Resource(), board1);
-        board1.placeParcel(new Parcel(ColorType.RED),coordinate2);//parcel haute
-        board1.placeParcel(new Parcel(ColorType.RED), coordinate);//parcel milieu
+        board1.placeParcel(new Parcel(ColorType.RED), coordinate);//parcel haute
+        board1.placeParcel(new Parcel(ColorType.RED), coordinate2);//parcel milieu
         board1.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(0, -1, 1));//deuxième parcel à coté de la parcel du bas
 
         Coordinate coord = smartBot.bestCoordinatesForForm(FormType.LINE, ColorType.RED);
@@ -125,9 +125,9 @@ class ParcelBotTest {
         Board board1 = new Board();
         ParcelBot smartBot = new ParcelBot(new Resource(), board1);
 
-        board1.placeParcel(new Parcel(ColorType.RED),coordinate2);//parcel haute
+        board1.placeParcel(new Parcel(ColorType.RED), coordinate);//parcel haute
 
-        assertEquals(coordinate, smartBot.bestCoordinatesForForm(FormType.LINE, ColorType.RED));//parcel milieu
+        assertEquals(coordinate2, smartBot.bestCoordinatesForForm(FormType.LINE, ColorType.RED));//parcel milieu
     }
 
     @Test
@@ -135,7 +135,7 @@ class ParcelBotTest {
         Board board1 = new Board();
         ParcelBot smartBot = new ParcelBot(new Resource(), board1);
 
-        board1.placeParcel(new Parcel(ColorType.RED), coordinate);//parcel bas
+        board1.placeParcel(new Parcel(ColorType.RED), coordinate2);//parcel bas
         board1.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(0, 1, -1));//parcel qui active la partel haute
 
         assertEquals(new Coordinate(1, 0, -1), smartBot.bestCoordinatesForForm(FormType.LINE, ColorType.RED));//parcel bas
@@ -159,11 +159,11 @@ class ParcelBotTest {
         parcel1.setIrrigated();
         parcel2.setIrrigated();
         Coordinate coordinate2 = new Coordinate(0, -1, 1);
-        board.placeParcel(parcel1,coordinate);
+        board.placeParcel(parcel1, this.coordinate2);
         board.placeParcel(parcel2,coordinate2);
         assertTrue(!bot.putCanal());
         board.placeParcel(new Parcel(ColorType.NO_COLOR),coordinate3);
-        board.placeCanal(new Canal(),coordinate, coordinate2);
+        board.placeCanal(new Canal(), this.coordinate2, coordinate2);
         assertTrue(bot.putCanal());
     }
 

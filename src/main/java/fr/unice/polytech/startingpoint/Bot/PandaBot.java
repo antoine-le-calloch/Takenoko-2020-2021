@@ -24,10 +24,10 @@ public class PandaBot extends Bot {
 
     @Override
     public void botPlay() {
-        if (inventory.getMission().size() < 5)
+        if (inventory.getMission().size() < 5 && resource.getDeckPandaMission().size() > 0)
             drawMission(MissionType.PANDA);
-        if (strategyMovePanda(possibleCoordinatesPanda()) != null)
-            movePanda(strategyMovePanda(possibleCoordinatesPanda()));
+        else if (strategyMovePanda(possibleCoordinatesPanda()) != null)
+                movePanda(strategyMovePanda(possibleCoordinatesPanda()));
     }
 
     //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4

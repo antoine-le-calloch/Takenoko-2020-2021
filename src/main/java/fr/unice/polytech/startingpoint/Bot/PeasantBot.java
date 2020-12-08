@@ -24,9 +24,9 @@ public class PeasantBot extends Bot {
 
     @Override
     public void botPlay() {
-        if (inventory.getMission().size() < 5)
+        if (inventory.getMission().size() < 5 && resource.getDeckPeasantMission().size() > 0)
             drawMission(MissionType.PEASANT);
-        if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
+        else if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
             movePanda(strategyMovePeasant(possibleCoordinatesPeasant()));
 
     }

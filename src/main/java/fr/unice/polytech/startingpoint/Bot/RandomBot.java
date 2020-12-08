@@ -36,7 +36,7 @@ public class RandomBot extends Bot {
 
         if (randAction == 0 && resource.getNbMission() > 0) {// pioche mission
             int randMission = random2.nextInt(3);
-            
+
             if (randMission == 0 && resource.getDeckParcelMission().size() > 0)
                 drawMission(MissionType.PARCEL);
             if (randMission == 1 && resource.getDeckPandaMission().size() > 0)
