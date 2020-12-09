@@ -21,32 +21,41 @@ public class ParcelBot extends Bot {
         random = new Random();
     }
 
-    public void setRand(Random rand){
-        random = rand;
-    }
-
     @Override
     public void botPlay(){
-        int choixAction = random.nextInt(2);
-
-        if (doDrawMission() && resource.getDeckParcelMission().size() > 0)
+        if (isJudiciousDrawMission())
             drawMission(MissionType.PARCEL);
-        else if (resource.getParcel().size() > 0  && choixAction == 0){
+
+        if(isJudiciousPutParcel())
             putParcel();
-        }
-        else if (resource.getCanal().size() > 0 && possibleCoordinatesCanal().size() > 0  && choixAction == 1) {
-            placeCanal(possibleCoordinatesCanal().get(0));
+
+        else if (isJudiciousPutCanal()){
+            putCanal();
         }
     }
 
-    //Si le bot n'a pas de mission => true
-    public boolean doDrawMission(){
-        return getInventory().getMission().size() <= 5;
+    //Si le bot peut piocher => true
+    public boolean isJudiciousDrawMission(){
+        return resource.getDeckParcelMission().size() > 0;
+    }
+
+    //Si le bot peut piocher une parcel et n'a pas finis une form => true
+    public boolean isJudiciousPutParcel(){
+        for (ParcelMission mission : inventory.getParcelMissions()) {
+            if(bestCoordinatesForForm(mission.getFormType(), mission.getColor()) == null)
+                return false;
+        }
+        return resource.getParcel().size() > 0;
+    }
+
+    //Si le bot peut piocher un canal => true
+    public boolean isJudiciousPutCanal(){
+        return resource.getCanal().size() > 0;
     }
 
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     public void putParcel() {
-        ParcelMission mission = (ParcelMission) getInventory().getMission().get(0);
+        ParcelMission mission = (ParcelMission) getInventory().getMissions().get(0);
         FormType formType = mission.getFormType();
         ColorType colorType = mission.getColor();
         Parcel newParcel = resource.drawParcel();
@@ -67,18 +76,22 @@ public class ParcelBot extends Bot {
 
         for (Coordinate HightCoord : allPlaces()) {
             List<Coordinate> parcelToPlaceToDoForm = parcelsToPlaceToDoForm(HightCoord, formType, colorType);
+            if(parcelToPlaceToDoForm != null) {
 
-            if(parcelToPlaceToDoForm.size() == 1 && board.isPlayableParcel(parcelToPlaceToDoForm.get(0))) {
-                bestCoordinate = parcelToPlaceToDoForm.get(0);
-                minTurnToEndForm = 1;
-            }
-            else if(parcelToPlaceToDoForm.size() == 2 && minTurnToEndForm > 1) {
+                if (parcelToPlaceToDoForm.size() == 0)
+                    return null;
 
-                if (board.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
+                if (parcelToPlaceToDoForm.size() == 1 && board.isPlayableParcel(parcelToPlaceToDoForm.get(0))) {
                     bestCoordinate = parcelToPlaceToDoForm.get(0);
+                    minTurnToEndForm = 1;
+                } else if (parcelToPlaceToDoForm.size() == 2 && minTurnToEndForm > 1) {
 
-                else if (board.isPlayableParcel(parcelToPlaceToDoForm.get(1)))
-                    bestCoordinate = parcelToPlaceToDoForm.get(1);
+                    if (board.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
+                        bestCoordinate = parcelToPlaceToDoForm.get(0);
+
+                    else if (board.isPlayableParcel(parcelToPlaceToDoForm.get(1)))
+                        bestCoordinate = parcelToPlaceToDoForm.get(1);
+                }
             }
         }
         return bestCoordinate;
@@ -90,7 +103,7 @@ public class ParcelBot extends Bot {
 
         for (int i = 0; i < 3; i++) {
             if((coord.isCentral()) || (board.isPlacedParcel(coord) && !board.getPlacedParcels().get(coord).getColor().equals(colorType)))
-                return new ArrayList<>();
+                return null;
 
             if(formType.equals(FormType.LINE)) {
                 if (!board.isPlacedParcel(coord))

@@ -24,7 +24,7 @@ public class PandaBot extends Bot {
 
     @Override
     public void botPlay() {
-        if (inventory.getMission().size() < 5 && resource.getDeckPandaMission().size() > 0)
+        if (inventory.getMissions().size() < 5 && resource.getDeckPandaMission().size() > 0)
             drawMission(MissionType.PANDA);
         else if (strategyMovePanda(possibleCoordinatesPanda()) != null)
                 movePanda(strategyMovePanda(possibleCoordinatesPanda()));

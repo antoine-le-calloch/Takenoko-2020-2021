@@ -1,14 +1,11 @@
 package fr.unice.polytech.startingpoint.Bot;
 
-import fr.unice.polytech.startingpoint.Bot.RandomBot;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.ColorType;
 import fr.unice.polytech.startingpoint.Type.MissionType;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,10 +42,10 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(0);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand,mockRand2);//set les Random mock
 
-        assertEquals(0,rdmBot1.getInventory().getMission().size());
+        assertEquals(0,rdmBot1.getInventory().getMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1,rdmBot1.getInventory().getMission().size());
-        assertEquals(MissionType.PARCEL,rdmBot1.getInventory().getMission().get(0).getMissionType());
+        assertEquals(1,rdmBot1.getInventory().getMissions().size());
+        assertEquals(MissionType.PARCEL,rdmBot1.getInventory().getMissions().get(0).getMissionType());
     }
 
     @Test
@@ -59,10 +56,10 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(1);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand,mockRand2);//set les Random mock
 
-        assertEquals(0,rdmBot1.getInventory().getMission().size());
+        assertEquals(0,rdmBot1.getInventory().getMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1,rdmBot1.getInventory().getMission().size());
-        assertEquals(MissionType.PANDA,rdmBot1.getInventory().getMission().get(0).getMissionType());
+        assertEquals(1,rdmBot1.getInventory().getMissions().size());
+        assertEquals(MissionType.PANDA,rdmBot1.getInventory().getMissions().get(0).getMissionType());
     }
 
     @Test
@@ -73,10 +70,10 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(2);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand,mockRand2);//set les Random mock
 
-        assertEquals(0,rdmBot1.getInventory().getMission().size());
+        assertEquals(0,rdmBot1.getInventory().getMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1,rdmBot1.getInventory().getMission().size());
-        assertEquals(MissionType.PEASANT,rdmBot1.getInventory().getMission().get(0).getMissionType());
+        assertEquals(1,rdmBot1.getInventory().getMissions().size());
+        assertEquals(MissionType.PEASANT,rdmBot1.getInventory().getMissions().get(0).getMissionType());
     }
 
     @Test

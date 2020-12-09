@@ -150,7 +150,7 @@ public class Resource {
 
     //Renvoie la liste du deck de canaux
     public int getNbMission(){
-        return deckMissionParcel.size() + deckMissionPanda.size() + deckMissionPanda.size();
+        return deckMissionParcel.size() + deckMissionPanda.size() + deckMissionPeasant.size();
     }
 
     //Renvoie la liste du deck de canaux

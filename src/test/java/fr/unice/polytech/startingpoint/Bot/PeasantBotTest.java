@@ -79,8 +79,8 @@ class PeasantBotTest {
 
     @Test
     void drawMission() {
-        assertEquals(0, peasantBot.getInventory().getMission().size());//0 mission dans son inventaire
+        assertEquals(0, peasantBot.getInventory().getMissions().size());//0 mission dans son inventaire
         peasantBot.botPlay();//fait jouer le paysan(il vas piocher)
-        assertEquals(1, peasantBot.getInventory().getMission().size());//1 mission dans son inventaire
+        assertEquals(1, peasantBot.getInventory().getMissions().size());//1 mission dans son inventaire
     }
 }

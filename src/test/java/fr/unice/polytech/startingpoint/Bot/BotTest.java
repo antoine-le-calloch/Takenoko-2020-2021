@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.Bot;
 
-import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 import org.junit.jupiter.api.*;
@@ -48,18 +47,18 @@ class BotTest {
     @Test
     public void missionIncrease(){
         bot1.drawMission(MissionType.PARCEL);
-        assertEquals(1,bot1.getInventory().getMission().size());
+        assertEquals(1,bot1.getInventory().getMissions().size());
     }
 
     @Test
     public void missionDecrease(){
         bot1.drawMission(MissionType.PARCEL);
         List<Mission> toDelete = new ArrayList<>();
-        toDelete.add(bot1.getInventory().getMission().get(0));
+        toDelete.add(bot1.getInventory().getMissions().get(0));
         bot1.getInventory().subMissions(toDelete);
-        assertEquals(0,bot1.getInventory().getMission().size());
+        assertEquals(0,bot1.getInventory().getMissions().size());
         bot1.getInventory().subMissions(toDelete);
-        assertNotEquals(-1,bot1.getInventory().getMission().size());
+        assertNotEquals(-1,bot1.getInventory().getMissions().size());
     }
 
     @Test

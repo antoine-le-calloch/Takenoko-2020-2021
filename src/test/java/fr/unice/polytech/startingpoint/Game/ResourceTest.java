@@ -47,10 +47,10 @@ public class ResourceTest {
         assertEquals(26,resource.getCanal().size());
     }
 
-    /*
     @Test
     public void missionDecrease(){
+        assertEquals(45,resource.getNbMission());
         resource.drawMission(MissionType.PANDA);
         assertEquals(44,resource.getNbMission());
-    }*/
+    }
 }

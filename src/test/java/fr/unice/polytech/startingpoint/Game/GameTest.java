@@ -1,12 +1,8 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Bot.PandaBot;
-import fr.unice.polytech.startingpoint.Bot.RandomBot;
-import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,12 +69,12 @@ class GameTest {
 
     @Test public void missionsDone(){
         assertEquals(0,game1.getPlayerData().getScores().get(0));
-        assertEquals(0,game1.getPlayerData().get(0).getInventory().getMission().size());
-        game1.getPlayerData().get(0).getInventory().getMission().add(new PandaMission(ColorType.RED,3));
+        assertEquals(0,game1.getPlayerData().get(0).getInventory().getMissions().size());
+        game1.getPlayerData().get(0).getInventory().getMissions().add(new PandaMission(ColorType.RED,3));
         game1.getPlayerData().get(0).getInventory().addBamboo(ColorType.RED);
         game1.missionDone(0);
         assertTrue(game1.getPlayerData().getScores().get(0)>game1.getPlayerData().getScores().get(1));
-        assertEquals(0,game1.getPlayerData().get(0).getInventory().getMission().size());
+        assertEquals(0,game1.getPlayerData().get(0).getInventory().getMissions().size());
     }
 
 

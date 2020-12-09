@@ -54,8 +54,34 @@ public class Inventory {
         return inventoryBamboo.clone();
     }
 
-    public List<Mission> getMission(){
+    public List<Mission> getMissions(){
         return inventoryMission;
     }
 
+    public List<ParcelMission> getParcelMissions(){
+        List<ParcelMission> parcelMissions = new ArrayList<>();
+        for (Mission mission : inventoryMission) {
+            if(mission.missionType == MissionType.PARCEL)
+                parcelMissions.add((ParcelMission) mission);
+        }
+        return parcelMissions;
+    }
+
+    public List<PandaMission> getPandaMissions(){
+        List<PandaMission> pandaMissions = new ArrayList<>();
+        for (Mission mission : inventoryMission) {
+            if(mission.missionType == MissionType.PARCEL)
+                pandaMissions.add((PandaMission) mission);
+        }
+        return pandaMissions;
+    }
+
+    public List<PeasantMission> getPeasantMissions(){
+        List<PeasantMission> peasantMissions = new ArrayList<>();
+        for (Mission mission : inventoryMission) {
+            if(mission.missionType == MissionType.PARCEL)
+                peasantMissions.add((PeasantMission) mission);
+        }
+        return peasantMissions;
+    }
 }

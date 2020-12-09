@@ -74,8 +74,8 @@ class PandaBotTest {
 
     @Test
     void drawMission() {
-        assertEquals(0, pandaBot.getInventory().getMission().size());//0 mission dans son inventaire
+        assertEquals(0, pandaBot.getInventory().getMissions().size());//0 mission dans son inventaire
         pandaBot.botPlay();//fait jouer le panda(il vas piocher)
-        assertEquals(1, pandaBot.getInventory().getMission().size());//1 mission dans son inventaire
+        assertEquals(1, pandaBot.getInventory().getMissions().size());//1 mission dans son inventaire
     }
 }

@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.Bot;
 
-import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 import org.junit.Before;
@@ -87,7 +86,7 @@ class ParcelBotTest {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate2);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate3);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate4);
-        List<Coordinate> placesForLine = parcelBot.parcelsToPlaceToDoForm(coordinate1, FormType.LINE, ColorType.RED);
+        List<Coordinate> placesForLine = parcelBot.parcelsToPlaceToDoForm(coordinate1, FormType.LINE, ColorType.NO_COLOR);
 
         assertEquals(0, placesForLine.size());
     }
@@ -97,7 +96,7 @@ class ParcelBotTest {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate2);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate3);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate4);
-        List<Coordinate> placesForLine = parcelBot.parcelsToPlaceToDoForm(coordinate2, FormType.TRIANGLE, ColorType.RED);
+        List<Coordinate> placesForLine = parcelBot.parcelsToPlaceToDoForm(coordinate2, FormType.TRIANGLE, ColorType.NO_COLOR);
 
         assertEquals(0, placesForLine.size());
     }
@@ -149,28 +148,11 @@ class ParcelBotTest {
     }
 
     /*@Test
-    void movePeasant_1Parcel2Bamboo() {
-        Resource resource = Mockito.mock(Resource.class);
-        List<Mission> deckVide = new ArrayList<>();
-        Mockito.when(resource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
-
-        Parcel parcel1Bamboo = new Parcel(ColorType.NO_COLOR); //créée la parcel
-        parcel1Bamboo.addBamboo(); //ajoute 1 bamboo
-        board.placeParcel(parcel1Bamboo, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
-
-        PeasantBot bot1 = new PeasantBot(resource,board);
-
-        assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//2 bamboo sur la parcel
-        bot1.botPlay();//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
-        assertEquals(3,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
-    }*/
-
-    @Test
     public void drawMissionParcel(){
-        assertEquals(0,parcelBot.getInventory().getMission().size());
+        assertEquals(0,parcelBot.getInventory().getMissions().size());
         parcelBot.botPlay();
-        assertEquals(1,parcelBot.getInventory().getMission().size());
-        assertEquals(MissionType.PARCEL,parcelBot.getInventory().getMission().get(0).getMissionType());
+        assertEquals(1,parcelBot.getInventory().getMissions().size());
+        assertEquals(MissionType.PARCEL,parcelBot.getInventory().getMissions().get(0).getMissionType());
     }
 
     @Test
@@ -207,5 +189,5 @@ class ParcelBotTest {
         assertEquals(0,board.getPlacedCanals().size());//0 canal posée
         parcelBot1.botPlay();//pose un canal
         assertEquals(0,board.getPlacedCanals().size());//0 canal posée
-    }
+    }*/
 }
