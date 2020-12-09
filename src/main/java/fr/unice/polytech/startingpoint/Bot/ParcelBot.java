@@ -49,14 +49,20 @@ public class ParcelBot extends Bot {
         ParcelMission mission = (ParcelMission) getInventory().getMission().get(0);
         FormType formType = mission.getFormType();
         ColorType colorType = mission.getColor();
-        Parcel newParcel = resource.drawParcel();
-
-        if(newParcel.getColor().equals(colorType))
-            placeParcel(bestCoordinatesForForm(formType, colorType),newParcel);
-        else {
+        List<Parcel> newParcel = resource.drawParcel();
+        Parcel parcel = new Parcel(ColorType.NO_COLOR);
+        for (Parcel p : newParcel){
+            if(p.getColor().equals(colorType)){
+                parcel = p;
+            }
+        }
+        if (parcel.getColor() == ColorType.NO_COLOR){
             List<Coordinate> list = possibleCoordinatesParcel();
             Collections.shuffle(list);
-            placeParcel(possibleCoordinatesParcel().get(0), newParcel);
+            placeParcel(list.get(0), newParcel.get(0));
+        }
+        else {
+            placeParcel(bestCoordinatesForForm(formType, colorType),resource.selectParcel(parcel));
         }
     }
 

@@ -33,7 +33,7 @@ public abstract class Bot {
         inventory.addMission(resource.drawMission(type));
     }
 
-    public Parcel drawParcel() {
+    public List<Parcel> drawParcel() {
         return resource.drawParcel();
     }
 
@@ -41,6 +41,7 @@ public abstract class Bot {
     public void placeParcel(Coordinate coord, Parcel parcel){
         board.placeParcel(parcel, coord);
     }
+
     //Place un canal à une coordonnée de la liste passée en paramètre - ACTION 3
     public void placeCanal(Coordinate[] coords) {
         board.placeCanal(resource.drawCanal() , coords[0], coords[1]);
@@ -103,6 +104,7 @@ public abstract class Bot {
         }
         return new ArrayList<>(possibleCoordinates);
     }
+
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : board.getPlacedParcels().keySet()) {

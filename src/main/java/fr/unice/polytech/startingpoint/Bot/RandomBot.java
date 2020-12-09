@@ -59,10 +59,11 @@ public class RandomBot extends Bot {
         }
 
         else if (randAction == 2 && possibleCoordinatesParcel().size() > 0 && resource.getParcel().size() > 0){ // place parcel
-            Parcel parcel = drawParcel();
+            List<Parcel> parcelList = drawParcel();
+            Collections.shuffle(parcelList);
             List<Coordinate> list = possibleCoordinatesParcel();
             Collections.shuffle(list);
-            placeParcel(list.get(0), parcel);
+            placeParcel(list.get(0), parcelList.get(0));
         }
 
         else if (randAction == 3 && possibleCoordinatesPanda().size() != 0) {
