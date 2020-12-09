@@ -5,6 +5,7 @@ import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 import org.junit.Before;
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 
 import java.util.*;
 
@@ -147,8 +148,64 @@ class ParcelBotTest {
         assertTrue(parcelBot.putCanal());
     }
 
+    /*@Test
+    void movePeasant_1Parcel2Bamboo() {
+        Resource resource = Mockito.mock(Resource.class);
+        List<Mission> deckVide = new ArrayList<>();
+        Mockito.when(resource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
+
+        Parcel parcel1Bamboo = new Parcel(ColorType.NO_COLOR); //créée la parcel
+        parcel1Bamboo.addBamboo(); //ajoute 1 bamboo
+        board.placeParcel(parcel1Bamboo, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
+
+        PeasantBot bot1 = new PeasantBot(resource,board);
+
+        assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//2 bamboo sur la parcel
+        bot1.botPlay();//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
+        assertEquals(3,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
+    }*/
+
     @Test
-    public void putParcel() {
-        assertNotNull(parcelBot.bestCoordinatesForForm(FormType.LINE, ColorType.RED));
+    public void drawMissionParcel(){
+        assertEquals(0,parcelBot.getInventory().getMission().size());
+        parcelBot.botPlay();
+        assertEquals(1,parcelBot.getInventory().getMission().size());
+        assertEquals(MissionType.PARCEL,parcelBot.getInventory().getMission().get(0).getMissionType());
+    }
+
+    @Test
+    public void putParcel(){
+        Resource mockResource = Mockito.mock(Resource.class);
+        List<Mission> deckVide = new ArrayList<>();
+        Mockito.when(mockResource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
+
+        ParcelBot parcelBot1 = new ParcelBot(mockResource,board);
+
+        Random mockRand = mock(Random.class);
+        Mockito.when(mockRand.nextInt(2)).thenReturn(0);//donne une val au random pour poser une parel
+        parcelBot1.setRand(mockRand);//set les Random mock
+
+        assertEquals(1,board.getPlacedParcels().size());//1 parcel posée (central)
+        parcelBot1.botPlay();//pose une parcel
+        //assertEquals(2,board.getPlacedParcels().size());//1 parcel posée
+    }
+
+    @Test
+    public void putCanal(){
+        Resource mockResource = Mockito.mock(Resource.class);
+        List<Mission> deckVide = new ArrayList<>();
+        board.placeParcel(new Parcel(ColorType.NO_COLOR),coordinate1);//pose une partel pour mettre le canal
+        board.placeParcel(new Parcel(ColorType.NO_COLOR),coordinate2);//pose une autre partel pour mettre le canal
+        Mockito.when(mockResource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
+
+        ParcelBot parcelBot1 = new ParcelBot(mockResource,board);
+
+        Random mockRand = mock(Random.class);
+        Mockito.when(mockRand.nextInt(2)).thenReturn(1);//donne une val au random pour poser une parel
+        parcelBot1.setRand(mockRand);//set les Random mock
+
+        assertEquals(0,board.getPlacedCanals().size());//0 canal posée
+        parcelBot1.botPlay();//pose un canal
+        assertEquals(0,board.getPlacedCanals().size());//0 canal posée
     }
 }

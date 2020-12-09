@@ -15,15 +15,19 @@ import java.util.*;
  */
 
 public class ParcelBot extends Bot {
-
+    Random random;
     public ParcelBot(Resource resource, Board board) {
         super(resource, board);
+        random = new Random();
+    }
+
+    public void setRand(Random rand){
+        random = rand;
     }
 
     @Override
     public void botPlay(){
-        Random rand = new Random();
-        int choixAction = rand.nextInt(2);
+        int choixAction = random.nextInt(2);
 
         if (doDrawMission() && resource.getDeckParcelMission().size() > 0)
             drawMission(MissionType.PARCEL);
@@ -33,8 +37,6 @@ public class ParcelBot extends Bot {
         else if (resource.getCanal().size() > 0 && possibleCoordinatesCanal().size() > 0  && choixAction == 1) {
             placeCanal(possibleCoordinatesCanal().get(0));
         }
-        else if (resource.getDeckParcelMission().size() > 0)
-            drawMission(MissionType.PARCEL);
     }
 
     //Si le bot n'a pas de mission => true
