@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Bot.Bot;
 import fr.unice.polytech.startingpoint.Bot.ParcelBot;

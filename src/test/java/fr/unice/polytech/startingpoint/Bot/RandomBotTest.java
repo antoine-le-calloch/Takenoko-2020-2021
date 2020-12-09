@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Bot.RandomBot;
 import fr.unice.polytech.startingpoint.Game.*;

@@ -1,4 +1,8 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Game;
+
+import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests unitaires
@@ -9,5 +13,7 @@ package fr.unice.polytech.startingpoint;
  * @version 2020.12.03
  */
 
-class MainTest {
+class CanalTest {
+
+
 }

@@ -1,5 +1,5 @@
 
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
