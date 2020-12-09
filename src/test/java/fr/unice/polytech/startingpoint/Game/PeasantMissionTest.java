@@ -28,7 +28,7 @@ public class PeasantMissionTest {
     @BeforeEach
     void setUp(){
         mission1 = new PeasantMission(ColorType.RED, 2);
-        mission2 = new PeasantMission(ColorType.RED, 3);
+        mission2 = new PeasantMission(ColorType.BLUE, 2);
         board = new Board();
         resource = new Resource();
         parcel1 = new Parcel(ColorType.RED);
@@ -43,7 +43,14 @@ public class PeasantMissionTest {
     }
 
     @Test
-    void missionIncomplete(){
+    void wrongColor(){
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.moveCharacter(board.getPeasant(), parcel1.getCoordinates());
+        assertEquals(0,mission2.checkMission(board, bot.getInventory()));
+    }
+
+    @Test
+    void notEnoughBamboo(){
         assertNotEquals(2,mission1.checkMission(board, bot.getInventory()));
     }
 }
