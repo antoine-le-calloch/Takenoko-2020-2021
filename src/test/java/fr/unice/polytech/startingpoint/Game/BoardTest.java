@@ -57,7 +57,7 @@ public class BoardTest {
 
     @Test
     public void goodParcelPlacementSoParcelIncrease(){
-        board.placeParcel(resource.drawParcel(),new Coordinate(1,-1,0));
+        board.placeParcel(resource.drawParcel().get(0),new Coordinate(1,-1,0));
         assertEquals(2,board.getPlacedParcels().size());
     }
     @Test
