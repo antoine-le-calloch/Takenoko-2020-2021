@@ -143,4 +143,56 @@ public class BoardTest {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(2,-1,-1));
         assertFalse(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
     }
+
+    @Test
+    void actionPeasantBamboo() {
+        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
+        for (int i = 1; i < 4; i++) {
+            board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
+            board.moveCharacter(board.getPeasant(), new Coordinate(1,0,-1));
+            assertEquals(i+1,board.getPlacedParcels().get(new Coordinate(1,-1,0)).getNbBamboo());
+        }
+    }
+
+    @Test
+    void actionPeasantSameColorAroundAndIrrigated(){
+        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1,0,-1));
+        board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
+        assertEquals(2,board.getPlacedParcels().get(new Coordinate(1,0,-1)).getNbBamboo());
+    }
+
+    @Test
+    void actionPeasantDifferentColorAround(){
+        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
+        board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
+        assertEquals(1,board.getPlacedParcels().get(new Coordinate(1,0,-1)).getNbBamboo());
+    }
+
+    @Test
+    void actionPeasantNotIrrigated(){
+        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, 0, -1));
+        board.placeParcel(new Parcel(ColorType.RED), new Coordinate(2,-1,-1));
+        board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
+        assertEquals(0,board.getPlacedParcels().get(new Coordinate(2,-1,-1)).getNbBamboo());
+    }
+
+    @Test
+    void actionPandaBamboo(){
+        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
+        for (int i = 0; i < 4; i++) {
+            board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
+            board.moveCharacter(board.getPeasant(), new Coordinate(1,0,-1));
+        }
+        for (int i = 4; i > 1; i--) {
+            board.moveCharacter(board.getPanda(),new Coordinate(1,-1,0));
+            board.moveCharacter(board.getPanda(), new Coordinate(1,0,-1));
+            assertEquals(i-1,board.getPlacedParcels().get(new Coordinate(1,-1,0)).getNbBamboo());
+        }
+    }
+
 }

@@ -126,7 +126,7 @@ public class Board {
         for( Coordinate coordinate : character.getCoordinate().coordinatesAround())
             if (placedParcels.containsKey(coordinate)) {
                 if (color == placedParcels.get(coordinate).getColor() && placedParcels.get(coordinate).getIrrigated())
-                    placedParcels.get(character.getCoordinate()).addBamboo();
+                    placedParcels.get(coordinate).addBamboo();
             }
     }
 
