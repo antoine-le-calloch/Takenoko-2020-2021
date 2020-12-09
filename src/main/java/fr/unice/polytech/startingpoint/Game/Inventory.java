@@ -34,12 +34,9 @@ public class Inventory {
         inventoryMission.add(mission);
     }
 
-    public boolean subBamboo(ColorType colorType){
-        if(inventoryBamboo[colorType.ordinal()]>0){
+    public void subBamboo(ColorType colorType){
+        if(inventoryBamboo[colorType.ordinal()]>0)
             inventoryBamboo[colorType.ordinal()] --;
-            return true;
-        }
-        return false;
     }
 
     public void subMissions(List<Mission> missions){

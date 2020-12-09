@@ -104,15 +104,32 @@ public class Board {
 
     //Effectue l’action du personnage passé en paramètre
     public void characterAction(Character character){
+
         switch (character.getCharacterType()){
             case PANDA:
-                placedParcels.get(character.getCoordinate()).delBamboo();
+                actionPanda(character);
                 break;
             case PEASANT:
-                placedParcels.get(character.getCoordinate()).addBamboo();
+                actionPeasant(character);
                 break;
         }
     }
+
+    void actionPanda(Character character){
+        placedParcels.get(character.getCoordinate()).delBamboo();
+    }
+
+    void actionPeasant(Character character){
+        ColorType color = placedParcels.get(character.getCoordinate()).getColor();
+        if (placedParcels.get(character.getCoordinate()).getIrrigated())
+            placedParcels.get(character.getCoordinate()).addBamboo();
+        for( Coordinate coordinate : character.getCoordinate().coordinatesAround())
+            if (placedParcels.containsKey(coordinate)) {
+                if (color == placedParcels.get(coordinate).getColor() && placedParcels.get(coordinate).getIrrigated())
+                    placedParcels.get(character.getCoordinate()).addBamboo();
+            }
+    }
+
 
     //Renvoie true si une parcelle est posées aux coordonnées passées en paramètre
     public boolean isPlacedParcel(Coordinate coordinate){

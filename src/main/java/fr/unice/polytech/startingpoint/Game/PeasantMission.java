@@ -19,7 +19,8 @@ public class PeasantMission extends Mission {
 
     public int checkMission(Board board, Inventory inventory) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
-            if (parcel.getNbBamboo() == 2 && parcel.getColor() == colorType)
+            int NB_BAMBOO = 2;
+            if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType)
                 return points;
         }
         return 0;
