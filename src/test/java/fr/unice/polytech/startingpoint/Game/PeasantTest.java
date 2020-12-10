@@ -6,6 +6,7 @@ import fr.unice.polytech.startingpoint.Bot.PeasantBot;
 import fr.unice.polytech.startingpoint.Game.Character;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 

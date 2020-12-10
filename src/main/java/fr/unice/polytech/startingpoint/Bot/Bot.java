@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
 
 import java.util.*;
 
