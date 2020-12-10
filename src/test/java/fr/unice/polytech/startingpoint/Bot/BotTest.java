@@ -106,9 +106,9 @@ class BotTest {
 
 
         Exception exception1 = assertThrows(BadPlaceCanalException.class, () ->
-        { board.isPlayableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0));});
+        { board.placeCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));});
 
-        assertEquals("",exception1.getMessage());
+        assertEquals("[0,0,0], [1,-1,0]",exception1.getMessage());
 
         List<Coordinate[]>possibleCanals2 = bot1.possibleCoordinatesCanal();
         assertEquals(possibleCanals2.size(),2);

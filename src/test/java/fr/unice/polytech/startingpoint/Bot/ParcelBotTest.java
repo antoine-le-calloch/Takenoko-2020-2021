@@ -136,26 +136,19 @@ class ParcelBotTest {
 
     @Test
     public void strategyIrrigation() throws BadPlaceParcelException, BadPlaceCanalException {
-        Parcel parcel1 = new Parcel(ColorType.NO_COLOR);
-        Parcel parcel2 = new Parcel(ColorType.NO_COLOR);
-        parcel1.setIrrigated();
-        parcel2.setIrrigated();
-        board.placeParcel(parcel1, coordinate2);
-        board.placeParcel(parcel2, coordinate3);
-
+        board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate2);
+        board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate3);
         assertFalse(parcelBot.putCanal());
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate4);
-        board.placeCanal(new Canal(), coordinate2, coordinate3);
         assertTrue(parcelBot.putCanal());
     }
 
-    /*
     @Test
     public void drawMissionParcel(){
-        assertEquals(0,parcelBot.getInventory().getMissions().size());
+        assertEquals(0,parcelBot.getInventory().getMission().size());
         parcelBot.botPlay();
-        assertEquals(1,parcelBot.getInventory().getMissions().size());
-        assertEquals(MissionType.PARCEL,parcelBot.getInventory().getMissions().get(0).getMissionType());
+        assertEquals(1,parcelBot.getInventory().getMission().size());
+        assertEquals(MissionType.PARCEL,parcelBot.getInventory().getMission().get(0).getMissionType());
     }
 
     @Test
@@ -168,7 +161,6 @@ class ParcelBotTest {
 
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(2)).thenReturn(0);//donne une val au random pour poser une parel
-        parcelBot1.setRand(mockRand);//set les Random mock
 
         assertEquals(1,board.getPlacedParcels().size());//1 parcel posée (central)
         parcelBot1.botPlay();//pose une parcel
@@ -176,7 +168,7 @@ class ParcelBotTest {
     }
 
     @Test
-    public void putCanal(){
+    public void putCanal() throws BadPlaceParcelException {
         Resource mockResource = Mockito.mock(Resource.class);
         List<Mission> deckVide = new ArrayList<>();
         board.placeParcel(new Parcel(ColorType.NO_COLOR),coordinate1);//pose une partel pour mettre le canal
@@ -187,10 +179,8 @@ class ParcelBotTest {
 
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(2)).thenReturn(1);//donne une val au random pour poser une parel
-        parcelBot1.setRand(mockRand);//set les Random mock
-
         assertEquals(0,board.getPlacedCanals().size());//0 canal posée
         parcelBot1.botPlay();//pose un canal
         assertEquals(0,board.getPlacedCanals().size());//0 canal posée
-    }*/
+    }
 }

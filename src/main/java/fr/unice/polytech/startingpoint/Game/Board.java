@@ -42,17 +42,18 @@ public class Board {
     }
 
     //Renvoie true si un canal peut être placé aux coordonnées passées en paramètre
-    public boolean isPlayableCanal(Coordinate toPlaceCoordinate1, Coordinate toPlaceCoordinate2) {
-        if ( !isPlacedCanal(toPlaceCoordinate1, toPlaceCoordinate2) &&
-                toPlaceCoordinate1.isNextTo(toPlaceCoordinate2) &&
-                isPlacedParcel(toPlaceCoordinate1) && isPlacedParcel(toPlaceCoordinate2) ) {
-            if (toPlaceCoordinate1.isNextTo(new Coordinate(0, 0, 0)) && toPlaceCoordinate2.isNextTo(new Coordinate(0, 0, 0))) {
+    public boolean isPlayableCanal(Coordinate coordinate1, Coordinate coordinate2) {
+        if ( !isPlacedCanal(coordinate1, coordinate2) &&
+                coordinate1.isNextTo(coordinate2) &&
+                !coordinate1.isCentral() && !coordinate2.isCentral() &&
+                isPlacedParcel(coordinate1) && isPlacedParcel(coordinate2) ) {
+            if (coordinate1.isNextTo(new Coordinate(0, 0, 0)) && coordinate2.isNextTo(new Coordinate(0, 0, 0))) {
                 return true;
             }
-            for (Coordinate coordinate : Coordinate.getInCommonAroundCoordinates(toPlaceCoordinate1, toPlaceCoordinate2)) {
-                if (isPlacedCanal(toPlaceCoordinate1, coordinate))
+            for (Coordinate coordinate : Coordinate.getInCommonAroundCoordinates(coordinate1, coordinate2)) {
+                if (isPlacedCanal(coordinate1, coordinate))
                     return true;
-                if (isPlacedCanal(toPlaceCoordinate2, coordinate))
+                if (isPlacedCanal(coordinate2, coordinate))
                     return true;
             }
         }
