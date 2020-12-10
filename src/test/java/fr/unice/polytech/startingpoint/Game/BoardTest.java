@@ -3,6 +3,8 @@ package fr.unice.polytech.startingpoint.Game;
 import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
 import org.junit.jupiter.api.*;
 
@@ -57,7 +59,7 @@ public class BoardTest {
 
 
     @Test
-    public void goodParcelPlacementSoParcelIncrease(){
+    public void goodParcelPlacementSoParcelIncrease() throws BadPlaceParcelException {
         board.placeParcel(resource.drawParcel().get(0),new Coordinate(1,-1,0));
         assertEquals(2,board.getPlacedParcels().size());
     }
@@ -68,26 +70,26 @@ public class BoardTest {
         assertEquals(0,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(0,0,0)));
     }
 
-    @Test void getParcelbyCotesting(){
+    @Test void getParcelbyCotesting() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         parcel2 = board.getPlacedParcels().get(new Coordinate(0,-1,1));
         assertEquals(parcel1,parcel2);
         assertNull(board.getPlacedParcels().get(new Coordinate(1,-1,0)));
     }
 
-    @Test void irrigationFromCentral(){
+    @Test void irrigationFromCentral() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         assertTrue(parcel1.getIrrigated());
     }
 
-    @Test void noIrrigationFromCentral(){
+    @Test void noIrrigationFromCentral() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         assertFalse(parcel3.getIrrigated());
     }
 
-    @Test void irrigationBycanals(){
+    @Test void irrigationBycanals() throws BadPlaceParcelException, BadPlaceCanalException {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
@@ -96,40 +98,62 @@ public class BoardTest {
         assertTrue(parcel3.getIrrigated());
     }
 
-    @Test void canalAboveanAnother(){
+    @Test void canalAboveAnother() throws BadPlaceParcelException, BadPlaceCanalException {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
-        assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
-        assertFalse(board.isPlayableCanal(new Coordinate(1,-1,0),new Coordinate(0,-1,1)));
+
+        Exception exception1 = assertThrows(BadPlaceCanalException.class, () ->
+        { board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0));});
+
+        Exception exception2 = assertThrows(BadPlaceCanalException.class, () ->
+        { board.isPlayableCanal(new Coordinate(1,-1,0),new Coordinate(0,-1,1));});
+
+
+        assertEquals(exception1.getMessage(),"[0,-1,1], [1,-1,0]");
+        assertEquals(exception2.getMessage(),"[1,-1,0], [0,-1,1]");
     }
-    @Test void wrongPlacementCanalawayFromcentral(){
+    @Test void wrongPlacementCanalawayFromcentral() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-2,1)));
+
+
+        Exception exception1 = assertThrows(BadPlaceCanalException.class, () ->
+        { board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-2,1));});
+
+        assertEquals(exception1.getMessage(),"");
     }
 
-    @Test void wrongPlacementCanal(){
+    @Test void goodPlacementCanal() throws BadPlaceParcelException, BadPlaceCanalException {
         board.placeParcel(parcel1,new Coordinate(0,-1,1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
-        assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(0,-2,2)));
     }
 
     @Test void invalideCoordinatesforCanal(){
-        assertFalse(board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(0,-1,1)));
-        assertFalse(board.placeCanal(canal,new Coordinate(1,-1,0),new Coordinate(-1,1,0)));
-        assertFalse(board.placeCanal(canal,new Coordinate(1,-1,0),new Coordinate(2,0,-2)));
+        Exception exception1 = assertThrows(BadPlaceCanalException.class, () ->
+        { board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(0,-1,1));});
+        Exception exception2 = assertThrows(BadPlaceCanalException.class, () ->
+        { board.placeCanal(canal,new Coordinate(1,-1,0),new Coordinate(-1,1,0));});
+        Exception exception3 = assertThrows(BadPlaceCanalException.class, () ->
+        { board.placeCanal(canal,new Coordinate(1,-1,0),new Coordinate(2,0,-2));});
+
+        assertEquals(exception1.getMessage(),"[0,-1,1], [0,-1,1]");
+        assertEquals(exception2.getMessage(),"[1,-1,0], [-1,1,0]");
+        assertEquals(exception3.getMessage(),"[1,-1,0], [2,0,-2]");
     }
+
+
 
     @Test void parcelInexistantsoNoCanal(){
         assertFalse(board.isPlayableCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
         assertFalse(board.isPlayableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0)));
     }
 
+    //bonne coord pour deplacer un character
     @Test
-    void goodMoveCharacter() throws MoveCharacterException {
+    void goodMoveCharacter() throws MoveCharacterException, BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,-1,0));
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,0,-1));
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(2,-1,-1));
@@ -137,45 +161,57 @@ public class BoardTest {
         board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1));
     }
 
+    //mauvaise coord pour deplacer un character
     @Test
-    void wrongMoveCharacter() {
+    void wrongMoveCharacter() throws BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,-1,0));
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,0,-1));
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(2,-1,-1));
         Exception exception = assertThrows(MoveCharacterException.class, () ->
         {board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1));});
-        assertEquals(exception.getMessage(), "The character can't move to this coordinate :[2,-1,-1]");
+        assertEquals(exception.getMessage(), "[2,-1,-1]");
     }
 
+    //le paysan fait pousser un bambou ou il est
     @Test
-    void actionPeasantBamboo() throws MoveCharacterException {
-        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
-        board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
-        for (int i = 1; i < 4; i++) {
-            board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
-            board.moveCharacter(board.getPeasant(), new Coordinate(1,0,-1));
-            assertEquals(i+1,board.getPlacedParcels().get(new Coordinate(1,-1,0)).getNbBamboo());
+    void goodGrow() throws MoveCharacterException, BadPlaceParcelException {
+        board.placeParcel(parcel1, new Coordinate(1, -1, 0));
+        board.moveCharacter(board.getPeasant(),parcel1.getCoordinates());
+        assertEquals(2,parcel1.getNbBamboo());
+    }
+
+    //4 bambous max
+    @Test
+    void maxGrow() throws MoveCharacterException, BadPlaceParcelException {
+        board.placeParcel(parcel1, new Coordinate(1, -1, 0));
+        for (int i = 0; i < 10; i++) {
+            board.moveCharacter(board.getPeasant(),parcel1.getCoordinates());
+            board.moveCharacter(board.getPeasant(),new Coordinate(0,0,0));
         }
+        assertEquals(4,parcel1.getNbBamboo());
     }
 
+    //bambous pousse autour si irrigué + même couleur
     @Test
-    void actionPeasantSameColorAroundAndIrrigated() throws MoveCharacterException {
+    void actionPeasantSameColorAroundAndIrrigated() throws MoveCharacterException, BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1,0,-1));
         board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
         assertEquals(2,board.getPlacedParcels().get(new Coordinate(1,0,-1)).getNbBamboo());
     }
 
+    //bambous pousse pas autour si couleur diff
     @Test
-    void actionPeasantDifferentColorAround() throws MoveCharacterException {
+    void actionPeasantDifferentColorAround() throws MoveCharacterException, BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
         board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
         assertEquals(1,board.getPlacedParcels().get(new Coordinate(1,0,-1)).getNbBamboo());
     }
 
+    //bambous pousse pas autour si non irriguée
     @Test
-    void actionPeasantNotIrrigatedAround() throws MoveCharacterException {
+    void actionPeasantNotIrrigatedAround() throws MoveCharacterException, BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, 0, -1));
         board.placeParcel(new Parcel(ColorType.RED), new Coordinate(2,-1,-1));
@@ -183,19 +219,24 @@ public class BoardTest {
         assertEquals(0,board.getPlacedParcels().get(new Coordinate(2,-1,-1)).getNbBamboo());
     }
 
+    // panda mange un bambou
     @Test
-    void actionPandaBamboo() throws MoveCharacterException {
-        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
-        board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
-        for (int i = 0; i < 4; i++) {
-            board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
-            board.moveCharacter(board.getPeasant(), new Coordinate(1,0,-1));
+    void goodEat() throws MoveCharacterException, BadPlaceParcelException {
+        board.placeParcel(parcel1, new Coordinate(1, -1, 0));
+        board.moveCharacter(board.getPanda(), parcel1.getCoordinates());
+        assertEquals(0, parcel1.getNbBamboo());
+    }
+
+    //il mange pas si 0 bambous sur la parcelle
+    @Test
+    void minEat() throws MoveCharacterException, BadPlaceParcelException {
+        board.placeParcel(parcel1, new Coordinate(1, -1, 0));
+        board.placeParcel(parcel2, new Coordinate(1,0,-1));
+        for (int i = 0; i < 10; i++) {
+            board.moveCharacter(board.getPanda(), parcel1.getCoordinates());
+            board.moveCharacter(board.getPanda(), parcel2.getCoordinates());
         }
-        for (int i = 4; i > 1; i--) {
-            board.moveCharacter(board.getPanda(),new Coordinate(1,-1,0));
-            board.moveCharacter(board.getPanda(), new Coordinate(1,0,-1));
-            assertEquals(i-1,board.getPlacedParcels().get(new Coordinate(1,-1,0)).getNbBamboo());
-        }
+        assertEquals(0, parcel1.getNbBamboo());
     }
 
 }

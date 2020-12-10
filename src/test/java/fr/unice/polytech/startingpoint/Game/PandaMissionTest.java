@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.Game;
 import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
 
 import java.util.stream.IntStream;
@@ -39,7 +40,7 @@ public class PandaMissionTest {
     }
 
     @Test
-    void missionCompleteGoodColor(){
+    void missionCompleteGoodColor() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel red
         IntStream.range(0, 4).forEach(i -> {
             bot.getInventory().addBamboo(parcel1.getColor());
@@ -49,7 +50,7 @@ public class PandaMissionTest {
     }
 
     @Test
-    void missionIncompleteBadColor(){
+    void missionIncompleteBadColor() throws BadPlaceParcelException {
         board.placeParcel(parcel2,new Coordinate(1,-1,0)); // parcel blue
         IntStream.range(0, 5).forEach(i -> {
             bot.getInventory().addBamboo(parcel2.getColor());

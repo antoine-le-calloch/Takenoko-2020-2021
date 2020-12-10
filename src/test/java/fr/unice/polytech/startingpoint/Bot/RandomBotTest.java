@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.Bot.RandomBot;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.ColorType;
 import fr.unice.polytech.startingpoint.Type.MissionType;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
@@ -80,7 +81,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void putCanal(){
+    public void putCanal() throws BadPlaceParcelException {
         Random mockRand = mock(Random.class);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,-1,0));//ajoute une pièce ou mettre le canal
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(0,-1,1));//ajoute une pièce ou mettre le canal
@@ -104,7 +105,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void movePanda(){
+    public void movePanda() throws BadPlaceParcelException {
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(3);//donne une val au random pour piocher une mission
         Coordinate central = new Coordinate(0,0,0);
@@ -117,7 +118,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void movePaesant(){
+    public void movePaesant() throws BadPlaceParcelException {
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(4);//donne une val au random pour piocher une mission
         Coordinate central = new Coordinate(0,0,0);

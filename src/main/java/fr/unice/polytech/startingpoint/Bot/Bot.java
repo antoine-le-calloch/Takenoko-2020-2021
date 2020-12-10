@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
 
 import java.util.*;
@@ -110,7 +112,11 @@ public abstract class Bot {
      * @see Board
      */
     public void placeParcel(Coordinate coordinate, Parcel parcel){
-        board.placeParcel(parcel, coordinate);
+        try {
+            board.placeParcel(parcel, coordinate);
+        } catch (BadPlaceParcelException E) {
+            // FAIRE QUELQUE CHOSE SI CA MARCHE PAS, IMPORTANT
+        }
     }
 
     /**
@@ -125,8 +131,12 @@ public abstract class Bot {
      * @see Resource
      */
     public void placeCanal(Coordinate[] coordinates) {
-        drawCanal();
-        board.placeCanal(inventory.pickCanal() , coordinates[0], coordinates[1]);
+        try {
+            drawCanal();
+            board.placeCanal(inventory.pickCanal() , coordinates[0], coordinates[1]);
+        } catch (BadPlaceCanalException E) {
+            // FAIRE QUELQUE CHOSE SI CA MARCHE PAS, IMPORTANT
+        }
     }
 
     /**

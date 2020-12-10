@@ -1,6 +1,8 @@
 package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
 
 import java.util.*;
@@ -70,33 +72,33 @@ public class Board {
     }
 
     //Place une parcelle sur le board si les conditions le permettent
-    public boolean placeParcel(Parcel newParcel, Coordinate newCoordinate){
-        if(isPlayableParcel(newCoordinate)){
-            placedParcels.put(newCoordinate,newParcel.setCoordinates(newCoordinate));
+    public void placeParcel(Parcel newParcel, Coordinate newCoordinate) throws BadPlaceParcelException {
+        if(!isPlayableParcel(newCoordinate))
+            throw new BadPlaceParcelException(newCoordinate);
+        else {
+            placedParcels.put(newCoordinate, newParcel.setCoordinates(newCoordinate));
             for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
-                if(coordinate.isCentral())
+                if (coordinate.isCentral())
                     newParcel.setIrrigated();
             }
-            return true;
         }
-        return false;
     }
 
     //Place un canal sur le board si les conditions le permettent
-    public boolean placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) {
-        if (isPlayableCanal(coordinate1, coordinate2)) {
-            placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2),canal.setCoordinates(coordinate1, coordinate2));
+    public void placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) throws BadPlaceCanalException {
+        if (!isPlayableCanal(coordinate1, coordinate2))
+            throw new BadPlaceCanalException(coordinate1, coordinate2);
+        else {
+            placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
             placedParcels.get(coordinate1).setIrrigated();
             placedParcels.get(coordinate2).setIrrigated();
-            return true;
         }
-        return false;
     }
 
     //Fait bouger un personnage et effectue son action si les conditions le permettent
     public void moveCharacter(Character character, Coordinate coordinate) throws MoveCharacterException {
         if(!isMovableCharacter(character,coordinate))
-            throw new MoveCharacterException("The character can't move to this coordinate :" + coordinate);
+            throw new MoveCharacterException(coordinate);
         else {
             character.setCoordinate(coordinate);
             characterAction(character);

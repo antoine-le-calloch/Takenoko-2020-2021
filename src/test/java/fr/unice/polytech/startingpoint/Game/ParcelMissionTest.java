@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.Game;
 import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,7 +53,7 @@ public class ParcelMissionTest {
         assertEquals(mission1, mission1);
     }
 
-    @Test void checkMissionTriangle(){
+    @Test void checkMissionTriangle() throws BadPlaceParcelException {
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel3,parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated());
@@ -64,7 +65,7 @@ public class ParcelMissionTest {
     }
 
 
-    @Test void checkMissionLigneOnBoard(){
+    @Test void checkMissionLigneOnBoard() throws BadPlaceParcelException {
         board.placeParcel(parcel4,parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
@@ -78,7 +79,7 @@ public class ParcelMissionTest {
     }
 
 
-    @Test void triangleOnBoardGoodColor(){ //checkTriangle
+    @Test void triangleOnBoardGoodColor() throws BadPlaceParcelException { //checkTriangle
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel3,parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated());
@@ -86,7 +87,7 @@ public class ParcelMissionTest {
     }
 
 
-    @Test void ligneOnBoardGoodColor(){ //check Line
+    @Test void ligneOnBoardGoodColor() throws BadPlaceParcelException { //check Line
         board.placeParcel(parcel4,parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
@@ -95,7 +96,7 @@ public class ParcelMissionTest {
     }
 
 
-    @Test void triangleOnBoardBadColor(){ //checkTriangle
+    @Test void triangleOnBoardBadColor() throws BadPlaceParcelException { //checkTriangle
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel3,parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated());
@@ -103,7 +104,7 @@ public class ParcelMissionTest {
     }
 
 
-    @Test void ligneOnBoardBadColor(){ //check Line
+    @Test void ligneOnBoardBadColor() throws BadPlaceParcelException { //check Line
         board.placeParcel(parcel4,parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
@@ -111,7 +112,7 @@ public class ParcelMissionTest {
         assertFalse(mission3.checkFormIrrigateWithColor(board,2,5));
     }
 
-    @Test void triangleNotIrrigated(){ //checkTriangle
+    @Test void triangleNotIrrigated() throws BadPlaceParcelException { //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
@@ -119,7 +120,7 @@ public class ParcelMissionTest {
     }
 
 
-    @Test void ligneNotIrrigated(){ //checkLine
+    @Test void ligneNotIrrigated() throws BadPlaceParcelException { //checkLine
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
@@ -128,13 +129,13 @@ public class ParcelMissionTest {
     }
 
 
-    @Test void wrongTriangle(){ //checkTriangle
+    @Test void wrongTriangle() throws BadPlaceParcelException { //checkTriangle
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
         board.placeParcel(parcel4,parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         assertFalse(mission1.checkFormIrrigateWithColor(board,0,1));
     }
 
-    @Test void wrongLine(){ //checkLine
+    @Test void wrongLine() throws BadPlaceParcelException { //checkLine
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));

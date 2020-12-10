@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
@@ -60,7 +62,7 @@ class ParcelBotTest {
     }
 
     @Test
-    public void placesForLineStartAtCoord1Line_1Parcel() {
+    public void placesForLineStartAtCoord1Line_1Parcel() throws BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.RED), coordinate1);//parcel haute
 
         List<Coordinate> placesForLine = parcelBot.parcelsToPlaceToDoForm(coordinate1, FormType.LINE, ColorType.RED);
@@ -69,7 +71,7 @@ class ParcelBotTest {
     }
 
     @Test
-    public void placesForTriangleStartAtCoord1Triangle_1Parcel() {
+    public void placesForTriangleStartAtCoord1Triangle_1Parcel() throws BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.RED), coordinate2);//parcel haute
 
         List<Coordinate> placesForLine = parcelBot.parcelsToPlaceToDoForm(coordinate2, FormType.LINE, ColorType.RED);
@@ -81,7 +83,7 @@ class ParcelBotTest {
 
 
     @Test
-    public void placesForLineStartAtCoord1Line_Full() {
+    public void placesForLineStartAtCoord1Line_Full() throws BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate1);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate2);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate3);
@@ -92,7 +94,7 @@ class ParcelBotTest {
     }
 
     @Test
-    public void placesForTriangleStartAtCoord1Triangle_Full() {
+    public void placesForTriangleStartAtCoord1Triangle_Full() throws BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate2);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate3);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate4);
@@ -102,7 +104,7 @@ class ParcelBotTest {
     }
 
     @Test
-    public void lineform_1ParcelLeft() {
+    public void lineform_1ParcelLeft() throws BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.RED), coordinate1);//parcel haute
         board.placeParcel(new Parcel(ColorType.RED), coordinate2);//parcel milieu
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate3);//deuxième parcel à coté de la parcel du bas
@@ -113,14 +115,14 @@ class ParcelBotTest {
     }
 
     @Test
-    public void lineform_2ParcelLeft_MidPlacePossible() {
+    public void lineform_2ParcelLeft_MidPlacePossible() throws BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.RED), coordinate1);//parcel haute
 
         assertEquals(coordinate2, parcelBot.bestCoordinatesForForm(FormType.LINE, ColorType.RED));//parcel milieu
     }
 
     @Test
-    public void lineform_2ParcelLeft_LowPlacePossible() {
+    public void lineform_2ParcelLeft_LowPlacePossible() throws BadPlaceParcelException {
         board.placeParcel(new Parcel(ColorType.RED), coordinate2);//parcel bas
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(0, 1, -1));//parcel qui active la partel haute
 
@@ -133,7 +135,7 @@ class ParcelBotTest {
     }
 
     @Test
-    public void strategyIrrigation() {
+    public void strategyIrrigation() throws BadPlaceParcelException, BadPlaceCanalException {
         Parcel parcel1 = new Parcel(ColorType.NO_COLOR);
         Parcel parcel2 = new Parcel(ColorType.NO_COLOR);
         parcel1.setIrrigated();
@@ -147,7 +149,8 @@ class ParcelBotTest {
         assertTrue(parcelBot.putCanal());
     }
 
-    /*@Test
+    /*
+    @Test
     public void drawMissionParcel(){
         assertEquals(0,parcelBot.getInventory().getMissions().size());
         parcelBot.botPlay();

@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.Game;
 import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
 import org.junit.jupiter.api.*;
 
@@ -37,14 +38,14 @@ public class PeasantMissionTest {
     }
 
     @Test
-    void missionComplete() throws MoveCharacterException {
+    void missionComplete() throws MoveCharacterException, BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.moveCharacter(board.getPeasant(), parcel1.getCoordinates());
         assertEquals(2,mission1.checkMission(board, bot.getInventory()));
     }
 
     @Test
-    void wrongColor() throws MoveCharacterException {
+    void wrongColor() throws MoveCharacterException, BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.moveCharacter(board.getPeasant(), parcel1.getCoordinates());
         assertEquals(0,mission2.checkMission(board, bot.getInventory()));

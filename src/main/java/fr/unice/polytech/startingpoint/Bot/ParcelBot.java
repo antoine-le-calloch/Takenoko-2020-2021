@@ -213,7 +213,7 @@ public class ParcelBot extends Bot {
         for(Parcel parcel : board.getPlacedParcels().values()){
             for(Coordinate[] canal : possibleCoordinatesCanal()){
                 if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){
-                    board.placeCanal(resource.drawCanal(),canal[0],canal[1]);
+                    placeCanal(canal);
                     return true;
                 }
             }

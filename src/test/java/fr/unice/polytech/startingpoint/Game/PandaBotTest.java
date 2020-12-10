@@ -5,6 +5,7 @@ import fr.unice.polytech.startingpoint.Bot.PandaBot;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Game.Character;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 2020.12.03
  */
 
-public class PandaTest {
+public class PandaBotTest {
     Character panda;
     Board board;
     Parcel parcel1;
@@ -37,32 +38,15 @@ public class PandaTest {
     @Test
     void coordWhereMovePanda_0parcel() {
         PandaBot bot1 = new PandaBot(new Resource(),board);
-
         assertNull(bot1.strategyMovePanda(bot1.possibleCoordinatesPanda()));
     }
 
     @Test
-    void coordWhereMovePanda_1parcelWithBamboo() {
+    void coordWhereMovePanda_1parcelWithBamboo() throws BadPlaceParcelException {
         Coordinate coordParcel = new Coordinate(1, -1, 0);//parcel entre 2-4h
         PandaBot bot1 = new PandaBot(new Resource(),board);
         board.placeParcel(parcel1,coordParcel);//place la parcel (un bamboo pousse)
-
         assertEquals(coordParcel,bot1.strategyMovePanda(bot1.possibleCoordinatesPanda()));
     }
 
-    @Test
-    void goodEat() throws MoveCharacterException {
-        board.placeParcel(parcel1, new Coordinate(1, -1, 0));
-        board.moveCharacter(panda, parcel1.getCoordinates());
-        assertEquals(0, parcel1.getNbBamboo());
-    }
-
-    @Test
-    void minEat() throws MoveCharacterException {
-        board.placeParcel(parcel1, new Coordinate(1, -1, 0));
-        for (int i = 0; i < 10; i++) {
-            board.moveCharacter(panda, parcel1.getCoordinates());
-        }
-        assertEquals(0, parcel1.getNbBamboo());
-    }
 }
