@@ -7,13 +7,12 @@ import fr.unice.polytech.startingpoint.Game.Character;
 import fr.unice.polytech.startingpoint.Type.*;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
-import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
 
 /**
  * Tests unitaires
