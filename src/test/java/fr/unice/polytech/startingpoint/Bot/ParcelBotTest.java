@@ -149,13 +149,13 @@ class ParcelBotTest {
         assertTrue(parcelBot.putCanal());
     }
 
-    /*
+/*
     @Test
     public void drawMissionParcel(){
-        assertEquals(0,parcelBot.getInventory().getMissions().size());
+        assertEquals(0,parcelBot.getInventory().getMission().size());
         parcelBot.botPlay();
-        assertEquals(1,parcelBot.getInventory().getMissions().size());
-        assertEquals(MissionType.PARCEL,parcelBot.getInventory().getMissions().get(0).getMissionType());
+        assertEquals(1,parcelBot.getInventory().getMission().size());
+        assertEquals(MissionType.PARCEL,parcelBot.getInventory().getMission().get(0).getMissionType());
     }
 
     @Test
@@ -176,7 +176,7 @@ class ParcelBotTest {
     }
 
     @Test
-    public void putCanal(){
+    public void putCanal() throws BadPlaceParcelException {
         Resource mockResource = Mockito.mock(Resource.class);
         List<Mission> deckVide = new ArrayList<>();
         board.placeParcel(new Parcel(ColorType.NO_COLOR),coordinate1);//pose une partel pour mettre le canal
