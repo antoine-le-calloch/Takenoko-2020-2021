@@ -6,12 +6,24 @@ import fr.unice.polytech.startingpoint.Type.*;
 import java.util.*;
 
 /**
- * Classe representant les caractéristiques communes entre les bots
+ * <h1>{@link Bot} :</h1>
+ *
+ * <p>This class provides a skeletal implementation of the {@link PandaBot},
+ * {@link ParcelBot}, {@link PeasantBot} classes.</p>
+ *
+ * <p>The programmer needs only to extend this class and provide
+ * implementations for the {@link #botPlay()} method.</p>
+ *
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
  * @author Le Calloch Antoine
- * @version 2020.12.03
+ * @see Bot
+ * @see PandaBot
+ * @see ParcelBot
+ * @see PeasantBot
+ * @see RandomBot
+ * @version 0.5
  */
 
 public abstract class Bot {
@@ -19,45 +31,140 @@ public abstract class Bot {
     protected final Board board;
     protected final Inventory inventory;
 
+    /**
+     * <h2>{@link #Bot(Resource, Board)} :</h2>
+     *
+     * <p>Set up the bot. Initialize all variables.</p>
+     *
+     * @param resource
+     *            <b>Resource object.</b>
+     * @param board
+     *            <b>Board object.</b>
+     */
     public Bot(Resource resource, Board board) {
         this.resource = resource;
         this.board = board;
         this.inventory = new Inventory();
     }
 
-    //Action d'un bot pendant un tour
+    /**
+     * <h2>{@link #botPlay()} :</h2>
+     *
+     * <p>The actions of the bot during his turn.</p>
+     */
     public abstract void botPlay();
 
-    //Pioche une mission - ACTION 1
-    public void drawMission(MissionType type){
-        inventory.addMission(resource.drawMission(type));
+    /**
+     * <h2>{@link #drawMission(MissionType)} : (<b>ACTION 1</b>)</h2>
+     *
+     * <p>Draw a mission with the type required in the resources.</p>
+     *
+     * @param missionType
+     *            <b>The type of the mission the bot want to draw.</b>
+     * @see MissionType
+     * @see Inventory
+     * @see Resource
+     * @see Mission
+     */
+    public void drawMission(MissionType missionType){
+        inventory.addMission(resource.drawMission(missionType));
     }
 
+    /**
+     * <h2>{@link #drawParcel()} : </h2>
+     *
+     * <p>Preview a list of 3 parcels from the resources.</p>
+     *
+     * @see Parcel
+     * @see Resource
+     */
     public List<Parcel> drawParcel() {
         return resource.drawParcel();
     }
 
-    //Place une parcelle à une coordonnée de la liste passée en paramètre - ACTION 2
-    public void placeParcel(Coordinate coord, Parcel parcel){
-        board.placeParcel(parcel, coord);
+    /**
+     * <h2>{@link #drawCanal()} : </h2>
+     *
+     * <p>Draw a canal in the resources and place it in the inventory.</p>
+     *
+     * @see Inventory
+     * @see Resource
+     * @see Canal
+     */
+    public void drawCanal() {
+        inventory.addCanal(resource.drawCanal());
     }
 
-    //Place un canal à une coordonnée de la liste passée en paramètre - ACTION 3
-    public void placeCanal(Coordinate[] coords) {
-        board.placeCanal(resource.drawCanal() , coords[0], coords[1]);
+    /**
+     * <h2>{@link #placeParcel(Coordinate, Parcel)} : (<b>ACTION 2</b>)</h2>
+     *
+     * <p>Place a parcel at the coordinates specified in the following parameters.</p>
+     *
+     * @param coordinate
+     *            <b>The coordinates where the bot want to place the parcel on the board.</b>
+     * @param parcel
+     *            <b>The parcel the bot want to place on the board.</b>
+     * @see Coordinate
+     * @see Parcel
+     * @see Board
+     */
+    public void placeParcel(Coordinate coordinate, Parcel parcel){
+        board.placeParcel(parcel, coordinate);
     }
 
-    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 4
-    public void movePanda(Coordinate coord) {
-        board.moveCharacter(board.getPanda(),coord);
+    /**
+     * <h2>{@link #placeCanal(Coordinate[])} : (<b>ACTION 3</b>)</h2>
+     *
+     * <p>Place a canal at the coordinates specified in the following parameter.</p>
+     *
+     * @param coordinates
+     *            <b>The coordinates where the bot want to place the canal on the board.</b>
+     * @see Coordinate
+     * @see Board
+     * @see Resource
+     */
+    public void placeCanal(Coordinate[] coordinates) {
+        drawCanal();
+        board.placeCanal(inventory.pickCanal() , coordinates[0], coordinates[1]);
     }
 
-    //Bouge le panda à un endroit aléatoire de la liste passée en paramètre - ACTION 5
-    public void movePeasant(Coordinate coord) {
-        board.moveCharacter(board.getPeasant(),coord);
+    /**
+     * <h2>{@link #movePanda(Coordinate)} : (<b>ACTION 4</b>)</h2>
+     *
+     * <p>Move the Panda to coordinates specified in the following parameter.</p>
+     *
+     * @param coordinate
+     *            <b>The coordinates where the bot want to move the Panda on the board.</b>
+     * @see Coordinate
+     * @see Board
+     * @see fr.unice.polytech.startingpoint.Game.Character
+     */
+    public void movePanda(Coordinate coordinate) {
+        board.moveCharacter(board.getPanda(),coordinate);
     }
 
-    //Renvoie une liste de toutes les coordonnées présentes et autour de ces dernières
+    /**
+     * <h2>{@link #movePeasant(Coordinate)} : (<b>ACTION 5</b>)</h2>
+     *
+     * <p>Move the Peasant to coordinates specified in the following parameter.</p>
+     *
+     * @param coordinate
+     *            <b>The coordinates where the bot want to move the Peasant on the board.</b>
+     * @see Coordinate
+     * @see Board
+     * @see fr.unice.polytech.startingpoint.Game.Character
+     */
+    public void movePeasant(Coordinate coordinate) {
+        board.moveCharacter(board.getPeasant(),coordinate);
+    }
+
+    /**
+     * <h2>{@link #allPlaces()} :</h2>
+     *
+     * @return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>
+     * @see Coordinate
+     * @see Board
+     */
     public List<Coordinate> allPlaces(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : board.getPlacedParcels().keySet()) {
@@ -69,7 +176,13 @@ public abstract class Bot {
         return new ArrayList<>(possibleCoordinates);
     }
 
-    //Renvoie une liste des coordonnées possibles pour les parcels
+    /**
+     * <h2>{@link #possibleCoordinatesParcel()} :</h2>
+     *
+     * @return <b>A list of coordinates for all placeable parcels on the board.</b>
+     * @see Coordinate
+     * @see Board
+     */
     public List<Coordinate> possibleCoordinatesParcel(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : board.getPlacedParcels().keySet()) {
@@ -82,7 +195,13 @@ public abstract class Bot {
         return new ArrayList<>(possibleCoordinates);
     }
 
-    //Renvoie une liste des coordonnées possibles pour les canaux
+    /**
+     * <h2>{@link #possibleCoordinatesCanal()} :</h2>
+     *
+     * @return <b>A list of coordinates for all placeable canals on the board.</b>
+     * @see Coordinate
+     * @see Board
+     */
     public List<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
         for(Parcel parcel1 : board.getPlacedParcels().values()){
@@ -94,7 +213,14 @@ public abstract class Bot {
         return new ArrayList<>(possibleCoordinates);
     }
 
-    //Renvoie une liste des coordonnées possibles pour les personnages
+    /**
+     * <h2>{@link #possibleCoordinatesPanda()} :</h2>
+     *
+     * @return <b>A list of coordinates where the Panda can be moved on the board.</b>
+     * @see Coordinate
+     * @see Board
+     * @see fr.unice.polytech.startingpoint.Game.Character
+     */
     public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : board.getPlacedParcels().keySet()) {
@@ -105,6 +231,14 @@ public abstract class Bot {
         return new ArrayList<>(possibleCoordinates);
     }
 
+    /**
+     * <h2>{@link #possibleCoordinatesPeasant()} :</h2>
+     *
+     * @return <b>A list of coordinates  where the Peasant can be moved on the board.</b>
+     * @see Coordinate
+     * @see Board
+     * @see fr.unice.polytech.startingpoint.Game.Character
+     */
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : board.getPlacedParcels().keySet()) {
@@ -115,7 +249,12 @@ public abstract class Bot {
         return new ArrayList<>(possibleCoordinates);
     }
 
-    //Renvoie l'inventaire
+    /**
+     * <h2>{@link #getInventory()} :</h2>
+     *
+     * @return <b>The inventory of the bot.</b>
+     * @see Inventory
+     */
     public Inventory getInventory(){
         return inventory;
     }

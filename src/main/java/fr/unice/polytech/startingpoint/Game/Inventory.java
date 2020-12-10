@@ -13,16 +13,21 @@ import java.util.*;
  * @version 2020.12.03
  */
 
-
 public class Inventory {
+    private int stamina;
     private final List<Mission> inventoryMission = new ArrayList<>();
     private final List<Canal> inventoryCanal = new ArrayList<>();
     private final int[] inventoryBamboo = new int[ColorType.values().length-1];
 
     public Inventory(){
+        stamina = 2;
         for (int nbBamboo : inventoryBamboo){
             nbBamboo = 0;
         }
+    }
+
+    public void addStamina(int sp){
+        stamina += sp;
     }
 
     public void addBamboo(ColorType colorType){
@@ -30,12 +35,23 @@ public class Inventory {
             inventoryBamboo[colorType.ordinal()] ++;
     }
 
+    public void addCanal(Canal canal){
+        inventoryCanal.add(canal);
+    }
+
+    public Canal pickCanal(){
+        if (!inventoryCanal.isEmpty()){
+            return inventoryCanal.remove(0);
+        }
+        return null;
+    }
+
     public void addMission(Mission mission){
         inventoryMission.add(mission);
     }
 
     public void subBamboo(ColorType colorType){
-        if(inventoryBamboo[colorType.ordinal()]>0)
+        if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NO_COLOR))
             inventoryBamboo[colorType.ordinal()] --;
     }
 
@@ -81,7 +97,4 @@ public class Inventory {
         }
         return peasantMissions;
     }
-
-
-
 }
