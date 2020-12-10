@@ -128,24 +128,26 @@ public class BoardTest {
     }
 
     @Test
-    void goodMoveCharacter(){
+    void goodMoveCharacter() throws MoveCharacterException {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,-1,0));
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,0,-1));
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(2,-1,-1));
-        assertTrue(board.moveCharacter(board.getPanda(),new Coordinate(1,-1,0)));
-        assertTrue(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
+        board.moveCharacter(board.getPanda(),new Coordinate(1,-1,0));
+        board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1));
     }
 
     @Test
-    void wrongMoveCharacter(){
+    void wrongMoveCharacter() {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,-1,0));
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,0,-1));
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(2,-1,-1));
-        assertFalse(board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1)));
+        Exception exception = assertThrows(MoveCharacterException.class, () ->
+        {board.moveCharacter(board.getPanda(),new Coordinate(2,-1,-1));});
+        assertEquals(exception.getMessage(), "The character can't move to this coordinate :[2,-1,-1]");
     }
 
     @Test
-    void actionPeasantBamboo() {
+    void actionPeasantBamboo() throws MoveCharacterException {
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
         for (int i = 1; i < 4; i++) {
@@ -156,7 +158,7 @@ public class BoardTest {
     }
 
     @Test
-    void actionPeasantSameColorAroundAndIrrigated(){
+    void actionPeasantSameColorAroundAndIrrigated() throws MoveCharacterException {
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1,0,-1));
         board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
@@ -164,7 +166,7 @@ public class BoardTest {
     }
 
     @Test
-    void actionPeasantDifferentColorAround(){
+    void actionPeasantDifferentColorAround() throws MoveCharacterException {
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
         board.moveCharacter(board.getPeasant(), new Coordinate(1, -1, 0));
@@ -172,7 +174,7 @@ public class BoardTest {
     }
 
     @Test
-    void actionPeasantNotIrrigated(){
+    void actionPeasantNotIrrigatedAround() throws MoveCharacterException {
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, 0, -1));
         board.placeParcel(new Parcel(ColorType.RED), new Coordinate(2,-1,-1));
@@ -181,7 +183,7 @@ public class BoardTest {
     }
 
     @Test
-    void actionPandaBamboo(){
+    void actionPandaBamboo() throws MoveCharacterException {
         board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
         for (int i = 0; i < 4; i++) {

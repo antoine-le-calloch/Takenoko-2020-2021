@@ -37,14 +37,14 @@ public class PeasantTest {
     }
 
     @Test
-    void goodGrow() {
+    void goodGrow() throws MoveCharacterException {
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
         board.moveCharacter(peasant1,parcel1.getCoordinates());
         assertEquals(2,parcel1.getNbBamboo());
     }
 
     @Test
-    void maxGrow() {
+    void maxGrow() throws MoveCharacterException {
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
         for (int i = 0; i < 10; i++) {
             board.moveCharacter(peasant1,parcel1.getCoordinates());

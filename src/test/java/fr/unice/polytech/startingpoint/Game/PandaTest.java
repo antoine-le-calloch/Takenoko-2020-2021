@@ -50,14 +50,14 @@ public class PandaTest {
     }
 
     @Test
-    void goodEat() {
+    void goodEat() throws MoveCharacterException {
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
         board.moveCharacter(panda, parcel1.getCoordinates());
         assertEquals(0, parcel1.getNbBamboo());
     }
 
     @Test
-    void minEat() {
+    void minEat() throws MoveCharacterException {
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
         for (int i = 0; i < 10; i++) {
             board.moveCharacter(panda, parcel1.getCoordinates());

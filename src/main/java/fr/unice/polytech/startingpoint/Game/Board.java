@@ -93,13 +93,13 @@ public class Board {
     }
 
     //Fait bouger un personnage et effectue son action si les conditions le permettent
-    public boolean moveCharacter(Character character, Coordinate coordinate){
-        if(isMovableCharacter(character,coordinate)){
+    public void moveCharacter(Character character, Coordinate coordinate) throws MoveCharacterException {
+        if(!isMovableCharacter(character,coordinate))
+            throw new MoveCharacterException("The character can't move to this coordinate :" + coordinate);
+        else {
             character.setCoordinate(coordinate);
             characterAction(character);
-            return true;
         }
-        return false;
     }
 
     //Effectue l’action du personnage passé en paramètre
@@ -115,10 +115,12 @@ public class Board {
         }
     }
 
+    //supprime un bambou sur la case
     void actionPanda(Character character){
         placedParcels.get(character.getCoordinate()).delBamboo();
     }
 
+    //ajoute un bambou sur la case si irrigué + autour si même couleur et irrigué
     void actionPeasant(Character character){
         ColorType color = placedParcels.get(character.getCoordinate()).getColor();
         if (placedParcels.get(character.getCoordinate()).getIrrigated())

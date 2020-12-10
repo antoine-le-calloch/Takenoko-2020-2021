@@ -140,7 +140,11 @@ public abstract class Bot {
      * @see fr.unice.polytech.startingpoint.Game.Character
      */
     public void movePanda(Coordinate coordinate) {
-        board.moveCharacter(board.getPanda(),coordinate);
+        try {
+            board.moveCharacter(board.getPanda(), coordinate);
+        } catch (MoveCharacterException E) {
+            // FAIRE QUELQUE CHOSE SI CA MARCHE PAS, IMPORTANT
+        }
     }
 
     /**
@@ -154,8 +158,12 @@ public abstract class Bot {
      * @see Board
      * @see fr.unice.polytech.startingpoint.Game.Character
      */
-    public void movePeasant(Coordinate coordinate) {
-        board.moveCharacter(board.getPeasant(),coordinate);
+    public void movePeasant(Coordinate coordinate){
+        try {
+            board.moveCharacter(board.getPeasant(), coordinate);
+        } catch (MoveCharacterException E) {
+            // FAIRE QUELQUE CHOSE SI CA MARCHE PAS, IMPORTANT
+        }
     }
 
     /**
