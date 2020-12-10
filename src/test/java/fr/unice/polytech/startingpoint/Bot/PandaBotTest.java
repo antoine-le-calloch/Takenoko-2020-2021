@@ -79,4 +79,6 @@ class PandaBotTest {
         pandaBot.botPlay();//fait jouer le panda(il vas piocher)
         assertEquals(1, pandaBot.getInventory().getMission().size());//1 mission dans son inventaire
     }
+
+
 }
