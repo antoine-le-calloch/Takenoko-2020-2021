@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
 
 import java.util.*;
@@ -24,6 +26,7 @@ class BotTest {
     private Resource resource;
     private Parcel parcel1;
     private Parcel parcel2;
+    private Parcel parcel3;
     private Canal canal;
 
     @BeforeEach
@@ -32,6 +35,7 @@ class BotTest {
         board = new Board();
         parcel1 = new Parcel(ColorType.BLUE);
         parcel2 = new Parcel(ColorType.NO_COLOR);
+        parcel3 = new Parcel(ColorType.NO_COLOR);
         canal = new Canal();
         bot1 = new ParcelBot(resource,board);
         bot2 = new ParcelBot(resource,board);
@@ -47,18 +51,18 @@ class BotTest {
     @Test
     public void missionIncrease(){
         bot1.drawMission(MissionType.PARCEL);
-        assertEquals(1,bot1.getInventory().getMissions().size());
+        assertEquals(1,bot1.getInventory().getMission().size());
     }
 
     @Test
     public void missionDecrease(){
         bot1.drawMission(MissionType.PARCEL);
         List<Mission> toDelete = new ArrayList<>();
-        toDelete.add(bot1.getInventory().getMissions().get(0));
+        toDelete.add(bot1.getInventory().getMission().get(0));
         bot1.getInventory().subMissions(toDelete);
-        assertEquals(0,bot1.getInventory().getMissions().size());
+        assertEquals(0,bot1.getInventory().getMission().size());
         bot1.getInventory().subMissions(toDelete);
-        assertNotEquals(-1,bot1.getInventory().getMissions().size());
+        assertNotEquals(-1,bot1.getInventory().getMission().size());
     }
 
     @Test
@@ -73,7 +77,7 @@ class BotTest {
     }
 
     @Test
-    public void initializeNextCoordinatesAwayFromCentral(){
+    public void initializeNextCoordinatesAwayFromCentral() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         List<Coordinate> awayFromCentral = bot1.allPlaces();
         Collections.shuffle(awayFromCentral);
@@ -93,17 +97,25 @@ class BotTest {
     }
 
     @Test
-    public void notPossibleCoordinatesCanal(){
+    public void notPossibleCoordinatesCanal() throws BadPlaceParcelException{
         List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
         assertEquals(possibleCanals.size(),0);
-        board.placeParcel(parcel1,new Coordinate(2,-2,0));
-        board.placeCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel2,new Coordinate(1,0,-1));
+        board.placeParcel(parcel3,new Coordinate(2,-1,-1));
+
+
+        Exception exception1 = assertThrows(BadPlaceCanalException.class, () ->
+        { board.isPlayableCanal(new Coordinate(0,0,0),new Coordinate(1,-1,0));});
+
+        assertEquals("",exception1.getMessage());
+
         List<Coordinate[]>possibleCanals2 = bot1.possibleCoordinatesCanal();
-        assertEquals(possibleCanals2.size(),0);
+        assertEquals(possibleCanals2.size(),2);
     }
 
     @Test
-    public void possibleCoordinatesCanal(){
+    public void possibleCoordinatesCanal() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(1,0,-1));
         List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
@@ -118,22 +130,22 @@ class BotTest {
     }
 
     @Test
-    public void ExistPossibleCoordinatesBamboo(){
+    public void ExistPossibleCoordinatesBamboo() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         assertTrue(parcel1.getIrrigated());
         assertEquals(parcel1.getCoordinates(), bot1.possibleCoordinatesPanda().get(0));
     }
 
     @Test
-    public void movePanda(){
-        assertTrue(board.placeParcel(parcel1,new Coordinate(1,-1,0)));
+    public void movePanda() throws BadPlaceParcelException {
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
         bot1.movePanda(bot1.possibleCoordinatesPanda().get(0));
         //assertEquals(1,bot1.getInventory().getBamboo()[0]);
         //assertEquals(0,parcel1.getNbBamboo());
     }
 
     @Test
-    public void movePeasant(){
+    public void movePeasant() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         bot1.movePeasant(bot1.possibleCoordinatesPanda().get(0));
         assertEquals(2,parcel1.getNbBamboo());

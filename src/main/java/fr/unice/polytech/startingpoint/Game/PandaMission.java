@@ -18,7 +18,10 @@ public class PandaMission extends Mission {
     }
 
     public int checkMission(Board board, Inventory inventory) {
-        if (inventory.subBamboo(colorType)){
+        int NB_BAMBOO = 1;
+        if (inventory.getBamboo(colorType) >= NB_BAMBOO){
+            for (int i = 0; i < NB_BAMBOO; i++)
+                inventory.subBamboo(colorType);
             return points;
         }
         return 0;

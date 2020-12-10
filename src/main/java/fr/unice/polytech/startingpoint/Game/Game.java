@@ -49,7 +49,7 @@ public class Game {
     public void missionDone(int numBot) {
         List<Mission> toRemove = new ArrayList<>();
         int count;  // PB SI LE BOT A PAS DE MISSION
-        for(Mission mission : playerData.get(numBot).getInventory().getMissions()){
+        for(Mission mission : playerData.get(numBot).getInventory().getMission()){
             if( (count = mission.checkMission(board,playerData.get(numBot).getInventory())) != 0){
                 playerData.completedMission(numBot, count);
                 toRemove.add(mission);

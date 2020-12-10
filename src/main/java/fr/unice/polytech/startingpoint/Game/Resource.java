@@ -61,7 +61,7 @@ public class Resource {
     //Initialise le deck des mission panda
     private void initializeDeckMissionPanda(){
         int nbMissionParcel = 15;
-        deckMissionPanda.add(new PandaMission(ColorType.BLUE, 3));
+        deckMissionPanda.add(new PandaMission(ColorType.RED, 3));
         for (int i = 0; i < nbMissionParcel / 2; i++){
             deckMissionPanda.add(new PandaMission(ColorType.RED, 3));
             deckMissionPanda.add(new PandaMission(ColorType.BLUE, 3));
@@ -72,8 +72,10 @@ public class Resource {
     //Initialise le deck des mission peasant
     private void initializeDeckMissionPeasant(){
         int nbMissionParcel = 15;
-        for (int i = 0; i < nbMissionParcel; i++){
+        deckMissionPeasant.add(new PeasantMission(ColorType.RED, 4));
+        for (int i = 0; i < nbMissionParcel / 2; i++){
             deckMissionPeasant.add(new PeasantMission(ColorType.RED, 4));
+            deckMissionPeasant.add(new PeasantMission(ColorType.BLUE, 4));
         }
         Collections.shuffle(deckMissionPeasant);
     }
@@ -88,13 +90,21 @@ public class Resource {
     }
 
     //Pioche une parcelle du deck
-    public Parcel drawParcel() {
-        if (deckParcel.size() != 0) {
-            Parcel parcel = deckParcel.get(0);
-            deckParcel.remove(parcel);
-            return parcel;
+    public List<Parcel> drawParcel() {
+        if (deckParcel.size() > 2) {
+            Collections.shuffle(deckParcel);
+            List<Parcel> parcelList = new ArrayList<>();
+            parcelList.add(deckParcel.get(0));
+            parcelList.add(deckParcel.get(1));
+            parcelList.add(deckParcel.get(2));
+            return parcelList;
         }
-        return null;
+        return deckParcel;
+    }
+
+    public Parcel selectParcel(Parcel parcel){
+        deckParcel.remove(parcel);
+        return parcel;
     }
 
     //Pioche un canal du deck
@@ -109,22 +119,22 @@ public class Resource {
 
     //Pioche une mission du deck
     public Mission drawMission(MissionType type){
-        Mission mission = null;
         switch (type) {
             case PARCEL:
-                if (deckMissionParcel.size() != 0)
-                    mission = deckMissionParcel.remove(0);
-                break;
-            case PANDA:
-                if (deckMissionPanda.size() != 0)
-                    mission = deckMissionPanda.remove(0);
-                break;
+                if (deckMissionParcel.size() > 0) {
+                    return deckMissionParcel.remove(0);
+                }
             case PEASANT:
-                if (deckMissionPeasant.size() != 0)
-                    mission = deckMissionPeasant.remove(0);
-                break;
+                if (deckMissionPeasant.size() > 0) {
+                    return deckMissionPeasant.remove(0);
+                }
+            case PANDA:
+                if (deckMissionPanda.size() > 0) {
+                    return deckMissionPanda.remove(0);
+                }
+            default:
+                return null;
         }
-        return mission;
     }
 
     boolean isEmpty(){
@@ -157,5 +167,4 @@ public class Resource {
     public List<Canal> getCanal(){
         return deckCanal;
     }
-
 }

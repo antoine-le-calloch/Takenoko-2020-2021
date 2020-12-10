@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Game.Character;
 import fr.unice.polytech.startingpoint.Type.CharacterType;
 import fr.unice.polytech.startingpoint.Type.ColorType;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,7 +38,7 @@ class PeasantBotTest {
     }
 
     @Test
-    void coordWhereMovePeasant_1parcelWith1Bamboo() {
+    void coordWhereMovePeasant_1parcelWith1Bamboo() throws BadPlaceParcelException {
         board.placeParcel(parcel1, coordinate1);//place la parcel (un bamboo pousse)
 
         assertNull(peasantBot.strategyMovePeasant(peasantBot.possibleCoordinatesPanda()));
@@ -61,7 +62,7 @@ class PeasantBotTest {
     }
 
     @Test
-    void movePeasant_1Parcel2Bamboo() {
+    void movePeasant_1Parcel2Bamboo() throws BadPlaceParcelException {
         Resource resource = Mockito.mock(Resource.class);
         List<Mission> deckVide = new ArrayList<>();
         Mockito.when(resource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
@@ -79,8 +80,8 @@ class PeasantBotTest {
 
     @Test
     void drawMission() {
-        assertEquals(0, peasantBot.getInventory().getMissions().size());//0 mission dans son inventaire
+        assertEquals(0, peasantBot.getInventory().getMission().size());//0 mission dans son inventaire
         peasantBot.botPlay();//fait jouer le paysan(il vas piocher)
-        assertEquals(1, peasantBot.getInventory().getMissions().size());//1 mission dans son inventaire
+        assertEquals(1, peasantBot.getInventory().getMission().size());//1 mission dans son inventaire
     }
 }

@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.Bot;
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.ColorType;
 import fr.unice.polytech.startingpoint.Type.MissionType;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
@@ -42,10 +43,10 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(0);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand,mockRand2);//set les Random mock
 
-        assertEquals(0,rdmBot1.getInventory().getMissions().size());
+        assertEquals(0,rdmBot1.getInventory().getMission().size());
         rdmBot1.botPlay();
-        assertEquals(1,rdmBot1.getInventory().getMissions().size());
-        assertEquals(MissionType.PARCEL,rdmBot1.getInventory().getMissions().get(0).getMissionType());
+        assertEquals(1,rdmBot1.getInventory().getMission().size());
+        assertEquals(MissionType.PARCEL,rdmBot1.getInventory().getMission().get(0).getMissionType());
     }
 
     @Test
@@ -56,10 +57,10 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(1);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand,mockRand2);//set les Random mock
 
-        assertEquals(0,rdmBot1.getInventory().getMissions().size());
+        assertEquals(0,rdmBot1.getInventory().getMission().size());
         rdmBot1.botPlay();
-        assertEquals(1,rdmBot1.getInventory().getMissions().size());
-        assertEquals(MissionType.PANDA,rdmBot1.getInventory().getMissions().get(0).getMissionType());
+        assertEquals(1,rdmBot1.getInventory().getMission().size());
+        assertEquals(MissionType.PANDA,rdmBot1.getInventory().getMission().get(0).getMissionType());
     }
 
     @Test
@@ -70,14 +71,14 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(2);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand,mockRand2);//set les Random mock
 
-        assertEquals(0,rdmBot1.getInventory().getMissions().size());
+        assertEquals(0,rdmBot1.getInventory().getMission().size());
         rdmBot1.botPlay();
-        assertEquals(1,rdmBot1.getInventory().getMissions().size());
-        assertEquals(MissionType.PEASANT,rdmBot1.getInventory().getMissions().get(0).getMissionType());
+        assertEquals(1,rdmBot1.getInventory().getMission().size());
+        assertEquals(MissionType.PEASANT,rdmBot1.getInventory().getMission().get(0).getMissionType());
     }
 
     @Test
-    public void putCanal(){
+    public void putCanal() throws BadPlaceParcelException {
         Random mockRand = mock(Random.class);
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1,-1,0));//ajoute une pièce ou mettre le canal
         board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(0,-1,1));//ajoute une pièce ou mettre le canal
@@ -101,7 +102,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void movePanda(){
+    public void movePanda() throws BadPlaceParcelException {
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(3);//donne une val au random pour piocher une mission
         Coordinate central = new Coordinate(0,0,0);
@@ -114,7 +115,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void movePaesant(){
+    public void movePaesant() throws BadPlaceParcelException {
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(4);//donne une val au random pour piocher une mission
         Coordinate central = new Coordinate(0,0,0);

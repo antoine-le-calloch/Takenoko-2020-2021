@@ -2,6 +2,11 @@ package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
 
+import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
+import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
+
+
 import java.util.*;
 
 /**
@@ -69,50 +74,69 @@ public class Board {
     }
 
     //Place une parcelle sur le board si les conditions le permettent
-    public boolean placeParcel(Parcel newParcel, Coordinate newCoordinate){
-        if(isPlayableParcel(newCoordinate)){
-            placedParcels.put(newCoordinate,newParcel.setCoordinates(newCoordinate));
+    public void placeParcel(Parcel newParcel, Coordinate newCoordinate) throws BadPlaceParcelException {
+        if(!isPlayableParcel(newCoordinate))
+            throw new BadPlaceParcelException(newCoordinate);
+        else {
+            placedParcels.put(newCoordinate, newParcel.setCoordinates(newCoordinate));
             for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
-                if(coordinate.isCentral())
+                if (coordinate.isCentral())
                     newParcel.setIrrigated();
             }
-            return true;
         }
-        return false;
     }
 
     //Place un canal sur le board si les conditions le permettent
-    public boolean placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) {
-        if (isPlayableCanal(coordinate1, coordinate2)) {
-            placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2),canal.setCoordinates(coordinate1, coordinate2));
+    public void placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) throws BadPlaceCanalException {
+        if (!isPlayableCanal(coordinate1, coordinate2))
+            throw new BadPlaceCanalException(coordinate1, coordinate2);
+        else {
+            placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
             placedParcels.get(coordinate1).setIrrigated();
             placedParcels.get(coordinate2).setIrrigated();
-            return true;
         }
-        return false;
     }
 
     //Fait bouger un personnage et effectue son action si les conditions le permettent
-    public boolean moveCharacter(Character character, Coordinate coordinate){
-        if(isMovableCharacter(character,coordinate)){
+    public void moveCharacter(Character character, Coordinate coordinate) throws MoveCharacterException {
+        if(!isMovableCharacter(character,coordinate))
+            throw new MoveCharacterException(coordinate);
+        else {
             character.setCoordinate(coordinate);
             characterAction(character);
-            return true;
         }
-        return false;
     }
 
     //Effectue l’action du personnage passé en paramètre
     public void characterAction(Character character){
+
         switch (character.getCharacterType()){
             case PANDA:
-                placedParcels.get(character.getCoordinate()).delBamboo();
+                actionPanda(character);
                 break;
             case PEASANT:
-                placedParcels.get(character.getCoordinate()).addBamboo();
+                actionPeasant(character);
                 break;
         }
     }
+
+    //supprime un bambou sur la case
+    void actionPanda(Character character){
+        placedParcels.get(character.getCoordinate()).delBamboo();
+    }
+
+    //ajoute un bambou sur la case si irrigué + autour si même couleur et irrigué
+    void actionPeasant(Character character){
+        ColorType color = placedParcels.get(character.getCoordinate()).getColor();
+        if (placedParcels.get(character.getCoordinate()).getIrrigated())
+            placedParcels.get(character.getCoordinate()).addBamboo();
+        for( Coordinate coordinate : character.getCoordinate().coordinatesAround())
+            if (placedParcels.containsKey(coordinate)) {
+                if (color == placedParcels.get(coordinate).getColor() && placedParcels.get(coordinate).getIrrigated())
+                    placedParcels.get(coordinate).addBamboo();
+            }
+    }
+
 
     //Renvoie true si une parcelle est posées aux coordonnées passées en paramètre
     public boolean isPlacedParcel(Coordinate coordinate){

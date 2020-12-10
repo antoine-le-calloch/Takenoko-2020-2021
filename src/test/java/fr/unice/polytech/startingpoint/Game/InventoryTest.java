@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.ColorType;
 import fr.unice.polytech.startingpoint.Type.FormType;
+import fr.unice.polytech.startingpoint.Type.MissionType;
+import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +36,7 @@ public class InventoryTest {
     }
 
     @Test
-    public void addInventoryBamboo(){
+    public void addInventoryBamboo() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
         inventory1.addBamboo(parcel1.getColor());
         assertEquals(0,inventory1.getBamboo()[0]);
@@ -42,7 +44,7 @@ public class InventoryTest {
     }
 
     @Test
-    public void subInventoryBamboo(){
+    public void subInventoryBamboo() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
         inventory1.subBamboo(parcel1.getColor());
         assertEquals(0,inventory1.getBamboo()[0]);
@@ -52,13 +54,13 @@ public class InventoryTest {
     @Test
     public void addInventoryMission(){
         inventory1.addMission(mission);
-        assertEquals(1,inventory1.getMissions().size());
+        assertEquals(1,inventory1.getMission().size());
     }
 
     @Test
     public void subInventoryMission(){
         inventory1.subMissions(new ArrayList<>(Arrays.asList(mission)));
-        assertEquals(0,inventory1.getMissions().size());
+        assertEquals(0,inventory1.getMission().size());
     }
 
 

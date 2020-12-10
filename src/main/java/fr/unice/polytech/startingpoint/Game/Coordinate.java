@@ -3,7 +3,7 @@ package fr.unice.polytech.startingpoint.Game;
 import java.util.*;
 
 /**
- * Classe representant le système de coordonnées
+ * Classe représentant le système de coordonnées
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
@@ -11,8 +11,7 @@ import java.util.*;
  * @version 2020.12.03
  */
 
-
-public class Coordinate implements Comparable<Coordinate> {
+public final class Coordinate implements Comparable<Coordinate> {
     private final int[] coordinate;
 
     public Coordinate(int x, int y, int z){
@@ -135,9 +134,7 @@ public class Coordinate implements Comparable<Coordinate> {
 
     //Renvoie un SortedSet contenant les coordonnées passées en paramètre avec l'outil de comparaison mis à jour pour le type des coordonnées
     public static SortedSet<Coordinate> getSortedSet(Coordinate c1, Coordinate c2){
-        SortedSet<Coordinate> sortedSet = new TreeSet<>();
-        sortedSet.addAll(Arrays.asList(c1,c2));
-        return sortedSet;
+        return new TreeSet<>(Arrays.asList(c1, c2));
     }
 
     @Override
