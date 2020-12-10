@@ -1,9 +1,8 @@
 package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Bot.*;
-import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
+import fr.unice.polytech.startingpoint.Exception.MoveCharacterException;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

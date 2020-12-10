@@ -1,7 +1,7 @@
 package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
-import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
+import fr.unice.polytech.startingpoint.Exception.MoveCharacterException;
 
 import java.util.*;
 

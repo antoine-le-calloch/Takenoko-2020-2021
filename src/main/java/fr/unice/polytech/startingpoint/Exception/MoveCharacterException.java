@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.exception;
+package fr.unice.polytech.startingpoint.Exception;
 
 public class MoveCharacterException extends Exception {
 
