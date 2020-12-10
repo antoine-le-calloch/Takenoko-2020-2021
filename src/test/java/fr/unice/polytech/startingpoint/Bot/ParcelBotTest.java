@@ -142,7 +142,7 @@ class ParcelBotTest {
         board.placeParcel(new Parcel(ColorType.NO_COLOR), coordinate4);
         assertTrue(parcelBot.putCanal());
     }
-
+    
     @Test
     public void drawMissionParcel(){
         assertEquals(0,parcelBot.getInventory().getMission().size());

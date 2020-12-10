@@ -105,11 +105,10 @@ public class BoardTest {
         board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));
 
         Exception exception1 = assertThrows(BadPlaceCanalException.class, () ->
-        { board.placeCanal(new Canal(),new Coordinate(0,-1,1),new Coordinate(1,-1,0));});
+        { board.placeCanal(canal,new Coordinate(0,-1,1),new Coordinate(1,-1,0));});
 
         Exception exception2 = assertThrows(BadPlaceCanalException.class, () ->
-        { board.placeCanal(new Canal(),new Coordinate(1,-1,0),new Coordinate(0,-1,1));});
-
+        { board.placeCanal(canal,new Coordinate(1,-1,0),new Coordinate(0,-1,1));});
 
         assertEquals(exception1.getMessage(),"[0,-1,1], [1,-1,0]");
         assertEquals(exception2.getMessage(),"[1,-1,0], [0,-1,1]");
@@ -120,7 +119,7 @@ public class BoardTest {
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
 
         Exception exception1 = assertThrows(BadPlaceCanalException.class, () ->
-        { board.placeCanal(new Canal(),new Coordinate(0,-1,1),new Coordinate(1,-2,1));});
+        { board.placeCanal(canal, new Coordinate(0,-1,1),new Coordinate(1,-2,1));});
 
         assertEquals(exception1.getMessage(),"[0,-1,1], [1,-2,1]");
     }
