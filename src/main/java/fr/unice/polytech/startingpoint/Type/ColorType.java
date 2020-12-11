@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.Type;
+package fr.unice.polytech.startingpoint.type;
 
 /**
  * Enumération contenant les types de couleurs de parcelles disponibles

@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.Type;
+package fr.unice.polytech.startingpoint.type;
 
 public enum ResourceType {
     PARCEL_MISSION{

@@ -1,13 +1,9 @@
-package fr.unice.polytech.startingpoint.Bot;
+package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.Game.*;
-import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.game.*;
+import fr.unice.polytech.startingpoint.type.*;
 
-import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
-import fr.unice.polytech.startingpoint.exception.BadMoveCharacterException;
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
-
+import fr.unice.polytech.startingpoint.exception.*;
 
 import java.util.*;
 

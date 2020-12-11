@@ -1,6 +1,6 @@
-package fr.unice.polytech.startingpoint.Game;
+package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.Type.CharacterType;
+import fr.unice.polytech.startingpoint.type.CharacterType;
 
 public final class Rules {
     private final Resource resource ;

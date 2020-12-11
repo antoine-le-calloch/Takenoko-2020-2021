@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.Game;
+package fr.unice.polytech.startingpoint.game;
 
 import org.junit.jupiter.api.*;
 

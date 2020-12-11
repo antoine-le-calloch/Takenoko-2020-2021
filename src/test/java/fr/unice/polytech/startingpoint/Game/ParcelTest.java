@@ -1,6 +1,6 @@
-package fr.unice.polytech.startingpoint.Game;
+package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

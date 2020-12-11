@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.Game;
+package fr.unice.polytech.startingpoint.game;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

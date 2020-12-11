@@ -1,7 +1,7 @@
-package fr.unice.polytech.startingpoint.Game;
+package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.Type.ColorType;
-import fr.unice.polytech.startingpoint.Type.FormType;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.FormType;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

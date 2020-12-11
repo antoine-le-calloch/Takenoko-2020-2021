@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.exception;
 
-import fr.unice.polytech.startingpoint.Game.Coordinate;
+import fr.unice.polytech.startingpoint.game.Coordinate;
 
 public class BadPlaceCanalException extends Exception{
 

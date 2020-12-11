@@ -1,7 +1,7 @@
-package fr.unice.polytech.startingpoint.Bot;
+package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.Game.*;
-import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.game.*;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.Collections;
 import java.util.List;

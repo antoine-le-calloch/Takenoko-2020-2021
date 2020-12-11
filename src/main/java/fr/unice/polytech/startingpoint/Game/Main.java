@@ -1,6 +1,6 @@
-package fr.unice.polytech.startingpoint.Game;
+package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.type.*;
 
 /**
  * Main, lance 1000 parties, des statistiques sont affichées

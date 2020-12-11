@@ -1,12 +1,7 @@
-package fr.unice.polytech.startingpoint.Game;
+package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.Game.*;
-import fr.unice.polytech.startingpoint.Type.BotType;
+import fr.unice.polytech.startingpoint.type.BotType;
 import org.junit.jupiter.api.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,8 +1,8 @@
-package fr.unice.polytech.startingpoint.Bot;
+package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.Game.*;
-import fr.unice.polytech.startingpoint.Type.CharacterType;
-import fr.unice.polytech.startingpoint.Type.ColorType;
+import fr.unice.polytech.startingpoint.game.*;
+import fr.unice.polytech.startingpoint.type.CharacterType;
+import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
