@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Bot.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 
 import java.util.*;
 
@@ -23,22 +24,22 @@ import java.util.*;
  * @version 0.5
  */
 
-public class Inventory {
-    private int stamina;
-    private final List<Mission> inventoryMission = new ArrayList<>();
-    private final List<Canal> inventoryCanal = new ArrayList<>();
-    private final int[] inventoryBamboo = new int[ColorType.values().length-1];
+class Inventory {
+    private final List<Mission> inventoryMission;
+    private final List<Canal> inventoryCanal;
+    private final int[] inventoryBamboo;
+    private final int[] score;
 
     /**
      * <h2>{@link #Inventory()} :</h2>
      *
-     * Initialize {@link #stamina} and {@link #inventoryBamboo} variables.
+     * Initialize {@link #inventoryMission} and {@link #inventoryBamboo} variables.
      */
-    public Inventory(){
-        stamina = 2;
-        for (int nbBamboo : inventoryBamboo){
-            nbBamboo = 0;
-        }
+    Inventory(){
+        inventoryMission = new ArrayList<>();
+        inventoryCanal = new ArrayList<>();
+        inventoryBamboo = new int[]{0,0};
+        score = new int[]{0,0};
     }
 
     /**
@@ -49,23 +50,11 @@ public class Inventory {
      * @see Resource
      * @see Canal
      */
-    public Canal pickCanal(){
+    Canal pickCanal() throws OutOfResourcesException {
         if (!inventoryCanal.isEmpty()){
             return inventoryCanal.remove(0);
         }
-        return null;
-    }
-
-    /**
-     * <h2>{@link #setStamina(int)} :</h2>
-     *
-     * <p>Set {@link #stamina} variable.</b>
-     *
-     * @param sp
-     *          <b>The {@link Integer} we set {@link #stamina} from.</b>
-     */
-    public void setStamina(int sp){
-        stamina = sp;
+        throw new OutOfResourcesException("No more Canal in the inventory.");
     }
 
     /**
@@ -78,8 +67,8 @@ public class Inventory {
      *
      * @see ColorType
      */
-    public void addBamboo(ColorType colorType){
-        if (!colorType.equals(ColorType.NO_COLOR))
+    void addBamboo(ColorType colorType){
+        if (colorType != ColorType.NO_COLOR)
             inventoryBamboo[colorType.ordinal()] ++;
     }
 
@@ -90,7 +79,7 @@ public class Inventory {
      *
      * @see Canal
      */
-    public void addCanal(Canal canal){
+    void addCanal(Canal canal){
         inventoryCanal.add(canal);
     }
 
@@ -104,19 +93,10 @@ public class Inventory {
      * @see PeasantMission
      * @see PandaMission
      */
-    public void addMission(Mission mission){
+    void addMission(Mission mission){
         inventoryMission.add(mission);
     }
 
-    /**
-     * <h2>{@link #subStamina()} :</h2>
-     *
-     * <p>Sub one to the {@link #stamina} variable.</b>
-     *
-     */
-    public void subStamina(){
-        stamina --;
-    }
     /**
      * <h2>{@link #subBamboo(ColorType)} :</h2>
      *
@@ -127,7 +107,7 @@ public class Inventory {
      *
      * @see ColorType
      */
-    public void subBamboo(ColorType colorType){
+    void subBamboo(ColorType colorType){
         if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NO_COLOR))
             inventoryBamboo[colorType.ordinal()] --;
     }
@@ -145,7 +125,7 @@ public class Inventory {
      * @see PandaMission
      * @see PeasantMission
      */
-    public void subMissions(List<Mission> missions){
+    void subMissions(List<Mission> missions){
         inventoryMission.removeAll(missions);
     }
 
@@ -159,7 +139,7 @@ public class Inventory {
      *
      * @see ColorType
      */
-    public int getBamboo(ColorType colorType){
+    int getBamboo(ColorType colorType){
         return inventoryBamboo[colorType.ordinal()];
     }
 
@@ -169,12 +149,12 @@ public class Inventory {
      * @return <b>The list containing the number of bamboos of each {@link ColorType}.</b>
      * @see ColorType
      */
-    public int[] getBamboo() {
+    int[] getBamboo() {
         return inventoryBamboo.clone();
     }
 
     /**
-     * <h2>{@link #getMission()} :</h2>
+     * <h2>{@link #getMissions()} :</h2>
      *
      * @return <b>The list of all missions.</b>
      * @see Mission
@@ -182,8 +162,8 @@ public class Inventory {
      * @see PandaMission
      * @see PeasantMission
      */
-    public List<Mission> getMission(){
-        return inventoryMission;
+    List<Mission> getMissions(){
+        return new ArrayList<>(inventoryMission);
     }
 
     /**
@@ -192,7 +172,7 @@ public class Inventory {
      * @return <b>The list of {@link ParcelMission} missions.</b>
      * @see ParcelMission
      */
-    public List<ParcelMission> getParcelMissions(){
+    List<ParcelMission> getParcelMissions(){
         List<ParcelMission> parcelMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
             if(mission.missionType == MissionType.PARCEL)
@@ -207,7 +187,7 @@ public class Inventory {
      * @return <b>The list of {@link PandaMission} missions.</b>
      * @see PandaMission
      */
-    public List<PandaMission> getPandaMissions(){
+    List<PandaMission> getPandaMissions(){
         List<PandaMission> pandaMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
             if(mission.missionType == MissionType.PANDA)
@@ -222,12 +202,25 @@ public class Inventory {
      * @return <b>The list of {@link PeasantMission} missions.</b>
      * @see PeasantMission
      */
-    public List<PeasantMission> getPeasantMissions(){
+    List<PeasantMission> getPeasantMissions(){
         List<PeasantMission> peasantMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
             if(mission.missionType == MissionType.PEASANT)
                 peasantMissions.add((PeasantMission) mission);
         }
         return peasantMissions;
+    }
+
+    void addScore(int count) {
+        score[0] += count;
+        score[1] ++;
+    }
+
+    int getScore() {
+        return score[0];
+    }
+
+    int getMissionsDone() {
+        return score[1];
     }
 }

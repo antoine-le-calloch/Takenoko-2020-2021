@@ -1,7 +1,7 @@
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,11 +23,11 @@ public class ResourceTest {
     }
 
     @Test public void goodInitializeParcel(){
-        assertEquals(26, resource.getParcel().size());
+        assertEquals(26, resource.getDeckParcel().size());
     }
 
     @Test public void goodInitializeCanal(){
-        assertEquals(27, resource.getCanal().size());
+        assertEquals(27, resource.getDeckCanal().size());
     }
 
 
@@ -36,31 +36,31 @@ public class ResourceTest {
     }
 
     @Test
-    public void parcelDecrease(){
+    public void parcelDecrease() throws OutOfResourcesException {
         resource.selectParcel(resource.drawParcel().get(0));
-        assertEquals(25,resource.getParcel().size());
+        assertEquals(25,resource.getDeckParcel().size());
     }
 
     @Test
-    public void canalDecrease(){
+    public void canalDecrease() throws OutOfResourcesException {
         resource.drawCanal();
-        assertEquals(26,resource.getCanal().size());
+        assertEquals(26,resource.getDeckCanal().size());
     }
 
     @Test
-    public void missionDecreasePeasant(){
+    public void missionDecreasePeasant() throws OutOfResourcesException {
         resource.drawMission(MissionType.PEASANT);
         assertEquals(44,resource.getNbMission());
     }
 
     @Test
-    public void missionDecreasePanda(){
+    public void missionDecreasePanda() throws OutOfResourcesException {
         resource.drawMission(MissionType.PANDA);
         assertEquals(44,resource.getNbMission());
     }
 
     @Test
-    public void missionDecreaseParcel(){
+    public void missionDecreaseParcel() throws OutOfResourcesException {
         resource.drawMission(MissionType.PARCEL);
         assertEquals(44,resource.getNbMission());
     }

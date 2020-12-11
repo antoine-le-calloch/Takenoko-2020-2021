@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 
 /**
  * Classe representant une mission panda
@@ -13,11 +14,11 @@ import fr.unice.polytech.startingpoint.Type.*;
 
 public class PandaMission extends Mission {
 
-    public PandaMission(ColorType colorType, int points){
+    PandaMission(ColorType colorType, int points){
         super(MissionType.PANDA,colorType,points);
     }
 
-    public int checkMission(Board board, Inventory inventory) {
+    int checkMission(Board board, Inventory inventory){
         int NB_BAMBOO = 1;
         if (inventory.getBamboo(colorType) >= NB_BAMBOO){
             for (int i = 0; i < NB_BAMBOO; i++)

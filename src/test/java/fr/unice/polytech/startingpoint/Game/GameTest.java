@@ -23,7 +23,6 @@ class GameTest {
     Game game4;
     Game game5;
 
-
     @BeforeEach public void Setup() {
         game1 = new Game(new BotType[]{BotType.RANDOM, BotType.PARCELBOT});
         game2 = new Game(new BotType[]{BotType.PARCELBOT, BotType.PARCELBOT});
@@ -69,13 +68,11 @@ class GameTest {
 
     @Test public void missionsDone(){
         assertEquals(0,game1.getPlayerData().getScores().get(0));
-        assertEquals(0,game1.getPlayerData().get(0).getInventory().getMission().size());
-        game1.getPlayerData().get(0).getInventory().getMission().add(new PandaMission(ColorType.RED,3));
-        game1.getPlayerData().get(0).getInventory().addBamboo(ColorType.RED);
-        game1.missionDone(0);
+        assertEquals(0,game1.getPlayerData().getMissions().size());
+        game1.getPlayerData().addMission(new PandaMission(ColorType.RED,3));
+        game1.getPlayerData().addBamboo(ColorType.RED);
+        game1.missionDone();
         assertTrue(game1.getPlayerData().getScores().get(0)>game1.getPlayerData().getScores().get(1));
-        assertEquals(0,game1.getPlayerData().get(0).getInventory().getMission().size());
+        assertEquals(0,game1.getPlayerData().getMissions().size());
     }
-
-
 }

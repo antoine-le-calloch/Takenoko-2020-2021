@@ -13,11 +13,11 @@ import fr.unice.polytech.startingpoint.Type.*;
 
 public class PeasantMission extends Mission {
 
-    public PeasantMission(ColorType colorType, int points){
+    PeasantMission(ColorType colorType, int points){
         super(MissionType.PEASANT,colorType,points);
     }
 
-    public int checkMission(Board board, Inventory inventory) {
+    int checkMission(Board board, Inventory inventory) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
             int NB_BAMBOO = 2;
             if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType)

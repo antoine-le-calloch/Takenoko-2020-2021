@@ -10,7 +10,6 @@ package fr.unice.polytech.startingpoint.Type;
  */
 
 public enum BotType {
-
     RANDOM{
         @Override
         public String toString() {
@@ -38,6 +37,4 @@ public enum BotType {
             return "Peasant Bot";
         }
     }
-
-
 }

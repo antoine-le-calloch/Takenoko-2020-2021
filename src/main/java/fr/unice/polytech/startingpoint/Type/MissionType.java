@@ -10,7 +10,7 @@ package fr.unice.polytech.startingpoint.Type;
  */
 
 
-public enum MissionType {
+public enum MissionType{
     PARCEL{
         @Override
         public String toString() {
@@ -31,5 +31,4 @@ public enum MissionType {
             return "Peasant";
         }
     }
-
 }

@@ -11,24 +11,24 @@ import fr.unice.polytech.startingpoint.Type.*;
  * @version 2020.12.03
  */
 
-public class Parcel {
+class Parcel {
     private Coordinate coordinates;
     private boolean irrigated = false;
     private int nbBamboo = 0;
     private final ColorType colorType;
 
-    public Parcel(ColorType colorType){
+    Parcel(ColorType colorType){
         this.colorType = colorType;
     }
 
     //Renvoie la parcelle après avoir fixé ses coordonnées avec les coordonnées passées en paramètre
-    public Parcel setCoordinates(Coordinate coordinate) {
+    Parcel setCoordinates(Coordinate coordinate) {
         coordinates = coordinate;
         return this;
     }
 
     //Renvoie les coordonnées de la parcelle après l'avoir irrigué et lui avoir ajouté un bambou si elle ne l'était pas avant
-    public Coordinate setIrrigated() {
+    Coordinate setIrrigated() {
         if(!irrigated)
             addBamboo();
         irrigated = true;
@@ -36,7 +36,7 @@ public class Parcel {
     }
 
     //Ajoute un bamboo à la parcelle
-    public boolean addBamboo(){
+    boolean addBamboo(){
         if (nbBamboo < 4){
             nbBamboo ++;
             return true;
@@ -45,30 +45,30 @@ public class Parcel {
     }
 
     //Supprime un bambou de la parcelle
-    public boolean delBamboo(){
+    ColorType delBamboo(){
         if (nbBamboo > 0){
             nbBamboo --;
-            return true;
+            return colorType;
         }
-        return false;
+        return ColorType.NO_COLOR;
     }
 
-    public int getNbBamboo(){
+    int getNbBamboo(){
         return nbBamboo;
     }
 
     //Renvoie si la parcelle est irriguée ou non
-    public boolean getIrrigated(){
+    boolean getIrrigated(){
         return irrigated;
     }
 
     //Renvoie les coordonnées de la parcelle
-    public Coordinate getCoordinates(){
+    Coordinate getCoordinates(){
         return coordinates;
     }
 
     //Renvoie la couleur de la parcelle
-    public ColorType getColor() {
+    ColorType getColor() {
         return colorType;
     }
 }

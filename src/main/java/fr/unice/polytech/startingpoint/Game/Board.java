@@ -2,10 +2,6 @@ package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
 
-import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
-import fr.unice.polytech.startingpoint.exception.MoveCharacterException;
-
 
 import java.util.*;
 
@@ -19,160 +15,103 @@ import java.util.*;
  */
 
 
-public class Board {
+class Board {
     private final Character panda = new Character(CharacterType.PANDA);
     private final Character peasant = new Character(CharacterType.PEASANT);
     private final Map<Coordinate, Parcel> placedParcels = new HashMap<>();
     private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
 
-    public Board() {
+    Board() {
         placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NO_COLOR).setCoordinates(new Coordinate(0, 0, 0)));
     }
 
-    //Renvoie true si une parcelle peut être placée à la coordonnée passée en paramètre
-    public boolean isPlayableParcel(Coordinate coord){
-        int nbParcelAround = 0;
-        for(Coordinate coordAround : coord.coordinatesAround()) {
-            if(isPlacedParcel(coordAround))
-                nbParcelAround++;
-            if(coordAround.isCentral())
-                return true;
-        }
-        return nbParcelAround>1;
-    }
-
-    //Renvoie true si un canal peut être placé aux coordonnées passées en paramètre
-    public boolean isPlayableCanal(Coordinate coordinate1, Coordinate coordinate2) {
-        if ( !isPlacedCanal(coordinate1, coordinate2) &&
-                coordinate1.isNextTo(coordinate2) &&
-                !coordinate1.isCentral() && !coordinate2.isCentral() &&
-                isPlacedParcel(coordinate1) && isPlacedParcel(coordinate2) ) {
-            if (coordinate1.isNextTo(new Coordinate(0, 0, 0)) && coordinate2.isNextTo(new Coordinate(0, 0, 0))) {
-                return true;
-            }
-            for (Coordinate coordinate : Coordinate.getInCommonAroundCoordinates(coordinate1, coordinate2)) {
-                if (isPlacedCanal(coordinate1, coordinate))
-                    return true;
-                if (isPlacedCanal(coordinate2, coordinate))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    //Renvoie true si un character peut être placé aux coordonnées passées en paramètre
-    public boolean isMovableCharacter(Character character, Coordinate coordinate){
-        if(placedParcels.containsKey(coordinate) && coordinate.isOnTheSameLine(character.getCoordinate())){
-            if(!character.getCoordinate().isNextTo(coordinate)){
-                for(Coordinate c : Coordinate.getAllCoordinatesBetween(character.getCoordinate(),coordinate)){
-                    if(!placedParcels.containsKey(c))
-                        return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
     //Place une parcelle sur le board si les conditions le permettent
-    public void placeParcel(Parcel newParcel, Coordinate newCoordinate) throws BadPlaceParcelException {
-        if(!isPlayableParcel(newCoordinate))
-            throw new BadPlaceParcelException(newCoordinate);
-        else {
-            placedParcels.put(newCoordinate, newParcel.setCoordinates(newCoordinate));
-            for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
-                if (coordinate.isCentral())
-                    newParcel.setIrrigated();
-            }
+    void placeParcel(Parcel newParcel, Coordinate newCoordinate){
+        placedParcels.put(newCoordinate, newParcel.setCoordinates(newCoordinate));
+        for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
+            if (coordinate.isCentral())
+                newParcel.setIrrigated();
         }
     }
 
     //Place un canal sur le board si les conditions le permettent
-    public void placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2) throws BadPlaceCanalException {
-        if (!isPlayableCanal(coordinate1, coordinate2))
-            throw new BadPlaceCanalException(coordinate1, coordinate2);
-        else {
-            placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
-            placedParcels.get(coordinate1).setIrrigated();
-            placedParcels.get(coordinate2).setIrrigated();
-        }
+    void placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2){
+        placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
+        placedParcels.get(coordinate1).setIrrigated();
+        placedParcels.get(coordinate2).setIrrigated();
     }
 
     //Fait bouger un personnage et effectue son action si les conditions le permettent
-    public void moveCharacter(Character character, Coordinate coordinate) throws MoveCharacterException {
-        if(!isMovableCharacter(character,coordinate))
-            throw new MoveCharacterException(coordinate);
-        else {
-            character.setCoordinate(coordinate);
-            characterAction(character);
-        }
+    ColorType moveCharacter(CharacterType characterType, Coordinate coordinate){
+        getCharacter(characterType).setCoordinate(coordinate);
+        return characterAction(characterType);
     }
 
     //Effectue l’action du personnage passé en paramètre
-    public void characterAction(Character character){
-
-        switch (character.getCharacterType()){
+    private ColorType characterAction(CharacterType characterType){
+        switch (characterType){
             case PANDA:
-                actionPanda(character);
-                break;
+                return actionPanda(characterType);
             case PEASANT:
-                actionPeasant(character);
-                break;
+                actionPeasant(characterType);
+            default:
+                return ColorType.NO_COLOR;
         }
     }
 
     //supprime un bambou sur la case
-    void actionPanda(Character character){
-        placedParcels.get(character.getCoordinate()).delBamboo();
+    private ColorType actionPanda(CharacterType characterType){
+        return placedParcels.get(panda.getCoordinate()).delBamboo();
     }
 
     //ajoute un bambou sur la case si irrigué + autour si même couleur et irrigué
-    void actionPeasant(Character character){
-        ColorType color = placedParcels.get(character.getCoordinate()).getColor();
-        if (placedParcels.get(character.getCoordinate()).getIrrigated())
-            placedParcels.get(character.getCoordinate()).addBamboo();
-        for( Coordinate coordinate : character.getCoordinate().coordinatesAround())
+    private void actionPeasant(CharacterType characterType){
+        ColorType color = placedParcels.get(peasant.getCoordinate()).getColor();
+        if (placedParcels.get(peasant.getCoordinate()).getIrrigated())
+            placedParcels.get(peasant.getCoordinate()).addBamboo();
+        for( Coordinate coordinate : peasant.getCoordinate().coordinatesAround())
             if (placedParcels.containsKey(coordinate)) {
                 if (color == placedParcels.get(coordinate).getColor() && placedParcels.get(coordinate).getIrrigated())
                     placedParcels.get(coordinate).addBamboo();
             }
     }
 
-
     //Renvoie true si une parcelle est posées aux coordonnées passées en paramètre
-    public boolean isPlacedParcel(Coordinate coordinate){
+    boolean isPlacedParcel(Coordinate coordinate){
         return placedParcels.containsKey(coordinate);
     }
 
     //Renvoie true si une parcelle est posée et est irriguée aux coordonnées passées en paramètre
-    public boolean isPlacedAndIrrigatedParcel(Coordinate coordinate){
+    boolean isPlacedAndIrrigatedParcel(Coordinate coordinate){
         if (isPlacedParcel(coordinate))
             return placedParcels.get(coordinate).getIrrigated();
         return false;
     }
 
     //Renvoie true si un canal est posé aux coordonnées passées en paramètre
-    public boolean isPlacedCanal(Coordinate coordinate1, Coordinate coordinate2){
+    boolean isPlacedCanal(Coordinate coordinate1, Coordinate coordinate2){
         return placedCanals.containsKey(Coordinate.getSortedSet(coordinate1,coordinate2));
     }
 
     //Renvoie une map des parcelles placées
-    public Map<Coordinate, Parcel> getPlacedParcels(){
+    Map<Coordinate, Parcel> getPlacedParcels(){
         return placedParcels;
     }
 
     //Renvoie une map des canaux placés
-    public Map<SortedSet<Coordinate>, Canal> getPlacedCanals(){
+    Map<SortedSet<Coordinate>, Canal> getPlacedCanals(){
         return placedCanals;
     }
 
     //Renvoie le
-    public Character getPanda() {
-        return panda;
-    }
-
-    //Renvoie une map des canaux placés
-    public Character getPeasant() {
-        return peasant;
+    Character getCharacter(CharacterType characterType) {
+        switch (characterType){
+            case PANDA:
+                return panda;
+            case PEASANT:
+                return peasant;
+            default:
+                throw new IllegalArgumentException("Wrong CharacterType to move.");
+        }
     }
 }

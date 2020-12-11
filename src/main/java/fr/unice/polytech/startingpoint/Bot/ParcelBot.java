@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 
 import java.util.*;
 
@@ -23,26 +24,21 @@ import java.util.*;
  * @see RandomBot
  * @version 0.5
  */
+
 public class ParcelBot extends Bot {
 
-    /**
-     * <h2>{@link #ParcelBot(Resource, Board)} :</h2>
+    /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
-     * <p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
-     *
-     * @param resource
-     *            <b>Resource object.</b>
-     * @param board
-     *            <b>Board object.</b>
+     * @param game
+     *            <b>Game object.</b>
+     * @param rules
+     *            <b>Rules object.</b>
      */
-    public ParcelBot(Resource resource, Board board) {
-        super(resource, board);
+    public ParcelBot(Game game, Rules rules) {
+        super(game, rules);
     }
 
-    /**
-     * <h2>{@link #botPlay()} :</h2>
-     *
-     * <p>The actions of the bot during his turn.</p>
+    /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay(){
         if (isJudiciousDrawMission())
@@ -54,108 +50,83 @@ public class ParcelBot extends Bot {
         }
     }
 
-    /**
-     * <h2>{@link #isJudiciousDrawMission()} :</h2>
-     *
-     * @return <b>True if the bot can draw a mission.</b>
-     * @see Resource
+    /**@return <b>True if the bot can draw a mission.</b>
      */
 
     public boolean isJudiciousDrawMission(){
-        return resource.getDeckParcelMission().size() > 0;
+        return game.getResourceSize(ResourceType.PARCEL_MISSION) > 0;
     }
 
-    /**
-     * <h2>{@link #isJudiciousPutParcel()} :</h2>
-     *
-     * @return <b>True if the bot can draw a parcel and haven’t finished a form.</b>
-     * @see Resource
+    /**@return <b>True if the bot can draw a parcel and haven’t finished a form.</b>
      */
     public boolean isJudiciousPutParcel(){
-        for (ParcelMission mission : inventory.getParcelMissions()) {
+        for (ParcelMission mission : game.getInventoryParcelMission()) {
             if(bestCoordinatesForForm(mission.getFormType(), mission.getColor()) == null)
                 return false;
         }
-        return (resource.getParcel().size() > 0 && possibleCoordinatesParcel().size()>0);
+        return (game.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0);
     }
 
-    /**
-     * <h2>{@link #isJudiciousPutCanal()} :</h2>
-     *
-     * @return <b>True if the bot can draw a canal and place a canal on the board.</b>
-     * @see Resource
+    /**@return <b>True if the bot can draw a canal and place a canal on the board.</b>
      */
     public boolean isJudiciousPutCanal(){
-        return (resource.getCanal().size() > 0 && possibleCoordinatesCanal().size()>0) ;
+        return (game.getResourceSize(ResourceType.CANAL) > 0 && possibleCoordinatesCanal().size()>0) ;
     }
 
-    /**
-     * <h2>{@link #putParcel()} :</h2>
-     *
-     * <p>For each mission, put a parcel to best place to finish it or place a random one.</p>
-     *
-     * @see Resource
-     * @see Mission
-     * @see FormType
-     * @see ColorType
+    /**<p>For each mission, put a parcel to best place to finish it or place a random one.</p>
      */
-    //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     public void putParcel() {
-        ParcelMission mission = (ParcelMission) getInventory().getMission().get(0);
-        FormType formType = mission.getFormType();
-        ColorType colorType = mission.getColor();
-        List<Parcel> newParcel = resource.drawParcel();
-        Parcel parcel = new Parcel(ColorType.NO_COLOR);
-        for (Parcel p : newParcel){
-            if(p.getColor().equals(colorType)){
-                parcel = p;
+        try {
+            ParcelMission mission = game.getInventoryParcelMission().get(0);
+            List<ColorType> colorTypeList = game.drawParcels();
+            boolean selectedParcel = false;
+            for (ColorType colorType : colorTypeList){
+                if(colorType.equals(mission.getColor())){
+                    selectParcel(colorType);
+                    selectedParcel = true;
+                }
             }
-        }
-        if (parcel.getColor() == ColorType.NO_COLOR){
-            List<Coordinate> list = possibleCoordinatesParcel();
-            Collections.shuffle(list);
-            placeParcel(list.get(0), newParcel.get(0));
-        }
-        else {
-            placeParcel(bestCoordinatesForForm(formType, colorType),resource.selectParcel(parcel));
+            if (!selectedParcel){
+                Collections.shuffle(colorTypeList);
+                selectParcel(colorTypeList.get(0));
+                List<Coordinate> possibleCoordinatesParcel = possibleCoordinatesParcel();
+                Collections.shuffle(possibleCoordinatesParcel);
+                placeParcel(possibleCoordinatesParcel.get(0));
+            }
+            else {
+                placeParcel(bestCoordinatesForForm(mission.getFormType(),mission.getColor()));
+            }
+        } catch (IllegalAccessException | OutOfResourcesException e) {
+            e.printStackTrace();
         }
     }
 
-    /**
-     * <h2>{@link #bestCoordinatesForForm(FormType, ColorType)} :</h2>
-     *
-     * @param formType
+    /**@param formType
      *            <b>The form wanted to be completed.</b>
      * @param colorType
      *            <b>The color of the form wanted to be completed.</b>
      * @return <b>The best coordinate where a parcel need to be placed to complete the form.</b>
-     *
-     * @see Coordinate
-     * @see FormType
-     * @see ColorType
-     * @see Board
-     * @see Resource
      */
     public Coordinate bestCoordinatesForForm(FormType formType, ColorType colorType){
         Coordinate bestCoordinate = possibleCoordinatesParcel().get(0);
         int minTurnToEndForm = 3;
 
-        for (Coordinate HightCoord : allPlaces()) {
-            List<Coordinate> parcelToPlaceToDoForm = parcelsToPlaceToDoForm(HightCoord, formType, colorType);
+        for (Coordinate coordinate : allPlaces()) {
+            List<Coordinate> parcelToPlaceToDoForm = parcelsToPlaceToDoForm(coordinate, formType, colorType);
             if(parcelToPlaceToDoForm != null) {
 
                 if (parcelToPlaceToDoForm.size() == 0)
                     return null;
 
-                if (parcelToPlaceToDoForm.size() == 1 && board.isPlayableParcel(parcelToPlaceToDoForm.get(0))) {
+                if (parcelToPlaceToDoForm.size() == 1 && rules.isPlayableParcel(parcelToPlaceToDoForm.get(0))) {
                     bestCoordinate = parcelToPlaceToDoForm.get(0);
                     minTurnToEndForm = 1;
                 } else if (parcelToPlaceToDoForm.size() == 2 && minTurnToEndForm > 1) {
 
-                    if (board.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
+                    if (rules.isPlayableParcel(parcelToPlaceToDoForm.get(0)))
                         bestCoordinate = parcelToPlaceToDoForm.get(0);
 
-                    else if (board.isPlayableParcel(parcelToPlaceToDoForm.get(1)))
+                    else if (rules.isPlayableParcel(parcelToPlaceToDoForm.get(1)))
                         bestCoordinate = parcelToPlaceToDoForm.get(1);
                 }
             }
@@ -163,37 +134,28 @@ public class ParcelBot extends Bot {
         return bestCoordinate;
     }
 
-    /**
-     * <h2>{@link #parcelsToPlaceToDoForm(Coordinate, FormType, ColorType)} :</h2>
-     *
-     * @param coordinate
+    /**@param coordinate
      *            <b>The coordinate of the parcel already placed on the board.</b>
      * @param formType
      *            <b>The form wanted to be completed.</b>
      * @param colorType
      *            <b>The color of the form wanted to be completed.</b>
      * @return <b>The list of required coordinates where parcels need to be placed to complete the form.</b>
-     *
-     * @see Coordinate
-     * @see FormType
-     * @see ColorType
-     * @see Board
-     * @see Resource
      */
     public List<Coordinate> parcelsToPlaceToDoForm(Coordinate coordinate, FormType formType, ColorType colorType){
         List<Coordinate> parcelsToPlaceToDoForm = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            if((coordinate.isCentral()) || (board.isPlacedParcel(coordinate) && !board.getPlacedParcels().get(coordinate).getColor().equals(colorType)))
+            if((coordinate.isCentral()) || (game.isPlacedParcel(coordinate) && !game.getPlacedParcelsColor(coordinate).equals(colorType)))
                 return null;
 
             if(formType.equals(FormType.LINE)) {
-                if (!board.isPlacedParcel(coordinate))
+                if (!game.isPlacedParcel(coordinate))
                     parcelsToPlaceToDoForm.add(coordinate);
                 coordinate = new Coordinate(coordinate,Coordinate.offSets().get(2));
             }
             else if(formType.equals(FormType.TRIANGLE)) {
-                if(!board.isPlacedParcel(coordinate))
+                if(!game.isPlacedParcel(coordinate))
                     parcelsToPlaceToDoForm.add(coordinate);
                 coordinate = new Coordinate(coordinate,Coordinate.offSets().get((2+i*2)%6));//
             }
@@ -201,19 +163,12 @@ public class ParcelBot extends Bot {
         return parcelsToPlaceToDoForm;
     }
 
-    /**
-     * <h2>{@link #putParcel()} :</h2>
-     *
-     * @return <b>True, if a canal can be place and irrigate a parcel, else, it returns false and place a random canal.</b>
-     *
-     * @see Coordinate
-     * @see Board
-     * @see Resource
+    /**@return <b>True, if a canal can be place and irrigate a parcel, else, it returns false and place a random canal.</b>
      */
     public boolean putCanal() {
-        for(Parcel parcel : board.getPlacedParcels().values()){
+        for(Coordinate coordinate : game.getPlacedCoordinates()){
             for(Coordinate[] canal : possibleCoordinatesCanal()){
-                if(!parcel.getIrrigated() && (canal[0].equals(parcel.getCoordinates()) || canal[1].equals(parcel.getCoordinates()))){
+                if(!game.isIrrigatedParcel(coordinate) && (canal[0].equals(coordinate) || canal[1].equals(coordinate))){
                     placeCanal(canal);
                     return true;
                 }

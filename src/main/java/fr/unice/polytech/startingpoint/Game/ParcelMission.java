@@ -14,13 +14,13 @@ import fr.unice.polytech.startingpoint.Type.*;
 public class ParcelMission extends Mission {
     private final FormType formType;
 
-    public ParcelMission(ColorType colorType, int points,FormType formType) {
+    ParcelMission(ColorType colorType, int points,FormType formType) {
         super(MissionType.PARCEL,colorType,points);
         this.formType = formType;
     }
 
     //Renvoie le nombre de points que les missions rapportent si elles ont été accomplies
-    public int checkMission(Board board, Inventory inventory) {
+    int checkMission(Board board, Inventory inventory) {
         switch (formType) {
             case TRIANGLE:
                 if (checkFormIrrigateWithColor(board,0,1))
@@ -36,7 +36,7 @@ public class ParcelMission extends Mission {
     }
 
     //retourne vrai si il y a un triangle sur le plateau
-    public boolean checkFormIrrigateWithColor(Board board, int offset1, int offset2) {
+    boolean checkFormIrrigateWithColor(Board board, int offset1, int offset2) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
             Coordinate c1 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset1));
             Coordinate c2 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset2));

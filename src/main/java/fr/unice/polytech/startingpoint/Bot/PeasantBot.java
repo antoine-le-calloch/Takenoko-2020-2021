@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.Bot;
 
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.MissionType;
+import fr.unice.polytech.startingpoint.Type.ResourceType;
 
 import java.util.List;
 
@@ -26,44 +27,33 @@ import java.util.List;
 
 public class PeasantBot extends Bot {
 
-    /**
-     * <h2>{@link #PeasantBot(Resource, Board)} :</h2>
+    /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
-     * <p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
-     *
-     * @param resource
-     *            <b>Resource object.</b>
-     * @param board
-     *            <b>Board object.</b>
+     * @param game
+     *            <b>Game object.</b>
+     * @param rules
+     *            <b>Rules object.</b>
      */
-    public PeasantBot(Resource resource, Board board) {
-        super(resource, board);
+    public PeasantBot(Game game, Rules rules) {
+        super(game, rules);
     }
 
-    /**
-     * <h2>{@link #botPlay()} :</h2>
-     *
-     * <p>The actions of the bot during his turn.</p>
+    /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        if (inventory.getMission().size() < 5 && resource.getDeckPeasantMission().size() > 0)
+        if (game.getInventoryMission().size() < 5 && game.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
             drawMission(MissionType.PEASANT);
         else if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
             movePeasant(strategyMovePeasant(possibleCoordinatesPeasant()));
     }
 
-    /**
-     * <h2>{@link #strategyMovePeasant(List)} : </h2>
-     *
-     * @param coordinateList
+    /**@param coordinateList
      *            <b>The list of coordinates containing places where we want to move the Peasant.</b>
      * @return <b>Return the first coordinate where the parcel has at least two bamboos.</b>
-     * @see Coordinate
-     * @see Board
      */
     public Coordinate strategyMovePeasant(List<Coordinate> coordinateList) {
         for (Coordinate coordinate : coordinateList) {
-            if (board.getPlacedParcels().get(coordinate).getNbBamboo() > 1) {
+            if (game.getPlacedParcelsNbBamboo(coordinate) > 1) {
                 return coordinate;
             }
         }

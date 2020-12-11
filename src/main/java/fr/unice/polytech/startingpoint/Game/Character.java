@@ -11,24 +11,24 @@ import fr.unice.polytech.startingpoint.Type.*;
  * @version 2020.12.03
  */
 
-public class Character {
+class Character {
     private final CharacterType characterType;
     private Coordinate coordinate;
 
-    public Character(CharacterType characterType){
+    Character(CharacterType characterType){
         this.characterType = characterType;
         coordinate = new Coordinate(0,0,0);
     }
 
-    public void setCoordinate(Coordinate coordinate) {
+    void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
 
-    public CharacterType getCharacterType() {
+    CharacterType getCharacterType() {
         return characterType;
     }
 
-    public Coordinate getCoordinate(){
+    Coordinate getCoordinate(){
         return coordinate;
     }
 }

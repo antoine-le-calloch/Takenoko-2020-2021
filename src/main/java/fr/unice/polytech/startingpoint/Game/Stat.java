@@ -1,6 +1,5 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.List;
  * @author Le Calloch Antoine
  * @version 2020.12.03
  */
-
 
 public class Stat {
     private final List<PlayerData> gameData = new ArrayList<>();
@@ -32,7 +30,7 @@ public class Stat {
     }
 
     //Ajoute les stats d'une nouvelles parties
-    public void add(PlayerData gameData) {
+    void add(PlayerData gameData) {
         this.gameData.add(gameData);
         setWinner(getWinner(gameData.getScores()));
         for (int i = 0; i < gameData.getScores().size(); i++){
@@ -41,7 +39,7 @@ public class Stat {
     }
 
     //Fixe le nombre de victoires et d'égalités pour chaque joueur
-    public void setWinner(List<Integer> winner){
+    private void setWinner(List<Integer> winner){
         if (winner.size() == 1)
             botScores[winner.get(0)][1]++;
         else
@@ -51,7 +49,7 @@ public class Stat {
     }
 
     //Fixe le nombre de victoires et d'égalités pour chaque joueur
-    public List<Integer> getWinner(List<Integer> scores){
+    private List<Integer> getWinner(List<Integer> scores){
         int bestScore = 0;
         List<Integer> winner = new ArrayList<>();
         for(int score : scores){
@@ -84,7 +82,7 @@ public class Stat {
     public String toString(){
         StringBuilder displayStat = new StringBuilder();
         for (int i = 0; i < botScores.length; i++) {
-            displayStat.append("Joueur " + botList[i] + " : " + getWinRate(i) + "% win rate and " + getEqualityRate(i) + "% equality rate with a " + getPointsAverage(i) + " points average\n");
+            displayStat.append("Joueur ").append(botList[i]).append(" : ").append(getWinRate(i)).append("% win rate and ").append(getEqualityRate(i)).append("% equality rate with a ").append(getPointsAverage(i)).append(" points average\n");
         }
         return displayStat.toString();
     }

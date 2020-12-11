@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 
 /**
  * Interface representant les caractéristiques communes des missions
@@ -11,19 +12,19 @@ import fr.unice.polytech.startingpoint.Type.*;
  * @version 2020.12.03
  */
 
-public abstract class Mission {
+abstract class Mission {
     protected final MissionType missionType;
     protected final ColorType colorType;
     protected final int points;
 
-    public Mission(MissionType missionType, ColorType colorType, int points){
+    Mission(MissionType missionType, ColorType colorType, int points){
         this.missionType = missionType;
         this.colorType = colorType;
         this.points = points;
     }
 
     //Vérifie si la mission est faite
-    public abstract int checkMission(Board board, Inventory inventory);
+    abstract int checkMission(Board board, Inventory inventory);
 
     //Renvoie la couleur de la mission
     public MissionType getMissionType() {

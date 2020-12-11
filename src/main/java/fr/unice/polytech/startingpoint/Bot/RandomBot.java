@@ -30,71 +30,63 @@ public class RandomBot extends Bot {
     private Random random;
     private Random random2;
 
-    /**
-     * <h2>{@link #RandomBot(Resource, Board)} :</h2>
+    /**<p>Set up the bot. Call the constructor from {@link Bot} superclass and initialize two {@link Random} objects.</p>
      *
-     * <p>Set up the bot. Call the constructor from {@link Bot} superclass and initialize two {@link Random} objects.</p>
-     *
-     * @param resource
-     *            <b>Resource object.</b>
-     * @param board
-     *            <b>Board object.</b>
+     * @param game
+     *            <b>Game object.</b>
+     * @param rules
+     *            <b>Rules object.</b>
      */
-    public RandomBot(Resource resource, Board board) {
-        super(resource, board);
+    public RandomBot(Game game, Rules rules) {
+        super(game, rules);
         random = new Random();
         random2 = new Random();
     }
 
-    /**
-     * <h2>{@link #setRand(Random, Random)} :</h2>
-     *
-     * <p>Set the {@link #random} and {@link #random2} to new objects specified in the parameters.</p>
+    /**<p>Set the {@link #random} and {@link #random2} to new objects specified in the parameters.</p>
      *
      * @param rand1
      *            <b>The first {@link Random} object.</b>
      * @param rand2
      *            <b>The second {@link Random} object.</b>
-     * @see Random
      */
     public void setRand(Random rand1, Random rand2){
         random = rand1;
         random2 = rand2;
     }
 
-    /**
-     * <h2>{@link #botPlay()} :</h2>
-     *
-     * <p>The actions of the bot during his turn.</p>
+    /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay(){
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && resource.getNbMission() > 0) {// pioche mission
+        if (randAction == 0 && game.getResourceSize(ResourceType.ALL_MISSION) > 0) {// pioche mission
             int randMission = random2.nextInt(3);
 
-            if (randMission == 0 && resource.getDeckParcelMission().size() > 0)
+            if (randMission == 0 && game.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
                 drawMission(MissionType.PARCEL);
-            if (randMission == 1 && resource.getDeckPandaMission().size() > 0)
+            if (randMission == 1 && game.getResourceSize(ResourceType.PANDA_MISSION) > 0)
                 drawMission(MissionType.PANDA);
-            if (randMission == 2 && resource.getDeckPeasantMission().size() > 0)
+            if (randMission == 2 && game.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
                 drawMission(MissionType.PEASANT);
         }
 
-        else if (randAction == 1 && resource.getCanal().size() > 0 && resource.getCanal().size() > 0) {  // place canal
+        else if (randAction == 1 && game.getResourceSize(ResourceType.CANAL) > 0) {  // place canal
             if (possibleCoordinatesCanal().size() > 0) {
                 List<Coordinate[]> list = possibleCoordinatesCanal();
                 Collections.shuffle(list);
+                drawCanal();
                 placeCanal(list.get(0));
             }
         }
 
-        else if (randAction == 2 && possibleCoordinatesParcel().size() > 0 && resource.getParcel().size() > 0){ // place parcel
-            List<Parcel> parcelList = drawParcel();
+        else if (randAction == 2 && game.getResourceSize(ResourceType.PARCEL) > 0){ // place parcel
+            List<ColorType> parcelList = drawParcel();
             Collections.shuffle(parcelList);
+            selectParcel(parcelList.get(0));
             List<Coordinate> list = possibleCoordinatesParcel();
             Collections.shuffle(list);
-            placeParcel(list.get(0), parcelList.get(0));
+            placeParcel(list.get(0));
         }
 
         else if (randAction == 3 && possibleCoordinatesPanda().size() != 0) {

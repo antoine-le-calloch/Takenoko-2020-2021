@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 public class ParcelMissionTest {
+    Game game;
     Parcel parcel1;
     Parcel parcel2;
     Parcel parcel3;
@@ -30,20 +31,20 @@ public class ParcelMissionTest {
     ParcelMission mission4;
     RandomBot bot;
 
-
     @BeforeEach
     void setUp(){
         mission1 = new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE);
         mission2 = new ParcelMission(ColorType.RED, 3, FormType.LINE);
         mission3 = new ParcelMission(ColorType.BLUE, 2, FormType.TRIANGLE);
         mission4 = new ParcelMission(ColorType.BLUE, 3, FormType.LINE);
-        board = new Board();
-        resource = new Resource();
+        game = new Game();
+        board = game.getBoard();
+        resource = game.getResource();
         parcel1 = new Parcel(ColorType.RED);
         parcel2 = new Parcel(ColorType.RED);
         parcel3 = new Parcel(ColorType.RED);
         parcel4 = new Parcel(ColorType.RED);
-        bot = new RandomBot(resource, board);
+        bot = new RandomBot(game, game.getRules());
     }
 
     @Test
@@ -53,41 +54,41 @@ public class ParcelMissionTest {
         assertEquals(mission1, mission1);
     }
 
-    @Test void checkMissionTriangle() throws BadPlaceParcelException {
+    @Test void checkMissionTriangle(){
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel3,parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated());
-        assertEquals(2, mission1.checkMission(board,bot.getInventory()));
+        assertEquals(2, mission1.checkMission(board,game.getPlayerData().getInventory()));
     }
 
     @Test void checkNoMissionTriangle(){
-        assertEquals(0, mission1.checkMission(board, bot.getInventory()));
+        assertEquals(0, mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 
 
-    @Test void checkMissionLigneOnBoard() throws BadPlaceParcelException {
+    @Test void checkMissionLigneOnBoard(){
         board.placeParcel(parcel4,parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
         board.placeParcel(parcel3,parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated());
-        assertEquals(3,mission2.checkMission(board,bot.getInventory()));
+        assertEquals(3,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
 
 
     @Test void checkNoMissionLigne(){
-        assertEquals(0,mission2.checkMission(board,bot.getInventory()));
+        assertEquals(0,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
 
 
-    @Test void triangleOnBoardGoodColor() throws BadPlaceParcelException { //checkTriangle
-        board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
-        board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
+    @Test void triangleOnBoardGoodColor(){ //checkTriangle
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated());
         assertTrue(mission1.checkFormIrrigateWithColor(board,0,1));
     }
 
 
-    @Test void ligneOnBoardGoodColor() throws BadPlaceParcelException { //check Line
+    @Test void ligneOnBoardGoodColor(){ //check Line
         board.placeParcel(parcel4,parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
         board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated());
         board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());

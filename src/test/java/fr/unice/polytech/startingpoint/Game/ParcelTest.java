@@ -1,7 +1,5 @@
-
 package fr.unice.polytech.startingpoint.Game;
 
-import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,5 +31,4 @@ class ParcelTest {
         assertNotEquals(parcel1,parcel2);
         assertNotEquals(parcel1,null);
     }
-
 }

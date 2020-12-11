@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint;
+package fr.unice.polytech.startingpoint.Game;
 
 import fr.unice.polytech.startingpoint.Game.*;
 import fr.unice.polytech.startingpoint.Type.BotType;
@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 public class StatTest {
-    Resource resource;
-    Board board;
+    Game game;
+    Rules rules;
 
     Stat statGame1P;
     Stat statGame2P;
@@ -40,19 +40,18 @@ public class StatTest {
 
     @BeforeEach
     public void initialize(){
-        resource = new Resource();
-        board = new Board();
+        game = new Game();
 
         statGame1P = new Stat(p1);
         statGame2P = new Stat(p2);
         statGame4P = new Stat(p4);
 
-        p1w = new PlayerData(p1, resource, board);
-        p1w2Player = new PlayerData(p2, resource, board);
-        p2w2Player = new PlayerData(p2, resource, board);
-        equality2Player = new PlayerData(p2, resource, board);
-        p1w4Player = new PlayerData(p4, resource, board);
-        p2w4Player = new PlayerData(p4, resource, board);
+        p1w = new PlayerData(p1, game);
+        p1w2Player = new PlayerData(p2, game);
+        p2w2Player = new PlayerData(p2, game);
+        equality2Player = new PlayerData(p2, game);
+        p1w4Player = new PlayerData(p4, game);
+        p2w4Player = new PlayerData(p4, game);
 
         p1w.completedMission(0,2);
 
@@ -74,20 +73,6 @@ public class StatTest {
         p2w4Player.completedMission(1,6);
         p2w4Player.completedMission(2,1);
         p2w4Player.completedMission(3,2);
-    }
-
-    @Test
-    public void goodWinners(){
-        assertEquals(new ArrayList<>(Collections.singletonList(0)),statGame2P.getWinner(new ArrayList<>(Arrays.asList(2,1))));
-        assertEquals(new ArrayList<>(Collections.singletonList(1)),statGame2P.getWinner(new ArrayList<>(Arrays.asList(2,6))));
-        assertEquals(new ArrayList<>(Collections.singletonList(2)),statGame4P.getWinner(new ArrayList<>(Arrays.asList(1,2,3,1))));
-        assertEquals(new ArrayList<>(Collections.singletonList(3)),statGame4P.getWinner(new ArrayList<>(Arrays.asList(1,3,2,5))));
-    }
-
-    @Test
-    public void equalScores(){
-        assertEquals(new ArrayList<>(Arrays.asList(0,1)),statGame2P.getWinner(new ArrayList<>(Arrays.asList(2,2))));
-        assertEquals(new ArrayList<>(Arrays.asList(1,2,3)),statGame4P.getWinner(new ArrayList<>(Arrays.asList(1,2,2,2))));
     }
 
     @Test

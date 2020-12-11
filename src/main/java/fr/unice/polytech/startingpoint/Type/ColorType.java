@@ -9,7 +9,6 @@ package fr.unice.polytech.startingpoint.Type;
  * @version 2020.12.03
  */
 
-
 public enum ColorType {
     RED{
         @Override
@@ -31,5 +30,4 @@ public enum ColorType {
             return "No_Color";
         }
     }
-
 }

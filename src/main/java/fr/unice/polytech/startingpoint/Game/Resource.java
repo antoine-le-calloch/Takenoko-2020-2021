@@ -2,10 +2,12 @@ package fr.unice.polytech.startingpoint.Game;
 
 
 import fr.unice.polytech.startingpoint.Type.*;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Classe representant les ressources disponibles au cours d'une partie
@@ -16,14 +18,14 @@ import java.util.List;
  * @version 2020.12.03
  */
 
-public class Resource {
+class Resource {
     private final List<Mission> deckMissionParcel = new ArrayList<>();
     private final List<Mission> deckMissionPanda = new ArrayList<>();
     private final List<Mission> deckMissionPeasant = new ArrayList<>();
     private final List<Parcel> deckParcel = new ArrayList<>();
     private final List<Canal> deckCanal = new ArrayList<>();
 
-    public Resource(){
+    Resource(){
         initializeDeckParcel();
         initializeDeckMission();
         initializeDeckCanal();
@@ -80,7 +82,6 @@ public class Resource {
         Collections.shuffle(deckMissionPeasant);
     }
 
-
     //Initialise le deck des canaux
     private void initializeDeckCanal(){
         int nbCanal = 27;
@@ -89,8 +90,13 @@ public class Resource {
         }
     }
 
+    Parcel selectParcel(Parcel parcel){
+        deckParcel.remove(parcel);
+        return parcel;
+    }
+
     //Pioche une parcelle du deck
-    public List<Parcel> drawParcel() {
+    List<Parcel> drawParcel() throws OutOfResourcesException {
         if (deckParcel.size() > 2) {
             Collections.shuffle(deckParcel);
             List<Parcel> parcelList = new ArrayList<>();
@@ -99,72 +105,69 @@ public class Resource {
             parcelList.add(deckParcel.get(2));
             return parcelList;
         }
-        return deckParcel;
-    }
-
-    public Parcel selectParcel(Parcel parcel){
-        deckParcel.remove(parcel);
-        return parcel;
+        else if (!deckParcel.isEmpty()){
+            return deckParcel;
+        }
+        throw new OutOfResourcesException("No more Parcel to draw.");
     }
 
     //Pioche un canal du deck
-    public Canal drawCanal(){
+    Canal drawCanal() throws OutOfResourcesException {
         if (deckCanal.size() != 0) {
             Canal canal = deckCanal.get(0);
             deckCanal.remove(canal);
             return canal;
         }
-        return null;
+        throw new OutOfResourcesException("No more Canal to draw.");
     }
 
     //Pioche une mission du deck
-    public Mission drawMission(MissionType type){
+    Mission drawMission(MissionType type) throws OutOfResourcesException {
         switch (type) {
             case PARCEL:
                 if (deckMissionParcel.size() > 0) {
                     return deckMissionParcel.remove(0);
                 }
+                throw new OutOfResourcesException("No more ParcelMission to draw.");
             case PEASANT:
                 if (deckMissionPeasant.size() > 0) {
                     return deckMissionPeasant.remove(0);
                 }
+                throw new OutOfResourcesException("No more PeasantMission to draw.");
             case PANDA:
                 if (deckMissionPanda.size() > 0) {
                     return deckMissionPanda.remove(0);
                 }
+                throw new OutOfResourcesException("No more PandaMission to draw.");
             default:
-                return null;
+                throw new IllegalArgumentException("Wrong MissionType to draw.");
         }
     }
 
-    boolean isEmpty(){
-        return ((deckCanal.size()==0 || deckParcel.size()==0) || (deckMissionPanda.size()==0 && deckMissionPeasant.size()==0 && deckMissionParcel.size()==0));
+    List<Mission> getDeckParcelMission(){
+        return new ArrayList<>(deckMissionParcel);
     }
 
-    public List<Mission> getDeckParcelMission(){
-        return deckMissionParcel;
+    List<Mission> getDeckPandaMission(){
+        return new ArrayList<>(deckMissionPanda);
     }
 
-    public List<Mission> getDeckPandaMission(){
-        return deckMissionPanda;
-    }
-
-    public List<Mission> getDeckPeasantMission(){
-        return deckMissionPeasant;
+    List<Mission> getDeckPeasantMission(){
+        return new ArrayList<>(deckMissionPeasant);
     }
 
     //Renvoie la liste du deck de parcelles
-    public List<Parcel> getParcel(){
+    List<Parcel> getDeckParcel(){
         return deckParcel;
     }
 
     //Renvoie la liste du deck de canaux
-    public int getNbMission(){
+    int getNbMission(){
         return deckMissionParcel.size() + deckMissionPanda.size() + deckMissionPeasant.size();
     }
 
     //Renvoie la liste du deck de canaux
-    public List<Canal> getCanal(){
+    List<Canal> getDeckCanal(){
         return deckCanal;
     }
 }

@@ -2,9 +2,9 @@ package fr.unice.polytech.startingpoint.exception;
 
 import fr.unice.polytech.startingpoint.Game.Coordinate;
 
-public class MoveCharacterException extends Exception {
+public class BadMoveCharacterException extends Exception {
 
-    public MoveCharacterException(Coordinate coord){
+    public BadMoveCharacterException(Coordinate coord){
         super(String.valueOf(coord));
     }
 

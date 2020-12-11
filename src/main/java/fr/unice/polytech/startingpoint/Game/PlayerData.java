@@ -15,58 +15,96 @@ import java.util.*;
  */
 
 public class PlayerData {
-    private final Map<Bot,int []>  botData = new HashMap<>(); // Bot - int[ nbMission , score]
+    private final Map<Bot,Inventory>  botData = new HashMap<>(); // Bot - int[ nbMission , score]
+    private int numBot = 0;
 
-    public PlayerData(BotType[] botTypes, Resource resource, Board board) {
-        initializeBot(botTypes, resource, board);
+    public PlayerData(BotType[] botTypes, Game game) {
+        initializeBot(botTypes, game);
     }
 
     //Initialise les robots en fonction de leur nom associé passé en paramètre
-    public void initializeBot(BotType[] botTypes, Resource resource, Board board){
+    private void initializeBot(BotType[] botTypes, Game game){
         for (BotType botType : botTypes) {
             switch (botType) {
                 case RANDOM:
-                    botData.put(new RandomBot(resource, board), new int[]{0, 0});
+                    botData.put(new RandomBot(game, game.getRules()), new Inventory());
                     break;
                 case PARCELBOT:
-                    botData.put(new ParcelBot(resource, board), new int[]{0, 0});
+                    botData.put(new ParcelBot(game, game.getRules()), new Inventory());
                     break;
                 case PEASANTBOT:
-                    botData.put(new PeasantBot(resource, board), new int[]{0, 0});
+                    botData.put(new PeasantBot(game, game.getRules()), new Inventory());
                     break;
                 case PANDABOT:
-                    botData.put(new PandaBot(resource, board), new int[]{0, 0});
+                    botData.put(new PandaBot(game, game.getRules()), new Inventory());
                     break;
             }
         }
     }
 
-    public void completedMission(int numBot, int count) {
-        int[] nb = botData.get(get(numBot));
-        nb[0] ++;
-        nb[1] += count;
-        botData.replace(get(numBot), nb);
+    void completedMission( int count) {
+        botData.get(getBot()).addScore(count);
     }
 
-    int size(){
-        return botData.size();
+    void completedMission(int numBot, int count) {
+        botData.get(new ArrayList<>(botData.keySet()).get(numBot)).addScore(count);
     }
 
-    public List<Integer> getMissions() {
+    void nextBot() {
+        numBot = (numBot+1) % botData.size();
+    }
+
+    void addMission(Mission mission) {
+        botData.get(getBot()).addMission(mission);
+    }
+
+    void addCanal(Canal canal) {
+        botData.get(getBot()).addCanal(canal);
+    }
+
+    void addBamboo(ColorType colorType){
+        getInventory().addBamboo(colorType);
+    }
+
+    void subMissions(List<Mission> toRemove) {
+        getInventory().subMissions(toRemove);
+    }
+
+    List<Integer> getMissionsDone() {
         List<Integer> missionsDone = new ArrayList<>();
-        for (int[] value : botData.values())
-            missionsDone.add(value[0]);
+        for (Inventory inventory : botData.values())
+            missionsDone.add(inventory.getMissionsDone());
         return missionsDone;
     }
 
     public List<Integer> getScores() {
         List<Integer> Score = new ArrayList<>();
-        for (int[] value : botData.values())
-            Score.add(value[1]);
+        for (Inventory inventory : botData.values())
+            Score.add(inventory.getScore());
         return Score;
     }
 
-    public Bot get(int numBot) {
+    Bot getBot() {
         return new ArrayList<>(botData.keySet()).get(numBot);
+    }
+
+    Inventory getInventory() {
+        return botData.get(getBot());
+    }
+
+    List<ParcelMission> getParcelMissions(){
+        return getInventory().getParcelMissions();
+    }
+
+    List<PandaMission> getPandaMissions(){
+        return getInventory().getPandaMissions();
+    }
+
+    List<PeasantMission> getPeasantMissions(){
+        return getInventory().getPeasantMissions();
+    }
+
+    List<Mission> getMissions() {
+        return getInventory().getMissions();
     }
 }
