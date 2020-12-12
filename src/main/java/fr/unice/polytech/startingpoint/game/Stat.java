@@ -15,26 +15,27 @@ import java.util.List;
  */
 
 public class Stat {
-    private final List<PlayerData> gameData = new ArrayList<>();
+    private final List<List<Integer>> gameData;
     private final BotType[] botList;
     private final int[][] botScores;
 
     public Stat(BotType[] botList){
+        gameData = new ArrayList<>();
         this.botList = botList;
         botScores = new int[botList.length][3];
         for (int i = 0; i < botList.length; i++){
-            for (int j = 0; j < botScores[0].length; j++){
+            for (int j = 0; j < 3; j++){
                 botScores[i][j] = 0;
             }
         }
     }
 
     //Ajoute les stats d'une nouvelles parties
-    void add(PlayerData gameData) {
-        this.gameData.add(gameData);
-        setWinner(getWinner(gameData.getScores()));
-        for (int i = 0; i < gameData.getScores().size(); i++){
-            botScores[i][0] += gameData.getScores().get(i);
+    void add(List<Integer> integerList) {
+        gameData.add(integerList);
+        setWinner(getWinner(integerList));
+        for (int i = 0; i < integerList.size(); i++){
+            botScores[i][0] += integerList.get(i);
         }
     }
 
@@ -65,17 +66,17 @@ public class Stat {
 
     //Renvoie le nombres de points moyens du joueur passé en paramètre
     public double getPointsAverage(int joueur){
-        return (botScores[joueur][0]*1.0)/gameData.size();
+        return (botScores[joueur][0]*1.0)/(gameData.size());
     }
 
     //Renvoie le taux de victoire du joueur passé en paramètre
     public double getWinRate(int joueur){
-        return botScores[joueur][1]/(gameData.size()/100.0);
+        return botScores[joueur][1]/((gameData.size())/100.0);
     }
 
     //Renvoie le taux d'égalité du joueur passé en paramètre
     public double getEqualityRate(int joueur){
-        return botScores[joueur][2]/(gameData.size()/100.0);
+        return botScores[joueur][2]/((gameData.size())/100.0);
     }
 
     //Renvoie les statistiques des parties sous forme de String

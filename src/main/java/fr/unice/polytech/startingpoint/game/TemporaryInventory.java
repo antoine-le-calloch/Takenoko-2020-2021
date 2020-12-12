@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 class TemporaryInventory {
+    private boolean cheat;
     private int stamina;
     private Parcel parcel;
     private List<Parcel> parcelList;
@@ -14,7 +15,7 @@ class TemporaryInventory {
     private boolean hasSelected;
     private boolean hasPlayed;
 
-
+    //Normal Constructor
     TemporaryInventory(int stamina){
         this.stamina = stamina;
         parcel = null;
@@ -22,13 +23,26 @@ class TemporaryInventory {
         hasDrawn = false;
         hasSelected = false;
         hasPlayed = false;
+        cheat = false;
+    }
+
+    //Test Constructor
+    TemporaryInventory(){
+        stamina = 0;
+        parcel = null;
+        parcelList = new ArrayList<>();
+        hasDrawn = false;
+        hasSelected = false;
+        hasPlayed = false;
+        cheat = true;
     }
 
     void looseStamina() throws OutOfResourcesException {
         stamina --;
-        if (stamina < 0){
+        if (cheat)
+            stamina ++;
+        if (stamina < 0)
             throw new OutOfResourcesException("No more stamina.");
-        }
     }
 
     void saveParcels(List<Parcel> parcelList){
@@ -50,8 +64,9 @@ class TemporaryInventory {
         return parcel;
     }
 
-    boolean hasPlayedCorrectly() {
-        return (hasDrawn == hasSelected) && (hasSelected == hasPlayed);
+    void hasPlayedCorrectly() {
+        if (!(hasDrawn == hasSelected) && !(hasSelected == hasPlayed))
+            throw new NoSuchElementException("Player has not placed his parcel.");
     }
 
     List<Parcel> getParcelsSaved() {

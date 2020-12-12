@@ -14,11 +14,17 @@ import java.util.*;
  * @version 2020.12.04
  */
 
-public class PlayerData {
-    private final Map<Bot,Inventory>  botData = new HashMap<>(); // Bot - int[ nbMission , score]
-    private int numBot = 0;
+class PlayerData {
+    private final Game game;
+    private final Map<Bot,Inventory> botData;// Bot - int[ nbMission , score]
+    private int numBot;
+    private static int NB_MISSION;
 
-    public PlayerData(BotType[] botTypes, Game game) {
+    PlayerData(BotType[] botTypes, Game game, int nbMission) {
+        this.game = game;
+        botData = new HashMap<>();
+        NB_MISSION = nbMission;
+        numBot = 0;
         initializeBot(botTypes, game);
     }
 
@@ -42,24 +48,47 @@ public class PlayerData {
         }
     }
 
-    void completedMission( int count) {
-        botData.get(getBot()).addScore(count);
-    }
-
-    void completedMission(int numBot, int count) {
-        botData.get(new ArrayList<>(botData.keySet()).get(numBot)).addScore(count);
-    }
-
     void nextBot() {
         numBot = (numBot+1) % botData.size();
     }
 
+    //Permet de verifier si un bot à fait suffisament de mission pour que la partie s'arrête
+    boolean isContinue(){
+        for (int mission : getMissionsDone()) {
+            if (mission >= NB_MISSION)
+                return false;
+        }
+        return true;
+    }
+
+    /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
+    il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
+    void missionDone(){
+        List<Mission> toRemove = new ArrayList<>();
+        int count;  // PB SI LE BOT A PAS DE MISSION
+        for(Mission mission : getMissions()){
+            if( (count = mission.checkMission(game.getBoard(),getInventory())) != 0){
+                completedMission(count);
+                toRemove.add(mission);
+            }
+        }
+        subMissions(toRemove);
+    }
+
+    void completedMission( int count) {
+        getInventory().addScore(count);
+    }
+
+    void completedMission(int numBot, int count) {
+        getInventory().addScore(count);
+    }
+
     void addMission(Mission mission) {
-        botData.get(getBot()).addMission(mission);
+        getInventory().addMission(mission);
     }
 
     void addCanal(Canal canal) {
-        botData.get(getBot()).addCanal(canal);
+        getInventory().addCanal(canal);
     }
 
     void addBamboo(ColorType colorType){
@@ -68,6 +97,14 @@ public class PlayerData {
 
     void subMissions(List<Mission> toRemove) {
         getInventory().subMissions(toRemove);
+    }
+
+    Bot getBot() {
+        return new ArrayList<>(botData.keySet()).get(numBot);
+    }
+
+    Inventory getInventory() {
+        return botData.get(getBot());
     }
 
     List<Integer> getMissionsDone() {
@@ -82,14 +119,6 @@ public class PlayerData {
         for (Inventory inventory : botData.values())
             Score.add(inventory.getScore());
         return Score;
-    }
-
-    Bot getBot() {
-        return new ArrayList<>(botData.keySet()).get(numBot);
-    }
-
-    Inventory getInventory() {
-        return botData.get(getBot());
     }
 
     List<ParcelMission> getParcelMissions(){

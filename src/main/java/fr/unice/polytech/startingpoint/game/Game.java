@@ -22,57 +22,34 @@ public class Game{
     private final Rules rules;
     private TemporaryInventory temporaryInventory;
     private final PlayerData playerData;
-    private static final int NB_MISSION = 4;
 
-    Game(BotType[] botTypes){
+    //Normal Constructor
+    Game(BotType[] botTypes,int nbMission){
         resource = new Resource();
         board = new Board();
         rules = new Rules(resource,board);
-        playerData = new PlayerData(botTypes, this);
+        playerData = new PlayerData(botTypes, this,nbMission);
         temporaryInventory = new TemporaryInventory(1);
     }
 
-    Game(){
+    //Test Constructor
+    public Game(){
         resource = new Resource();
         board = new Board();
         rules = new Rules(resource,board);
-        playerData = new PlayerData(new BotType[]{BotType.PARCELBOT}, this);
-        temporaryInventory = new TemporaryInventory(1000);
+        playerData = new PlayerData(new BotType[]{BotType.PARCELBOT}, this,0);
+        temporaryInventory = new TemporaryInventory();
     }
 
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
-        while(isContinue() && (!rules.isEmpty())) {
+        while(playerData.isContinue() && (!rules.isEmpty())) {
             temporaryInventory = new TemporaryInventory(1);
             playerData.getBot().botPlay();
-            if(!temporaryInventory.hasPlayedCorrectly())
-                throw new NoSuchElementException("Player has not placed his parcel.");
-            missionDone();
+            temporaryInventory.hasPlayedCorrectly();
+            playerData.missionDone();
             playerData.nextBot();
         }
-    }
-
-    //Permet de verifier si un bot à fait suffisament de mission pour que la partie s'arrête
-    boolean isContinue(){
-        for (int mission : playerData.getMissionsDone()) {
-            if (mission >= NB_MISSION)
-                return false;
-        }
-        return true;
-    }
-
-    /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
-    il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
-    void missionDone(){
-        List<Mission> toRemove = new ArrayList<>();
-        int count;  // PB SI LE BOT A PAS DE MISSION
-        for(Mission mission : playerData.getMissions()){
-            if( (count = mission.checkMission(board,playerData.getInventory())) != 0){
-                playerData.completedMission(count);
-                toRemove.add(mission);
-            }
-        }
-        playerData.subMissions(toRemove);
     }
 
     Board getBoard() {
@@ -89,6 +66,10 @@ public class Game{
 
     PlayerData getPlayerData() {
         return playerData;
+    }
+
+    public List<Integer> getScores(){
+        return playerData.getScores();
     }
 
     /**

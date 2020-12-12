@@ -1,7 +1,13 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.type.BotType;
+import fr.unice.polytech.startingpoint.game.Stat;
+import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,19 +21,16 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 public class StatTest {
-    Game game;
-    Rules rules;
-
     Stat statGame1P;
     Stat statGame2P;
     Stat statGame4P;
 
-    PlayerData p1w;
-    PlayerData p1w2Player;
-    PlayerData p2w2Player;
-    PlayerData equality2Player;
-    PlayerData p1w4Player;
-    PlayerData p2w4Player;
+    List<Integer> p1w;
+    List<Integer> p1w2Player;
+    List<Integer> p2w2Player;
+    List<Integer> equality2Player;
+    List<Integer> p1w4Player;
+    List<Integer> p2w4Player;
 
     BotType[] p1 = new BotType[]{BotType.RANDOM};
     BotType[] p2 = new BotType[]{BotType.RANDOM,BotType.PARCELBOT};
@@ -35,39 +38,16 @@ public class StatTest {
 
     @BeforeEach
     public void initialize(){
-        game = new Game();
-
         statGame1P = new Stat(p1);
         statGame2P = new Stat(p2);
         statGame4P = new Stat(p4);
 
-        p1w = new PlayerData(p1, game);
-        p1w2Player = new PlayerData(p2, game);
-        p2w2Player = new PlayerData(p2, game);
-        equality2Player = new PlayerData(p2, game);
-        p1w4Player = new PlayerData(p4, game);
-        p2w4Player = new PlayerData(p4, game);
-
-        p1w.completedMission(0,2);
-
-        p1w2Player.completedMission(0,2);
-        p1w2Player.completedMission(1,1);
-
-        p2w2Player.completedMission(1,2);
-        p2w2Player.completedMission(0,1);
-
-        equality2Player.completedMission(1,1);
-        equality2Player.completedMission(0,1);
-
-        p1w4Player.completedMission(0,6);
-        p1w4Player.completedMission(1,4);
-        p1w4Player.completedMission(2,2);
-        p1w4Player.completedMission(3,1);
-
-        p2w4Player.completedMission(0,4);
-        p2w4Player.completedMission(1,6);
-        p2w4Player.completedMission(2,1);
-        p2w4Player.completedMission(3,2);
+        p1w = new ArrayList<>(Collections.singletonList(2));
+        p1w2Player = new ArrayList<>(Arrays.asList(2,1));
+        p2w2Player = new ArrayList<>(Arrays.asList(1,2));
+        equality2Player = new ArrayList<>(Arrays.asList(1,1));
+        p1w4Player = new ArrayList<>(Arrays.asList(6,4,2,1));
+        p2w4Player = new ArrayList<>(Arrays.asList(4,6,1,2));
     }
 
     @Test

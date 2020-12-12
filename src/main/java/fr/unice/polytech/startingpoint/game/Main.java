@@ -19,9 +19,9 @@ public class Main{
         Stat statGame = new Stat(botList); //creation des statistiques de l'ensemble des parties
 
         for (int i = 0; i < 1000; i++) {
-            Game game = new Game(botList); //creation d'une partie
+            Game game = new Game(botList,4); //creation d'une partie
             game.play();
-            statGame.add(game.getPlayerData());
+            statGame.add(game.getScores());
         }
 
         System.out.println(statGame);
