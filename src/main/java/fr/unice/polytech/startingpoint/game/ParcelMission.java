@@ -2,6 +2,9 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.type.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Classe representant une mission parcelle
  * @author Manuel Enzo
@@ -20,34 +23,24 @@ public class ParcelMission extends Mission {
     }
 
     //Renvoie le nombre de points que les missions rapportent si elles ont été accomplies
-    int checkMission(Board board, Inventory inventory) {
-        switch (formType) {
-            case TRIANGLE:
-                if (checkFormIrrigateWithColor(board,0,1))
+    public int checkMission(Board board, Inventory inventory) {
+        for (Coordinate coordParcel : board.getPlacedParcels().keySet()) {
+            if(setForm(coordParcel, formType).stream().allMatch(board::isPlacedAndIrrigatedParcel))
+                if(setForm(coordParcel, formType).stream().allMatch(coord -> board.getPlacedParcels().get(coord).getColor().equals(colorType)))
                     return points;
-                return 0;
-            case LINE:
-                if (checkFormIrrigateWithColor(board,2,5))
-                    return points;
-                return 0;
-            default:
-                return 0;
         }
+        return 0;
     }
 
-    //retourne vrai si il y a un triangle sur le plateau
-    boolean checkFormIrrigateWithColor(Board board, int offset1, int offset2) {
-        for (Parcel parcel : board.getPlacedParcels().values()) {
-            Coordinate c1 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset1));
-            Coordinate c2 = new Coordinate(parcel.getCoordinates(), Coordinate.offSets().get(offset2));
-            if (board.isPlacedAndIrrigatedParcel(c1) && board.isPlacedAndIrrigatedParcel(c2)){
-                if (parcel.getColor().equals(colorType) &&
-                        board.getPlacedParcels().get(c1).getColor().equals(colorType) &&
-                        board.getPlacedParcels().get(c2).getColor().equals(colorType) )
-                    return true;
-            }
-        }
-        return false;
+    public List<Coordinate> setForm(Coordinate hightCoord, FormType form){
+        List<Coordinate> coordForm = new ArrayList<>();
+        coordForm.add(hightCoord);
+        coordForm.add(new Coordinate(hightCoord,Coordinate.offSets().get(2)));
+        if(form.equals(FormType.LINE))
+            coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(2)));
+        else
+            coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(4)));
+        return coordForm;
     }
 
     //Renvoie l'objectif de la mission

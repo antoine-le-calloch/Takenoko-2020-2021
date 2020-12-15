@@ -41,7 +41,7 @@ class TemporaryInventory {
         stamina --;
         if (cheat)
             stamina ++;
-        if (stamina < 0)
+        if (stamina < -1)
             throw new OutOfResourcesException("No more stamina.");
     }
 
