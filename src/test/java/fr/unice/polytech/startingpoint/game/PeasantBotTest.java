@@ -1,33 +1,32 @@
-package fr.unice.polytech.startingpoint.bot;
+package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.CharacterType;
-import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.bot.PeasantBot;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
+import fr.unice.polytech.startingpoint.type.BotType;
+import fr.unice.polytech.startingpoint.type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-class PeasantBotTest {/*
-    Character peasant1;
+class PeasantBotTest {
     Board board;
     Parcel parcel1;
     PeasantBot peasantBot;
     Coordinate coordinate1;
+    Game game;
 
     @BeforeEach
     void setUp(){
-        peasant1 = new Character(CharacterType.PEASANT);
-        board = new Board();
+        game=new Game(new BotType[] {BotType.PEASANTBOT},3);
+        peasantBot = (PeasantBot) game.getPlayerData().getBot();
+        board = game.getBoard();
         parcel1 = new Parcel(ColorType.RED);
-        peasantBot = new PeasantBot(new Resource(),board);
         coordinate1 = new Coordinate(1, -1, 0);
     }
 
@@ -39,29 +38,20 @@ class PeasantBotTest {/*
     @Test
     void coordWhereMovePeasant_1parcelWith1Bamboo() throws BadPlaceParcelException {
         board.placeParcel(parcel1, coordinate1);//place la parcel (un bamboo pousse)
-
         assertNull(peasantBot.strategyMovePeasant(peasantBot.possibleCoordinatesPanda()));
     }
 
     @Test
     void coordWhereMovePeasant_1parcelWith2Bamboo() {
-        Board boardMock = Mockito.mock(Board.class);
-        Map<Coordinate,Parcel> placedParcel = new HashMap<>();//Liste des parcels posées
         Parcel parcel2Bamboo = new Parcel(ColorType.NO_COLOR); //créée une parcel
         parcel2Bamboo.addBamboo(); parcel2Bamboo.addBamboo(); //ajoute 2 bamboo
-        placedParcel.put(coordinate1,parcel2Bamboo);//ajoute la parcel avec 2 bamboo a la liste des parcels posées
-
-        Mockito.when(boardMock.getPlacedParcels()).thenReturn(placedParcel);//simule la liste des parcels posées
-
-        PeasantBot bot1 = new PeasantBot(new Resource(),boardMock);
-
-        List<Coordinate> coordsParcels = new ArrayList<>();
-        coordsParcels.add(coordinate1);
-        assertEquals(coordinate1,bot1.strategyMovePeasant(coordsParcels));
+        board.placeParcel(parcel2Bamboo,coordinate1);// ;//ajoute la parcel avec 2 bamboo a la liste des parcels posée
+        assertEquals(coordinate1,peasantBot.strategyMovePeasant(peasantBot.possibleCoordinatesPeasant()));
     }
 
     @Test
     void movePeasant_1Parcel2Bamboo() throws BadPlaceParcelException {
+
         Resource resource = Mockito.mock(Resource.class);
         List<Mission> deckVide = new ArrayList<>();
         Mockito.when(resource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
@@ -70,17 +60,16 @@ class PeasantBotTest {/*
         parcel1Bamboo.addBamboo(); //ajoute 1 bamboo
         board.placeParcel(parcel1Bamboo, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
 
-        PeasantBot bot1 = new PeasantBot(resource,board);
-
         assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//2 bamboo sur la parcel
-        bot1.botPlay();//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
+        peasantBot.botPlay();//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
+
         assertEquals(3,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
     }
 
     @Test
     void drawMission() {
-        assertEquals(0, peasantBot.getInventory().getMission().size());//0 mission dans son inventaire
+        assertEquals(0, game.getPlayerData().getPeasantMissions().size());//0 mission dans son inventaire
         peasantBot.botPlay();//fait jouer le paysan(il vas piocher)
-        assertEquals(1, peasantBot.getInventory().getMission().size());//1 mission dans son inventaire
-    }*/
+        assertEquals(1, game.getPlayerData().getPeasantMissions().size());//1 mission dans son inventaire
+    }
 }

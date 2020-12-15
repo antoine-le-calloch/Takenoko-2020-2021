@@ -28,7 +28,7 @@ public class Game{
         board = new Board();
         rules = new Rules(resource,board);
         playerData = new PlayerData(botTypes, this,nbMission);
-        temporaryInventory = new TemporaryInventory(1);
+        temporaryInventory = new TemporaryInventory(2);
     }
 
     //Test Constructor

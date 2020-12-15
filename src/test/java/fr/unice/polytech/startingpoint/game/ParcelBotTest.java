@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.bot;
+package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.game.*;
 import fr.unice.polytech.startingpoint.type.*;

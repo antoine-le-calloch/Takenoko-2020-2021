@@ -15,10 +15,10 @@ public class Main{
 
     public static void main(String... args){
         //ne pas faire jouer que des peasents et ou que des pandabot (boucle infini)
-        BotType[] botList = new BotType[]{BotType.RANDOM, BotType.PARCELBOT};
+        BotType[] botList = new BotType[]{BotType.RANDOM, BotType.RANDOM};
         Stat statGame = new Stat(botList); //creation des statistiques de l'ensemble des parties
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             Game game = new Game(botList,4); //creation d'une partie
             game.play();
             statGame.add(game.getScores());
