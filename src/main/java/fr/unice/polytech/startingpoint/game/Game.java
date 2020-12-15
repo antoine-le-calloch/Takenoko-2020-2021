@@ -5,7 +5,6 @@ import fr.unice.polytech.startingpoint.exception.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Moteur de jeu, creation d'une partie, fait jouer les bots, verifie les missions faites et termine la partie
@@ -33,7 +32,7 @@ public class Game{
     }
 
     //Test Constructor
-    public Game(){
+    Game(){
         resource = new Resource();
         board = new Board();
         rules = new Rules(resource,board);
@@ -68,7 +67,7 @@ public class Game{
         return playerData;
     }
 
-    public List<Integer> getScores(){
+    List<Integer> getScores(){
         return playerData.getScores();
     }
 

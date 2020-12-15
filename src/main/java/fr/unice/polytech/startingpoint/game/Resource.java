@@ -7,7 +7,6 @@ import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Classe representant les ressources disponibles au cours d'une partie

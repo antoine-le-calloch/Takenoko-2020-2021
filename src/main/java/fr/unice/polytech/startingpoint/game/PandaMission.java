@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 
 /**
  * Classe representant une mission panda

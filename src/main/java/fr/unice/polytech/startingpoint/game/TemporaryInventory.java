@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 class TemporaryInventory {
-    private boolean cheat;
+    private final boolean cheat;
     private int stamina;
     private Parcel parcel;
     private List<Parcel> parcelList;
