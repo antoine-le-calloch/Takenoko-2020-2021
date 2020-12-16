@@ -103,6 +103,7 @@ public class Game{
     public void selectParcel(ColorType colorType){
         for (Parcel parcel : temporaryInventory.getParcelsSaved()){
             if (parcel.getColor() == colorType){
+                resource.selectParcel(parcel);
                 temporaryInventory.add(parcel);
                 return;
             }
