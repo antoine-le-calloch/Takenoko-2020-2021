@@ -45,7 +45,7 @@ public class Game{
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
         while(playerData.isContinue() && (!rules.isEmpty())) {
-            temporaryInventory = new TemporaryInventory(1);
+            temporaryInventory = new TemporaryInventory(2);
             playerData.getBot().botPlay();
             temporaryInventory.hasPlayedCorrectly();
             playerData.missionDone();
