@@ -41,8 +41,6 @@ public class ParcelBot extends Bot {
     }
 
     /**
-     * <h2>{@link #botPlay()} :</h2>
-     *
      * <p>The actions of the bot during his turn.</p>
      */
     public void botPlay(){
@@ -63,8 +61,6 @@ public class ParcelBot extends Bot {
     }
 
     /**
-     * <h2>{@link #isJudiciousDrawMission(int cptAction)} :</h2>
-     *
      * @return <b>True if the bot can draw a mission.</b>
      * @see Game
      */
@@ -74,8 +70,6 @@ public class ParcelBot extends Bot {
     }
 
     /**
-     * <h2>{@link #isJudiciousPutParcel(int cptAction)} :</h2>
-     *
      * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
      * @see Game
      */
@@ -90,8 +84,6 @@ public class ParcelBot extends Bot {
     }
 
     /**
-     * <h2>{@link #isJudiciousPutCanal(int cptAction)} :</h2>
-     *
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
      * @see Game
      */
@@ -100,8 +92,6 @@ public class ParcelBot extends Bot {
     }
 
     /**
-     * <h2>{@link #putParcel()} :</h2>
-     *
      * <p>For each mission, put a parcel to best place to finish it or place a random one.</p>
      *
      * @see Game
@@ -185,8 +175,6 @@ public class ParcelBot extends Bot {
     }
 
     /**
-     * <h2>{@link #coordNeedeToDoMission(Coordinate hightCoord, ParcelMission mission)} :</h2>
-     *
      * @param hightCoord
      *            <b>The higth coordinate of a form.</b>
      * @param mission
@@ -246,8 +234,6 @@ public class ParcelBot extends Bot {
     }
 
     /**
-     * <h2>{@link #putParcel()} :</h2>
-     *
      * @return <b>True, if a canal can be place and irrigate a parcel, else, it returns false and place a random canal.</b>
      *
      * @see Coordinate

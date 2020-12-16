@@ -17,12 +17,28 @@ import java.util.List;
 public class ParcelMission extends Mission {
     private final FormType formType;
 
+    /**
+     * <p>Set up a parcel mission. Initialize all variables.</p>
+     *
+     * @param colorType
+     *            <b>the colorType of the mission</b>
+     * @param points
+     *            <b>the points of the mission</b>
+     */
     ParcelMission(ColorType colorType, int points,FormType formType) {
         super(MissionType.PARCEL,colorType,points);
         this.formType = formType;
     }
 
-    //Renvoie le nombre de points que les missions rapportent si elles ont été accomplies
+    /**
+     * <p>check if a parcel mission is done, use checkFormIrrigateWithColor as a function of the form</p>
+     *
+     * @param board
+     *            <b>Board object.</b>
+     * @param inventory
+     *            <b>Inventory object.</b>
+     * @return <b>the number of point if the mission is done, if not , return 0</b>
+     */
     int checkMission(Board board, Inventory inventory) {
         switch (formType) {
             case TRIANGLE:
@@ -38,7 +54,19 @@ public class ParcelMission extends Mission {
         }
     }
 
-    //retourne vrai si il y a un triangle sur le plateau
+    /**
+     * <p>check if a form in on the board, all parcels have to be irrigated and must have the good color.</p>
+     *
+     * @param board
+     *            <b>Board object.</b>
+     * @param coordinate1
+     *            <b>first coordinate to add to the parcel's coordinate
+     *            to check is the there is a parcel irrigated and with a good color on the board.</b>
+     * @param coordinate2
+     *            <b>second coordinate to add to the parcel's coordinate
+     *      *            to check is the there is a parcel irrigated and with a good color on the board.</b>
+     * @return <b>true if the form is on the board</b>
+     */
     boolean checkFormIrrigateWithColor(Board board, Coordinate coordinate1, Coordinate coordinate2) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
             if (board.isPlacedAndIrrigatedParcel(parcel.getCoordinates()) && board.isPlacedAndIrrigatedParcel(new Coordinate(parcel.getCoordinates(), coordinate1)) && board.isPlacedAndIrrigatedParcel(new Coordinate(parcel.getCoordinates(), coordinate2))){
@@ -51,7 +79,9 @@ public class ParcelMission extends Mission {
         return false;
     }
 
-    //Renvoie l'objectif de la mission
+    /**
+     * @return <b>the form of the mission</b>
+     */
     public FormType getFormType(){
         return formType;
     }
