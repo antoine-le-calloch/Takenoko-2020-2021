@@ -1,8 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
 import fr.unice.polytech.startingpoint.exception.CantDeleteBambooException;
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.*;
 
 /**
@@ -19,12 +17,28 @@ class Parcel {
     private boolean irrigated = false;
     private int nbBamboo = 0;
     private final ColorType colorType;
-    private final ImprovementType improvementType;
+    private ImprovementType improvementType;
 
     Parcel(ColorType colorType, ImprovementType improvementType){
         this.colorType = colorType;
         this.improvementType = improvementType;
         setIrrigatedImprovement();
+    }
+
+    Parcel(ColorType colorType){
+        this.colorType = colorType;
+        this.improvementType = ImprovementType.NOTHING;
+        setIrrigatedImprovement();
+    }
+
+    Parcel(){
+        this.colorType = ColorType.NO_COLOR;
+        this.improvementType = ImprovementType.NOTHING;
+        setIrrigatedImprovement();
+    }
+
+    void setImprovementType(ImprovementType improvementType) {
+        this.improvementType = improvementType;
     }
 
     void setIrrigatedImprovement(){

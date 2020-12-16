@@ -23,7 +23,7 @@ class Board {
     private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
 
     Board() {
-        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING).setCoordinates(new Coordinate(0, 0, 0)));
+        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NO_COLOR).setCoordinates(new Coordinate(0, 0, 0)));
     }
 
     //Place une parcelle sur le board si les conditions le permettent

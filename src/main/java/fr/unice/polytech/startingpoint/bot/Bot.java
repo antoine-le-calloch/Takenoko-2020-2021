@@ -43,10 +43,7 @@ public abstract class Bot {
         this.rules = rules;
     }
 
-    /**
-     * <h2>{@link #botPlay()} :</h2>
-     *
-     * <p>The actions of the bot during his turn.</p>
+    /**<p>The actions of the bot during his turn.</p>
      */
     public abstract void botPlay();
 

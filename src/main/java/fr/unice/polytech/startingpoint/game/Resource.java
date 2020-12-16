@@ -175,4 +175,12 @@ class Resource {
     List<Canal> getDeckCanal(){
         return deckCanal;
     }
+
+
+    /**@return <b>True, if the resources are considers empty.</b>
+     */
+    boolean isEmpty(){
+        return ( (deckCanal.size()==0 || deckParcel.size()==0) ||
+                (deckMissionParcel.size()==0 && deckMissionPanda.size()==0 && deckMissionPeasant.size()==0) );
+    }
 }

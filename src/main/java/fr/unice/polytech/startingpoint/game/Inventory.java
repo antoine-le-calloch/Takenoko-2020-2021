@@ -31,9 +31,7 @@ class Inventory {
     private final int[] score;
 
     /**
-     * <h2>{@link #Inventory()} :</h2>
-     *
-     * Initialize {@link #inventoryMission} and {@link #inventoryBamboo} variables.
+     * <p>Set up the Inventory. Initialize all variables.</p>
      */
     Inventory(){
         inventoryMission = new ArrayList<>();
@@ -42,13 +40,7 @@ class Inventory {
         score = new int[]{0,0};
     }
 
-    /**
-     * <h2>{@link #pickCanal()} :</h2>
-     *
-     * @return <b>A canal and remove it from the inventory.</b>
-     *
-     * @see Resource
-     * @see Canal
+    /**@return <b>A canal and remove it from the inventory.</b>
      */
     Canal pickCanal() throws OutOfResourcesException {
         if (!inventoryCanal.isEmpty()){
@@ -57,120 +49,79 @@ class Inventory {
         throw new OutOfResourcesException("No more Canal in the inventory.");
     }
 
-    /**
-     * <h2>{@link #addBamboo(ColorType)} :</h2>
+    /**<p>Add to the score the number of points specified in parameter.</p>
      *
-     * <p>Add one bamboo of the {@link ColorType} specified in parameter.</p>
+     * @param count
+     *              <b>The number of points to add to the score.</b>
+     */
+    void addScore(int count) {
+        score[0] += count;
+        score[1] ++;
+    }
+
+    /**<p>Add one bamboo of the {@link ColorType} specified in parameter.</p>
      *
      * @param colorType
      *              <b>The {@link ColorType} of the bamboo we want to add.</b>
-     *
-     * @see ColorType
      */
     void addBamboo(ColorType colorType){
         if (colorType != ColorType.NO_COLOR)
             inventoryBamboo[colorType.ordinal()] ++;
     }
 
-    /**
-     * <h2>{@link #addCanal(Canal)} :</h2>
-     *
-     * <p>Add a {@link Canal} in the inventory.</p>
-     *
-     * @see Canal
+    /**<p>Add a {@link Canal} in the inventory.</p>
      */
     void addCanal(Canal canal){
         inventoryCanal.add(canal);
     }
 
-    /**
-     * <h2>{@link #addMission(Mission)} :</h2>
-     *
-     * <p>Add a {@link Mission} in the inventory.</p>
-     *
-     * @see Mission
-     * @see ParcelMission
-     * @see PeasantMission
-     * @see PandaMission
+    /**<p>Add a {@link Mission} in the inventory.</p>
      */
     void addMission(Mission mission){
         inventoryMission.add(mission);
     }
 
-    /**
-     * <h2>{@link #subBamboo(ColorType)} :</h2>
-     *
-     * <p>Sub one bamboo of the {@link ColorType} specified in parameter.</p>
+    /**<p>Sub one bamboo of the {@link ColorType} specified in parameter.</p>
      *
      * @param colorType
      *          <b>The {@link ColorType} of the bamboo we want to remove.</b>
-     *
-     * @see ColorType
      */
     void subBamboo(ColorType colorType){
         if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NO_COLOR))
             inventoryBamboo[colorType.ordinal()] --;
     }
 
-    /**
-     * <h2>{@link #subMissions(List)} :</h2>
-     *
-     * <p>Remove all {@link Mission} specified in the {@link List} in parameters.</p>
+    /**<p>Remove all {@link Mission} specified in the {@link List} in parameters.</p>
      *
      * @param missions
      *              <b>The {@link List}.</b>
-     *
-     * @see Mission
-     * @see ParcelMission
-     * @see PandaMission
-     * @see PeasantMission
      */
     void subMissions(List<Mission> missions){
         inventoryMission.removeAll(missions);
     }
 
-    /**
-     * <h2>{@link #getBamboo(ColorType)} :</h2>
-     *
-     * @param colorType
+    /**@param colorType
      *          <b>The {@link ColorType} of the bamboo we want the number from.</b>
      *
      * @return <b>The number of bamboo of the {@link ColorType} specified in parameter.</b>
-     *
-     * @see ColorType
      */
     int getBamboo(ColorType colorType){
         return inventoryBamboo[colorType.ordinal()];
     }
 
-    /**
-     * <h2>{@link #getBamboo()} :</h2>
-     *
-     * @return <b>The list containing the number of bamboos of each {@link ColorType}.</b>
-     * @see ColorType
+    /**@return <b>The list containing the number of bamboos of each {@link ColorType}.</b>
      */
     int[] getBamboo() {
         return inventoryBamboo.clone();
     }
 
-    /**
-     * <h2>{@link #getMissions()} :</h2>
-     *
-     * @return <b>The list of all missions.</b>
-     * @see Mission
-     * @see ParcelMission
-     * @see PandaMission
-     * @see PeasantMission
+    /**@return <b>The list of all missions.</b>
      */
     List<Mission> getMissions(){
         return new ArrayList<>(inventoryMission);
     }
 
-    /**
-     * <h2>{@link #getParcelMissions()} :</h2>
-     *
-     * @return <b>The list of {@link ParcelMission} missions.</b>
-     * @see ParcelMission
+    /**@return <b>The list of {@link ParcelMission} missions.</b>
      */
     List<ParcelMission> getParcelMissions(){
         List<ParcelMission> parcelMissions = new ArrayList<>();
@@ -182,10 +133,7 @@ class Inventory {
     }
 
     /**
-     * <h2>{@link #getPandaMissions()} :</h2>
-     *
      * @return <b>The list of {@link PandaMission} missions.</b>
-     * @see PandaMission
      */
     List<PandaMission> getPandaMissions(){
         List<PandaMission> pandaMissions = new ArrayList<>();
@@ -197,10 +145,7 @@ class Inventory {
     }
 
     /**
-     * <h2>{@link #getPeasantMissions()} :</h2>
-     *
      * @return <b>The list of {@link PeasantMission} missions.</b>
-     * @see PeasantMission
      */
     List<PeasantMission> getPeasantMissions(){
         List<PeasantMission> peasantMissions = new ArrayList<>();
@@ -211,15 +156,16 @@ class Inventory {
         return peasantMissions;
     }
 
-    void addScore(int count) {
-        score[0] += count;
-        score[1] ++;
-    }
-
+    /**
+     * @return <b>The score.</b>
+     */
     int getScore() {
         return score[0];
     }
 
+    /**
+     * @return <b>The number of missions done.</b>
+     */
     int getMissionsDone() {
         return score[1];
     }
