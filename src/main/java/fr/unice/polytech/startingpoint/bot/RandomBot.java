@@ -76,7 +76,6 @@ public class RandomBot extends Bot {
                 List<Coordinate[]> list = possibleCoordinatesCanal();
                 Collections.shuffle(list);
                 drawCanal();
-                System.out.println("random :" + list.get(0)[0] + " : " + list.get(0)[1]);
                 placeCanal(list.get(0));
             }
         }
@@ -87,7 +86,6 @@ public class RandomBot extends Bot {
             selectParcel(parcelList.get(0));
             List<Coordinate> list = possibleCoordinatesParcel();
             Collections.shuffle(list);
-            System.out.println("random :" + list.get(0));
             placeParcel(list.get(0));
         }
 

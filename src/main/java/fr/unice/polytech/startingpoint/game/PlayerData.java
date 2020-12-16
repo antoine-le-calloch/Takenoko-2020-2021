@@ -22,7 +22,7 @@ class PlayerData {
 
     PlayerData(BotType[] botTypes, Game game, int nbMission) {
         this.game = game;
-        botData = new HashMap<>();
+        botData = new LinkedHashMap<>();
         NB_MISSION = nbMission;
         numBot = 0;
         initializeBot(botTypes, game);
@@ -54,8 +54,8 @@ class PlayerData {
 
     //Permet de verifier si un bot à fait suffisament de mission pour que la partie s'arrête
     boolean isContinue(){
-        for (int mission : getMissionsDone()) {
-            if (mission >= NB_MISSION)
+        for (int missionDoneBy1P : getMissionsDone()) {
+            if (missionDoneBy1P >= NB_MISSION)
                 return false;
         }
         return true;
@@ -109,15 +109,17 @@ class PlayerData {
 
     List<Integer> getMissionsDone() {
         List<Integer> missionsDone = new ArrayList<>();
-        for (Inventory inventory : botData.values())
+        for (Inventory inventory : botData.values()){
             missionsDone.add(inventory.getMissionsDone());
+        }
         return missionsDone;
     }
 
     public List<Integer> getScores() {
         List<Integer> Score = new ArrayList<>();
-        for (Inventory inventory : botData.values())
+        for (Inventory inventory : botData.values()) {
             Score.add(inventory.getScore());
+        }
         return Score;
     }
 
