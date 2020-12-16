@@ -120,6 +120,15 @@ public class ParcelMissionTest {
         assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
     }
 
+
+    @Test void wrongTriangle() { //checkTriangle
+        parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
+        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel4,new Coordinate(0,-1,1));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
+    }
+
     /**
      * <h1><u>CAS LIGNE</u></h1>
      */
@@ -154,15 +163,6 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
-    }
-
-
-    @Test void wrongTriangle() { //checkTriangle
-        parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
-        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel4,new Coordinate(0,-1,1));
-        assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
     }
 
     @Test void wrongLine() { //checkLine
