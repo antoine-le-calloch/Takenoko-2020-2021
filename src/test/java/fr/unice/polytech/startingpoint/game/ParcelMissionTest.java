@@ -57,6 +57,12 @@ public class ParcelMissionTest {
         assertEquals(mission1, mission1);
     }
 
+
+    /**
+     * <h1><u>CHECK MISSIONPARCEL</u></h1>
+     */
+
+
     @Test void checkMissionTriangle(){
         parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
         parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
@@ -65,10 +71,6 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,parcel2.getCoordinates());
         board.placeParcel(parcel3,parcel3.getCoordinates());
         assertEquals(2, mission1.checkMission(board,game.getPlayerData().getInventory()));
-    }
-
-    @Test void checkNoMissionTriangle(){
-        assertEquals(0, mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 
 
@@ -84,30 +86,98 @@ public class ParcelMissionTest {
         assertEquals(3,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
 
+    /**
+     * <h1><u>CAS TRIANGLE</u></h1>
+     */
+
+    @Test void checkNoMissionTriangle(){
+        assertEquals(0, mission1.checkMission(board, game.getPlayerData().getInventory()));
+    }
+
+    @Test void triangleOnBoardGoodColor(){ //checkTriangle
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel2,new Coordinate(0,-1,1));
+        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
+        board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        assertTrue(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
+    }
+
+    @Test void triangleOnBoardBadColor() { //checkTriangle
+        parcel1.setCoordinates(new Coordinate(1, -1, 0)).setIrrigated();
+        parcel2.setCoordinates(new Coordinate(0, -1, 1)).setIrrigated();
+        parcel3.setCoordinates(new Coordinate(1, -2, 1)).setIrrigated();
+        board.placeParcel(parcel1, new Coordinate(1, -1, 0));
+        board.placeParcel(parcel2, new Coordinate(0, -1, 1));
+        board.placeParcel(parcel3, new Coordinate(1, -2, 1));
+        assertFalse(mission3.checkFormIrrigateWithColor(board, new Coordinate(1, 0, -1), new Coordinate(1, -1, 0)));
+    }
+
+
+    @Test void triangleNotIrrigated() { //checkTriangle
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel2,new Coordinate(0,-1,1));
+        board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
+    }
+
+    /**
+     * <h1><u>CAS LIGNE</u></h1>
+     */
+
+    @Test void ligneOnBoardGoodColor(){ //check Line
+        board.placeParcel(parcel4,new Coordinate(0,-1,1));
+        board.placeParcel(parcel1,new Coordinate(1,0,-1));
+        board.placeParcel(parcel2,new Coordinate(1,-1,0));
+        board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated();
+        parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
+        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
+        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
+        assertTrue(mission1.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
+    }
+
+    @Test void ligneOnBoardBadColor() { //check Line
+        parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated();
+        parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
+        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
+        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
+        board.placeParcel(parcel4,new Coordinate(0,-1,1));
+        board.placeParcel(parcel1,new Coordinate(1,0,-1));
+        board.placeParcel(parcel2,new Coordinate(1,-1,0));
+        board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        assertFalse(mission3.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
+    }
+
+    @Test void ligneNotIrrigated() { //checkLine
+        board.placeParcel(parcel4,new Coordinate(0,-1,1));
+        board.placeParcel(parcel1,new Coordinate(1,0,-1));
+        board.placeParcel(parcel2,new Coordinate(1,-1,0));
+        board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
+    }
+
+
+    @Test void wrongTriangle() { //checkTriangle
+        parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
+        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel4,new Coordinate(0,-1,1));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
+    }
+
+    @Test void wrongLine() { //checkLine
+        parcel1.setCoordinates(new Coordinate(0, -1, 1)).setIrrigated();
+        parcel4.setCoordinates(new Coordinate(0, -2, 2)).setIrrigated();
+        board.placeParcel(parcel1, new Coordinate(0, -1, 1));
+        board.placeParcel(parcel2, new Coordinate(1, -1, 0));
+        board.placeParcel(parcel3, new Coordinate(1, -2, 1));
+        board.placeParcel(parcel4, new Coordinate(0, -2, 2));
+        assertFalse(mission1.checkFormIrrigateWithColor(board, new Coordinate(0, -1, 1), new Coordinate(0, 1, -1)));
+    }
+
 
     @Test void checkNoMissionLigne(){
         assertEquals(0,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
 
-
-    @Test void setLineForm(){ //checkLine
-        Coordinate hightCoord = new Coordinate(1,-1,-0);
-        Coordinate midCoord = new Coordinate(1,-2,1);
-        Coordinate lowCoord = new Coordinate(1,-3,2);
-        List<Coordinate> triangleForm = mission1.setForm(hightCoord,FormType.LINE);
-        assertEquals(hightCoord,triangleForm.get(0));
-        assertEquals(midCoord,triangleForm.get(1));
-        assertEquals(lowCoord,triangleForm.get(2));
-    }
-
-
-    @Test void setTriangleForm(){ //checkTriangle
-        Coordinate hightCoord = new Coordinate(1,-1,-0);
-        Coordinate rightCoord = new Coordinate(1,-2,1);
-        Coordinate leftCoord = new Coordinate(0,-1,1);
-        List<Coordinate> triangleForm = mission1.setForm(hightCoord,FormType.TRIANGLE);
-        assertEquals(hightCoord,triangleForm.get(0));
-        assertEquals(rightCoord,triangleForm.get(1));
-        assertEquals(leftCoord,triangleForm.get(2));
-    }
 }

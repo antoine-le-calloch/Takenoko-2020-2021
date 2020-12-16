@@ -23,24 +23,32 @@ public class ParcelMission extends Mission {
     }
 
     //Renvoie le nombre de points que les missions rapportent si elles ont été accomplies
-    public int checkMission(Board board, Inventory inventory) {
-        for (Coordinate coordParcel : board.getPlacedParcels().keySet()) {
-            if(setForm(coordParcel, formType).stream().allMatch(board::isPlacedAndIrrigatedParcel))
-                if(setForm(coordParcel, formType).stream().allMatch(coord -> board.getPlacedParcels().get(coord).getColor().equals(colorType)))
+    int checkMission(Board board, Inventory inventory) {
+        switch (formType) {
+            case TRIANGLE:
+                if (checkFormIrrigateWithColor(board, new Coordinate(1, 0, -1), new Coordinate(1, -1, 0)))
                     return points;
+                return 0;
+            case LINE:
+                if (checkFormIrrigateWithColor(board, new Coordinate(0, -1, 1), new Coordinate(0, 1, -1)))
+                    return points;
+                return 0;
+            default:
+                return 0;
         }
-        return 0;
     }
 
-    public List<Coordinate> setForm(Coordinate hightCoord, FormType form){
-        List<Coordinate> coordForm = new ArrayList<>();
-        coordForm.add(hightCoord);
-        coordForm.add(new Coordinate(hightCoord,Coordinate.offSets().get(2)));
-        if(form.equals(FormType.LINE))
-            coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(2)));
-        else
-            coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(4)));
-        return coordForm;
+    //retourne vrai si il y a un triangle sur le plateau
+    boolean checkFormIrrigateWithColor(Board board, Coordinate coordinate1, Coordinate coordinate2) {
+        for (Parcel parcel : board.getPlacedParcels().values()) {
+            if (board.isPlacedAndIrrigatedParcel(parcel.getCoordinates()) && board.isPlacedAndIrrigatedParcel(new Coordinate(parcel.getCoordinates(), coordinate1)) && board.isPlacedAndIrrigatedParcel(new Coordinate(parcel.getCoordinates(), coordinate2))){
+                if (parcel.getColor().equals(colorType) &&
+                        board.getPlacedParcels().get(new Coordinate(parcel.getCoordinates(), coordinate1)).getColor().equals(colorType) &&
+                        board.getPlacedParcels().get(new Coordinate(parcel.getCoordinates(), coordinate2)).getColor().equals(colorType) )
+                    return true;
+            }
+        }
+        return false;
     }
 
     //Renvoie l'objectif de la mission
