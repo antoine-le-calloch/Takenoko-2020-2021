@@ -1,13 +1,23 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.type.*;
 
 /**
- * Interface representant les caractéristiques communes des missions
+ * <h1>{@link Mission} :</h1>
+ *
+ * <p>This class provides a skeletal implementation of the {@link PeasantMission},
+ * {@link ParcelMission}, {@link PandaMission} classes.</p>
+ *
+ * <p>The programmer needs only to extend this class and provide
+ * implementations for the {@link #checkMission(Board, Inventory)} method.</p>
+ *
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
  * @author Le Calloch Antoine
+ * @see MissionType
+ * @see ColorType
  * @version 0.5
  */
 

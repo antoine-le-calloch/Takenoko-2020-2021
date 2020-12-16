@@ -2,16 +2,21 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.type.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Classe representant une mission parcelle
+ * <h1>{@link ParcelMission} :</h1>
+ *
+ * <p>This class create and check if the {@link ParcelMission} is done.</p>
+ *
+ * <p>The programmer needs only to provide implementations for the {@link #checkMission(Board, Inventory)} method from the {@link Mission}.</p>
+ *
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
  * @author Le Calloch Antoine
- * @version 2020.12.03
+ * @see Mission
+ * @see PeasantMission
+ * @see ParcelMission
+ * @version 0.5
  */
 
 public class ParcelMission extends Mission {
