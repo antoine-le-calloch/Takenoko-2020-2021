@@ -58,7 +58,7 @@ class GameTest {
 
         assertTrue(game1.getPlayerData().isContinue());
         for(int i=0; i<4;i++) {
-            game1.getPlayerData().completedMission(0, 1);
+            game1.getPlayerData().completedMission( 1);
         }
         assertFalse(game1.getPlayerData().isContinue());
     }
