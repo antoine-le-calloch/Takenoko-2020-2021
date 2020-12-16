@@ -130,11 +130,10 @@ public class Game{
             temporaryInventory.looseStamina();
             try {
                 board.moveCharacter(characterType, coordinate);
+                playerData.addBamboo(board.getPlacedParcels().get(coordinate).getColor());
             }
-            catch (CantDeleteBambooException E) {
-                return;
+            catch (CantDeleteBambooException ignored) {
             }
-            playerData.addBamboo(board.getPlacedParcels().get(coordinate).getColor());
         }
         else
             throw new BadMoveCharacterException(coordinate);
