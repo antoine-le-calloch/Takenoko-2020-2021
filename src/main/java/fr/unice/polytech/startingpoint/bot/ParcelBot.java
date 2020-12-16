@@ -48,23 +48,18 @@ public class ParcelBot extends Bot {
     public void botPlay(){
         int cptAction = NB_ACTION;
         if (isJudiciousDrawMission(cptAction)) {
-            System.out.print("drawMission : ");
             drawMission(MissionType.PARCEL);
-            System.out.println(game.getInventoryParcelMission().size());
             cptAction--;
         }
 
         if(isJudiciousPutParcel(cptAction)) {
-            System.out.println("putParcel");
             putParcel();
             cptAction--;
         }
 
         if (isJudiciousPutCanal(cptAction)){
-            System.out.println("putCanal");
             putCanal();
         }
-        System.out.println("tour");
     }
 
     /**
@@ -128,12 +123,10 @@ public class ParcelBot extends Bot {
                     minTurn = bestCoords.size();
                 }
             }
-            System.out.println(bestCoords);
 
             if(bestCoords.size() != 0) {
                 for (Coordinate coord : bestCoords) {
                     if(rules.isPlayableParcel(coord)) {
-                        System.out.println(coord + "    " + bestColor);
                         selectParcel(bestColor);
                         placeParcel(coord);
                         break;
@@ -272,12 +265,10 @@ public class ParcelBot extends Bot {
             }
 
             if (bestCoordCanal != null && fullForm.size() != 0) {
-                System.out.println(bestCoordCanal[0] + " : " + bestCoordCanal[1]);
                 placeCanal(bestCoordCanal);
                 return true;
             }
 
-            System.out.println("Canal au pif");
             placeCanal(possibleCoordinatesCanal().get(0));
             return false;
         } catch (OutOfResourcesException e) {
@@ -299,7 +290,7 @@ public class ParcelBot extends Bot {
 
     public Coordinate[] getBestCanal(Coordinate coordToIrrigate){
         int normMin = Coordinate.getNorm(coordToIrrigate,possibleCoordinatesCanal().get(0)[0])+Coordinate.getNorm(coordToIrrigate,possibleCoordinatesCanal().get(0)[1]);
-        Coordinate[] bestCanal = null;
+        Coordinate[] bestCanal = possibleCoordinatesCanal().get(0);
 
         for (Coordinate[] coordCanal : possibleCoordinatesCanal()) {
             if(Coordinate.getNorm(coordToIrrigate,coordCanal[0])+Coordinate.getNorm(coordToIrrigate,coordCanal[1]) < normMin) {
