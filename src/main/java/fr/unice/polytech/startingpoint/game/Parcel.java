@@ -9,7 +9,7 @@ import fr.unice.polytech.startingpoint.type.*;
  * @author Naud Eric
  * @author Madern Loic
  * @author Le Calloch Antoine
- * @version 2020.12.03
+ * @version 0.5
  */
 
 class Parcel {
