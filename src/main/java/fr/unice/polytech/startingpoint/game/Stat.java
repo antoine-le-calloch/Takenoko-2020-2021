@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * La classe collecte les données de chaque partie et calcule des statistiques
+ * <h1>{@link Stat} :</h1>
+ *
+ * <p>This class provides a treatment of the scores given at the end of each game.</p>
+ *
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
  * @author Le Calloch Antoine
- * @version 2020.12.03
+ * @see Game
+ * @version 0.5
  */
 
 public class Stat {
@@ -19,6 +23,8 @@ public class Stat {
     private final BotType[] botList;
     private final int[][] botScores;
 
+    /**Initialize all variables.
+     */
     public Stat(BotType[] botList){
         gameData = new ArrayList<>();
         this.botList = botList;
@@ -30,7 +36,8 @@ public class Stat {
         }
     }
 
-    //Ajoute les stats d'une nouvelles parties
+    /**Add the scores of a game to {@link #botScores}.
+     */
     void add(List<Integer> integerList) {
         gameData.add(integerList);
         setWinner(getWinner(integerList));
@@ -39,7 +46,8 @@ public class Stat {
         }
     }
 
-    //Fixe le nombre de victoires et d'égalités pour chaque joueur
+    /**Add a win to the winner, and add an equality to the winners .
+     */
     private void setWinner(List<Integer> winner){
         if (winner.size() == 1)
             botScores[winner.get(0)][1]++;
@@ -49,7 +57,8 @@ public class Stat {
             }
     }
 
-    //Fixe le nombre de victoires et d'égalités pour chaque joueur
+    /**@return <b>A list containing the bot(s) that have the highest score.</b>
+     */
     private List<Integer> getWinner(List<Integer> scores){
         int bestScore = 0;
         List<Integer> winner = new ArrayList<>();
@@ -64,26 +73,40 @@ public class Stat {
         return winner;
     }
 
-    //Renvoie le nombres de points moyens du joueur passé en paramètre
-    public double getPointsAverage(int joueur){
-        return (botScores[joueur][0]*1.0)/(gameData.size());
+    /**@param player
+     *              <b>The player we want the points’ average from.</b>
+     *
+     * @return <b>The average points from the player.</b>
+     */
+    public double getPointsAverage(int player){
+        return (botScores[player][0]*1.0)/(gameData.size());
     }
 
-    //Renvoie le taux de victoire du joueur passé en paramètre
-    public double getWinRate(int joueur){
-        return botScores[joueur][1]/((gameData.size())/100.0);
+    /**@param player
+     *              <b>The player we want the win rate from.</b>
+     *
+     * @return <b>The win rate from the player.</b>
+     */
+    public double getWinRate(int player){
+        return botScores[player][1]/((gameData.size())/100.0);
     }
 
-    //Renvoie le taux d'égalité du joueur passé en paramètre
-    public double getEqualityRate(int joueur){
-        return botScores[joueur][2]/((gameData.size())/100.0);
+    /**@param player
+     *              <b>The player we want the equality rate from.</b>
+     *
+     * @return <b>The equality rate from the player.</b>
+     */
+    public double getEqualityRate(int player){
+        return botScores[player][2]/((gameData.size())/100.0);
     }
 
-    //Renvoie les statistiques des parties sous forme de String
+    /**
+     * @return <b>The stats from all players.</b>
+     */
     public String toString(){
         StringBuilder displayStat = new StringBuilder();
         for (int i = 0; i < botScores.length; i++) {
-            displayStat.append("Joueur ").append(botList[i]).append(" : ").append(getWinRate(i)).append("% win rate and ").append(getEqualityRate(i)).append("% equality rate with a ").append(getPointsAverage(i)).append(" points average\n");
+            displayStat.append("Joueur ").append(botList[i]).append(" ").append(i+1).append(" : ").append(getWinRate(i)).append("% win rate and ").append(getEqualityRate(i)).append("% equality rate with a ").append(getPointsAverage(i)).append(" points average\n");
         }
         return displayStat.toString();
     }

@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.game.Stat;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
 
@@ -37,7 +36,7 @@ public class StatTest {
     BotType[] p4 = new BotType[]{BotType.RANDOM,BotType.PARCELBOT,BotType.PEASANTBOT,BotType.PANDABOT};
 
     @BeforeEach
-    public void initialize(){
+    void initialize(){
         statGame1P = new Stat(p1);
         statGame2P = new Stat(p2);
         statGame4P = new Stat(p4);
@@ -51,7 +50,7 @@ public class StatTest {
     }
 
     @Test
-    public void p1Winner2Player(){
+    void p1Winner2Player(){
         statGame2P.add(p1w2Player);
 
         assertEquals(100,statGame2P.getWinRate(0));
@@ -65,7 +64,7 @@ public class StatTest {
     }
 
     @Test
-    public void p2Winner2Player(){
+    void p2Winner2Player(){
         statGame2P.add(p2w2Player);
         assertEquals(0,statGame2P.getWinRate(0));
         assertEquals(100,statGame2P.getWinRate(1));
@@ -78,7 +77,7 @@ public class StatTest {
     }
 
     @Test
-    public void equalityCase2Player(){
+    void equalityCase2Player(){
         statGame2P.add(equality2Player);
         assertEquals(0,statGame2P.getWinRate(0));
         assertEquals(0,statGame2P.getWinRate(1));
@@ -91,7 +90,7 @@ public class StatTest {
     }
 
     @Test
-    public void p1Win700GameLose3002Player(){
+    void p1Win700GameLose3002Player(){
         for (int i = 0; i < 1000; i++) {
             if(i<700)
                 statGame2P.add(p1w2Player);
@@ -109,7 +108,7 @@ public class StatTest {
     }
 
     @Test
-    public void p1Win700GameLose3004Player(){
+    void p1Win700GameLose3004Player(){
         for (int i = 0; i < 1000; i++) {
             if(i<700)
                 statGame4P.add(p1w4Player);
@@ -134,8 +133,8 @@ public class StatTest {
     }
 
     @Test
-    public void p1W1PToString(){
+    void p1W1PToString(){
         statGame1P.add(p1w);
-        assertEquals("Joueur Random Bot : 100.0% win rate and 0.0% equality rate with a 2.0 points average\n",statGame1P.toString());
+        assertEquals("Joueur Random Bot 1 : 100.0% win rate and 0.0% equality rate with a 2.0 points average\n",statGame1P.toString());
     }
 }
