@@ -7,23 +7,17 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 class TemporaryInventory {
-    private final boolean cheat;
     private int stamina;
     private Parcel parcel;
     private List<Parcel> parcelList;
-    private boolean hasDrawn;
-    private boolean hasSelected;
-    private boolean hasPlayed;
+    private final boolean[] hasPlayedCorrectly;
 
     //Normal Constructor
     TemporaryInventory(int stamina){
         this.stamina = stamina;
         parcel = null;
         parcelList = new ArrayList<>();
-        hasDrawn = false;
-        hasSelected = false;
-        hasPlayed = false;
-        cheat = false;
+        hasPlayedCorrectly = new boolean[]{false,false,false,false};
     }
 
     //Test Constructor
@@ -31,41 +25,38 @@ class TemporaryInventory {
         stamina = 0;
         parcel = null;
         parcelList = new ArrayList<>();
-        hasDrawn = false;
-        hasSelected = false;
-        hasPlayed = false;
-        cheat = true;
+        hasPlayedCorrectly = new boolean[]{false,false,false,true};
     }
 
     void looseStamina() throws OutOfResourcesException {
         stamina --;
-        if (cheat)
+        if (hasPlayedCorrectly[3])
             stamina ++;
         if (stamina < 0)
             throw new OutOfResourcesException("No more stamina.");
     }
 
     void saveParcels(List<Parcel> parcelList){
-        hasDrawn = true;
+        hasPlayedCorrectly[0] = true;
         this.parcelList = parcelList;
     }
 
-    boolean hasDrawn() {
-        return hasDrawn;
-    }
-
     void add(Parcel parcel) {
-        hasSelected = true;
+        hasPlayedCorrectly[1] = true;
         this.parcel = parcel;
     }
 
     Parcel getParcel() {
-        hasPlayed = true;
+        hasPlayedCorrectly[2] = true;
         return parcel;
     }
 
+    boolean hasAlreadyDrawn() {
+        return hasPlayedCorrectly[0];
+    }
+
     void hasPlayedCorrectly() {
-        if (!(hasDrawn == hasSelected) && !(hasSelected == hasPlayed))
+        if (!(hasPlayedCorrectly[0] == hasPlayedCorrectly[1]) && !(hasPlayedCorrectly[0] == hasPlayedCorrectly[2]))
             throw new NoSuchElementException("Player has not placed his parcel.");
     }
 

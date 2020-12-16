@@ -43,7 +43,7 @@ public class PandaBot extends Bot {
     public void botPlay() {
         if (game.getInventoryMission().size() < 5 && game.getResourceSize(ResourceType.PANDA_MISSION) > 0)
             drawMission(MissionType.PANDA);
-        else if (strategyMovePanda(possibleCoordinatesPanda()) != null)
+        if (strategyMovePanda(possibleCoordinatesPanda()) != null)
                 movePanda(strategyMovePanda(possibleCoordinatesPanda()));
     }
 

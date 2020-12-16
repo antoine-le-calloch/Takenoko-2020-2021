@@ -16,33 +16,35 @@ import java.util.List;
  */
 
 public class Game{
-    private final Resource resource;
-    private final Board board;
-    private final Rules rules;
+    private Resource resource;
+    private Board board;
+    private Rules rules;
     private TemporaryInventory temporaryInventory;
     private final PlayerData playerData;
 
     //Normal Constructor
     Game(BotType[] botTypes,int nbMission){
-        resource = new Resource();
-        board = new Board();
-        rules = new Rules(resource,board);
+        initializeGame();
         playerData = new PlayerData(botTypes, this,nbMission);
         temporaryInventory = new TemporaryInventory(2);
     }
 
     //Test Constructor
     Game(){
+        initializeGame();
+        playerData = new PlayerData(new BotType[]{BotType.RANDOM}, this,0);
+        temporaryInventory = new TemporaryInventory();
+    }
+
+    private void initializeGame(){
         resource = new Resource();
         board = new Board();
         rules = new Rules(resource,board);
-        playerData = new PlayerData(new BotType[]{BotType.PARCELBOT}, this,0);
-        temporaryInventory = new TemporaryInventory();
     }
 
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
-        while(playerData.isContinue() && !rules.isEmpty()) {
+        while(playerData.isContinue() && (!rules.isEmpty())) {
             temporaryInventory = new TemporaryInventory(2);
             playerData.getBot().botPlay();
             temporaryInventory.hasPlayedCorrectly();
@@ -86,7 +88,7 @@ public class Game{
     }
 
     public List<ColorType> drawParcels() throws IllegalAccessException, OutOfResourcesException {
-        if (!temporaryInventory.hasDrawn()){
+        if (!temporaryInventory.hasAlreadyDrawn()){
             temporaryInventory.looseStamina();
             temporaryInventory.saveParcels(resource.drawParcel());
             List<ColorType> colorTypeList = new ArrayList<>();

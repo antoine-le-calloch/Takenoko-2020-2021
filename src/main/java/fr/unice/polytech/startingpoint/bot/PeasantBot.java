@@ -43,8 +43,10 @@ public class PeasantBot extends Bot {
     public void botPlay() {
         if (game.getInventoryMission().size() < 5 && game.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
             drawMission(MissionType.PEASANT);
-        else if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
+
+        if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
             movePeasant(strategyMovePeasant(possibleCoordinatesPeasant()));
+
     }
 
     /**@param coordinateList
