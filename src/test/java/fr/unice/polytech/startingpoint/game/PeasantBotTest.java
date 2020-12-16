@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.PeasantBot;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,13 +29,19 @@ class PeasantBotTest {
         coordinate1 = new Coordinate(1, -1, 0);
     }
 
+
+    /**
+     <h2><u>Strategy Move Peasant</u></h2>
+
+     */
+
     @Test
     void coordWhereMovePeasant_0parcel() {
         assertNull(peasantBot.strategyMovePeasant(peasantBot.possibleCoordinatesPanda()));//Pas de parcel, il ne bouge pas
     }
 
     @Test
-    void coordWhereMovePeasant_1parcelWith1Bamboo() throws BadPlaceParcelException {
+    void coordWhereMovePeasant_1parcelWith1Bamboo() {
         board.placeParcel(parcel1, coordinate1);//place la parcel (un bamboo pousse)
         assertNull(peasantBot.strategyMovePeasant(peasantBot.possibleCoordinatesPanda()));
     }
@@ -50,7 +55,7 @@ class PeasantBotTest {
     }
 
     @Test
-    void movePeasant_1Parcel2Bamboo() throws BadPlaceParcelException {
+    void movePeasant_1Parcel2Bamboo()  {
 
         Resource resource = Mockito.mock(Resource.class);
         List<Mission> deckVide = new ArrayList<>();
