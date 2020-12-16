@@ -5,6 +5,7 @@ import fr.unice.polytech.startingpoint.bot.RandomBot;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ public class RandomBotTest {
         rules = game.getRules();
         playerData = game.getPlayerData();
         board = game.getBoard();
-        parcel1 = new Parcel(ColorType.NO_COLOR);
+        parcel1 = new Parcel(ColorType.NO_COLOR, ImprovementType.NOTHING);
         rdmBot1 = (RandomBot) game.getPlayerData().getBot();
         resource = game.getResource();
     }
@@ -94,8 +95,8 @@ public class RandomBotTest {
     @Test
     public void putCanal() throws BadPlaceParcelException {
         Random mockRand = mock(Random.class);
-        board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(1, -1, 0));//ajoute une pièce ou mettre le canal
-        board.placeParcel(new Parcel(ColorType.NO_COLOR), new Coordinate(0, -1, 1));//ajoute une pièce ou mettre le canal
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(1, -1, 0));//ajoute une pièce ou mettre le canal
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(0, -1, 1));//ajoute une pièce ou mettre le canal
         Mockito.when(mockRand.nextInt(5)).thenReturn(1);//donne une val au random pour piocher une mission
         rdmBot1.setRand(mockRand, new Random());//set les Random mock
 

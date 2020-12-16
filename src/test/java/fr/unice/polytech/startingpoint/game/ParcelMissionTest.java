@@ -43,10 +43,10 @@ public class ParcelMissionTest {
         game = new Game();
         board = game.getBoard();
         resource = game.getResource();
-        parcel1 = new Parcel(ColorType.RED);
-        parcel2 = new Parcel(ColorType.RED);
-        parcel3 = new Parcel(ColorType.RED);
-        parcel4 = new Parcel(ColorType.RED);
+        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
+        parcel2 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
+        parcel3 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
+        parcel4 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
         bot = new RandomBot(game, game.getRules());
     }
 
@@ -58,9 +58,12 @@ public class ParcelMissionTest {
     }
 
     @Test void checkMissionTriangle(){
-        board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
-        board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
-        board.placeParcel(parcel3,parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated());
+        parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
+        parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
+        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
+        board.placeParcel(parcel1,parcel1.getCoordinates());
+        board.placeParcel(parcel2,parcel2.getCoordinates());
+        board.placeParcel(parcel3,parcel3.getCoordinates());
         assertEquals(2, mission1.checkMission(board,game.getPlayerData().getInventory()));
     }
 
@@ -70,10 +73,14 @@ public class ParcelMissionTest {
 
 
     @Test void checkMissionLigneOnBoard(){
-        board.placeParcel(parcel4,parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated());
-        board.placeParcel(parcel1,parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated());
-        board.placeParcel(parcel2,parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated());
-        board.placeParcel(parcel3,parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated());
+        parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated();
+        parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
+        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
+        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
+        board.placeParcel(parcel4,parcel4.getCoordinates());
+        board.placeParcel(parcel1,parcel1.getCoordinates());
+        board.placeParcel(parcel2,parcel2.getCoordinates());
+        board.placeParcel(parcel3,parcel3.getCoordinates());
         assertEquals(3,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
 

@@ -37,9 +37,9 @@ class BotTest {
     @BeforeEach
     public void setUp(){
         game = new Game();
-        parcel1 = new Parcel(ColorType.BLUE);
-        parcel2 = new Parcel(ColorType.NO_COLOR);
-        parcel3 = new Parcel(ColorType.NO_COLOR);
+        parcel1 = new Parcel(ColorType.BLUE,ImprovementType.NOTHING);
+        parcel2 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
+        parcel3 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
         bot1=new ParcelBot(game,game.getRules());
         canal = new Canal();
         board = game.getBoard();

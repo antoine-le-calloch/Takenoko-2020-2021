@@ -126,11 +126,18 @@ public class Game{
     public void moveCharacter(CharacterType characterType, Coordinate coordinate) throws BadMoveCharacterException, OutOfResourcesException {
         if(rules.isMovableCharacter(characterType,coordinate)){
             temporaryInventory.looseStamina();
-            playerData.addBamboo(board.moveCharacter(characterType, coordinate));
+            try {
+                board.moveCharacter(characterType, coordinate);
+            }
+            catch (CantDeleteBambooException E) {
+                return;
+            }
+            playerData.addBamboo(board.getPlacedParcels().get(coordinate).getColor());
         }
         else
             throw new BadMoveCharacterException(coordinate);
     }
+
 
     /**
      * <h1><u>BOT GETTERS</u></h1>

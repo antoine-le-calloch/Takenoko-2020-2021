@@ -32,10 +32,16 @@ class Resource {
 
     //Création de toutes les parcelles et on les ajoute dans le deck parcelles
     private void initializeDeckParcel(){
-        int nbParcel = 26;
-        for (int i = 0; i < nbParcel / 2; i++){
-            deckParcel.add(new Parcel(ColorType.RED));
-            deckParcel.add(new Parcel(ColorType.BLUE));
+        int nbParcel = 32;
+        for (int i = 0; i < nbParcel / 8; i++){
+            deckParcel.add(new Parcel(ColorType.RED,ImprovementType.NOTHING));
+            deckParcel.add(new Parcel(ColorType.RED,ImprovementType.WATERSHED));
+            deckParcel.add(new Parcel(ColorType.RED,ImprovementType.FERTILIZER));
+            deckParcel.add(new Parcel(ColorType.RED,ImprovementType.ENCLOSURE));
+            deckParcel.add(new Parcel(ColorType.BLUE,ImprovementType.NOTHING));
+            deckParcel.add(new Parcel(ColorType.BLUE,ImprovementType.WATERSHED));
+            deckParcel.add(new Parcel(ColorType.BLUE,ImprovementType.FERTILIZER));
+            deckParcel.add(new Parcel(ColorType.BLUE,ImprovementType.ENCLOSURE));
         }
     }
 

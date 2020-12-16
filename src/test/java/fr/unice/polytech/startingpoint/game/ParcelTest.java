@@ -21,8 +21,8 @@ class ParcelTest {
     @BeforeEach
     public void initialize(){
         board = new Board();
-        parcel1 = new Parcel(ColorType.NO_COLOR);
-        parcel2 = new Parcel(ColorType.NO_COLOR);
+        parcel1 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
+        parcel2 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
     }
 
     @Test

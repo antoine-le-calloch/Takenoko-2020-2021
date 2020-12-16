@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.bot.PeasantBot;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -26,7 +27,7 @@ class PeasantBotTest {
         game=new Game(new BotType[] {BotType.PEASANTBOT},3);
         peasantBot = (PeasantBot) game.getPlayerData().getBot();
         board = game.getBoard();
-        parcel1 = new Parcel(ColorType.RED);
+        parcel1 = new Parcel(ColorType.RED, ImprovementType.NOTHING);
         coordinate1 = new Coordinate(1, -1, 0);
     }
 
@@ -43,7 +44,7 @@ class PeasantBotTest {
 
     @Test
     void coordWhereMovePeasant_1parcelWith2Bamboo() {
-        Parcel parcel2Bamboo = new Parcel(ColorType.NO_COLOR); //créée une parcel
+        Parcel parcel2Bamboo = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING); //créée une parcel
         parcel2Bamboo.addBamboo(); parcel2Bamboo.addBamboo(); //ajoute 2 bamboo
         board.placeParcel(parcel2Bamboo,coordinate1);// ;//ajoute la parcel avec 2 bamboo a la liste des parcels posée
         assertEquals(coordinate1,peasantBot.strategyMovePeasant(peasantBot.possibleCoordinatesPeasant()));
@@ -56,7 +57,7 @@ class PeasantBotTest {
         List<Mission> deckVide = new ArrayList<>();
         Mockito.when(resource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
 
-        Parcel parcel1Bamboo = new Parcel(ColorType.NO_COLOR); //créée la parcel
+        Parcel parcel1Bamboo = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING); //créée la parcel
         parcel1Bamboo.addBamboo(); //ajoute 1 bamboo
         board.placeParcel(parcel1Bamboo, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
 

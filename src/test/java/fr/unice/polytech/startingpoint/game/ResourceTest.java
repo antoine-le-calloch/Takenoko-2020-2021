@@ -23,7 +23,7 @@ public class ResourceTest {
     }
 
     @Test public void goodInitializeParcel(){
-        assertEquals(26, resource.getDeckParcel().size());
+        assertEquals(32, resource.getDeckParcel().size());
     }
 
     @Test public void goodInitializeCanal(){
@@ -38,7 +38,7 @@ public class ResourceTest {
     @Test
     public void parcelDecrease() throws OutOfResourcesException {
         resource.selectParcel(resource.drawParcel().get(0));
-        assertEquals(25,resource.getDeckParcel().size());
+        assertEquals(31,resource.getDeckParcel().size());
     }
 
     @Test

@@ -32,19 +32,19 @@ public class PeasantMissionTest {
         mission2 = new PeasantMission(ColorType.BLUE, 2);
         game = new Game();
         board = game.getBoard();
-        parcel1 = new Parcel(ColorType.RED);
+        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
     }
 
     @Test
     void missionComplete() throws BadMoveCharacterException, OutOfResourcesException {
-        board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
         game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
         assertEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 
     @Test
     void wrongColor() throws BadMoveCharacterException, OutOfResourcesException {
-        board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
         game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
         assertEquals(0,mission2.checkMission(board, game.getPlayerData().getInventory()));
     }

@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.exception.CantDeleteBambooException;
 import fr.unice.polytech.startingpoint.type.*;
 
 
@@ -22,7 +23,7 @@ class Board {
     private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
 
     Board() {
-        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NO_COLOR).setCoordinates(new Coordinate(0, 0, 0)));
+        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING).setCoordinates(new Coordinate(0, 0, 0)));
     }
 
     //Place une parcelle sur le board si les conditions le permettent
@@ -42,30 +43,32 @@ class Board {
     }
 
     //Fait bouger un personnage et effectue son action si les conditions le permettent
-    ColorType moveCharacter(CharacterType characterType, Coordinate coordinate){
+    void moveCharacter(CharacterType characterType, Coordinate coordinate) throws CantDeleteBambooException {
         getCharacter(characterType).setCoordinate(coordinate);
-        return characterAction(characterType);
+        characterAction(characterType);
     }
 
     //Effectue l’action du personnage passé en paramètre
-    private ColorType characterAction(CharacterType characterType){
+    private void characterAction(CharacterType characterType) throws CantDeleteBambooException {
         switch (characterType){
             case PANDA:
-                return actionPanda(characterType);
+                actionPanda();
+                break;
             case PEASANT:
-                actionPeasant(characterType);
+                actionPeasant();
+                break;
             default:
-                return ColorType.NO_COLOR;
+                break;
         }
     }
 
     //supprime un bambou sur la case
-    private ColorType actionPanda(CharacterType characterType){
-        return placedParcels.get(panda.getCoordinate()).delBamboo();
+    private void actionPanda() throws CantDeleteBambooException {
+        placedParcels.get(panda.getCoordinate()).delBamboo();
     }
 
     //ajoute un bambou sur la case si irrigué + autour si même couleur et irrigué
-    private void actionPeasant(CharacterType characterType){
+    private void actionPeasant(){
         ColorType color = placedParcels.get(peasant.getCoordinate()).getColor();
         if (placedParcels.get(peasant.getCoordinate()).getIrrigated())
             placedParcels.get(peasant.getCoordinate()).addBamboo();

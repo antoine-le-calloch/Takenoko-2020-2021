@@ -1,5 +1,8 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
+import fr.unice.polytech.startingpoint.exception.CantDeleteBambooException;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.*;
 
 /**
@@ -16,9 +19,17 @@ class Parcel {
     private boolean irrigated = false;
     private int nbBamboo = 0;
     private final ColorType colorType;
+    private final ImprovementType improvementType;
 
-    Parcel(ColorType colorType){
+    Parcel(ColorType colorType, ImprovementType improvementType){
         this.colorType = colorType;
+        this.improvementType = improvementType;
+        setIrrigatedImprovement();
+    }
+
+    void setIrrigatedImprovement(){
+        if (improvementType == ImprovementType.WATERSHED)
+            setIrrigated();
     }
 
     //Renvoie la parcelle après avoir fixé ses coordonnées avec les coordonnées passées en paramètre
@@ -28,27 +39,26 @@ class Parcel {
     }
 
     //Renvoie les coordonnées de la parcelle après l'avoir irrigué et lui avoir ajouté un bambou si elle ne l'était pas avant
-    Coordinate setIrrigated() {
+    void setIrrigated() {
         if(!irrigated)
             addBamboo();
         irrigated = true;
-        return coordinates;
     }
 
     //Ajoute un bamboo à la parcelle
     void addBamboo(){
-        if (nbBamboo < 4){
+        if (nbBamboo < 4)
             nbBamboo ++;
-        }
+        if (nbBamboo < 4 && improvementType == ImprovementType.FERTILIZER)
+            nbBamboo ++;
     }
 
     //Supprime un bambou de la parcelle
-    ColorType delBamboo(){
-        if (nbBamboo > 0){
+    void delBamboo() throws CantDeleteBambooException {
+        if (nbBamboo > 0 && improvementType != ImprovementType.ENCLOSURE)
             nbBamboo --;
-            return colorType;
-        }
-        return ColorType.NO_COLOR;
+        else
+            throw new CantDeleteBambooException(coordinates);
     }
 
     int getNbBamboo(){

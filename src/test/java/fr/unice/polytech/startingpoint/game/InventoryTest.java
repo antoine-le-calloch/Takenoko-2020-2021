@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,7 @@ public class InventoryTest {
         inventory2 = new Inventory();
         resource = new Resource();
         board = new Board();
-        parcel1 = new Parcel(ColorType.BLUE);
+        parcel1 = new Parcel(ColorType.BLUE, ImprovementType.NOTHING);
         mission = new ParcelMission( ColorType.BLUE , 0, FormType.LINE);
     }
 

@@ -36,8 +36,8 @@ public class PandaMissionTest {
         board = game.getBoard();
         resource = game.getResource();
         bot = new RandomBot(game, game.getRules());
-        parcel1 = new Parcel(ColorType.RED);
-        parcel2 = new Parcel(ColorType.BLUE);
+        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
+        parcel2 = new Parcel(ColorType.BLUE,ImprovementType.NOTHING);
     }
 
     @Test
