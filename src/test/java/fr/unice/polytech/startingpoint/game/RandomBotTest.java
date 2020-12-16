@@ -118,9 +118,6 @@ public class RandomBotTest {
         assertEquals(2,board.getPlacedParcels().size());//2 parcels (central + la parcel posée)
     }
 
-
-
-
     @Test
     public void movePanda() throws BadPlaceParcelException {
         Random mockRand = mock(Random.class);
