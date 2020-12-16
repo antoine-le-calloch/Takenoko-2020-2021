@@ -57,9 +57,9 @@ class PandaBotTest {
         Coordinate coordParcel3 = new Coordinate(1, -2, 1);//parcel a 4h éloigné de 1
         Coordinate coordParcel4 = new Coordinate(0, -2, 2);//parcel a 5h éloigné de 1
         board.placeParcel(parcel1,coordParcel1);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(ColorType.NO_COLOR),coordParcel2);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(ColorType.NO_COLOR),coordParcel3);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
-        board.placeParcel(new Parcel(ColorType.NO_COLOR),coordParcel4);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),coordParcel2);//place la parcel (un bamboo pousse)
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),coordParcel3);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),coordParcel4);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
         List<Coordinate> possibleCoordinates = bot.possibleCoordinatesPanda();
         assertEquals(coordParcel1, bot.strategyMovePanda(possibleCoordinates));
     }
