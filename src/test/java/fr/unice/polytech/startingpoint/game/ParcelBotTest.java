@@ -1,9 +1,10 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
+import fr.unice.polytech.startingpoint.bot.ParcelBot;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.FormType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
@@ -22,25 +23,52 @@ import static org.mockito.Mockito.mock;
  * @version 2020.12.03
  */
 
-class ParcelBotTest {/*
+class ParcelBotTest {
 
     Coordinate coordinate1;
     Coordinate coordinate2;
     Coordinate coordinate3;
     Coordinate coordinate4;
     ParcelBot parcelBot;
+    Game game;
 
     @BeforeEach
     public void setUp() {
-        board = new Board();
-        parcelBot = new ParcelBot(new Resource(), board);
+        game = new Game();
+        parcelBot = new ParcelBot(game, new Rules(new Resource(),new Board()));
         coordinate1 = new Coordinate(1, 0, -1); //0-2h
         coordinate2 = new Coordinate(1, -1, 0); //2-4h
         coordinate3 = new Coordinate(0, -1, 1); //4-6h
         coordinate4 = new Coordinate(1,-2,1); //4h éloigné de un
     }
 
-    @Test
+    @Test void LineForm(){
+        List<Coordinate> triangleForm = parcelBot.setForm(coordinate1, FormType.LINE);
+        assertEquals(coordinate1,triangleForm.get(0));
+        assertEquals(coordinate2,triangleForm.get(1));
+        assertEquals(coordinate4,triangleForm.get(2));
+    }
+
+
+    @Test void TriangleForm(){
+        List<Coordinate> triangleForm = parcelBot.setForm(coordinate2, FormType.TRIANGLE);
+        assertEquals(coordinate2,triangleForm.get(0));
+        assertEquals(coordinate4,triangleForm.get(1));
+        assertEquals(coordinate3,triangleForm.get(2));
+    }
+
+    @Test void coordAroundUse_Central(){
+        Coordinate coordAroundUse = parcelBot.coordAroundUse(coordinate1);
+        assertEquals(new Coordinate(0,0,0),coordAroundUse);
+    }
+
+    @Test void coordAroundUse_NextToCentral(){
+        game.getBoard().placeParcel(new Parcel(),coordinate3);
+        Coordinate coordAroundUse = parcelBot.coordAroundUse(coordinate1);
+        assertEquals(new Coordinate(0,0,0),coordAroundUse);
+    }
+
+    /*@Test
     public void placesForLineStartAtCoord1Line_Empty() {
         List<Coordinate> placesForLine = new ArrayList<>(parcelBot.parcelsToPlaceToDoForm(coordinate1, FormType.LINE, ColorType.RED));
 
