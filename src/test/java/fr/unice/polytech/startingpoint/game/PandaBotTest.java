@@ -4,6 +4,7 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.PandaBot;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class PandaBotTest {
         game=new Game();
         board = game.getBoard();
         rules = game.getRules();
-        parcel1 = new Parcel(ColorType.NO_COLOR);
+        parcel1 = new Parcel(ColorType.NO_COLOR, ImprovementType.NOTHING);
         bot = new PandaBot(game, rules);
         coordinate1 = new Coordinate(1, -1, 0);
     }
