@@ -3,7 +3,6 @@ package fr.unice.polytech.startingpoint.exception;
 import fr.unice.polytech.startingpoint.game.Coordinate;
 
 public class BadPlaceCanalException extends Exception{
-
     public BadPlaceCanalException(Coordinate coordinate1, Coordinate coordinate2){
         super(coordinate1 + ", " + coordinate2);
     }

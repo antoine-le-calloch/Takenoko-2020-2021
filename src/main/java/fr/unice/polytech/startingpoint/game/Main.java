@@ -15,7 +15,7 @@ public class Main{
 
     public static void main(String... args){
         //ne pas faire jouer que des peasents et ou que des pandabot (boucle infini)
-        BotType[] botList = new BotType[]{BotType.RANDOM, BotType.PARCELBOT, BotType.PANDABOT, BotType.PEASANTBOT};
+        BotType[] botList = new BotType[]{BotType.Random, BotType.ParcelBot,BotType.PandaBot,BotType.PeasantBot};
         Stat statGame = new Stat(botList); //creation des statistiques de l'ensemble des parties
 
         for (int i = 0; i < 1000; i++) {

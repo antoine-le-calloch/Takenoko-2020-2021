@@ -60,18 +60,18 @@ public class RandomBot extends Bot {
     public void botPlay(){
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && game.getResourceSize(ResourceType.ALL_MISSION) > 0) {// pioche mission
+        if (randAction == 0 && game.getResourceSize(ResourceType.AllMission) > 0) {// pioche mission
             int randMission = random2.nextInt(3);
 
-            if (randMission == 0 && game.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
-                drawMission(MissionType.PARCEL);
-            if (randMission == 1 && game.getResourceSize(ResourceType.PANDA_MISSION) > 0)
-                drawMission(MissionType.PANDA);
-            if (randMission == 2 && game.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
-                drawMission(MissionType.PEASANT);
+            if (randMission == 0 && game.getResourceSize(ResourceType.ParcelMission) > 0)
+                drawMission(MissionType.Parcel);
+            if (randMission == 1 && game.getResourceSize(ResourceType.PandaMission) > 0)
+                drawMission(MissionType.Panda);
+            if (randMission == 2 && game.getResourceSize(ResourceType.PeasantMission) > 0)
+                drawMission(MissionType.Peasant);
         }
 
-        else if (randAction == 1 && game.getResourceSize(ResourceType.CANAL) > 0) {  // place canal
+        else if (randAction == 1 && game.getResourceSize(ResourceType.Canal) > 0) {  // place canal
             if (possibleCoordinatesCanal().size() > 0) {
                 List<Coordinate[]> list = possibleCoordinatesCanal();
                 Collections.shuffle(list);
@@ -80,7 +80,7 @@ public class RandomBot extends Bot {
             }
         }
 
-        else if (randAction == 2 && game.getResourceSize(ResourceType.PARCEL) > 0){ // place parcel
+        else if (randAction == 2 && game.getResourceSize(ResourceType.Parcel) > 0){ // place parcel
             List<ColorType> parcelList = drawParcel();
             Collections.shuffle(parcelList);
             selectParcel(parcelList.get(0));

@@ -3,11 +3,9 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.bot.ParcelBot;
 
 
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.*;
 import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
 
 import java.util.*;
 
@@ -37,9 +35,9 @@ class BotTest {
     @BeforeEach
     public void setUp(){
         game = new Game();
-        parcel1 = new Parcel(ColorType.BLUE,ImprovementType.NOTHING);
-        parcel2 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
-        parcel3 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
+        parcel1 = new Parcel(ColorType.Blue,ImprovementType.Nothing);
+        parcel2 = new Parcel(ColorType.NoColor,ImprovementType.Nothing);
+        parcel3 = new Parcel(ColorType.NoColor,ImprovementType.Nothing);
         bot1=new ParcelBot(game,game.getRules());
         canal = new Canal();
         board = game.getBoard();
@@ -126,7 +124,7 @@ class BotTest {
     public void movePanda() throws BadPlaceParcelException {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         bot1.movePanda(bot1.possibleCoordinatesPanda().get(0));
-        assertEquals(1, game.getPlayerData().getInventory().getBamboo(ColorType.BLUE));
+        assertEquals(1, game.getPlayerData().getInventory().getBamboo(ColorType.Blue));
         assertEquals(0,parcel1.getNbBamboo());
     }
 

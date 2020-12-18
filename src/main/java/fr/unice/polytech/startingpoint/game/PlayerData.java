@@ -51,16 +51,16 @@ class PlayerData {
     private void initializeBot(BotType[] botTypes, Game game){
         for (BotType botType : botTypes) {
             switch (botType) {
-                case RANDOM:
+                case Random:
                     botData.put(new RandomBot(game, game.getRules()), new Inventory());
                     break;
-                case PARCELBOT:
+                case ParcelBot:
                     botData.put(new ParcelBot(game, game.getRules()), new Inventory());
                     break;
-                case PEASANTBOT:
+                case PeasantBot:
                     botData.put(new PeasantBot(game, game.getRules()), new Inventory());
                     break;
-                case PANDABOT:
+                case PandaBot:
                     botData.put(new PandaBot(game, game.getRules()), new Inventory());
                     break;
             }

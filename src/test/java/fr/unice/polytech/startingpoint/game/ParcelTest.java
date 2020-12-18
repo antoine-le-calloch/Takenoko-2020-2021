@@ -24,8 +24,8 @@ class ParcelTest {
 
     @Test
     public void sameParcel(){
-        Parcel parcel1 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
-        Parcel parcel2 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
+        Parcel parcel1 = new Parcel(ColorType.NoColor,ImprovementType.Nothing);
+        Parcel parcel2 = new Parcel(ColorType.NoColor,ImprovementType.Nothing);
         assertEquals(parcel1,parcel1);
         assertNotEquals(parcel1,parcel2);
         assertNotEquals(parcel1,null);
@@ -33,20 +33,20 @@ class ParcelTest {
 
     @Test
     public void notIrrigated(){
-        Parcel parcel = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
+        Parcel parcel = new Parcel(ColorType.NoColor,ImprovementType.Nothing);
         assertFalse(parcel.getIrrigated());
     }
 
     @Test
     public void setIrrigated(){
-        Parcel parcel = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
+        Parcel parcel = new Parcel(ColorType.NoColor,ImprovementType.Nothing);
         parcel.setIrrigated();
         assertTrue(parcel.getIrrigated());
     }
 
     @Test
     public void addBamboo(){
-        Parcel parcel = new Parcel(ColorType.NO_COLOR, ImprovementType.NOTHING);
+        Parcel parcel = new Parcel(ColorType.NoColor, ImprovementType.Nothing);
         parcel.setIrrigated();
         parcel.addBamboo();
         assertEquals(parcel.getNbBamboo(),2);
@@ -54,7 +54,7 @@ class ParcelTest {
 
     @Test
     public void delBamboo() throws CantDeleteBambooException {
-        Parcel parcel = new Parcel(ColorType.NO_COLOR, ImprovementType.NOTHING);
+        Parcel parcel = new Parcel(ColorType.NoColor, ImprovementType.Nothing);
         parcel.setIrrigated();
         parcel.delBamboo();
         assertEquals(parcel.getNbBamboo(),0);
@@ -67,13 +67,13 @@ class ParcelTest {
 
     @Test
     public void setIrrigatedWithImprovement(){
-        Parcel parcel = new Parcel(ColorType.NO_COLOR, ImprovementType.WATERSHED);
+        Parcel parcel = new Parcel(ColorType.NoColor, ImprovementType.Watershed);
         assertTrue(parcel.getIrrigated());
     }
 
     @Test
     public void addBambooWithImprovement(){
-        Parcel parcel = new Parcel(ColorType.NO_COLOR, ImprovementType.FERTILIZER);
+        Parcel parcel = new Parcel(ColorType.NoColor, ImprovementType.Fertilizer);
         parcel.setIrrigated();
         parcel.addBamboo();
         assertEquals(parcel.getNbBamboo(),4);
@@ -81,7 +81,7 @@ class ParcelTest {
 
     @Test
     public void maxAddBambooWithImprovement(){
-        Parcel parcel = new Parcel(ColorType.NO_COLOR, ImprovementType.FERTILIZER);
+        Parcel parcel = new Parcel(ColorType.NoColor, ImprovementType.Fertilizer);
         parcel.setIrrigated();
         parcel.addBamboo();
         parcel.addBamboo();
@@ -90,7 +90,7 @@ class ParcelTest {
 
     @Test
     public void delBambooWithImprovement() {
-        Parcel parcel = new Parcel(ColorType.NO_COLOR, ImprovementType.ENCLOSURE);
+        Parcel parcel = new Parcel(ColorType.NoColor, ImprovementType.Enclosure);
         parcel.setIrrigated();
 
         Exception exception1 = assertThrows(CantDeleteBambooException.class, parcel::delBamboo);

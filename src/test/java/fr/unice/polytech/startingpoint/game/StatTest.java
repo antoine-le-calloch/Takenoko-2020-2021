@@ -31,9 +31,9 @@ public class StatTest {
     List<Integer> p1w4Player;
     List<Integer> p2w4Player;
 
-    BotType[] p1 = new BotType[]{BotType.RANDOM};
-    BotType[] p2 = new BotType[]{BotType.RANDOM,BotType.PARCELBOT};
-    BotType[] p4 = new BotType[]{BotType.RANDOM,BotType.PARCELBOT,BotType.PEASANTBOT,BotType.PANDABOT};
+    BotType[] p1 = new BotType[]{BotType.Random};
+    BotType[] p2 = new BotType[]{BotType.Random,BotType.ParcelBot};
+    BotType[] p4 = new BotType[]{BotType.Random,BotType.ParcelBot,BotType.PeasantBot,BotType.PandaBot};
 
     @BeforeEach
     void initialize(){

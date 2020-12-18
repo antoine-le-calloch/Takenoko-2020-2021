@@ -41,8 +41,8 @@ public class PeasantBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        if (game.getInventoryMission().size() < 5 && game.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
-            drawMission(MissionType.PEASANT);
+        if (game.getInventoryMission().size() < 5 && game.getResourceSize(ResourceType.PeasantMission) > 0)
+            drawMission(MissionType.Peasant);
 
         if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
             movePeasant(strategyMovePeasant(possibleCoordinatesPeasant()));

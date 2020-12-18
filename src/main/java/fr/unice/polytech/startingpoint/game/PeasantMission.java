@@ -30,7 +30,7 @@ public class PeasantMission extends Mission {
      *            <b>the points of the mission</b>
      */
     PeasantMission(ColorType colorType, int points){
-        super(MissionType.PEASANT,colorType,points);
+        super(MissionType.Peasant,colorType,points);
     }
 
     /**

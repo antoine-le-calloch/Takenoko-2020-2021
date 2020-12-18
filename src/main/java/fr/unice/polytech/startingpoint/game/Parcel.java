@@ -27,13 +27,13 @@ class Parcel {
 
     Parcel(ColorType colorType){
         this.colorType = colorType;
-        this.improvementType = ImprovementType.NOTHING;
+        this.improvementType = ImprovementType.Nothing;
         setIrrigatedImprovement();
     }
 
     Parcel(){
-        this.colorType = ColorType.NO_COLOR;
-        this.improvementType = ImprovementType.NOTHING;
+        this.colorType = ColorType.NoColor;
+        this.improvementType = ImprovementType.Nothing;
         setIrrigatedImprovement();
     }
 
@@ -42,7 +42,7 @@ class Parcel {
     }
 
     void setIrrigatedImprovement(){
-        if (improvementType == ImprovementType.WATERSHED)
+        if (improvementType == ImprovementType.Watershed)
             setIrrigated();
     }
 
@@ -63,13 +63,13 @@ class Parcel {
     void addBamboo(){
         if (nbBamboo < 4)
             nbBamboo ++;
-        if (nbBamboo < 4 && improvementType == ImprovementType.FERTILIZER)
+        if (nbBamboo < 4 && improvementType == ImprovementType.Fertilizer)
             nbBamboo ++;
     }
 
     //Supprime un bambou de la parcelle
     void delBamboo() throws CantDeleteBambooException {
-        if (nbBamboo > 0 && improvementType != ImprovementType.ENCLOSURE)
+        if (nbBamboo > 0 && improvementType != ImprovementType.Enclosure)
             nbBamboo --;
         else
             throw new CantDeleteBambooException(coordinates);

@@ -42,7 +42,7 @@ public class ResourceTest {
 
     @Test
     void parcelDecrease() throws OutOfResourcesException {
-        resource.selectParcel(resource.drawParcel().get(0));
+        resource.selectParcel(resource.drawParcels().get(0));
         assertEquals(31,resource.getDeckParcel().size());
     }
 
@@ -54,19 +54,19 @@ public class ResourceTest {
 
     @Test
     void missionDecreasePeasant() throws OutOfResourcesException {
-        resource.drawMission(MissionType.PEASANT);
+        resource.drawMission(MissionType.Peasant);
         assertEquals(44,resource.getNbMission());
     }
 
     @Test
     void missionDecreasePanda() throws OutOfResourcesException {
-        resource.drawMission(MissionType.PANDA);
+        resource.drawMission(MissionType.Panda);
         assertEquals(44,resource.getNbMission());
     }
 
     @Test
     void missionDecreaseParcel() throws OutOfResourcesException {
-        resource.drawMission(MissionType.PARCEL);
+        resource.drawMission(MissionType.Parcel);
         assertEquals(44,resource.getNbMission());
     }
 
@@ -87,22 +87,22 @@ public class ResourceTest {
     @Test
     void outOfCParcel() throws OutOfResourcesException {
         for (int i = 0; i < 32; i++) {
-            resource.selectParcel(resource.drawParcel().get(0));
+            resource.selectParcel(resource.drawParcels().get(0));
         }
         assertTrue(resource.isEmpty());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawParcel());
+        assertThrows(OutOfResourcesException.class, () -> resource.drawParcels());
     }
 
     @Test
     void outOfMissions() throws OutOfResourcesException {
         for (int i = 0; i < 15; i++) {
-            resource.drawMission(MissionType.PANDA);
-            resource.drawMission(MissionType.PARCEL);
-            resource.drawMission(MissionType.PEASANT);
+            resource.drawMission(MissionType.Panda);
+            resource.drawMission(MissionType.Parcel);
+            resource.drawMission(MissionType.Peasant);
         }
         assertTrue(resource.isEmpty());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PANDA));
-        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PEASANT));
-        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PARCEL));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.Panda));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.Peasant));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.Parcel));
     }
 }

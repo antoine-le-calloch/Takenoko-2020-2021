@@ -1,66 +1,91 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.type.ActionType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 class TemporaryInventory {
     private int stamina;
     private Parcel parcel;
     private List<Parcel> parcelList;
-    private final boolean[] hasPlayedCorrectly;
+    private final boolean cheat;
+    private final Set<ActionType> actionTypeList;
 
     //Normal Constructor
     TemporaryInventory(int stamina){
         this.stamina = stamina;
         parcel = null;
+        actionTypeList = new HashSet<>();
         parcelList = new ArrayList<>();
-        hasPlayedCorrectly = new boolean[]{false,false,false,false};
+        cheat = false;
     }
 
     //Test Constructor
     TemporaryInventory(){
-        stamina = 0;
+        stamina = -1;
         parcel = null;
+        actionTypeList = new HashSet<>();
         parcelList = new ArrayList<>();
-        hasPlayedCorrectly = new boolean[]{false,false,false,true};
+        cheat = true;
     }
 
     void looseStamina() throws OutOfResourcesException {
-        stamina --;
-        if (hasPlayedCorrectly[3])
-            stamina ++;
-        if (stamina < 0)
-            throw new OutOfResourcesException("No more stamina.");
+        if (!cheat){
+            stamina --;
+            if (stamina < 0){
+                throw new OutOfResourcesException("No more stamina.");
+            }
+        }
     }
 
     void saveParcels(List<Parcel> parcelList){
-        hasPlayedCorrectly[0] = true;
         this.parcelList = parcelList;
     }
 
-    void add(Parcel parcel) {
-        hasPlayedCorrectly[1] = true;
+    void saveParcel(Parcel parcel){
         this.parcel = parcel;
     }
 
-    Parcel getParcel() {
-        hasPlayedCorrectly[2] = true;
+    Parcel getParcel(){
         return parcel;
     }
 
-    boolean hasAlreadyDrawn() {
-        return hasPlayedCorrectly[0];
+    void hasPlayedCorrectly() {
+        if ( !(actionTypeList.contains(ActionType.DrawParcels) == actionTypeList.contains(ActionType.SelectParcel)) ||
+                !(actionTypeList.contains(ActionType.DrawParcels) == actionTypeList.contains(ActionType.PlaceParcel)) )
+            throw new NoSuchElementException("Player has not played correctly.");
     }
 
-    void hasPlayedCorrectly() {
-        if (!(hasPlayedCorrectly[0] == hasPlayedCorrectly[1]) && !(hasPlayedCorrectly[0] == hasPlayedCorrectly[2]))
-            throw new NoSuchElementException("Player has not placed his parcel.");
+    void reset(int stamina) {
+        this.stamina = stamina;
+        parcel = null;
+        actionTypeList.clear();
+        parcelList.clear();
+    }
+
+    boolean contains(ActionType actionType) {
+        if (!cheat)
+            return actionTypeList.contains(actionType);
+        return true;
+    }
+
+    boolean add(ActionType actionType){
+        if (!cheat)
+            return actionTypeList.add(actionType);
+        return true;
+    }
+
+    void remove(ActionType actionType) {
+        if (!cheat)
+            actionTypeList.remove(actionType);
     }
 
     List<Parcel> getParcelsSaved() {
         return parcelList;
+    }
+
+    int getStamina() {
+        return stamina;
     }
 }

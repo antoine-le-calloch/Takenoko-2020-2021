@@ -56,7 +56,7 @@ public abstract class Bot {
         try {
             game.drawMission(missionType);
         }
-        catch (OutOfResourcesException e) {
+        catch (OutOfResourcesException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -74,7 +74,11 @@ public abstract class Bot {
     }
 
     public void selectParcel(ColorType colorType){
-        game.selectParcel(colorType);
+        try {
+            game.selectParcel(colorType);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     /**<p>Draw a canal in the resources and place it in the inventory.</p>
@@ -83,7 +87,7 @@ public abstract class Bot {
         try {
             game.drawCanal();
         }
-        catch (OutOfResourcesException e) {
+        catch (OutOfResourcesException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -97,7 +101,7 @@ public abstract class Bot {
         try {
             game.placeParcel(coordinate);
         }
-        catch (BadPlaceParcelException e) {
+        catch (BadPlaceParcelException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -111,7 +115,7 @@ public abstract class Bot {
         try {
             game.placeCanal(coordinates[0],coordinates[1]);
         }
-        catch (BadPlaceCanalException | OutOfResourcesException e) {
+        catch (BadPlaceCanalException | OutOfResourcesException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -123,8 +127,8 @@ public abstract class Bot {
      */
     public void movePanda(Coordinate coordinate) {
         try {
-            game.moveCharacter(CharacterType.PANDA,coordinate);
-        } catch (BadMoveCharacterException | OutOfResourcesException e) {
+            game.moveCharacter(CharacterType.Panda,coordinate);
+        } catch (BadMoveCharacterException | OutOfResourcesException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -136,8 +140,8 @@ public abstract class Bot {
      */
     public void movePeasant(Coordinate coordinate){
         try {
-            game.moveCharacter(CharacterType.PEASANT,coordinate);
-        } catch (BadMoveCharacterException | OutOfResourcesException e) {
+            game.moveCharacter(CharacterType.Peasant,coordinate);
+        } catch (BadMoveCharacterException | OutOfResourcesException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -187,7 +191,7 @@ public abstract class Bot {
     public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate coordinate : game.getPlacedCoordinates()) {
-            if (rules.isMovableCharacter(CharacterType.PANDA,coordinate)){
+            if (rules.isMovableCharacter(CharacterType.Panda,coordinate)){
                 possibleCoordinates.add(coordinate);
             }
         }
@@ -199,7 +203,7 @@ public abstract class Bot {
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : game.getPlacedCoordinates()) {
-            if (rules.isMovableCharacter(CharacterType.PEASANT,c)){
+            if (rules.isMovableCharacter(CharacterType.Peasant,c)){
                 possibleCoordinates.add(c);
             }
         }

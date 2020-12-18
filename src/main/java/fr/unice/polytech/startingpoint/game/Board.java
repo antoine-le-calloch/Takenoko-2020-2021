@@ -17,13 +17,13 @@ import java.util.*;
 
 
 class Board {
-    private final Character panda = new Character(CharacterType.PANDA);
-    private final Character peasant = new Character(CharacterType.PEASANT);
+    private final Character panda = new Character(CharacterType.Panda);
+    private final Character peasant = new Character(CharacterType.Peasant);
     private final Map<Coordinate, Parcel> placedParcels = new HashMap<>();
     private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
 
     Board() {
-        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NO_COLOR).setCoordinates(new Coordinate(0, 0, 0)));
+        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NoColor).setCoordinates(new Coordinate(0, 0, 0)));
     }
 
     //Place une parcelle sur le board si les conditions le permettent
@@ -51,14 +51,11 @@ class Board {
     //Effectue l’action du personnage passé en paramètre
     private void characterAction(CharacterType characterType) throws CantDeleteBambooException {
         switch (characterType){
-            case PANDA:
+            case Panda:
                 actionPanda();
-                break;
-            case PEASANT:
+                return;
+            case Peasant:
                 actionPeasant();
-                break;
-            default:
-                break;
         }
     }
 
@@ -109,9 +106,9 @@ class Board {
     //Renvoie le
     Character getCharacter(CharacterType characterType) {
         switch (characterType){
-            case PANDA:
+            case Panda:
                 return panda;
-            case PEASANT:
+            case Peasant:
                 return peasant;
             default:
                 throw new IllegalArgumentException("Wrong CharacterType to move.");

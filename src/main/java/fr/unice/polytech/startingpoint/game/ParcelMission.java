@@ -31,7 +31,7 @@ public class ParcelMission extends Mission {
      *            <b>the points of the mission</b>
      */
     ParcelMission(ColorType colorType, int points,FormType formType) {
-        super(MissionType.PARCEL,colorType,points);
+        super(MissionType.Parcel,colorType,points);
         this.formType = formType;
     }
 
@@ -46,11 +46,11 @@ public class ParcelMission extends Mission {
      */
     int checkMission(Board board, Inventory inventory) {
         switch (formType) {
-            case TRIANGLE:
+            case Triangle:
                 if (checkFormIrrigateWithColor(board, new Coordinate(1, 0, -1), new Coordinate(1, -1, 0)))
                     return points;
                 return 0;
-            case LINE:
+            case Line:
                 if (checkFormIrrigateWithColor(board, new Coordinate(0, -1, 1), new Coordinate(0, 1, -1)))
                     return points;
                 return 0;

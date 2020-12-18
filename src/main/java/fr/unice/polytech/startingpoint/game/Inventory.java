@@ -65,7 +65,7 @@ class Inventory {
      *              <b>The {@link ColorType} of the bamboo we want to add.</b>
      */
     void addBamboo(ColorType colorType){
-        if (colorType != ColorType.NO_COLOR)
+        if (colorType != ColorType.NoColor)
             inventoryBamboo[colorType.ordinal()] ++;
     }
 
@@ -87,7 +87,7 @@ class Inventory {
      *          <b>The {@link ColorType} of the bamboo we want to remove.</b>
      */
     void subBamboo(ColorType colorType){
-        if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NO_COLOR))
+        if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NoColor))
             inventoryBamboo[colorType.ordinal()] --;
     }
 
@@ -115,6 +115,10 @@ class Inventory {
         return inventoryBamboo.clone();
     }
 
+    List<Canal> getInventoryCanal() {
+        return new ArrayList<>(inventoryCanal);
+    }
+
     /**@return <b>The list of all missions.</b>
      */
     List<Mission> getMissions(){
@@ -126,7 +130,7 @@ class Inventory {
     List<ParcelMission> getParcelMissions(){
         List<ParcelMission> parcelMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
-            if(mission.missionType == MissionType.PARCEL)
+            if(mission.missionType == MissionType.Parcel)
                 parcelMissions.add((ParcelMission) mission);
         }
         return parcelMissions;
@@ -138,7 +142,7 @@ class Inventory {
     List<PandaMission> getPandaMissions(){
         List<PandaMission> pandaMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
-            if(mission.missionType == MissionType.PANDA)
+            if(mission.missionType == MissionType.Panda)
                 pandaMissions.add((PandaMission) mission);
         }
         return pandaMissions;
@@ -150,7 +154,7 @@ class Inventory {
     List<PeasantMission> getPeasantMissions(){
         List<PeasantMission> peasantMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
-            if(mission.missionType == MissionType.PEASANT)
+            if(mission.missionType == MissionType.Peasant)
                 peasantMissions.add((PeasantMission) mission);
         }
         return peasantMissions;

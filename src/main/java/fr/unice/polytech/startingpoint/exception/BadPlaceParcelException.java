@@ -3,7 +3,6 @@ package fr.unice.polytech.startingpoint.exception;
 import fr.unice.polytech.startingpoint.game.Coordinate;
 
 public class BadPlaceParcelException extends Exception {
-
     public BadPlaceParcelException(Coordinate coordinate){
         super(String.valueOf(coordinate));
     }

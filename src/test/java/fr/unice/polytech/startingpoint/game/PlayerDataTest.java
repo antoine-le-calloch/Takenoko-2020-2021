@@ -19,7 +19,7 @@ public class PlayerDataTest {
 
     @BeforeEach
     void initialize(){
-        game = new Game(new BotType[]{BotType.RANDOM,BotType.PARCELBOT,BotType.PANDABOT,BotType.PEASANTBOT},4);
+        game = new Game(new BotType[]{BotType.Random,BotType.ParcelBot,BotType.PandaBot,BotType.PeasantBot},4);
         rules = game.getRules();
         playerData = game.getPlayerData();
         board = game.getBoard();
@@ -55,7 +55,7 @@ public class PlayerDataTest {
 
     @Test
     void botInventoryMissionDecrease(){
-        playerData.addMission(new ParcelMission(ColorType.NO_COLOR,2, FormType.TRIANGLE));
+        playerData.addMission(new ParcelMission(ColorType.NoColor,2, FormType.Triangle));
         board.placeParcel(new Parcel(),new Coordinate(0,-1,1));
         board.placeParcel(new Parcel(),new Coordinate(1,-1,0));
         board.placeParcel(new Parcel(),new Coordinate(1,-2,1));

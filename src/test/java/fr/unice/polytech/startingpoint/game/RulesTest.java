@@ -95,25 +95,25 @@ public class RulesTest {
     @Test
     void characterMoveOnPlacedParcelNextToCenter(){
         board.placeParcel(new Parcel(),new Coordinate(0,-1,1));
-        assertTrue(rules.isMovableCharacter(CharacterType.PANDA,new Coordinate(0,-1,1)));
+        assertTrue(rules.isMovableCharacter(CharacterType.Panda,new Coordinate(0,-1,1)));
     }
 
     @Test
     void characterMoveOnPlacedParcelAwayFromCenter(){
         board.placeParcel(new Parcel(),new Coordinate(0,-1,1));
         board.placeParcel(new Parcel(),new Coordinate(0,-2,2));
-        assertTrue(rules.isMovableCharacter(CharacterType.PANDA,new Coordinate(0,-2,2)));
+        assertTrue(rules.isMovableCharacter(CharacterType.Panda,new Coordinate(0,-2,2)));
     }
 
     @Test
     void characterMoveOnNotSameLine(){
         board.placeParcel(new Parcel(),new Coordinate(1,-2,1));
-        assertFalse(rules.isMovableCharacter(CharacterType.PANDA,new Coordinate(1,-2,1)));
+        assertFalse(rules.isMovableCharacter(CharacterType.Panda,new Coordinate(1,-2,1)));
     }
 
     @Test
     void characterMoveOnNPlacedParcelAwayFromCenterNoParcelBetween(){
         board.placeParcel(new Parcel(),new Coordinate(0,-2,2));
-        assertFalse(rules.isMovableCharacter(CharacterType.PANDA,new Coordinate(0,-2,2)));
+        assertFalse(rules.isMovableCharacter(CharacterType.Panda,new Coordinate(0,-2,2)));
     }
 }

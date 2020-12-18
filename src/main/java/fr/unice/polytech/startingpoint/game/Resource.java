@@ -41,14 +41,14 @@ class Resource {
     private void initializeDeckParcel(){
         int nbParcel = 32;
         for (int i = 0; i < nbParcel / 8; i++){
-            deckParcel.add(new Parcel(ColorType.RED,ImprovementType.NOTHING));
-            deckParcel.add(new Parcel(ColorType.RED,ImprovementType.WATERSHED));
-            deckParcel.add(new Parcel(ColorType.RED,ImprovementType.FERTILIZER));
-            deckParcel.add(new Parcel(ColorType.RED,ImprovementType.ENCLOSURE));
-            deckParcel.add(new Parcel(ColorType.BLUE,ImprovementType.NOTHING));
-            deckParcel.add(new Parcel(ColorType.BLUE,ImprovementType.WATERSHED));
-            deckParcel.add(new Parcel(ColorType.BLUE,ImprovementType.FERTILIZER));
-            deckParcel.add(new Parcel(ColorType.BLUE,ImprovementType.ENCLOSURE));
+            deckParcel.add(new Parcel(ColorType.Red,ImprovementType.Nothing));
+            deckParcel.add(new Parcel(ColorType.Red,ImprovementType.Watershed));
+            deckParcel.add(new Parcel(ColorType.Red,ImprovementType.Fertilizer));
+            deckParcel.add(new Parcel(ColorType.Red,ImprovementType.Enclosure));
+            deckParcel.add(new Parcel(ColorType.Blue,ImprovementType.Nothing));
+            deckParcel.add(new Parcel(ColorType.Blue,ImprovementType.Watershed));
+            deckParcel.add(new Parcel(ColorType.Blue,ImprovementType.Fertilizer));
+            deckParcel.add(new Parcel(ColorType.Blue,ImprovementType.Enclosure));
         }
     }
 
@@ -65,11 +65,11 @@ class Resource {
     private void initializeDeckMissionParcel(){
         int nbMissionParcel = 15;
         for (int i = 0; i < nbMissionParcel / 5; i++){
-            deckMissionParcel.add(new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE));
-            deckMissionParcel.add(new ParcelMission(ColorType.BLUE, 3, FormType.TRIANGLE));
-            deckMissionParcel.add(new ParcelMission(ColorType.RED, 3, FormType.LINE));
-            deckMissionParcel.add(new ParcelMission(ColorType.BLUE, 4, FormType.LINE));
-            deckMissionParcel.add(new ParcelMission(ColorType.BLUE, 4, FormType.LINE));
+            deckMissionParcel.add(new ParcelMission(ColorType.Red, 2, FormType.Triangle));
+            deckMissionParcel.add(new ParcelMission(ColorType.Blue, 3, FormType.Triangle));
+            deckMissionParcel.add(new ParcelMission(ColorType.Red, 3, FormType.Line));
+            deckMissionParcel.add(new ParcelMission(ColorType.Blue, 4, FormType.Line));
+            deckMissionParcel.add(new ParcelMission(ColorType.Blue, 4, FormType.Line));
         }
         Collections.shuffle(deckMissionParcel);
     }
@@ -78,10 +78,10 @@ class Resource {
      */
     private void initializeDeckMissionPanda(){
         int nbMissionParcel = 15;
-        deckMissionPanda.add(new PandaMission(ColorType.RED, 3));
+        deckMissionPanda.add(new PandaMission(ColorType.Red, 3));
         for (int i = 0; i < nbMissionParcel / 2; i++){
-            deckMissionPanda.add(new PandaMission(ColorType.RED, 3));
-            deckMissionPanda.add(new PandaMission(ColorType.BLUE, 3));
+            deckMissionPanda.add(new PandaMission(ColorType.Red, 3));
+            deckMissionPanda.add(new PandaMission(ColorType.Blue, 3));
         }
         Collections.shuffle(deckMissionPanda);
     }
@@ -90,17 +90,15 @@ class Resource {
      */
     private void initializeDeckMissionPeasant(){
         int nbMissionParcel = 15;
-        deckMissionPeasant.add(new PeasantMission(ColorType.RED, 4));
+        deckMissionPeasant.add(new PeasantMission(ColorType.Red, 4));
         for (int i = 0; i < nbMissionParcel / 2; i++){
-            deckMissionPeasant.add(new PeasantMission(ColorType.RED, 4));
-            deckMissionPeasant.add(new PeasantMission(ColorType.BLUE, 4));
+            deckMissionPeasant.add(new PeasantMission(ColorType.Red, 4));
+            deckMissionPeasant.add(new PeasantMission(ColorType.Blue, 4));
         }
         Collections.shuffle(deckMissionPeasant);
     }
 
-    /**Draw the {@link Parcel} specified in parameter.
-     *
-     * @return <b>The parcel drawn.</b>
+    /**Initialize {@link Canal} deck.
      */
     private void initializeDeckCanal(){
         int nbCanal = 27;
@@ -122,7 +120,7 @@ class Resource {
      * @return <b>A list of the parcels drawn.</b>
      * @throws OutOfResourcesException
      */
-    List<Parcel> drawParcel() throws OutOfResourcesException {
+    List<Parcel> drawParcels() throws OutOfResourcesException {
         if (deckParcel.size() > 2) {
             Collections.shuffle(deckParcel);
             List<Parcel> parcelList = new ArrayList<>();
@@ -161,17 +159,17 @@ class Resource {
      */
     Mission drawMission(MissionType type) throws OutOfResourcesException {
         switch (type) {
-            case PARCEL:
+            case Parcel:
                 if (deckMissionParcel.size() > 0) {
                     return deckMissionParcel.remove(0);
                 }
                 throw new OutOfResourcesException("No more ParcelMission to draw.");
-            case PEASANT:
+            case Peasant:
                 if (deckMissionPeasant.size() > 0) {
                     return deckMissionPeasant.remove(0);
                 }
                 throw new OutOfResourcesException("No more PeasantMission to draw.");
-            case PANDA:
+            case Panda:
                 if (deckMissionPanda.size() > 0) {
                     return deckMissionPanda.remove(0);
                 }

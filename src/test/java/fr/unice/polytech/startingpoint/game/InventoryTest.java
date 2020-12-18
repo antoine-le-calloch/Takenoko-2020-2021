@@ -26,8 +26,8 @@ public class InventoryTest {
         inventory2 = new Inventory();
         resource = new Resource();
         board = new Board();
-        parcel1 = new Parcel(ColorType.BLUE, ImprovementType.NOTHING);
-        mission = new ParcelMission( ColorType.BLUE , 0, FormType.LINE);
+        parcel1 = new Parcel(ColorType.Blue, ImprovementType.Nothing);
+        mission = new ParcelMission( ColorType.Blue, 0, FormType.Line);
     }
 
     @Test

@@ -1,12 +1,8 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
-import fr.unice.polytech.startingpoint.game.*;
 import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,17 +32,17 @@ public class ParcelMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE);
-        mission2 = new ParcelMission(ColorType.RED, 3, FormType.LINE);
-        mission3 = new ParcelMission(ColorType.BLUE, 2, FormType.TRIANGLE);
-        mission4 = new ParcelMission(ColorType.BLUE, 3, FormType.LINE);
+        mission1 = new ParcelMission(ColorType.Red, 2, FormType.Triangle);
+        mission2 = new ParcelMission(ColorType.Red, 3, FormType.Line);
+        mission3 = new ParcelMission(ColorType.Blue, 2, FormType.Triangle);
+        mission4 = new ParcelMission(ColorType.Blue, 3, FormType.Line);
         game = new Game();
         board = game.getBoard();
         resource = game.getResource();
-        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel2 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel3 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel4 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
+        parcel1 = new Parcel(ColorType.Red,ImprovementType.Nothing);
+        parcel2 = new Parcel(ColorType.Red,ImprovementType.Nothing);
+        parcel3 = new Parcel(ColorType.Red,ImprovementType.Nothing);
+        parcel4 = new Parcel(ColorType.Red,ImprovementType.Nothing);
         bot = new RandomBot(game, game.getRules());
     }
 

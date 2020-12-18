@@ -46,7 +46,7 @@ public class ParcelBot extends Bot {
     public void botPlay(){
         int cptAction = NB_ACTION;
         if (isJudiciousDrawMission(cptAction)) {
-            drawMission(MissionType.PARCEL);
+            drawMission(MissionType.Parcel);
             cptAction--;
         }
 
@@ -66,7 +66,7 @@ public class ParcelBot extends Bot {
      */
 
     public boolean isJudiciousDrawMission(int cptAction){
-        return game.getResourceSize(ResourceType.PARCEL_MISSION) > 0 && cptAction != 0;
+        return game.getResourceSize(ResourceType.ParcelMission) > 0 && cptAction != 0;
     }
 
     /**
@@ -80,7 +80,7 @@ public class ParcelBot extends Bot {
                     return false;
             }
         }
-        return game.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && cptAction != 0;
+        return game.getResourceSize(ResourceType.Parcel) > 0 && possibleCoordinatesParcel().size()>0 && cptAction != 0;
     }
 
     /**
@@ -88,7 +88,7 @@ public class ParcelBot extends Bot {
      * @see Game
      */
     public boolean isJudiciousPutCanal(int cptAction){
-        return game.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && cptAction != 0;
+        return game.getResourceSize(ResourceType.Canal)  > 0 && possibleCoordinatesCanal().size() > 0 && cptAction != 0;
     }
 
     /**
@@ -103,7 +103,7 @@ public class ParcelBot extends Bot {
         try {
             List<ColorType> colorsAvailable = game.drawParcels();
             List<Coordinate> bestCoords = new ArrayList<>();
-            ColorType bestColor = ColorType.NO_COLOR;
+            ColorType bestColor = ColorType.NoColor;
             int minTurn = NB_TURN_MAX;
 
             for (ColorType color : colorsAvailable) {
@@ -190,7 +190,7 @@ public class ParcelBot extends Bot {
         Set<Coordinate> coordNeedeToDoMission = new HashSet<>();
         List<Coordinate> form = setForm(hightCoord, mission.getFormType());
 
-        if(mission.getFormType().equals(FormType.LINE) && hightCoord.equals(new Coordinate(0,-1,1)))
+        if(mission.getFormType().equals(FormType.Line) && hightCoord.equals(new Coordinate(0,-1,1)))
             return null;
 
         for (Coordinate coord : form) {
@@ -226,7 +226,7 @@ public class ParcelBot extends Bot {
         List<Coordinate> coordForm = new ArrayList<>();
         coordForm.add(hightCoord);
         coordForm.add(new Coordinate(hightCoord,Coordinate.offSets().get(2)));
-        if(form.equals(FormType.LINE))
+        if(form.equals(FormType.Line))
             coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(2)));
         else
             coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(4)));
@@ -257,7 +257,7 @@ public class ParcelBot extends Bot {
 
             placeCanal(possibleCoordinatesCanal().get(0));
             return false;
-        } catch (OutOfResourcesException e) {
+        } catch (OutOfResourcesException | IllegalAccessException e) {
             e.printStackTrace();
             return false;
         }
