@@ -1,9 +1,12 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.CharacterType;
+import fr.unice.polytech.startingpoint.type.ColorType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedSet;
 
 /**
  * Classe representant le plateau de jeu

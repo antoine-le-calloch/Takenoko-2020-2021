@@ -33,7 +33,7 @@ public class RandomBotTest {
     Parcel parcel1;
     Resource resource;
     Rules rules;
-    PlayerData playerData;
+    GameData gameData;
 
 
     @BeforeEach
@@ -41,10 +41,10 @@ public class RandomBotTest {
 
         game = new Game(new BotType[]{BotType.RANDOM}, 3);
         rules = game.getRules();
-        playerData = game.getPlayerData();
+        gameData = game.getGameData();
         board = game.getBoard();
         parcel1 = new Parcel(ColorType.NO_COLOR, ImprovementType.NOTHING);
-        rdmBot1 = (RandomBot) game.getPlayerData().getBot();
+        rdmBot1 = (RandomBot) game.getGameData().getBot();
         resource = game.getResource();
     }
 
@@ -56,11 +56,11 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(0);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand, mockRand2);//set les Random mock
 
-        assertEquals(0, playerData.getMissions().size());
+        assertEquals(0, gameData.getMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1, playerData.getMissions().size());
+        assertEquals(1, gameData.getMissions().size());
 
-        assertEquals(MissionType.PARCEL, playerData.getMissions().get(0).missionType);
+        assertEquals(MissionType.PARCEL, gameData.getMissions().get(0).missionType);
     }
 
 
@@ -72,10 +72,10 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(1);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand, mockRand2);//set les Random mock
 
-        assertEquals(0, playerData.getMissions().size());
+        assertEquals(0, gameData.getMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1, playerData.getMissions().size());
-        assertEquals(MissionType.PANDA, playerData.getMissions().get(0).missionType);
+        assertEquals(1, gameData.getMissions().size());
+        assertEquals(MissionType.PANDA, gameData.getMissions().get(0).missionType);
     }
 
     @Test
@@ -87,10 +87,10 @@ public class RandomBotTest {
         rdmBot1.setRand(mockRand, mockRand2);//set les Random mock
 
 
-        assertEquals(0, playerData.getMissions().size());
+        assertEquals(0, gameData.getMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1, playerData.getMissions().size());
-        assertEquals(MissionType.PEASANT, playerData.getMissions().get(0).missionType);
+        assertEquals(1, gameData.getMissions().size());
+        assertEquals(MissionType.PEASANT, gameData.getMissions().get(0).missionType);
     }
 
     @Test

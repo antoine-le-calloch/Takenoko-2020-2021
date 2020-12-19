@@ -2,8 +2,11 @@ package fr.unice.polytech.startingpoint.game;
 
 
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
-import fr.unice.polytech.startingpoint.type.*;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.FormType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 
 import java.util.ArrayList;
 import java.util.Collections;

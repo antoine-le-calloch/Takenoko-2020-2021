@@ -1,7 +1,10 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
+import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +23,12 @@ public class Game{
     private Board board;
     private Rules rules;
     private final TemporaryInventory temporaryInventory;
-    private final PlayerData playerData;
+    private final GameData gameData;
 
     //Normal Constructor
     Game(BotType[] botTypes,int nbMission){
         initializeGame();
-        playerData = new PlayerData(botTypes, this,nbMission);
+        gameData = new GameData(botTypes, this,nbMission);
         temporaryInventory = new TemporaryInventory(2);
     }
 
@@ -37,12 +40,12 @@ public class Game{
 
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
-        while(playerData.isContinue() && (!resource.isEmpty())) {
+        while(gameData.isContinue() && (!resource.isEmpty())) {
             temporaryInventory.reset(2);
-            playerData.getBot().botPlay();
+            gameData.getBot().botPlay();
             temporaryInventory.hasPlayedCorrectly();
-            playerData.missionDone();
-            playerData.nextBot();
+            gameData.missionDone();
+            gameData.nextBot();
         }
     }
 
@@ -62,12 +65,12 @@ public class Game{
         return temporaryInventory;
     }
 
-    PlayerData getPlayerData() {
-        return playerData;
+    GameData getGameData() {
+        return gameData;
     }
 
     List<Integer> getScores(){
-        return playerData.getScores();
+        return gameData.getScores();
     }
 
     /**
@@ -77,7 +80,7 @@ public class Game{
     public void drawCanal() throws OutOfResourcesException, RulesViolationException {
         if (temporaryInventory.add(ActionType.DRAW_CANAL)){
             temporaryInventory.looseStamina();
-            playerData.addCanal(resource.drawCanal());
+            gameData.addCanal(resource.drawCanal());
         }
         else
             throw new RulesViolationException("Already used this method.");
@@ -86,7 +89,7 @@ public class Game{
     public void drawMission(MissionType missionType) throws OutOfResourcesException, RulesViolationException {
         if (temporaryInventory.add(ActionType.DRAW_MISSION)){
             temporaryInventory.looseStamina();
-            playerData.addMission(resource.drawMission(missionType));
+            gameData.addMission(resource.drawMission(missionType));
         }
         else
             throw new RulesViolationException("Already used this method.");
@@ -146,7 +149,7 @@ public class Game{
     public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         if (temporaryInventory.add(ActionType.PLACE_CANAL)) {
             if (rules.isPlayableCanal(coordinate1, coordinate2))
-                board.placeCanal(playerData.getInventory().pickCanal(), coordinate1, coordinate2);
+                board.placeCanal(gameData.getInventory().pickCanal(), coordinate1, coordinate2);
             else{
                 temporaryInventory.remove(ActionType.PLACE_CANAL);
                 throw new BadCoordinateException("The canal can't be place on these coordinates : " + coordinate1.toString() + " " + coordinate2.toString());
@@ -160,7 +163,7 @@ public class Game{
         if (temporaryInventory.add(ActionType.get(characterType))) {
             if (rules.isMovableCharacter(characterType, coordinate)) {
                 temporaryInventory.looseStamina();
-                playerData.addBamboo(board.moveCharacter(characterType, coordinate));
+                gameData.addBamboo(board.moveCharacter(characterType, coordinate));
             }
             else{
                 temporaryInventory.remove(ActionType.get(characterType));
@@ -196,19 +199,19 @@ public class Game{
     }
 
     public List<ParcelMission> getInventoryParcelMission() {
-        return playerData.getParcelMissions();
+        return gameData.getParcelMissions();
     }
 
     public List<PandaMission> getInventoryPandaMission() {
-        return playerData.getPandaMissions();
+        return gameData.getPandaMissions();
     }
 
     public List<PeasantMission> getInventoryPeasantMission() {
-        return playerData.getPeasantMissions();
+        return gameData.getPeasantMissions();
     }
 
     public List<Mission> getInventoryMission() {
-        return playerData.getMissions();
+        return gameData.getMissions();
     }
 
     public int getResourceSize(ResourceType resourceType){

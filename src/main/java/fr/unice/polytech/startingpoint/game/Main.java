@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.BotType;
 
 /**
  * Main, lance 1000 parties, des statistiques sont affichées

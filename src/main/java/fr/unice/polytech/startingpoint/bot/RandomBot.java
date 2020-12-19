@@ -1,7 +1,11 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.game.Coordinate;
+import fr.unice.polytech.startingpoint.game.Game;
+import fr.unice.polytech.startingpoint.game.ParcelInformation;
+import fr.unice.polytech.startingpoint.game.Rules;
+import fr.unice.polytech.startingpoint.type.MissionType;
+import fr.unice.polytech.startingpoint.type.ResourceType;
 
 import java.util.Collections;
 import java.util.List;

@@ -24,7 +24,7 @@ class PeasantBotTest {
     @BeforeEach
     void setUp(){
         game=new Game(new BotType[] {BotType.PEASANT_BOT},3);
-        peasantBot = (PeasantBot) game.getPlayerData().getBot();
+        peasantBot = (PeasantBot) game.getGameData().getBot();
         board = game.getBoard();
         parcel1 = new Parcel(ColorType.RED, ImprovementType.NOTHING);
         coordinate1 = new Coordinate(1, -1, 0);
@@ -74,8 +74,8 @@ class PeasantBotTest {
 
     @Test
     void drawMission() {
-        assertEquals(0, game.getPlayerData().getPeasantMissions().size());//0 mission dans son inventaire
+        assertEquals(0, game.getGameData().getPeasantMissions().size());//0 mission dans son inventaire
         peasantBot.botPlay();//fait jouer le paysan(il vas piocher)
-        assertEquals(1, game.getPlayerData().getPeasantMissions().size());//1 mission dans son inventaire
+        assertEquals(1, game.getGameData().getPeasantMissions().size());//1 mission dans son inventaire
     }
 }

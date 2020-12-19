@@ -1,10 +1,12 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
-import fr.unice.polytech.startingpoint.type.*;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <h1>{@link Inventory} :</h1>
@@ -28,7 +30,6 @@ class Inventory {
     private final List<Mission> inventoryMission;
     private final List<Canal> inventoryCanal;
     private final int[] inventoryBamboo;
-    private final int[] score;
 
     /**
      * <p>Set up the Inventory. Initialize all variables.</p>
@@ -37,7 +38,6 @@ class Inventory {
         inventoryMission = new ArrayList<>();
         inventoryCanal = new ArrayList<>();
         inventoryBamboo = new int[]{0,0};
-        score = new int[]{0,0};
     }
 
     /**@return <b>A canal and remove it from the inventory.</b>
@@ -47,16 +47,6 @@ class Inventory {
             return inventoryCanal.remove(0);
         }
         throw new OutOfResourcesException("No more Canal in the inventory.");
-    }
-
-    /**<p>Add to the score the number of points specified in parameter.</p>
-     *
-     * @param count
-     *              <b>The number of points to add to the score.</b>
-     */
-    void addScore(int count) {
-        score[0] += count;
-        score[1] ++;
     }
 
     /**<p>Add one bamboo of the {@link ColorType} specified in parameter.</p>
@@ -158,19 +148,5 @@ class Inventory {
                 peasantMissions.add((PeasantMission) mission);
         }
         return peasantMissions;
-    }
-
-    /**
-     * @return <b>The score.</b>
-     */
-    int getScore() {
-        return score[0];
-    }
-
-    /**
-     * @return <b>The number of missions done.</b>
-     */
-    int getMissionsDone() {
-        return score[1];
     }
 }

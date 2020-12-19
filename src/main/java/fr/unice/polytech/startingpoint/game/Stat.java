@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.BotType;
 
 import java.util.ArrayList;
 import java.util.List;

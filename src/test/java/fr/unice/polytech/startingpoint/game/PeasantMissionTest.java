@@ -38,18 +38,18 @@ public class PeasantMissionTest {
     void missionComplete() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
         game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
+        assertEquals(2,mission1.checkMission(board, game.getGameData().getInventory()));
     }
 
     @Test
     void wrongColor() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
         game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertEquals(0,mission2.checkMission(board, game.getPlayerData().getInventory()));
+        assertEquals(0,mission2.checkMission(board, game.getGameData().getInventory()));
     }
 
     @Test
     void notEnoughBamboo(){
-        assertNotEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
+        assertNotEquals(2,mission1.checkMission(board, game.getGameData().getInventory()));
     }
 }

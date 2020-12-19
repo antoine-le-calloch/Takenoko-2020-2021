@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 
 /**
  * <h1>{@link PeasantMission} :</h1>

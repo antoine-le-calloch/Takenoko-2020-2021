@@ -32,13 +32,13 @@ class GameTest {
 
     @Test
     void botDrawCanalLessStaminaAndAddCanalToInventory() throws OutOfResourcesException, RulesViolationException {
-        assertEquals(0,game.getPlayerData().getInventory().getInventoryCanal().size());
+        assertEquals(0,game.getGameData().getInventory().getInventoryCanal().size());
         assertEquals(27,game.getResourceSize(ResourceType.CANAL));
         assertEquals(2,game.getTemporaryInventory().getStamina());
 
         game.drawCanal();
 
-        assertEquals(1,game.getPlayerData().getInventory().getInventoryCanal().size());
+        assertEquals(1,game.getGameData().getInventory().getInventoryCanal().size());
         assertEquals(26,game.getResourceSize(ResourceType.CANAL));
         assertEquals(1,game.getTemporaryInventory().getStamina());
     }
@@ -59,15 +59,15 @@ class GameTest {
 
     @Test
     void botDrawParcelMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, RulesViolationException {
-        assertEquals(0,game.getPlayerData().getInventory().getMissions().size());
-        assertEquals(0,game.getPlayerData().getInventory().getParcelMissions().size());
+        assertEquals(0,game.getGameData().getInventory().getMissions().size());
+        assertEquals(0,game.getGameData().getInventory().getParcelMissions().size());
         assertEquals(15,game.getResourceSize(ResourceType.PARCEL_MISSION));
         assertEquals(2,game.getTemporaryInventory().getStamina());
 
         game.drawMission(MissionType.PARCEL);
 
-        assertEquals(1,game.getPlayerData().getInventory().getMissions().size());
-        assertEquals(1,game.getPlayerData().getInventory().getParcelMissions().size());
+        assertEquals(1,game.getGameData().getInventory().getMissions().size());
+        assertEquals(1,game.getGameData().getInventory().getParcelMissions().size());
         assertEquals(14,game.getResourceSize(ResourceType.PARCEL_MISSION));
         assertEquals(1,game.getTemporaryInventory().getStamina());
     }
@@ -88,15 +88,15 @@ class GameTest {
 
     @Test
     void botDrawPandaMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, RulesViolationException {
-        assertEquals(0,game.getPlayerData().getInventory().getMissions().size());
-        assertEquals(0,game.getPlayerData().getInventory().getPandaMissions().size());
+        assertEquals(0,game.getGameData().getInventory().getMissions().size());
+        assertEquals(0,game.getGameData().getInventory().getPandaMissions().size());
         assertEquals(15,game.getResourceSize(ResourceType.PANDA_MISSION));
         assertEquals(2,game.getTemporaryInventory().getStamina());
 
         game.drawMission(MissionType.PANDA);
 
-        assertEquals(1,game.getPlayerData().getInventory().getMissions().size());
-        assertEquals(1,game.getPlayerData().getInventory().getPandaMissions().size());
+        assertEquals(1,game.getGameData().getInventory().getMissions().size());
+        assertEquals(1,game.getGameData().getInventory().getPandaMissions().size());
         assertEquals(14,game.getResourceSize(ResourceType.PANDA_MISSION));
         assertEquals(1,game.getTemporaryInventory().getStamina());
     }
@@ -117,15 +117,15 @@ class GameTest {
 
     @Test
     void botDrawPeasantMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, RulesViolationException {
-        assertEquals(0,game.getPlayerData().getInventory().getMissions().size());
-        assertEquals(0,game.getPlayerData().getInventory().getPeasantMissions().size());
+        assertEquals(0,game.getGameData().getInventory().getMissions().size());
+        assertEquals(0,game.getGameData().getInventory().getPeasantMissions().size());
         assertEquals(15,game.getResourceSize(ResourceType.PEASANT_MISSION));
         assertEquals(2,game.getTemporaryInventory().getStamina());
 
         game.drawMission(MissionType.PEASANT);
 
-        assertEquals(1,game.getPlayerData().getInventory().getMissions().size());
-        assertEquals(1,game.getPlayerData().getInventory().getPeasantMissions().size());
+        assertEquals(1,game.getGameData().getInventory().getMissions().size());
+        assertEquals(1,game.getGameData().getInventory().getPeasantMissions().size());
         assertEquals(14,game.getResourceSize(ResourceType.PEASANT_MISSION));
         assertEquals(1,game.getTemporaryInventory().getStamina());
     }

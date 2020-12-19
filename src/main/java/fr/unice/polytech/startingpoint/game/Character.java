@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.CharacterType;
 
 /**
  * Classe representant un personnage : le panda ou le paysan

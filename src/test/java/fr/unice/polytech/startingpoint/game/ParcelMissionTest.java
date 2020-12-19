@@ -64,7 +64,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertEquals(2, mission1.checkMission(board,game.getPlayerData().getInventory()));
+        assertEquals(2, mission1.checkMission(board,game.getGameData().getInventory()));
     }
 
 
@@ -74,7 +74,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertEquals(3,mission2.checkMission(board,game.getPlayerData().getInventory()));
+        assertEquals(3,mission2.checkMission(board,game.getGameData().getInventory()));
     }
 
     /**
@@ -82,7 +82,7 @@ public class ParcelMissionTest {
      */
 
     @Test void checkNoMissionTriangle(){
-        assertEquals(0, mission1.checkMission(board, game.getPlayerData().getInventory()));
+        assertEquals(0, mission1.checkMission(board, game.getGameData().getInventory()));
     }
 
     @Test void triangleOnBoardGoodColor(){ //checkTriangle
@@ -157,7 +157,7 @@ public class ParcelMissionTest {
 
 
     @Test void checkNoMissionLigne(){
-        assertEquals(0,mission2.checkMission(board,game.getPlayerData().getInventory()));
+        assertEquals(0,mission2.checkMission(board,game.getGameData().getInventory()));
     }
 
 }
