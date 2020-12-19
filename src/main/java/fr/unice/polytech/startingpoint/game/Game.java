@@ -74,25 +74,25 @@ public class Game{
      * <h1><u>BOT INTERACTIONS</u></h1>
      */
 
-    public void drawCanal() throws OutOfResourcesException, IllegalAccessException {
+    public void drawCanal() throws OutOfResourcesException, RulesViolationException {
         if (temporaryInventory.add(ActionType.DRAW_CANAL)){
             temporaryInventory.looseStamina();
             playerData.addCanal(resource.drawCanal());
         }
         else
-            throw new IllegalAccessException("Already used this method.");
+            throw new RulesViolationException("Already used this method.");
     }
 
-    public void drawMission(MissionType missionType) throws OutOfResourcesException, IllegalAccessException {
+    public void drawMission(MissionType missionType) throws OutOfResourcesException, RulesViolationException {
         if (temporaryInventory.add(ActionType.DRAW_MISSION)){
             temporaryInventory.looseStamina();
             playerData.addMission(resource.drawMission(missionType));
         }
         else
-            throw new IllegalAccessException("Already used this method.");
+            throw new RulesViolationException("Already used this method.");
     }
 
-    public List<ColorType> drawParcels() throws IllegalAccessException, OutOfResourcesException {
+    public List<ColorType> drawParcels() throws OutOfResourcesException, RulesViolationException {
         if (temporaryInventory.add(ActionType.DRAW_PARCELS)){
             temporaryInventory.looseStamina();
             temporaryInventory.saveParcels(resource.drawParcels());
@@ -103,10 +103,10 @@ public class Game{
             return colorTypeList;
         }
         else
-            throw new IllegalAccessException("Already used this method.");
+            throw new RulesViolationException("Already used this method.");
     }
 
-    public void selectParcel(ColorType colorType) throws IllegalAccessException{
+    public void selectParcel(ColorType colorType) throws RulesViolationException {
         if (temporaryInventory.add(ActionType.SELECT_PARCEL)){
             if (temporaryInventory.contains(ActionType.DRAW_PARCELS)){
                 for (Parcel parcel : temporaryInventory.getParcelsSaved()){
@@ -116,16 +116,16 @@ public class Game{
                         return;
                     }
                 }
-                throw new IllegalArgumentException("Wrong Parcel asked.");
+                throw new RulesViolationException("Wrong Parcel asked.");
             }
             else
-                throw new IllegalAccessException("You haven’t drawn.");
+                throw new RulesViolationException("You haven’t drawn.");
         }
         else
-            throw new IllegalAccessException("Already used this method.");
+            throw new RulesViolationException("Already used this method.");
     }
 
-    public void placeParcel(Coordinate coordinate) throws IllegalAccessException, BadCoordinateException {
+    public void placeParcel(Coordinate coordinate) throws BadCoordinateException, RulesViolationException {
         if (temporaryInventory.add(ActionType.PLACE_PARCEL)){
             if (temporaryInventory.contains(ActionType.DRAW_PARCELS) && temporaryInventory.contains(ActionType.SELECT_PARCEL)){
                 if(rules.isPlayableParcel(coordinate)){
@@ -133,47 +133,42 @@ public class Game{
                 }
                 else{
                     temporaryInventory.remove(ActionType.PLACE_PARCEL);
-                    throw new BadCoordinateException("The parcel can't be place on this coordinate : ", coordinate);
+                    throw new BadCoordinateException("The parcel can't be place on this coordinate : " + coordinate.toString());
                 }
             }
             else
-                throw new IllegalAccessException("You haven’t drawn or selected a parcel.");
+                throw new RulesViolationException("You haven’t drawn or selected a parcel.");
         }
         else
-            throw new IllegalAccessException("Already used this method.");
+            throw new RulesViolationException("Already used this method.");
     }
 
-    public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
+    public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         if (temporaryInventory.add(ActionType.PLACE_CANAL)) {
             if (rules.isPlayableCanal(coordinate1, coordinate2))
                 board.placeCanal(playerData.getInventory().pickCanal(), coordinate1, coordinate2);
             else{
                 temporaryInventory.remove(ActionType.PLACE_CANAL);
-                throw new BadCoordinateException("The canal can't be place on these coordinates : ", coordinate1, coordinate2);
+                throw new BadCoordinateException("The canal can't be place on these coordinates : " + coordinate1.toString() + " " + coordinate2.toString());
             }
         }
         else
-            throw new IllegalAccessException("Already used this method.");
+            throw new RulesViolationException("Already used this method.");
     }
 
-    public void moveCharacter(CharacterType characterType, Coordinate coordinate) throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
+    public void moveCharacter(CharacterType characterType, Coordinate coordinate) throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         if (temporaryInventory.add(ActionType.get(characterType))) {
             if (rules.isMovableCharacter(characterType, coordinate)) {
                 temporaryInventory.looseStamina();
-                try {
-                    board.moveCharacter(characterType, coordinate);
-                    playerData.addBamboo(board.getPlacedParcels().get(coordinate).getColor());
-                }
-                catch (CantDeleteBambooException ignored) {
-                }
+                playerData.addBamboo(board.moveCharacter(characterType, coordinate));
             }
             else{
                 temporaryInventory.remove(ActionType.get(characterType));
-                throw new BadCoordinateException("The character can't move to this coordinate : ", coordinate);
+                throw new BadCoordinateException("The character can't move to this coordinate : " + coordinate.toString());
             }
         }
         else
-            throw new IllegalAccessException("Already used this method.");
+            throw new RulesViolationException("Already used this method.");
     }
 
     /**
@@ -231,7 +226,7 @@ public class Game{
             case ALL_MISSION:
                 return resource.getNbMission();
             default:
-                throw new IllegalArgumentException("Wrong ResourceType.");
+                throw new IllegalTypeException("Wrong ResourceType.");
         }
 
     }

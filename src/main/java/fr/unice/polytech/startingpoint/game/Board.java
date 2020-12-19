@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.exception.CantDeleteBambooException;
+import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.*;
@@ -42,25 +42,25 @@ class Board {
     }
 
     //Fait bouger un personnage et effectue son action si les conditions le permettent
-    void moveCharacter(CharacterType characterType, Coordinate coordinate) throws CantDeleteBambooException {
+    ColorType moveCharacter(CharacterType characterType, Coordinate coordinate){
         getCharacter(characterType).setCoordinate(coordinate);
-        characterAction(characterType);
+        return characterAction(characterType);
     }
 
     //Effectue l’action du personnage passé en paramètre
-    private void characterAction(CharacterType characterType) throws CantDeleteBambooException {
+    private ColorType characterAction(CharacterType characterType){
         switch (characterType){
             case PANDA:
-                actionPanda();
-                return;
+                return actionPanda();
             case PEASANT:
                 actionPeasant();
         }
+        return ColorType.NO_COLOR;
     }
 
     //supprime un bambou sur la case
-    private void actionPanda() throws CantDeleteBambooException {
-        placedParcels.get(panda.getCoordinate()).delBamboo();
+    private ColorType actionPanda(){
+        return placedParcels.get(panda.getCoordinate()).delBamboo();
     }
 
     //ajoute un bambou sur la case si irrigué + autour si même couleur et irrigué
@@ -110,7 +110,7 @@ class Board {
             case PEASANT:
                 return peasant;
             default:
-                throw new IllegalArgumentException("Wrong CharacterType to move.");
+                throw new IllegalTypeException("Wrong CharacterType to move.");
         }
     }
 }

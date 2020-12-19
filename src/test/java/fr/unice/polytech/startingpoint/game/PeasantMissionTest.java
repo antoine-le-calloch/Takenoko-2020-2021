@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
+import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.type.*;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import org.junit.jupiter.api.*;
@@ -34,14 +35,14 @@ public class PeasantMissionTest {
     }
 
     @Test
-    void missionComplete() throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
+    void missionComplete() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
         game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
         assertEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 
     @Test
-    void wrongColor() throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
+    void wrongColor() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
         game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
         assertEquals(0,mission2.checkMission(board, game.getPlayerData().getInventory()));

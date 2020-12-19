@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.exception.CantDeleteBambooException;
 import fr.unice.polytech.startingpoint.type.*;
 
 /**
@@ -30,6 +29,12 @@ class Parcel {
         setIrrigatedImprovement();
     }
 
+    Parcel(ImprovementType improvementType){
+        this.colorType = ColorType.NO_COLOR;
+        this.improvementType = improvementType;
+        setIrrigatedImprovement();
+    }
+
     Parcel(){
         this.colorType = ColorType.NO_COLOR;
         this.improvementType = ImprovementType.NOTHING;
@@ -45,11 +50,12 @@ class Parcel {
     }
 
     //Supprime un bambou de la parcelle
-    void delBamboo() throws CantDeleteBambooException {
-        if (nbBamboo > 0 && improvementType != ImprovementType.ENCLOSURE)
+    ColorType delBamboo(){
+        if (nbBamboo > 0 && improvementType != ImprovementType.ENCLOSURE){
             nbBamboo --;
-        else
-            throw new CantDeleteBambooException();
+            return colorType;
+        }
+        return ColorType.NO_COLOR;
     }
 
     //Renvoie les coordonnées de la parcelle après l'avoir irrigué et lui avoir ajouté un bambou si elle ne l'était pas avant

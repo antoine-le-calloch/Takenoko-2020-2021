@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 
+import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.type.*;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 
@@ -175,7 +176,7 @@ class Resource {
                 }
                 throw new OutOfResourcesException("No more PandaMission to draw.");
             default:
-                throw new IllegalArgumentException("Wrong MissionType to draw.");
+                throw new IllegalTypeException("Wrong MissionType to draw.");
         }
     }
 

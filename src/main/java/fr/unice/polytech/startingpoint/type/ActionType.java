@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint.type;
 
+import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
+
 public enum ActionType {
     DRAW_CANAL {
         @Override
@@ -57,14 +59,14 @@ public enum ActionType {
         }
     };
 
-    public static ActionType get(CharacterType characterType) throws IllegalAccessException {
+    public static ActionType get(CharacterType characterType){
         switch (characterType){
             case PANDA:
                 return MOVE_PANDA;
             case PEASANT:
                 return MOVE_PEASANT;
             default:
-                throw new IllegalAccessException("Wrong CharacterType to move.");
+                throw new IllegalTypeException("Wrong CharacterType to move.");
         }
     }
 }

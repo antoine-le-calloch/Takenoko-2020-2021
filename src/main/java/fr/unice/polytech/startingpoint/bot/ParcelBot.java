@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
+import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.game.*;
 import fr.unice.polytech.startingpoint.type.*;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
@@ -129,7 +130,7 @@ public class ParcelBot extends Bot {
                 placeParcel(possibleCoordinatesParcel().get(0));
             }
 
-        } catch (IllegalAccessException | OutOfResourcesException e) {
+        } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
@@ -243,21 +244,21 @@ public class ParcelBot extends Bot {
         try {
             game.drawCanal();
             List<Coordinate> fullForm = findFullFormInMission();
-            Coordinate[] bestCoordCanal = null;
+            Coordinate[] bestCoordinatesCanal = null;
 
-            for (Coordinate coordForm : fullForm) {
-                if (!game.isIrrigatedParcel(coordForm))
-                    bestCoordCanal = getBestCanal(coordForm);
+            for (Coordinate coordinateForm : fullForm) {
+                if (!game.isIrrigatedParcel(coordinateForm))
+                    bestCoordinatesCanal = getBestCanal(coordinateForm);
             }
 
-            if (bestCoordCanal != null && fullForm.size() != 0) {
-                placeCanal(bestCoordCanal);
+            if (bestCoordinatesCanal != null && fullForm.size() != 0) {
+                placeCanal(bestCoordinatesCanal);
                 return true;
             }
 
             placeCanal(possibleCoordinatesCanal().get(0));
             return false;
-        } catch (OutOfResourcesException | IllegalAccessException e) {
+        } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
             return false;
         }
@@ -265,23 +266,23 @@ public class ParcelBot extends Bot {
 
     public List<Coordinate> findFullFormInMission() {
         for (ParcelMission mission : game.getInventoryParcelMission()) {
-            for (Coordinate coord : allPlaces()) {
-                if(coordNeedeToDoMission(coord,mission) != null && coordNeedeToDoMission(coord,mission).size() == 0) {
-                    return setForm(coord, mission.getFormType());
+            for (Coordinate coordinate : allPlaces()) {
+                if(coordNeedeToDoMission(coordinate,mission) != null && coordNeedeToDoMission(coordinate,mission).size() == 0) {
+                    return setForm(coordinate, mission.getFormType());
                 }
             }
         }
         return new ArrayList<>();
     }
 
-    public Coordinate[] getBestCanal(Coordinate coordToIrrigate){
-        int normMin = Coordinate.getNorm(coordToIrrigate,possibleCoordinatesCanal().get(0)[0])+Coordinate.getNorm(coordToIrrigate,possibleCoordinatesCanal().get(0)[1]);
+    public Coordinate[] getBestCanal(Coordinate coordinateToIrrigate){
+        int normMin = Coordinate.getNorm(coordinateToIrrigate,possibleCoordinatesCanal().get(0)[0])+Coordinate.getNorm(coordinateToIrrigate,possibleCoordinatesCanal().get(0)[1]);
         Coordinate[] bestCanal = possibleCoordinatesCanal().get(0);
 
-        for (Coordinate[] coordCanal : possibleCoordinatesCanal()) {
-            if(Coordinate.getNorm(coordToIrrigate,coordCanal[0])+Coordinate.getNorm(coordToIrrigate,coordCanal[1]) < normMin) {
-                normMin = Coordinate.getNorm(coordToIrrigate, coordCanal[0]) + Coordinate.getNorm(coordToIrrigate, coordCanal[1]);
-                bestCanal = coordCanal;
+        for (Coordinate[] coordinatesCanal : possibleCoordinatesCanal()) {
+            if(Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[0])+Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[1]) < normMin) {
+                normMin = Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[0]) + Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[1]);
+                bestCanal = coordinatesCanal;
             }
         }
         return bestCanal;

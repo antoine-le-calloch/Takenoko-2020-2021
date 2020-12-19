@@ -26,7 +26,6 @@ abstract class Mission {
     protected final ColorType colorType;
     protected final int points;
 
-
     /**
      * <p>Set up a mission. Initialize all variables.</p>
      *
@@ -43,7 +42,6 @@ abstract class Mission {
         this.points = points;
     }
 
-
     /**
      * <p>check if a mission is done</p>
      *
@@ -53,7 +51,6 @@ abstract class Mission {
      *            <b>Inventory object.</b>
      */
     abstract int checkMission(Board board, Inventory inventory);
-
 
     /**
      * @return <b>the missionType of the mission</b>
