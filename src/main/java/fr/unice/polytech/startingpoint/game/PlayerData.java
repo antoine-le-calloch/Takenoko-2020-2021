@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.Bot;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.ColorType;
 
 import java.util.List;
@@ -20,6 +21,10 @@ public class PlayerData {
 
     void addCanal(Canal canal) {
         inventory.addCanal(canal);
+    }
+
+    Canal pickCanal() throws OutOfResourcesException {
+        return inventory.pickCanal();
     }
 
     void addBamboo(ColorType colorType){

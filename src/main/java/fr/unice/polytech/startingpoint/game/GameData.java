@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 
@@ -124,6 +125,13 @@ class GameData {
      */
     void addCanal(Canal canal) {
         botData.get(numBot).addCanal(canal);
+    }
+
+    /**Sub a canal to the current inventory.
+     * @return <b>The canal that have been deleted.</b>
+     */
+    Canal pickCanal() throws OutOfResourcesException {
+        return botData.get(numBot).pickCanal();
     }
 
     /**Add a bamboo to the current inventory with the {@link ColorType} associated.

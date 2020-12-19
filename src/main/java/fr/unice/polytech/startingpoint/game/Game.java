@@ -149,7 +149,7 @@ public class Game{
     public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         if (temporaryInventory.add(ActionType.PLACE_CANAL)) {
             if (rules.isPlayableCanal(coordinate1, coordinate2))
-                board.placeCanal(gameData.getInventory().pickCanal(), coordinate1, coordinate2);
+                board.placeCanal(gameData.pickCanal(), coordinate1, coordinate2);
             else{
                 temporaryInventory.remove(ActionType.PLACE_CANAL);
                 throw new BadCoordinateException("The canal can't be place on these coordinates : " + coordinate1.toString() + " " + coordinate2.toString());
