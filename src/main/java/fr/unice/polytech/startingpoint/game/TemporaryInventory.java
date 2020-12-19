@@ -9,7 +9,6 @@ class TemporaryInventory {
     private int stamina;
     private Parcel parcel;
     private List<Parcel> parcelList;
-    private final boolean cheat;
     private final Set<ActionType> actionTypeList;
 
     //Normal Constructor
@@ -18,25 +17,12 @@ class TemporaryInventory {
         parcel = null;
         actionTypeList = new HashSet<>();
         parcelList = new ArrayList<>();
-        cheat = false;
-    }
-
-    //Test Constructor
-    TemporaryInventory(){
-        stamina = -1;
-        parcel = null;
-        actionTypeList = new HashSet<>();
-        parcelList = new ArrayList<>();
-        cheat = true;
     }
 
     void looseStamina() throws OutOfResourcesException {
-        if (!cheat){
-            stamina --;
-            if (stamina < 0){
-                throw new OutOfResourcesException("No more stamina.");
-            }
-        }
+        stamina --;
+        if (stamina < 0)
+            throw new OutOfResourcesException("No more stamina.");
     }
 
     void saveParcels(List<Parcel> parcelList){
@@ -52,8 +38,8 @@ class TemporaryInventory {
     }
 
     void hasPlayedCorrectly() {
-        if ( !(actionTypeList.contains(ActionType.DrawParcels) == actionTypeList.contains(ActionType.SelectParcel)) ||
-                !(actionTypeList.contains(ActionType.DrawParcels) == actionTypeList.contains(ActionType.PlaceParcel)) )
+        if ( !(actionTypeList.contains(ActionType.DRAW_PARCELS) == actionTypeList.contains(ActionType.SELECT_PARCEL)) ||
+                !(actionTypeList.contains(ActionType.DRAW_PARCELS) == actionTypeList.contains(ActionType.PLACE_PARCEL)) )
             throw new NoSuchElementException("Player has not played correctly.");
     }
 
@@ -65,20 +51,15 @@ class TemporaryInventory {
     }
 
     boolean contains(ActionType actionType) {
-        if (!cheat)
-            return actionTypeList.contains(actionType);
-        return true;
+        return actionTypeList.contains(actionType);
     }
 
     boolean add(ActionType actionType){
-        if (!cheat)
-            return actionTypeList.add(actionType);
-        return true;
+        return actionTypeList.add(actionType);
     }
 
     void remove(ActionType actionType) {
-        if (!cheat)
-            actionTypeList.remove(actionType);
+        actionTypeList.remove(actionType);
     }
 
     List<Parcel> getParcelsSaved() {

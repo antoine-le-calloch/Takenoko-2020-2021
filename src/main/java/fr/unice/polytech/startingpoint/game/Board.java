@@ -3,7 +3,6 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.exception.CantDeleteBambooException;
 import fr.unice.polytech.startingpoint.type.*;
 
-
 import java.util.*;
 
 /**
@@ -17,18 +16,18 @@ import java.util.*;
 
 
 class Board {
-    private final Character panda = new Character(CharacterType.Panda);
-    private final Character peasant = new Character(CharacterType.Peasant);
+    private final Character panda = new Character(CharacterType.PANDA);
+    private final Character peasant = new Character(CharacterType.PEASANT);
     private final Map<Coordinate, Parcel> placedParcels = new HashMap<>();
     private final Map<SortedSet<Coordinate>, Canal> placedCanals = new HashMap<>();
 
     Board() {
-        placedParcels.put(new Coordinate(0, 0, 0),new Parcel(ColorType.NoColor).setCoordinates(new Coordinate(0, 0, 0)));
+        placedParcels.put(new Coordinate(),new Parcel());
     }
 
     //Place une parcelle sur le board si les conditions le permettent
     void placeParcel(Parcel newParcel, Coordinate newCoordinate){
-        placedParcels.put(newCoordinate, newParcel.setCoordinates(newCoordinate));
+        placedParcels.put(newCoordinate, newParcel);
         for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
             if (coordinate.isCentral())
                 newParcel.setIrrigated();
@@ -37,7 +36,7 @@ class Board {
 
     //Place un canal sur le board si les conditions le permettent
     void placeCanal(Canal canal, Coordinate coordinate1, Coordinate coordinate2){
-        placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal.setCoordinates(coordinate1, coordinate2));
+        placedCanals.put(Coordinate.getSortedSet(coordinate1, coordinate2), canal);
         placedParcels.get(coordinate1).setIrrigated();
         placedParcels.get(coordinate2).setIrrigated();
     }
@@ -51,10 +50,10 @@ class Board {
     //Effectue l’action du personnage passé en paramètre
     private void characterAction(CharacterType characterType) throws CantDeleteBambooException {
         switch (characterType){
-            case Panda:
+            case PANDA:
                 actionPanda();
                 return;
-            case Peasant:
+            case PEASANT:
                 actionPeasant();
         }
     }
@@ -106,9 +105,9 @@ class Board {
     //Renvoie le
     Character getCharacter(CharacterType characterType) {
         switch (characterType){
-            case Panda:
+            case PANDA:
                 return panda;
-            case Peasant:
+            case PEASANT:
                 return peasant;
             default:
                 throw new IllegalArgumentException("Wrong CharacterType to move.");

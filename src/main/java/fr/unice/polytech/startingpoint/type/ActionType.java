@@ -1,56 +1,56 @@
 package fr.unice.polytech.startingpoint.type;
 
 public enum ActionType {
-    DrawCanal{
+    DRAW_CANAL {
         @Override
         public String toString() {
             return "DrawCanal";
         }
     }
     ,
-    DrawMission{
+    DRAW_MISSION {
         @Override
         public String toString() {
             return "DrawMission";
         }
     }
     ,
-    DrawParcels{
+    DRAW_PARCELS {
         @Override
         public String toString() {
             return "DrawParcels";
         }
     }
     ,
-    SelectParcel{
+    SELECT_PARCEL {
         @Override
         public String toString() {
             return "SelectParcel";
         }
     }
     ,
-    PlaceParcel{
+    PLACE_PARCEL {
         @Override
         public String toString() {
             return "PlaceParcel";
         }
     }
     ,
-    PlaceCanal{
+    PLACE_CANAL {
         @Override
         public String toString() {
             return "PlaceCanal";
         }
     }
     ,
-    MovePeasant{
+    MOVE_PEASANT {
         @Override
         public String toString() {
             return "MovePeasant";
         }
     }
     ,
-    MovePanda{
+    MOVE_PANDA {
         @Override
         public String toString() {
             return "MovePanda";
@@ -59,10 +59,10 @@ public enum ActionType {
 
     public static ActionType get(CharacterType characterType) throws IllegalAccessException {
         switch (characterType){
-            case Panda:
-                return MovePanda;
-            case Peasant:
-                return MovePeasant;
+            case PANDA:
+                return MOVE_PANDA;
+            case PEASANT:
+                return MOVE_PEASANT;
             default:
                 throw new IllegalAccessException("Wrong CharacterType to move.");
         }

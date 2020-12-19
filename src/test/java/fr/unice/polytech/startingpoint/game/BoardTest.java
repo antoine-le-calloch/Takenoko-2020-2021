@@ -22,7 +22,7 @@ public class BoardTest {
 
     @BeforeEach
     public void initialize(){
-        game = new Game();
+        game = new Game(new BotType[]{BotType.RANDOM},4);
         board = game.getBoard();
     }
 
@@ -36,26 +36,26 @@ public class BoardTest {
 
     @Test
     public void parcelIncrease(){
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing),new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),new Coordinate(1,-1,0));
         assertEquals(2,board.getPlacedParcels().size());
     }
 
     @Test void irrigationFromCentral(){
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing),new Coordinate(0,-1,1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),new Coordinate(0,-1,1));
         assertTrue(board.getPlacedParcels().get(new Coordinate(0,-1,1)).getIrrigated());
     }
 
     @Test void noIrrigationFromCentral(){
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing),new Coordinate(0,-1,1));
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing),new Coordinate(1,-1,0));
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing),new Coordinate(1,-2,1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),new Coordinate(0,-1,1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),new Coordinate(1,-2,1));
         assertFalse(board.getPlacedParcels().get(new Coordinate(1,-2,1)).getIrrigated());
     }
 
     @Test void irrigationByCanals(){
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing),new Coordinate(0,-1,1));
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing),new Coordinate(1,-1,0));
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing),new Coordinate(1,-2,1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),new Coordinate(0,-1,1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING),new Coordinate(1,-2,1));
         board.placeCanal(new Canal(),new Coordinate(0,-1,1),new Coordinate(1,-1,0));
         board.placeCanal(new Canal(),new Coordinate(0,-1,1),new Coordinate(1,-2,1));
         assertTrue(board.getPlacedParcels().get(new Coordinate(1,-2,1)).getIrrigated());
@@ -64,18 +64,18 @@ public class BoardTest {
     //le paysan fait pousser un bambou ou il est
     @Test
     void goodGrow() throws CantDeleteBambooException {
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing), new Coordinate(1, -1, 0));
-        board.moveCharacter(CharacterType.Peasant,new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(1, -1, 0));
+        board.moveCharacter(CharacterType.PEASANT,new Coordinate(1, -1, 0));
         assertEquals(2,board.getPlacedParcels().get(new Coordinate(1, -1, 0)).getNbBamboo());
     }
 
     //4 bambous max
     @Test
     void maxGrow() throws CantDeleteBambooException {
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(1, -1, 0));
         for (int i = 0; i < 10; i++) {
-            board.moveCharacter(CharacterType.Peasant,new Coordinate(1,-1,0));
-            board.moveCharacter(CharacterType.Peasant,new Coordinate(0,0,0));
+            board.moveCharacter(CharacterType.PEASANT,new Coordinate(1,-1,0));
+            board.moveCharacter(CharacterType.PEASANT,new Coordinate(0,0,0));
         }
         assertEquals(4,board.getPlacedParcels().get(new Coordinate(1,-1,0)).getNbBamboo());
     }
@@ -83,51 +83,48 @@ public class BoardTest {
     //bambous pousse autour si irrigué + même couleur
     @Test
     void actionPeasantSameColorAroundAndIrrigated() throws CantDeleteBambooException {
-        board.placeParcel(new Parcel(ColorType.Blue,ImprovementType.Nothing), new Coordinate(1, -1, 0));
-        board.placeParcel(new Parcel(ColorType.Blue,ImprovementType.Nothing), new Coordinate(1,0,-1));
-        board.moveCharacter(CharacterType.Peasant, new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.BLUE,ImprovementType.NOTHING), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.BLUE,ImprovementType.NOTHING), new Coordinate(1,0,-1));
+        board.moveCharacter(CharacterType.PEASANT, new Coordinate(1, -1, 0));
         assertEquals(2,board.getPlacedParcels().get(new Coordinate(1,0,-1)).getNbBamboo());
     }
 
     //bambous pousse pas autour si couleur diff
     @Test
     void actionPeasantDifferentColorAround() throws CantDeleteBambooException {
-        board.placeParcel(new Parcel(ColorType.Blue,ImprovementType.Nothing), new Coordinate(1, -1, 0));
-        board.placeParcel(new Parcel(ColorType.Red,ImprovementType.Nothing), new Coordinate(1,0,-1));
-        board.moveCharacter(CharacterType.Peasant, new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.BLUE,ImprovementType.NOTHING), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING), new Coordinate(1,0,-1));
+        board.moveCharacter(CharacterType.PEASANT, new Coordinate(1, -1, 0));
         assertEquals(1,board.getPlacedParcels().get(new Coordinate(1,0,-1)).getNbBamboo());
     }
 
     //bambous pousse pas autour si non irriguée
     @Test
     void actionPeasantNotIrrigatedAround() throws CantDeleteBambooException {
-        board.placeParcel(new Parcel(ColorType.Blue,ImprovementType.Nothing), new Coordinate(1, -1, 0));
-        board.placeParcel(new Parcel(ColorType.Blue,ImprovementType.Nothing), new Coordinate(1, 0, -1));
-        board.placeParcel(new Parcel(ColorType.Red,ImprovementType.Nothing), new Coordinate(2,-1,-1));
-        board.moveCharacter(CharacterType.Peasant, new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.BLUE,ImprovementType.NOTHING), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.BLUE,ImprovementType.NOTHING), new Coordinate(1, 0, -1));
+        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING), new Coordinate(2,-1,-1));
+        board.moveCharacter(CharacterType.PEASANT, new Coordinate(1, -1, 0));
         assertEquals(0,board.getPlacedParcels().get(new Coordinate(2,-1,-1)).getNbBamboo());
     }
 
     // panda mange un bambou
     @Test
     void goodEat() throws CantDeleteBambooException {
-        board.placeParcel(new Parcel(ColorType.Red,ImprovementType.Nothing), new Coordinate(1, -1, 0));
-        board.moveCharacter(CharacterType.Panda, new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING), new Coordinate(1, -1, 0));
+        board.moveCharacter(CharacterType.PANDA, new Coordinate(1, -1, 0));
         assertEquals(0, board.getPlacedParcels().get(new Coordinate(1, -1, 0)).getNbBamboo());
     }
 
     //il mange pas si 0 bambous sur la parcelle
     @Test
     void minEat() throws CantDeleteBambooException {
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing), new Coordinate(1, -1, 0));
-        board.placeParcel(new Parcel(ColorType.NoColor,ImprovementType.Nothing), new Coordinate(1,0,-1));
-        board.moveCharacter(CharacterType.Panda, new Coordinate(1, -1, 0));
-        board.moveCharacter(CharacterType.Panda, new Coordinate(1,0,-1));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(1,0,-1));
+        board.moveCharacter(CharacterType.PANDA, new Coordinate(1, -1, 0));
+        board.moveCharacter(CharacterType.PANDA, new Coordinate(1,0,-1));
 
-        Exception exception1 = assertThrows(CantDeleteBambooException.class, () ->
-        { board.moveCharacter(CharacterType.Panda, new Coordinate(1, -1, 0));});
-
-        assertEquals(exception1.getMessage(),"[1,-1,0]");
+        assertThrows(CantDeleteBambooException.class, () -> board.moveCharacter(CharacterType.PANDA, new Coordinate(1, -1, 0)) );
     }
 
 }

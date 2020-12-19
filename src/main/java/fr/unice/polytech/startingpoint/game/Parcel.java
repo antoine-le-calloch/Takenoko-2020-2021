@@ -13,10 +13,9 @@ import fr.unice.polytech.startingpoint.type.*;
  */
 
 class Parcel {
-    private Coordinate coordinates;
-    private boolean irrigated = false;
     private int nbBamboo = 0;
     private final ColorType colorType;
+    private boolean irrigated = false;
     private ImprovementType improvementType;
 
     Parcel(ColorType colorType, ImprovementType improvementType){
@@ -27,29 +26,30 @@ class Parcel {
 
     Parcel(ColorType colorType){
         this.colorType = colorType;
-        this.improvementType = ImprovementType.Nothing;
+        this.improvementType = ImprovementType.NOTHING;
         setIrrigatedImprovement();
     }
 
     Parcel(){
-        this.colorType = ColorType.NoColor;
-        this.improvementType = ImprovementType.Nothing;
+        this.colorType = ColorType.NO_COLOR;
+        this.improvementType = ImprovementType.NOTHING;
         setIrrigatedImprovement();
     }
 
-    void setImprovementType(ImprovementType improvementType) {
-        this.improvementType = improvementType;
+    //Ajoute un bamboo à la parcelle
+    void addBamboo(){
+        if (nbBamboo < 4)
+            nbBamboo ++;
+        if (nbBamboo < 4 && improvementType == ImprovementType.FERTILIZER)
+            nbBamboo ++;
     }
 
-    void setIrrigatedImprovement(){
-        if (improvementType == ImprovementType.Watershed)
-            setIrrigated();
-    }
-
-    //Renvoie la parcelle après avoir fixé ses coordonnées avec les coordonnées passées en paramètre
-    Parcel setCoordinates(Coordinate coordinate) {
-        coordinates = coordinate;
-        return this;
+    //Supprime un bambou de la parcelle
+    void delBamboo() throws CantDeleteBambooException {
+        if (nbBamboo > 0 && improvementType != ImprovementType.ENCLOSURE)
+            nbBamboo --;
+        else
+            throw new CantDeleteBambooException();
     }
 
     //Renvoie les coordonnées de la parcelle après l'avoir irrigué et lui avoir ajouté un bambou si elle ne l'était pas avant
@@ -59,24 +59,13 @@ class Parcel {
         irrigated = true;
     }
 
-    //Ajoute un bamboo à la parcelle
-    void addBamboo(){
-        if (nbBamboo < 4)
-            nbBamboo ++;
-        if (nbBamboo < 4 && improvementType == ImprovementType.Fertilizer)
-            nbBamboo ++;
+    void setIrrigatedImprovement(){
+        if (improvementType == ImprovementType.WATERSHED)
+            setIrrigated();
     }
 
-    //Supprime un bambou de la parcelle
-    void delBamboo() throws CantDeleteBambooException {
-        if (nbBamboo > 0 && improvementType != ImprovementType.Enclosure)
-            nbBamboo --;
-        else
-            throw new CantDeleteBambooException(coordinates);
-    }
-
-    int getNbBamboo(){
-        return nbBamboo;
+    void setImprovementType(ImprovementType improvementType) {
+        this.improvementType = improvementType;
     }
 
     //Renvoie si la parcelle est irriguée ou non
@@ -84,13 +73,12 @@ class Parcel {
         return irrigated;
     }
 
-    //Renvoie les coordonnées de la parcelle
-    Coordinate getCoordinates(){
-        return coordinates;
-    }
-
     //Renvoie la couleur de la parcelle
     ColorType getColor() {
         return colorType;
+    }
+
+    int getNbBamboo(){
+        return nbBamboo;
     }
 }

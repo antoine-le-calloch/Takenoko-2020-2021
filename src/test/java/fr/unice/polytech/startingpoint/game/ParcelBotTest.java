@@ -1,16 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
-import org.junit.Before;
-import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
 
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**

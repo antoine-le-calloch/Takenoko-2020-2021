@@ -1,8 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.exception.BadMoveCharacterException;
-import fr.unice.polytech.startingpoint.exception.BadPlaceCanalException;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
+import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.*;
 
@@ -25,33 +23,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
     Game game;
-    Game cheatGame;
 
     @BeforeEach
     void Setup() {
-        game = new Game(new BotType[]{BotType.Random},4);
-        cheatGame = new Game();
+        game = new Game(new BotType[]{BotType.RANDOM},4);
     }
 
     @Test
     void botDrawCanalLessStaminaAndAddCanalToInventory() throws OutOfResourcesException, IllegalAccessException {
         assertEquals(0,game.getPlayerData().getInventory().getInventoryCanal().size());
-        assertEquals(27,game.getResourceSize(ResourceType.Canal));
+        assertEquals(27,game.getResourceSize(ResourceType.CANAL));
         assertEquals(2,game.getTemporaryInventory().getStamina());
 
         game.drawCanal();
 
         assertEquals(1,game.getPlayerData().getInventory().getInventoryCanal().size());
-        assertEquals(26,game.getResourceSize(ResourceType.Canal));
+        assertEquals(26,game.getResourceSize(ResourceType.CANAL));
         assertEquals(1,game.getTemporaryInventory().getStamina());
     }
 
     @Test
-    void botDrawTooMuchCanal() throws OutOfResourcesException, IllegalAccessException {
+    void botDrawTooMuchCanal() throws OutOfResourcesException {
         for (int i = 0; i < 27; i++) {
-            cheatGame.drawCanal();
+            game.getResource().drawCanal();
         }
-        assertThrows(OutOfResourcesException.class,() -> cheatGame.drawCanal());
+        assertThrows(OutOfResourcesException.class,() -> game.drawCanal());
     }
 
     @Test
@@ -64,95 +60,95 @@ class GameTest {
     void botDrawParcelMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, IllegalAccessException {
         assertEquals(0,game.getPlayerData().getInventory().getMissions().size());
         assertEquals(0,game.getPlayerData().getInventory().getParcelMissions().size());
-        assertEquals(15,game.getResourceSize(ResourceType.ParcelMission));
+        assertEquals(15,game.getResourceSize(ResourceType.PARCEL_MISSION));
         assertEquals(2,game.getTemporaryInventory().getStamina());
 
-        game.drawMission(MissionType.Parcel);
+        game.drawMission(MissionType.PARCEL);
 
         assertEquals(1,game.getPlayerData().getInventory().getMissions().size());
         assertEquals(1,game.getPlayerData().getInventory().getParcelMissions().size());
-        assertEquals(14,game.getResourceSize(ResourceType.ParcelMission));
+        assertEquals(14,game.getResourceSize(ResourceType.PARCEL_MISSION));
         assertEquals(1,game.getTemporaryInventory().getStamina());
     }
 
     @Test
-    void botDrawTooMuchParcelMission() throws OutOfResourcesException, IllegalAccessException {
+    void botDrawTooMuchParcelMission() throws OutOfResourcesException {
         for (int i = 0; i < 15; i++) {
-            cheatGame.drawMission(MissionType.Parcel);
+            game.getResource().drawMission(MissionType.PARCEL);
         }
-        assertThrows(OutOfResourcesException.class,() -> cheatGame.drawMission(MissionType.Parcel));
+        assertThrows(OutOfResourcesException.class,() -> game.drawMission(MissionType.PARCEL));
     }
 
     @Test
     void botDrawTwoParcelMissionInTheSameRound() throws OutOfResourcesException, IllegalAccessException {
-        game.drawMission(MissionType.Parcel);
-        assertThrows(IllegalAccessException.class,() -> game.drawMission(MissionType.Parcel));
+        game.drawMission(MissionType.PARCEL);
+        assertThrows(IllegalAccessException.class,() -> game.drawMission(MissionType.PARCEL));
     }
 
     @Test
     void botDrawPandaMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, IllegalAccessException {
         assertEquals(0,game.getPlayerData().getInventory().getMissions().size());
         assertEquals(0,game.getPlayerData().getInventory().getPandaMissions().size());
-        assertEquals(15,game.getResourceSize(ResourceType.PandaMission));
+        assertEquals(15,game.getResourceSize(ResourceType.PANDA_MISSION));
         assertEquals(2,game.getTemporaryInventory().getStamina());
 
-        game.drawMission(MissionType.Panda);
+        game.drawMission(MissionType.PANDA);
 
         assertEquals(1,game.getPlayerData().getInventory().getMissions().size());
         assertEquals(1,game.getPlayerData().getInventory().getPandaMissions().size());
-        assertEquals(14,game.getResourceSize(ResourceType.PandaMission));
+        assertEquals(14,game.getResourceSize(ResourceType.PANDA_MISSION));
         assertEquals(1,game.getTemporaryInventory().getStamina());
     }
 
     @Test
-    void botDrawTooMuchPandaMission() throws OutOfResourcesException, IllegalAccessException {
+    void botDrawTooMuchPandaMission() throws OutOfResourcesException {
         for (int i = 0; i < 15; i++) {
-            cheatGame.drawMission(MissionType.Panda);
+            game.getResource().drawMission(MissionType.PANDA);
         }
-        assertThrows(OutOfResourcesException.class,() -> cheatGame.drawMission(MissionType.Panda));
+        assertThrows(OutOfResourcesException.class,() -> game.drawMission(MissionType.PANDA));
     }
 
     @Test
     void botDrawTwoPandaMissionInTheSameRound() throws OutOfResourcesException, IllegalAccessException {
-        game.drawMission(MissionType.Panda);
-        assertThrows(IllegalAccessException.class,() -> game.drawMission(MissionType.Panda));
+        game.drawMission(MissionType.PANDA);
+        assertThrows(IllegalAccessException.class,() -> game.drawMission(MissionType.PANDA));
     }
 
     @Test
     void botDrawPeasantMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, IllegalAccessException {
         assertEquals(0,game.getPlayerData().getInventory().getMissions().size());
         assertEquals(0,game.getPlayerData().getInventory().getPeasantMissions().size());
-        assertEquals(15,game.getResourceSize(ResourceType.PeasantMission));
+        assertEquals(15,game.getResourceSize(ResourceType.PEASANT_MISSION));
         assertEquals(2,game.getTemporaryInventory().getStamina());
 
-        game.drawMission(MissionType.Peasant);
+        game.drawMission(MissionType.PEASANT);
 
         assertEquals(1,game.getPlayerData().getInventory().getMissions().size());
         assertEquals(1,game.getPlayerData().getInventory().getPeasantMissions().size());
-        assertEquals(14,game.getResourceSize(ResourceType.PeasantMission));
+        assertEquals(14,game.getResourceSize(ResourceType.PEASANT_MISSION));
         assertEquals(1,game.getTemporaryInventory().getStamina());
     }
 
     @Test
-    void botDrawTooMuchPeasantMission() throws OutOfResourcesException, IllegalAccessException {
+    void botDrawTooMuchPeasantMission() throws OutOfResourcesException {
         for (int i = 0; i < 15; i++) {
-            cheatGame.drawMission(MissionType.Peasant);
+            game.getResource().drawMission(MissionType.PEASANT);
         }
-        assertThrows(OutOfResourcesException.class,() -> cheatGame.drawMission(MissionType.Peasant));
+        assertThrows(OutOfResourcesException.class,() -> game.drawMission(MissionType.PEASANT));
     }
 
     @Test
     void botDrawTwoPeasantMissionInTheSameRound() throws OutOfResourcesException, IllegalAccessException {
-        game.drawMission(MissionType.Peasant);
-        assertThrows(IllegalAccessException.class,() -> game.drawMission(MissionType.Peasant));
+        game.drawMission(MissionType.PEASANT);
+        assertThrows(IllegalAccessException.class,() -> game.drawMission(MissionType.PEASANT));
     }
 
     @Test
-    void botDrawAndPlaceParcelLessStaminaAndAddParcelToTemporaryInventoryAndBoard() throws OutOfResourcesException, IllegalAccessException, BadPlaceParcelException {
+    void botDrawAndPlaceParcelLessStaminaAndAddParcelToTemporaryInventoryAndBoard() throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
         assertDoesNotThrow(() -> game.getTemporaryInventory().hasPlayedCorrectly());
 
         assertEquals(0,game.getTemporaryInventory().getParcelsSaved().size());
-        assertEquals(32,game.getResourceSize(ResourceType.Parcel));
+        assertEquals(32,game.getResourceSize(ResourceType.PARCEL));
         assertEquals(2,game.getTemporaryInventory().getStamina());
         assertEquals(1,game.getPlacedCoordinates().size());
 
@@ -166,7 +162,7 @@ class GameTest {
 
         assertThrows(NoSuchElementException.class,() -> game.getTemporaryInventory().hasPlayedCorrectly());
 
-        assertEquals(31,game.getResourceSize(ResourceType.Parcel));
+        assertEquals(31,game.getResourceSize(ResourceType.PARCEL));
         assertEquals(1,game.getTemporaryInventory().getStamina());
 
         game.placeParcel(new Coordinate(0,-1,1));
@@ -177,12 +173,11 @@ class GameTest {
     }
 
     @Test
-    void botDrawTooMuchParcel() throws OutOfResourcesException, IllegalAccessException {
+    void botDrawTooMuchParcel() throws OutOfResourcesException {
         for (int i = 0; i < 32; i++) {
-            cheatGame.selectParcel(cheatGame.drawParcels().get(0));
+            game.getResource().selectParcel(game.getResource().drawParcels().get(0));
         }
-        System.out.println(cheatGame.getResourceSize(ResourceType.Parcel));
-        assertThrows(OutOfResourcesException.class,() -> cheatGame.drawParcels());
+        assertThrows(OutOfResourcesException.class,() -> game.drawParcels());
     }
 
     @Test
@@ -199,7 +194,7 @@ class GameTest {
     }
 
     @Test
-    void botPlaceTwoTimesInTheSameTurn() throws OutOfResourcesException, IllegalAccessException, BadPlaceParcelException {
+    void botPlaceTwoTimesInTheSameTurn() throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
         List<ColorType> drawParcels =  game.drawParcels();
         game.selectParcel(drawParcels.get(0));
         game.placeParcel(new Coordinate(0,-1,1));
@@ -207,15 +202,15 @@ class GameTest {
     }
 
     @Test
-    void botPlaceWrongParcelAndThenGoodAndRetryToPlace() throws OutOfResourcesException, IllegalAccessException, BadPlaceParcelException {
+    void botPlaceWrongParcelAndThenGoodAndRetryToPlace() throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
         game.selectParcel(game.drawParcels().get(0));
-        assertThrows(BadPlaceParcelException.class,() -> game.placeParcel(new Coordinate(0,-2,2)));
+        assertThrows(BadCoordinateException.class,() -> game.placeParcel(new Coordinate(0,-2,2)));
         game.placeParcel(new Coordinate(0,-1,1));
         assertThrows(IllegalAccessException.class, () -> game.placeParcel(new Coordinate(1,-1,0)));
     }
 
     @Test
-    void botPlaceCanal() throws OutOfResourcesException, IllegalAccessException,BadPlaceCanalException {
+    void botPlaceCanal() throws OutOfResourcesException, IllegalAccessException {
         game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
         game.drawCanal();
@@ -223,13 +218,13 @@ class GameTest {
     }
 
     @Test
-    void botPlaceWrongCanalAndThenGoodAndRetryToPlace() throws OutOfResourcesException, IllegalAccessException, BadPlaceParcelException, BadPlaceCanalException {
+    void botPlaceWrongCanalAndThenGoodAndRetryToPlace() throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
         game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
         game.drawCanal();
         game.getTemporaryInventory().reset(2);
-        assertThrows(BadPlaceCanalException.class, () -> game.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));
+        assertThrows(BadCoordinateException.class, () -> game.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));
         game.placeCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0));
         assertThrows(IllegalAccessException.class, () -> game.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));
     }
@@ -237,28 +232,28 @@ class GameTest {
     @Test
     void botMovePanda(){
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
-        assertDoesNotThrow(() -> game.moveCharacter(CharacterType.Panda, new Coordinate(1,-1,0)));
+        assertDoesNotThrow(() -> game.moveCharacter(CharacterType.PANDA, new Coordinate(1,-1,0)));
     }
 
     @Test
     void botMoveWrongPandaAndThenGoodAndRetryToMove(){
         game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
-        assertThrows(BadMoveCharacterException.class, () -> game.moveCharacter(CharacterType.Panda,new Coordinate(1,-1,0)));
-        assertDoesNotThrow(() -> game.moveCharacter(CharacterType.Panda,new Coordinate(0,-1,1)));
-        assertThrows(IllegalAccessException.class, () -> game.moveCharacter(CharacterType.Panda,new Coordinate()));
+        assertThrows(BadCoordinateException.class, () -> game.moveCharacter(CharacterType.PANDA,new Coordinate(1,-1,0)));
+        assertDoesNotThrow(() -> game.moveCharacter(CharacterType.PANDA,new Coordinate(0,-1,1)));
+        assertThrows(IllegalAccessException.class, () -> game.moveCharacter(CharacterType.PANDA,new Coordinate()));
     }
 
     @Test
     void botMovePeasant(){
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
-        assertDoesNotThrow(() -> game.moveCharacter(CharacterType.Peasant, new Coordinate(1,-1,0)));
+        assertDoesNotThrow(() -> game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0)));
     }
 
     @Test
     void botMoveWrongPeasantAndThenGoodAndRetryToMove(){
         game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
-        assertThrows(BadMoveCharacterException.class, () -> game.moveCharacter(CharacterType.Peasant,new Coordinate(1,-1,0)));
-        assertDoesNotThrow(() -> game.moveCharacter(CharacterType.Peasant,new Coordinate(0,-1,1)));
-        assertThrows(IllegalAccessException.class, () -> game.moveCharacter(CharacterType.Peasant,new Coordinate()));
+        assertThrows(BadCoordinateException.class, () -> game.moveCharacter(CharacterType.PEASANT,new Coordinate(1,-1,0)));
+        assertDoesNotThrow(() -> game.moveCharacter(CharacterType.PEASANT,new Coordinate(0,-1,1)));
+        assertThrows(IllegalAccessException.class, () -> game.moveCharacter(CharacterType.PEASANT,new Coordinate()));
     }
 }

@@ -65,7 +65,7 @@ class Inventory {
      *              <b>The {@link ColorType} of the bamboo we want to add.</b>
      */
     void addBamboo(ColorType colorType){
-        if (colorType != ColorType.NoColor)
+        if (colorType != ColorType.NO_COLOR)
             inventoryBamboo[colorType.ordinal()] ++;
     }
 
@@ -87,7 +87,7 @@ class Inventory {
      *          <b>The {@link ColorType} of the bamboo we want to remove.</b>
      */
     void subBamboo(ColorType colorType){
-        if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NoColor))
+        if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NO_COLOR))
             inventoryBamboo[colorType.ordinal()] --;
     }
 
@@ -130,7 +130,7 @@ class Inventory {
     List<ParcelMission> getParcelMissions(){
         List<ParcelMission> parcelMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
-            if(mission.missionType == MissionType.Parcel)
+            if(mission.missionType == MissionType.PARCEL)
                 parcelMissions.add((ParcelMission) mission);
         }
         return parcelMissions;
@@ -142,7 +142,7 @@ class Inventory {
     List<PandaMission> getPandaMissions(){
         List<PandaMission> pandaMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
-            if(mission.missionType == MissionType.Panda)
+            if(mission.missionType == MissionType.PANDA)
                 pandaMissions.add((PandaMission) mission);
         }
         return pandaMissions;
@@ -154,7 +154,7 @@ class Inventory {
     List<PeasantMission> getPeasantMissions(){
         List<PeasantMission> peasantMissions = new ArrayList<>();
         for (Mission mission : inventoryMission) {
-            if(mission.missionType == MissionType.Peasant)
+            if(mission.missionType == MissionType.PEASANT)
                 peasantMissions.add((PeasantMission) mission);
         }
         return peasantMissions;

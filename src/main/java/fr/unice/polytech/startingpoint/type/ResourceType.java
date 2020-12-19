@@ -1,42 +1,42 @@
 package fr.unice.polytech.startingpoint.type;
 
 public enum ResourceType {
-    ParcelMission {
+    PARCEL_MISSION {
         @Override
         public String toString() {
             return "ParcelMission";
         }
     }
     ,
-    PandaMission {
+    PANDA_MISSION {
         @Override
         public String toString() {
             return "PandaMission";
         }
     }
     ,
-    PeasantMission {
+    PEASANT_MISSION {
         @Override
         public String toString() {
             return "PeasantMission";
         }
     }
     ,
-    AllMission {
+    ALL_MISSION {
         @Override
         public String toString() {
             return "AllMission";
         }
     }
     ,
-    Canal {
+    CANAL {
         @Override
         public String toString() {
             return "Canal";
         }
     }
     ,
-    Parcel {
+    PARCEL {
         @Override
         public String toString() {
             return "Parcel";

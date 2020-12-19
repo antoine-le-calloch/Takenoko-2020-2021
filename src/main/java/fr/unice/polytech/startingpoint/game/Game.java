@@ -29,17 +29,10 @@ public class Game{
         temporaryInventory = new TemporaryInventory(2);
     }
 
-    //Test Constructor
-    Game(){
-        initializeGame();
-        playerData = new PlayerData(new BotType[]{BotType.Random}, this,0);
-        temporaryInventory = new TemporaryInventory();
-    }
-
     private void initializeGame(){
         resource = new Resource();
         board = new Board();
-        rules = new Rules(resource,board);
+        rules = new Rules(board);
     }
 
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
@@ -82,7 +75,7 @@ public class Game{
      */
 
     public void drawCanal() throws OutOfResourcesException, IllegalAccessException {
-        if (temporaryInventory.add(ActionType.DrawCanal)){
+        if (temporaryInventory.add(ActionType.DRAW_CANAL)){
             temporaryInventory.looseStamina();
             playerData.addCanal(resource.drawCanal());
         }
@@ -91,7 +84,7 @@ public class Game{
     }
 
     public void drawMission(MissionType missionType) throws OutOfResourcesException, IllegalAccessException {
-        if (temporaryInventory.add(ActionType.DrawMission)){
+        if (temporaryInventory.add(ActionType.DRAW_MISSION)){
             temporaryInventory.looseStamina();
             playerData.addMission(resource.drawMission(missionType));
         }
@@ -100,7 +93,7 @@ public class Game{
     }
 
     public List<ColorType> drawParcels() throws IllegalAccessException, OutOfResourcesException {
-        if (temporaryInventory.add(ActionType.DrawParcels)){
+        if (temporaryInventory.add(ActionType.DRAW_PARCELS)){
             temporaryInventory.looseStamina();
             temporaryInventory.saveParcels(resource.drawParcels());
             List<ColorType> colorTypeList = new ArrayList<>();
@@ -114,8 +107,8 @@ public class Game{
     }
 
     public void selectParcel(ColorType colorType) throws IllegalAccessException{
-        if (temporaryInventory.add(ActionType.SelectParcel)){
-            if (temporaryInventory.contains(ActionType.DrawParcels)){
+        if (temporaryInventory.add(ActionType.SELECT_PARCEL)){
+            if (temporaryInventory.contains(ActionType.DRAW_PARCELS)){
                 for (Parcel parcel : temporaryInventory.getParcelsSaved()){
                     if (parcel.getColor() == colorType){
                         resource.selectParcel(parcel);
@@ -132,15 +125,15 @@ public class Game{
             throw new IllegalAccessException("Already used this method.");
     }
 
-    public void placeParcel(Coordinate coordinate) throws BadPlaceParcelException, IllegalAccessException{
-        if (temporaryInventory.add(ActionType.PlaceParcel)){
-            if (temporaryInventory.contains(ActionType.DrawParcels) && temporaryInventory.contains(ActionType.SelectParcel)){
+    public void placeParcel(Coordinate coordinate) throws IllegalAccessException, BadCoordinateException {
+        if (temporaryInventory.add(ActionType.PLACE_PARCEL)){
+            if (temporaryInventory.contains(ActionType.DRAW_PARCELS) && temporaryInventory.contains(ActionType.SELECT_PARCEL)){
                 if(rules.isPlayableParcel(coordinate)){
                     board.placeParcel(temporaryInventory.getParcel(),coordinate);
                 }
                 else{
-                    temporaryInventory.remove(ActionType.PlaceParcel);
-                    throw new BadPlaceParcelException(coordinate);
+                    temporaryInventory.remove(ActionType.PLACE_PARCEL);
+                    throw new BadCoordinateException("The parcel can't be place on this coordinate : ", coordinate);
                 }
             }
             else
@@ -150,20 +143,20 @@ public class Game{
             throw new IllegalAccessException("Already used this method.");
     }
 
-    public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws BadPlaceCanalException, OutOfResourcesException, IllegalAccessException {
-        if (temporaryInventory.add(ActionType.PlaceCanal)) {
+    public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
+        if (temporaryInventory.add(ActionType.PLACE_CANAL)) {
             if (rules.isPlayableCanal(coordinate1, coordinate2))
                 board.placeCanal(playerData.getInventory().pickCanal(), coordinate1, coordinate2);
             else{
-                temporaryInventory.remove(ActionType.PlaceCanal);
-                throw new BadPlaceCanalException(coordinate1, coordinate2);
+                temporaryInventory.remove(ActionType.PLACE_CANAL);
+                throw new BadCoordinateException("The canal can't be place on these coordinates : ", coordinate1, coordinate2);
             }
         }
         else
             throw new IllegalAccessException("Already used this method.");
     }
 
-    public void moveCharacter(CharacterType characterType, Coordinate coordinate) throws BadMoveCharacterException, OutOfResourcesException, IllegalAccessException {
+    public void moveCharacter(CharacterType characterType, Coordinate coordinate) throws OutOfResourcesException, IllegalAccessException, BadCoordinateException {
         if (temporaryInventory.add(ActionType.get(characterType))) {
             if (rules.isMovableCharacter(characterType, coordinate)) {
                 temporaryInventory.looseStamina();
@@ -176,7 +169,7 @@ public class Game{
             }
             else{
                 temporaryInventory.remove(ActionType.get(characterType));
-                throw new BadMoveCharacterException(coordinate);
+                throw new BadCoordinateException("The character can't move to this coordinate : ", coordinate);
             }
         }
         else
@@ -225,17 +218,17 @@ public class Game{
 
     public int getResourceSize(ResourceType resourceType){
         switch (resourceType){
-            case PeasantMission:
+            case PEASANT_MISSION:
                 return resource.getDeckPeasantMission().size();
-            case PandaMission:
+            case PANDA_MISSION:
                 return resource.getDeckPandaMission().size();
-            case ParcelMission:
+            case PARCEL_MISSION:
                 return resource.getDeckParcelMission().size();
-            case Parcel:
+            case PARCEL:
                 return resource.getDeckParcel().size();
-            case Canal:
+            case CANAL:
                 return resource.getDeckCanal().size();
-            case AllMission:
+            case ALL_MISSION:
                 return resource.getNbMission();
             default:
                 throw new IllegalArgumentException("Wrong ResourceType.");

@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +25,8 @@ public class InventoryTest {
         inventory2 = new Inventory();
         resource = new Resource();
         board = new Board();
-        parcel1 = new Parcel(ColorType.Blue, ImprovementType.Nothing);
-        mission = new ParcelMission( ColorType.Blue, 0, FormType.Line);
+        parcel1 = new Parcel(ColorType.BLUE, ImprovementType.NOTHING);
+        mission = new ParcelMission( ColorType.BLUE, 0, FormType.LINE);
     }
 
     @Test
@@ -36,7 +35,7 @@ public class InventoryTest {
     }
 
     @Test
-    public void addInventoryBamboo() throws BadPlaceParcelException {
+    public void addInventoryBamboo() {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
         inventory1.addBamboo(parcel1.getColor());
         assertEquals(0,inventory1.getBamboo()[0]);
@@ -44,7 +43,7 @@ public class InventoryTest {
     }
 
     @Test
-    public void subInventoryBamboo() throws BadPlaceParcelException {
+    public void subInventoryBamboo(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel blue
         inventory1.subBamboo(parcel1.getColor());
         assertEquals(0,inventory1.getBamboo()[0]);

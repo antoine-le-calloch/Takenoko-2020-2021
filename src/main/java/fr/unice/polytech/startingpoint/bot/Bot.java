@@ -101,7 +101,7 @@ public abstract class Bot {
         try {
             game.placeParcel(coordinate);
         }
-        catch (BadPlaceParcelException | IllegalAccessException e) {
+        catch (IllegalAccessException | BadCoordinateException e) {
             e.printStackTrace();
         }
     }
@@ -115,7 +115,7 @@ public abstract class Bot {
         try {
             game.placeCanal(coordinates[0],coordinates[1]);
         }
-        catch (BadPlaceCanalException | OutOfResourcesException | IllegalAccessException e) {
+        catch (OutOfResourcesException | IllegalAccessException | BadCoordinateException e) {
             e.printStackTrace();
         }
     }
@@ -127,8 +127,8 @@ public abstract class Bot {
      */
     public void movePanda(Coordinate coordinate) {
         try {
-            game.moveCharacter(CharacterType.Panda,coordinate);
-        } catch (BadMoveCharacterException | OutOfResourcesException | IllegalAccessException e) {
+            game.moveCharacter(CharacterType.PANDA,coordinate);
+        } catch (OutOfResourcesException | IllegalAccessException | BadCoordinateException e) {
             e.printStackTrace();
         }
     }
@@ -140,8 +140,8 @@ public abstract class Bot {
      */
     public void movePeasant(Coordinate coordinate){
         try {
-            game.moveCharacter(CharacterType.Peasant,coordinate);
-        } catch (BadMoveCharacterException | OutOfResourcesException | IllegalAccessException e) {
+            game.moveCharacter(CharacterType.PEASANT,coordinate);
+        } catch (OutOfResourcesException | IllegalAccessException | BadCoordinateException e) {
             e.printStackTrace();
         }
     }
@@ -191,7 +191,7 @@ public abstract class Bot {
     public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate coordinate : game.getPlacedCoordinates()) {
-            if (rules.isMovableCharacter(CharacterType.Panda,coordinate)){
+            if (rules.isMovableCharacter(CharacterType.PANDA,coordinate)){
                 possibleCoordinates.add(coordinate);
             }
         }
@@ -203,7 +203,7 @@ public abstract class Bot {
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : game.getPlacedCoordinates()) {
-            if (rules.isMovableCharacter(CharacterType.Peasant,c)){
+            if (rules.isMovableCharacter(CharacterType.PEASANT,c)){
                 possibleCoordinates.add(c);
             }
         }

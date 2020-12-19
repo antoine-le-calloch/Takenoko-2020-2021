@@ -11,14 +11,14 @@ package fr.unice.polytech.startingpoint.type;
 
 
 public enum FormType {
-    Triangle {
+    TRIANGLE {
         @Override
         public String toString() {
             return "Triangle";
         }
     }
     ,
-    Line {
+    LINE {
         @Override
         public String toString() {
             return "Line";

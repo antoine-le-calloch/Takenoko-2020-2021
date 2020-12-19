@@ -30,7 +30,7 @@ public class PandaMission extends Mission {
      *            <b>the points of the mission</b>
      */
     PandaMission(ColorType colorType, int points){
-        super(MissionType.Panda,colorType,points);
+        super(MissionType.PANDA,colorType,points);
     }
 
     /**

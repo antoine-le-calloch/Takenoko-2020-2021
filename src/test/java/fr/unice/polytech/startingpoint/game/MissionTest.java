@@ -23,12 +23,12 @@ class MissionTest {
     Mission mission6;
 
     @BeforeEach void setUp(){
-        mission1 = new ParcelMission(ColorType.Red, 2, FormType.Triangle);
-        mission2 = new ParcelMission(ColorType.Red, 3, FormType.Line);
-        mission3 = new PandaMission(ColorType.Red, 0);
-        mission4 = new PandaMission(ColorType.Red, 1);
-        mission5 = new PeasantMission(ColorType.Red, 0);
-        mission6 = new PeasantMission(ColorType.Red, 1);
+        mission1 = new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE);
+        mission2 = new ParcelMission(ColorType.RED, 3, FormType.LINE);
+        mission3 = new PandaMission(ColorType.RED, 0);
+        mission4 = new PandaMission(ColorType.RED, 1);
+        mission5 = new PeasantMission(ColorType.RED, 0);
+        mission6 = new PeasantMission(ColorType.RED, 1);
     }
 
     @Test void newMissionParcel(){
