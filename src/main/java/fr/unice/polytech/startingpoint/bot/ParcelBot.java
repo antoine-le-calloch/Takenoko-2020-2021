@@ -102,31 +102,31 @@ public class ParcelBot extends Bot {
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     public void putParcel() {
         try {
-            List<ColorType> colorsAvailable = game.drawParcels();
+            List<ParcelInformation> parcelInformationList = game.drawParcels();
             List<Coordinate> bestCoords = new ArrayList<>();
-            ColorType bestColor = ColorType.NO_COLOR;
+            ParcelInformation bestColor = new ParcelInformation();
             int minTurn = NB_TURN_MAX;
 
-            for (ColorType color : colorsAvailable) {
-                if(BestCoordsInAllMission(color) != null && BestCoordsInAllMission(color).size() < minTurn) {
-                    bestCoords = BestCoordsInAllMission(color);
-                    bestColor = color;
+            for (ParcelInformation parcelInformation : parcelInformationList) {
+                if(BestCoordsInAllMission(parcelInformation.getColorType()) != null && BestCoordsInAllMission(parcelInformation.getColorType()).size() < minTurn) {
+                    bestCoords = BestCoordsInAllMission(parcelInformation.getColorType());
+                    bestColor = parcelInformation;
                     minTurn = bestCoords.size();
                 }
             }
 
             if(bestCoords.size() != 0) {
-                for (Coordinate coord : bestCoords) {
-                    if(rules.isPlayableParcel(coord)) {
+                for (Coordinate coordinate : bestCoords) {
+                    if(rules.isPlayableParcel(coordinate)) {
                         selectParcel(bestColor);
-                        placeParcel(coord);
+                        placeParcel(coordinate);
                         break;
                     }
 
                 }
             }
             else {
-                selectParcel(colorsAvailable.get(0));
+                selectParcel(parcelInformationList.get(0));
                 placeParcel(possibleCoordinatesParcel().get(0));
             }
 

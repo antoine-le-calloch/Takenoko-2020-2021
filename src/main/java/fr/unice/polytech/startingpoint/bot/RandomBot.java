@@ -81,7 +81,7 @@ public class RandomBot extends Bot {
         }
 
         else if (randAction == 2 && game.getResourceSize(ResourceType.PARCEL) > 0){ // place parcel
-            List<ColorType> parcelList = drawParcel();
+            List<ParcelInformation> parcelList = drawParcel();
             Collections.shuffle(parcelList);
             selectParcel(parcelList.get(0));
             List<Coordinate> list = possibleCoordinatesParcel();

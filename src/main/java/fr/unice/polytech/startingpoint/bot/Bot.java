@@ -63,7 +63,7 @@ public abstract class Bot {
 
     /**@return Preview a list of 3 ColorTypes from the resources.
      */
-    public List<ColorType> drawParcel() {
+    public List<ParcelInformation> drawParcel() {
         try {
             return game.drawParcels();
         }
@@ -73,9 +73,9 @@ public abstract class Bot {
         }
     }
 
-    public void selectParcel(ColorType colorType){
+    public void selectParcel(ParcelInformation parcelInformation){
         try {
-            game.selectParcel(colorType);
+            game.selectParcel(parcelInformation);
         }
         catch (RulesViolationException e) {
             e.printStackTrace();

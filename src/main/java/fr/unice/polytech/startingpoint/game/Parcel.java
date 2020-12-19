@@ -13,47 +13,42 @@ import fr.unice.polytech.startingpoint.type.*;
 
 class Parcel {
     private int nbBamboo = 0;
-    private final ColorType colorType;
     private boolean irrigated = false;
-    private ImprovementType improvementType;
+    private final ParcelInformation parcelInformation;
 
     Parcel(ColorType colorType, ImprovementType improvementType){
-        this.colorType = colorType;
-        this.improvementType = improvementType;
-        setIrrigatedImprovement();
+        parcelInformation = new ParcelInformation(colorType,improvementType);
+        if (improvementType == ImprovementType.WATERSHED)
+            setIrrigated();
     }
 
     Parcel(ColorType colorType){
-        this.colorType = colorType;
-        this.improvementType = ImprovementType.NOTHING;
-        setIrrigatedImprovement();
+        parcelInformation = new ParcelInformation(colorType);
     }
 
     Parcel(ImprovementType improvementType){
-        this.colorType = ColorType.NO_COLOR;
-        this.improvementType = improvementType;
-        setIrrigatedImprovement();
+        parcelInformation = new ParcelInformation(improvementType);
+        if (improvementType == ImprovementType.WATERSHED)
+            setIrrigated();
     }
 
     Parcel(){
-        this.colorType = ColorType.NO_COLOR;
-        this.improvementType = ImprovementType.NOTHING;
-        setIrrigatedImprovement();
+        parcelInformation = new ParcelInformation();
     }
 
     //Ajoute un bamboo à la parcelle
     void addBamboo(){
         if (nbBamboo < 4)
             nbBamboo ++;
-        if (nbBamboo < 4 && improvementType == ImprovementType.FERTILIZER)
+        if (nbBamboo < 4 && parcelInformation.getImprovementType() == ImprovementType.FERTILIZER)
             nbBamboo ++;
     }
 
     //Supprime un bambou de la parcelle
     ColorType delBamboo(){
-        if (nbBamboo > 0 && improvementType != ImprovementType.ENCLOSURE){
+        if (nbBamboo > 0 && parcelInformation.getImprovementType() != ImprovementType.ENCLOSURE){
             nbBamboo --;
-            return colorType;
+            return parcelInformation.getColorType();
         }
         return ColorType.NO_COLOR;
     }
@@ -65,13 +60,8 @@ class Parcel {
         irrigated = true;
     }
 
-    void setIrrigatedImprovement(){
-        if (improvementType == ImprovementType.WATERSHED)
-            setIrrigated();
-    }
-
     void setImprovementType(ImprovementType improvementType) {
-        this.improvementType = improvementType;
+        parcelInformation.setImprovementType(improvementType);
     }
 
     //Renvoie si la parcelle est irriguée ou non
@@ -81,7 +71,15 @@ class Parcel {
 
     //Renvoie la couleur de la parcelle
     ColorType getColor() {
-        return colorType;
+        return parcelInformation.getColorType();
+    }
+
+    ImprovementType getImprovement(){
+        return parcelInformation.getImprovementType();
+    }
+
+    ParcelInformation getParcelInformation() {
+        return parcelInformation;
     }
 
     int getNbBamboo(){

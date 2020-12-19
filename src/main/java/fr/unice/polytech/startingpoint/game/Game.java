@@ -92,25 +92,25 @@ public class Game{
             throw new RulesViolationException("Already used this method.");
     }
 
-    public List<ColorType> drawParcels() throws OutOfResourcesException, RulesViolationException {
+    public List<ParcelInformation> drawParcels() throws OutOfResourcesException, RulesViolationException {
         if (temporaryInventory.add(ActionType.DRAW_PARCELS)){
             temporaryInventory.looseStamina();
             temporaryInventory.saveParcels(resource.drawParcels());
-            List<ColorType> colorTypeList = new ArrayList<>();
+            List<ParcelInformation> parcelInformationList = new ArrayList<>();
             for(Parcel parcel : temporaryInventory.getParcelsSaved()){
-                colorTypeList.add(parcel.getColor());
+                parcelInformationList.add(parcel.getParcelInformation());
             }
-            return colorTypeList;
+            return parcelInformationList;
         }
         else
             throw new RulesViolationException("Already used this method.");
     }
 
-    public void selectParcel(ColorType colorType) throws RulesViolationException {
+    public void selectParcel(ParcelInformation parcelInformation) throws RulesViolationException {
         if (temporaryInventory.add(ActionType.SELECT_PARCEL)){
             if (temporaryInventory.contains(ActionType.DRAW_PARCELS)){
                 for (Parcel parcel : temporaryInventory.getParcelsSaved()){
-                    if (parcel.getColor() == colorType){
+                    if (parcel.getParcelInformation() == parcelInformation){
                         resource.selectParcel(parcel);
                         temporaryInventory.saveParcel(parcel);
                         return;

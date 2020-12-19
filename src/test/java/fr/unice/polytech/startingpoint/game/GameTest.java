@@ -153,7 +153,7 @@ class GameTest {
         assertEquals(2,game.getTemporaryInventory().getStamina());
         assertEquals(1,game.getPlacedCoordinates().size());
 
-        List<ColorType> parcels = game.drawParcels();
+        List<ParcelInformation> parcels = game.drawParcels();
 
         assertThrows(NoSuchElementException.class,() -> game.getTemporaryInventory().hasPlayedCorrectly());
 
@@ -189,14 +189,14 @@ class GameTest {
 
     @Test
     void botSelectTwoTimesInTheSameTurn() throws OutOfResourcesException, RulesViolationException {
-        List<ColorType> drawParcels =  game.drawParcels();
+        List<ParcelInformation> drawParcels =  game.drawParcels();
         game.selectParcel(drawParcels.get(0));
         assertThrows(RulesViolationException.class,() -> game.selectParcel(drawParcels.get(1)));
     }
 
     @Test
     void botPlaceTwoTimesInTheSameTurn() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
-        List<ColorType> drawParcels =  game.drawParcels();
+        List<ParcelInformation> drawParcels =  game.drawParcels();
         game.selectParcel(drawParcels.get(0));
         game.placeParcel(new Coordinate(0,-1,1));
         assertThrows(RulesViolationException.class,() -> game.placeParcel(new Coordinate(0,1,-1)));
