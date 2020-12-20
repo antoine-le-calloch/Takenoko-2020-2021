@@ -37,4 +37,14 @@ public class ParcelInformation {
     public ImprovementType getImprovementType() {
         return improvementType;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj)
+            return true;
+        if (!(obj instanceof ParcelInformation))
+            return false;
+        ParcelInformation pi = (ParcelInformation) obj;
+        return (colorType == pi.colorType && improvementType == pi.improvementType);
+    }
 }

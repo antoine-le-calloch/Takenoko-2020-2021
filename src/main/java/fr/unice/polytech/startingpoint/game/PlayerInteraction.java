@@ -135,8 +135,8 @@ public class PlayerInteraction {
         return board.isPlacedAndIrrigatedParcel(coordinate);
     }
 
-    public ColorType getPlacedParcelsColor(Coordinate coordinate) {
-        return board.getPlacedParcels().get(coordinate).getColor();
+    public ParcelInformation getPlacedParcelInformation(Coordinate coordinate) {
+        return board.getPlacedParcels().get(coordinate).getParcelInformation();
     }
 
     public int getPlacedParcelsNbBamboo(Coordinate coordinate) {

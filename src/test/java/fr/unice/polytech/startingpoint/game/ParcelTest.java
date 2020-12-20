@@ -14,37 +14,46 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class ParcelTest {
-    Board board;
+    Parcel parcel;
 
     @BeforeEach
-    public void initialize(){
-        board = new Board();
+    void initialize(){
+        parcel = new Parcel();
     }
 
     @Test
-    public void sameParcel(){
-        Parcel parcel1 = new Parcel();
-        Parcel parcel2 = new Parcel();
-        assertEquals(parcel1,parcel1);
-        assertNotEquals(parcel1,parcel2);
-        assertNotEquals(parcel1,null);
+    void sameParcel(){
+        assertEquals(parcel,parcel);
+        assertNotEquals(parcel,new Parcel());
+        assertNotEquals(parcel,null);
     }
 
     @Test
-    public void notIrrigated(){
+    void constructorTest(){
+        assertEquals(new Parcel().getParcelInformation(),new Parcel().getParcelInformation());
+        assertEquals(new Parcel().getColor(),new Parcel(ColorType.NO_COLOR).getColor());
+        assertEquals(new Parcel().getImprovement(),new Parcel(ImprovementType.NOTHING).getImprovement());
+        assertEquals(new Parcel().getParcelInformation(),new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING).getParcelInformation());
+
+        parcel.setImprovementType(ImprovementType.ENCLOSURE);
+        assertEquals(new Parcel(ImprovementType.ENCLOSURE).getImprovement(),parcel.getImprovement());
+    }
+
+    @Test
+    void notIrrigated(){
         Parcel parcel = new Parcel();
         assertFalse(parcel.getIrrigated());
     }
 
     @Test
-    public void setIrrigated(){
+    void setIrrigated(){
         Parcel parcel = new Parcel();
         parcel.setIrrigated();
         assertTrue(parcel.getIrrigated());
     }
 
     @Test
-    public void addBamboo(){
+    void addBamboo(){
         Parcel parcel = new Parcel();
         parcel.setIrrigated();
         parcel.addBamboo();
@@ -52,25 +61,29 @@ class ParcelTest {
     }
 
     @Test
-    public void delBamboo(){
+    void delBamboo(){
         Parcel parcel = new Parcel();
         parcel.setIrrigated();
         parcel.delBamboo();
         assertEquals(parcel.getNbBamboo(),0);
     }
 
-    /**
-     * <h1><u>TEST IMPROVEMENT</u></h1>
-     */
+    @Test
+    void notIrrigatedThenIrrigatedWithImprovement(){
+        Parcel parcel = new Parcel();
+        assertFalse(parcel.getIrrigated());
+        parcel.setImprovementType(ImprovementType.WATERSHED);
+        assertTrue(parcel.getIrrigated());
+    }
 
     @Test
-    public void setIrrigatedWithImprovement(){
+    void setIrrigatedWithImprovement(){
         Parcel parcel = new Parcel(ImprovementType.WATERSHED);
         assertTrue(parcel.getIrrigated());
     }
 
     @Test
-    public void addBambooWithImprovement(){
+    void addBambooWithImprovement(){
         Parcel parcel = new Parcel(ImprovementType.FERTILIZER);
         parcel.setIrrigated();
         parcel.addBamboo();
@@ -78,7 +91,7 @@ class ParcelTest {
     }
 
     @Test
-    public void maxAddBambooWithImprovement(){
+    void maxAddBambooWithImprovement(){
         Parcel parcel = new Parcel(ImprovementType.FERTILIZER);
         parcel.setIrrigated();
         parcel.addBamboo();
@@ -87,8 +100,8 @@ class ParcelTest {
     }
 
     @Test
-    public void delBambooWithImprovement() {
-        Parcel parcel = new Parcel(ImprovementType.ENCLOSURE);
+    void delBambooWithImprovement() {
+        Parcel parcel = new Parcel(ColorType.BLUE,ImprovementType.ENCLOSURE);
         parcel.setIrrigated();
         assertEquals(ColorType.NO_COLOR, parcel.delBamboo());
     }

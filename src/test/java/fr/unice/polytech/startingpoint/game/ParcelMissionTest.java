@@ -50,7 +50,9 @@ public class ParcelMissionTest {
     void newMission(){
         assertNotEquals(mission1,null);
         assertNotEquals(mission1,mission2);
+        assertNotEquals(mission1.getFormType(),mission2.getFormType());
         assertEquals(mission1, mission1);
+        assertEquals(mission1.getFormType(),mission3.getFormType());
     }
 
     /**

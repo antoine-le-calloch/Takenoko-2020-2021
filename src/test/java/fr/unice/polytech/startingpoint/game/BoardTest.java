@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.*;
 
 import org.junit.jupiter.api.*;
 
@@ -24,13 +23,6 @@ public class BoardTest {
     public void initialize(){
         game = new Game();
         board = game.getBoard();
-    }
-
-    @Test
-    void normTesting(){
-        assertEquals(2,Coordinate.getNorm(new Coordinate(1,-1,0),new Coordinate(1,0,-1)));
-        assertNotEquals(17,Coordinate.getNorm(new Coordinate(),new Coordinate(3,0,-3)));
-        assertEquals(0,Coordinate.getNorm(new Coordinate(),new Coordinate()));
     }
 
     @Test

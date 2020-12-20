@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 2020.12.03
  */
 
-class GameTest {
+class PlayerInteractionTest {
     Game game;
     PlayerInteraction playerInteraction;
 
@@ -190,10 +190,32 @@ class GameTest {
     }
 
     @Test
+    void botSelectWithoutDrawing() {
+        assertThrows(RulesViolationException.class,() -> playerInteraction.selectParcel(new ParcelInformation()));
+    }
+
+    @Test
+    void botDrawWrongParcelInformation() throws OutOfResourcesException, RulesViolationException {
+        playerInteraction.drawParcels();
+        assertThrows(RulesViolationException.class,() -> playerInteraction.selectParcel(new ParcelInformation()));
+    }
+
+    @Test
     void botSelectTwoTimesInTheSameTurn() throws OutOfResourcesException, RulesViolationException {
         List<ParcelInformation> drawParcels =  playerInteraction.drawParcels();
         playerInteraction.selectParcel(drawParcels.get(0));
         assertThrows(RulesViolationException.class,() -> playerInteraction.selectParcel(drawParcels.get(1)));
+    }
+
+    @Test
+    void botPlaceWithoutDrawing() {
+        assertThrows(RulesViolationException.class,() -> playerInteraction.placeParcel(new Coordinate(1,-1,0)));
+    }
+
+    @Test
+    void botPlaceWithoutSelecting() throws OutOfResourcesException, RulesViolationException {
+        playerInteraction.drawParcels();
+        assertThrows(RulesViolationException.class,() -> playerInteraction.placeParcel(new Coordinate(1,-1,0)));
     }
 
     @Test
@@ -258,5 +280,50 @@ class GameTest {
         assertThrows(BadCoordinateException.class, () -> playerInteraction.moveCharacter(CharacterType.PEASANT,new Coordinate(1,-1,0)));
         assertDoesNotThrow(() -> playerInteraction.moveCharacter(CharacterType.PEASANT,new Coordinate(0,-1,1)));
         assertThrows(RulesViolationException.class, () -> playerInteraction.moveCharacter(CharacterType.PEASANT,new Coordinate()));
+    }
+
+    @Test
+    void placedParcel(){
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
+        assertTrue(playerInteraction.isPlacedParcel(new Coordinate()));
+        assertTrue(playerInteraction.isPlacedParcel(new Coordinate(1,-1,0)));
+        assertTrue(playerInteraction.isPlacedParcel(new Coordinate(1,-2,1)));
+    }
+
+    @Test
+    void notPlacedParcel(){
+        assertFalse(playerInteraction.isPlacedParcel(new Coordinate(1,-1,0)));
+        assertFalse(playerInteraction.isPlacedParcel(new Coordinate(1,-2,1)));
+    }
+
+    @Test
+    void irrigatedAndPlacedParcel(){
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
+        game.getBoard().placeCanal(new Canal(),new Coordinate(1,-1,0),new Coordinate(0,-1,1));
+        game.getBoard().placeCanal(new Canal(),new Coordinate(1,-2,1),new Coordinate(0,-1,1));
+        assertTrue(playerInteraction.isIrrigatedParcel(new Coordinate(1,-1,0)));
+        assertTrue(playerInteraction.isIrrigatedParcel(new Coordinate(0,-1,1)));
+        assertTrue(playerInteraction.isIrrigatedParcel(new Coordinate(1,-2,1)));
+    }
+
+    @Test
+    void notIrrigatedAndPlacedParcel(){
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
+        assertFalse(playerInteraction.isIrrigatedParcel(new Coordinate(1,-1,0)));
+        assertFalse(playerInteraction.isIrrigatedParcel(new Coordinate(1,-2,1)));
+    }
+
+    @Test
+    void placedParcelInformation(){
+        game.getBoard().placeParcel(new Parcel(ImprovementType.WATERSHED),new Coordinate(1,-1,0));
+        game.getBoard().placeParcel(new Parcel(ColorType.RED),new Coordinate(0,-1,1));
+        game.getBoard().placeParcel(new Parcel(ColorType.BLUE,ImprovementType.ENCLOSURE),new Coordinate(1,-2,1));
+        assertEquals(new ParcelInformation(),playerInteraction.getPlacedParcelInformation(new Coordinate()));
+        assertEquals(new ParcelInformation(ImprovementType.WATERSHED),playerInteraction.getPlacedParcelInformation(new Coordinate(1,-1,0)));
+        assertEquals(new ParcelInformation(ColorType.RED),playerInteraction.getPlacedParcelInformation(new Coordinate(0,-1,1)));
+        assertEquals(new ParcelInformation(ColorType.BLUE,ImprovementType.ENCLOSURE),playerInteraction.getPlacedParcelInformation(new Coordinate(1,-2,1)));
     }
 }

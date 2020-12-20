@@ -24,34 +24,46 @@ class MissionTest {
 
     @BeforeEach void setUp(){
         mission1 = new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE);
-        mission2 = new ParcelMission(ColorType.RED, 3, FormType.LINE);
+        mission2 = new ParcelMission(ColorType.BLUE, 3, FormType.LINE);
         mission3 = new PandaMission(ColorType.RED, 0);
-        mission4 = new PandaMission(ColorType.RED, 1);
+        mission4 = new PandaMission(ColorType.BLUE, 1);
         mission5 = new PeasantMission(ColorType.RED, 0);
-        mission6 = new PeasantMission(ColorType.RED, 1);
+        mission6 = new PeasantMission(ColorType.BLUE, 1);
     }
 
     @Test void newMissionParcel(){
         assertNotEquals(mission1,null);
         assertNotEquals(mission1,mission2);
+        assertNotEquals(mission1.getPoints(),mission2.getPoints());
+        assertNotEquals(mission1.getColor(),mission2.getColor());
+        assertEquals(mission1.getColor(), mission1.getColor());
+        assertEquals(mission1.getPoints(), mission1.getPoints());
         assertEquals(mission1, mission1);
     }
 
     @Test void newMissionPanda(){
         assertNotEquals(mission3,null);
         assertNotEquals(mission3,mission4);
+        assertNotEquals(mission3.getPoints(),mission4.getPoints());
+        assertNotEquals(mission3.getColor(),mission4.getColor());
+        assertEquals(mission3.getColor(), mission3.getColor());
+        assertEquals(mission3.getPoints(), mission3.getPoints());
         assertEquals(mission3, mission3);
     }
 
     @Test void newMissionPeasant(){
         assertNotEquals(mission5,null);
         assertNotEquals(mission5,mission6);
+        assertNotEquals(mission5.getPoints(),mission6.getPoints());
+        assertNotEquals(mission5.getColor(),mission6.getColor());
+        assertEquals(mission5.getColor(), mission5.getColor());
+        assertEquals(mission5.getPoints(), mission5.getPoints());
         assertEquals(mission5, mission5);
     }
 
     @Test void newMission(){
-        assertNotEquals(mission1,mission3);
-        assertNotEquals(mission1,mission5);
-        assertNotEquals(mission3,mission5);
+        assertNotEquals(mission1.getMissionType(),mission3.getMissionType());
+        assertNotEquals(mission1.getMissionType(),mission5.getMissionType());
+        assertNotEquals(mission3.getMissionType(),mission5.getMissionType());
     }
 }

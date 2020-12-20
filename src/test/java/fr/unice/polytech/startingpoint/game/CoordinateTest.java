@@ -62,6 +62,13 @@ public class CoordinateTest {
     }
 
     @Test
+    void normTesting(){
+        assertEquals(2,Coordinate.getNorm(new Coordinate(1,-1,0),new Coordinate(1,0,-1)));
+        assertNotEquals(17,Coordinate.getNorm(new Coordinate(),new Coordinate(3,0,-3)));
+        assertEquals(0,Coordinate.getNorm(new Coordinate(),new Coordinate()));
+    }
+
+    @Test
     public void onTheSameLine(){
         assertTrue(new Coordinate(0,0,0).isOnTheSameLine(new Coordinate(1,-1,0)));
         assertTrue(new Coordinate(0,0,0).isOnTheSameLine(new Coordinate(0,2,-2)));
@@ -105,6 +112,7 @@ public class CoordinateTest {
 
     @Test
     public void coordinateBetween(){
+        assertEquals(new ArrayList<>(),Coordinate.getAllCoordinatesBetween(new Coordinate(),new Coordinate(1,-2,1)));
         assertEquals(new ArrayList<>(Collections.singletonList(new Coordinate(1, -1, 0))), Coordinate.getAllCoordinatesBetween(new Coordinate(0,0,0),new Coordinate(2,-2,0)));
         assertEquals(new ArrayList<>(Collections.singletonList(new Coordinate(-1, -1, 2))), Coordinate.getAllCoordinatesBetween(new Coordinate(-2,0,2),new Coordinate(0,-2,2)));
         assertEquals(new ArrayList<>(Collections.singletonList(new Coordinate(-3, 1, 2))), Coordinate.getAllCoordinatesBetween(new Coordinate(-3,2,1),new Coordinate(-3,0,3)));
