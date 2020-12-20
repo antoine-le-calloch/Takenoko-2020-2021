@@ -53,7 +53,6 @@ class GameTest {
         assertNotEquals(game1.getResource(),null);
     }
 
-
     //vérifie que le partie se finie au bout de 4 missions faites par un bot
     @Test public void isFinished(){
 
@@ -63,8 +62,6 @@ class GameTest {
         }
         assertFalse(game1.getPlayerData().isContinue());
     }
-
-
 
     @Test public void missionsDone(){
         assertEquals(0,game1.getPlayerData().getScores().get(0));

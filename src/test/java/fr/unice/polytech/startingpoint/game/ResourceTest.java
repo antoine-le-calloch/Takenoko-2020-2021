@@ -64,4 +64,30 @@ public class ResourceTest {
         resource.drawMission(MissionType.PARCEL);
         assertEquals(44,resource.getNbMission());
     }
+
+    @Test
+    void notOutOfResources(){
+        assertFalse(resource.isEmpty());
+    }
+
+    @Test
+    void outOfCanals() throws OutOfResourcesException {
+        for (int i = 0; i < 27; i++) {
+            resource.drawCanal();
+        }
+        assertTrue(resource.isEmpty());
+    }
+
+    @Test
+    void outOfCParcel() throws OutOfResourcesException {
+        for (int i = 0; i < 32; i++) {
+            resource.selectParcel(resource.drawParcel().get(0));
+        }
+        assertTrue(resource.isEmpty());
+    }
+
+    @Test
+    void outOfMissions(){
+        assertTrue(resource.isEmpty());
+    }
 }

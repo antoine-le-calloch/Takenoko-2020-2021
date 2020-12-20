@@ -174,7 +174,7 @@ public class ParcelBot extends Bot {
         int minTurnToEndForm = NB_TURN_MAX;
 
         for (Coordinate hightCoord : allPlaces()) {
-            List<Coordinate> parcelsToPlaceToDoForm = coordNeedeToDoMission(hightCoord, mission);
+            List<Coordinate> parcelsToPlaceToDoForm = coordNeedToDoMission(hightCoord, mission);
 
             if(parcelsToPlaceToDoForm != null && parcelsToPlaceToDoForm.size() < minTurnToEndForm){
                 minTurnToEndForm = parcelsToPlaceToDoForm.size();
@@ -185,7 +185,7 @@ public class ParcelBot extends Bot {
     }
 
     /**
-     * <h2>{@link #coordNeedeToDoMission(Coordinate hightCoord, ParcelMission mission)} :</h2>
+     * <h2>{@link #coordNeedToDoMission(Coordinate hightCoord, ParcelMission mission)} :</h2>
      *
      * @param hightCoord
      *            <b>The higth coordinate of a form.</b>
@@ -198,11 +198,12 @@ public class ParcelBot extends Bot {
      * @see ColorType
      * @see Game
      */
-    public List<Coordinate> coordNeedeToDoMission(Coordinate hightCoord, ParcelMission mission){
+    public List<Coordinate> coordNeedToDoMission(Coordinate hightCoord, ParcelMission mission){
+        Coordinate bestCoordNeed = new Coordinate();
         Set<Coordinate> coordNeedeToDoMission = new HashSet<>();
         List<Coordinate> form = setForm(hightCoord, mission.getFormType());
 
-        if(mission.getFormType().equals(FormType.LINE) && hightCoord.equals(new Coordinate(0,-1,1)))
+        if(mission.getFormType().equals(FormType.LINE) && hightCoord.equals(new Coordinate(0,-1,1)) && !game.isPlacedParcel(new Coordinate(0,-2,2)))
             return null;
 
         for (Coordinate coord : form) {
@@ -221,7 +222,10 @@ public class ParcelBot extends Bot {
                 }
             }
             else if(!rules.isPlayableParcel(coord) && !game.isPlacedParcel(coord))
-                coordNeedeToDoMission.add(Coordinate.getInCommonAroundCoordinates(coord,form.get(1)).get(0));
+                if(rules.isPlayableParcel(bestCoordNeed = Coordinate.getInCommonAroundCoordinates(coord,form.get(1)).get(0)))
+                    coordNeedeToDoMission.add(bestCoordNeed);
+                else
+                    coordNeedeToDoMission.add(Coordinate.getInCommonAroundCoordinates(coord,form.get(1)).get(1));
         }
         return new ArrayList<>(coordNeedeToDoMission);
     }
@@ -280,7 +284,7 @@ public class ParcelBot extends Bot {
     public List<Coordinate> findFullFormInMission() {
         for (ParcelMission mission : game.getInventoryParcelMission()) {
             for (Coordinate coord : allPlaces()) {
-                if(coordNeedeToDoMission(coord,mission) != null && coordNeedeToDoMission(coord,mission).size() == 0) {
+                if(coordNeedToDoMission(coord,mission) != null && coordNeedToDoMission(coord,mission).size() == 0) {
                     return setForm(coord, mission.getFormType());
                 }
             }
