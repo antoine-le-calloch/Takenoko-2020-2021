@@ -24,17 +24,15 @@ class Parcel {
     }
 
     Parcel(ColorType colorType){
-        parcelInformation = new ParcelInformation(colorType);
+        this(colorType,ImprovementType.NOTHING);
     }
 
     Parcel(ImprovementType improvementType){
-        parcelInformation = new ParcelInformation(improvementType);
-        if (improvementType == ImprovementType.WATERSHED)
-            setIrrigated();
+        this(ColorType.NO_COLOR,improvementType);
     }
 
     Parcel(){
-        parcelInformation = new ParcelInformation();
+        this(ColorType.NO_COLOR,ImprovementType.NOTHING);
     }
 
     //Ajoute un bamboo à la parcelle

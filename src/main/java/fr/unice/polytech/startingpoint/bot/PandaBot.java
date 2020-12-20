@@ -1,9 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.Coordinate;
-import fr.unice.polytech.startingpoint.game.Game;
-import fr.unice.polytech.startingpoint.game.PandaMission;
-import fr.unice.polytech.startingpoint.game.Rules;
+import fr.unice.polytech.startingpoint.game.*;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
@@ -32,19 +29,19 @@ public class PandaBot extends Bot {
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
-     * @param game
+     * @param playerInteraction
      *            <b>Game object.</b>
      * @param rules
      *            <b>Rules object.</b>
      */
-    public PandaBot(Game game, Rules rules) {
-        super(game, rules);
+    public PandaBot(PlayerInteraction playerInteraction, Rules rules) {
+        super(playerInteraction, rules);
     }
 
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        if (game.getInventoryMission().size() < 5 && game.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+        if (playerInteraction.getInventoryMissions().size() < 5 && playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
             drawMission(MissionType.PANDA);
         if (strategyMovePanda(possibleCoordinatesPanda()) != null)
                 movePanda(strategyMovePanda(possibleCoordinatesPanda()));
@@ -56,7 +53,7 @@ public class PandaBot extends Bot {
      */
     public Coordinate strategyMovePanda(List<Coordinate> coordinateList) {
         for (Coordinate coordinate : coordinateList) {
-            if (game.getPlacedParcelsNbBamboo(coordinate) > 0) {
+            if (playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0) {
                 return coordinate;
             }
         }

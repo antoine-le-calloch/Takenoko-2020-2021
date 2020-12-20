@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ public class RulesTest {
 
     @BeforeEach
     public void initialize(){
-        game = new Game(new BotType[]{BotType.RANDOM},4);
+        game = new Game();
         board = game.getBoard();
         rules = game.getRules();
         resource = game.getResource();

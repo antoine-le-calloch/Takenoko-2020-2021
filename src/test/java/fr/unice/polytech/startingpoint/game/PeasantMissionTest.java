@@ -23,33 +23,31 @@ public class PeasantMissionTest {
     Board board;
     PeasantMission mission1;
     PeasantMission mission2;
-    Parcel parcel1;
 
     @BeforeEach
     void setUp(){
         mission1 = new PeasantMission(ColorType.RED, 2);
         mission2 = new PeasantMission(ColorType.BLUE, 2);
-        game = new Game(new BotType[]{BotType.RANDOM},4);
+        game = new Game();
         board = game.getBoard();
-        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
     }
 
     @Test
     void missionComplete() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
-        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
-        game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertEquals(2,mission1.checkMission(board, game.getGameData().getInventory()));
+        board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
+        game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
+        assertEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 
     @Test
     void wrongColor() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
-        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
-        game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertEquals(0,mission2.checkMission(board, game.getGameData().getInventory()));
+        board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
+        game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
+        assertEquals(0,mission2.checkMission(board, game.getPlayerData().getInventory()));
     }
 
     @Test
     void notEnoughBamboo(){
-        assertNotEquals(2,mission1.checkMission(board, game.getGameData().getInventory()));
+        assertNotEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 }

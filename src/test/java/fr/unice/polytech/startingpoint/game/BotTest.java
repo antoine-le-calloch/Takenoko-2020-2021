@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.ParcelBot;
 
-
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
 
@@ -25,34 +24,28 @@ class BotTest {
     private Parcel parcel2;
     private Parcel parcel3;
     private ParcelBot bot1;
-    private Canal canal;
-    Board board;
-    Rules rules;
-
-
+    private Board board;
+    private Rules rules;
 
     @BeforeEach
     public void setUp(){
-        game = new Game(new BotType[]{BotType.RANDOM},4);
-        parcel1 = new Parcel(ColorType.BLUE,ImprovementType.NOTHING);
-        parcel2 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
-        parcel3 = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);
-        bot1=new ParcelBot(game,game.getRules());
-        canal = new Canal();
+        game = new Game();
+        parcel1 = new Parcel(ColorType.BLUE);
+        parcel2 = new Parcel();
+        parcel3 = new Parcel();
+        bot1 = new ParcelBot(game.getGameInteraction(),game.getRules());
         board = game.getBoard();
-        rules=game.getRules();
+        rules = game.getRules();
     }
-
-
 
     @Test
     public void initializeNextCoordinatesNextToCentral(){
         List<Coordinate> nextTocentral = bot1.possibleCoordinatesParcel();
         assertEquals(6,nextTocentral.size());
-        Coordinate randomco=nextTocentral.get(0);
+        Coordinate randomco = nextTocentral.get(0);
         assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
         int[] tabco = randomco.getCoordinate();
-        int sumco=tabco[0]+tabco[1]+tabco[2];
+        int sumco = tabco[0] + tabco[1] + tabco[2];
         assertEquals(0,sumco);
     }
 
@@ -86,12 +79,6 @@ class BotTest {
         board.placeParcel(parcel2,new Coordinate(1,0,-1));
         board.placeParcel(parcel3,new Coordinate(2,-1,-1));
 
-/*
-        Exception exception1 = assertThrows(BadPlaceCanalException.class, () ->
-        { board.placeCanal(canal,new Coordinate(0,0,0),new Coordinate(1,-1,0));});
-
-        assertEquals("[0,0,0], [1,-1,0]",exception1.getMessage());*/
-
         List<Coordinate[]>possibleCanals2 = bot1.possibleCoordinatesCanal();
         assertEquals(possibleCanals2.size(),2);
     }
@@ -123,7 +110,7 @@ class BotTest {
     public void movePanda(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         bot1.movePanda(bot1.possibleCoordinatesPanda().get(0));
-        assertEquals(1, game.getGameData().getInventory().getBamboo(ColorType.BLUE));
+        assertEquals(1, game.getPlayerData().getInventory().getBamboo(ColorType.BLUE));
         assertEquals(0,parcel1.getNbBamboo());
     }
 
@@ -144,5 +131,4 @@ class BotTest {
         assertEquals(new Coordinate(1,0,-1),newPlaces.get(4));
         assertEquals(new Coordinate(-1,0,1),newPlaces.get(5));
     }
-
 }

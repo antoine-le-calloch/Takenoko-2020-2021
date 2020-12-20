@@ -2,12 +2,11 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,16 +15,14 @@ public class InventoryTest {
     private Inventory inventory2;
     private Board board;
     private Parcel parcel1;
-    private Resource resource;
     private ParcelMission mission;
 
     @BeforeEach
     public void setUp(){
         inventory1 = new Inventory();
         inventory2 = new Inventory();
-        resource = new Resource();
         board = new Board();
-        parcel1 = new Parcel(ColorType.BLUE, ImprovementType.NOTHING);
+        parcel1 = new Parcel(ColorType.BLUE);
         mission = new ParcelMission( ColorType.BLUE, 0, FormType.LINE);
     }
 
@@ -58,9 +55,7 @@ public class InventoryTest {
 
     @Test
     public void subInventoryMission(){
-        inventory1.subMissions(new ArrayList<>(Arrays.asList(mission)));
+        inventory1.subMissions(new ArrayList<>(Collections.singletonList(mission)));
         assertEquals(0,inventory1.getMissions().size());
     }
-
-
 }

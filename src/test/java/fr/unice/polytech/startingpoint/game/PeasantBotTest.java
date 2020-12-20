@@ -23,13 +23,12 @@ class PeasantBotTest {
 
     @BeforeEach
     void setUp(){
-        game=new Game(new BotType[] {BotType.PEASANT_BOT},3);
-        peasantBot = (PeasantBot) game.getGameData().getBot();
+        game = new Game(new BotType[]{BotType.PEASANT_BOT});
+        peasantBot = (PeasantBot) game.getPlayerData().getBot();
         board = game.getBoard();
         parcel1 = new Parcel(ColorType.RED, ImprovementType.NOTHING);
         coordinate1 = new Coordinate(1, -1, 0);
     }
-
 
     /**
      <h2><u>Strategy Move Peasant</u></h2>
@@ -49,8 +48,9 @@ class PeasantBotTest {
 
     @Test
     void coordWhereMovePeasant_1parcelWith2Bamboo() {
-        Parcel parcel2Bamboo = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING); //créée une parcel
-        parcel2Bamboo.addBamboo(); parcel2Bamboo.addBamboo(); //ajoute 2 bamboo
+        Parcel parcel2Bamboo = new Parcel(); //créée une parcel
+        parcel2Bamboo.addBamboo();
+        parcel2Bamboo.addBamboo(); //ajoute 2 bamboo
         board.placeParcel(parcel2Bamboo,coordinate1);// ;//ajoute la parcel avec 2 bamboo a la liste des parcels posée
         assertEquals(coordinate1,peasantBot.strategyMovePeasant(peasantBot.possibleCoordinatesPeasant()));
     }
@@ -62,7 +62,7 @@ class PeasantBotTest {
         List<Mission> deckVide = new ArrayList<>();
         Mockito.when(resource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
 
-        Parcel parcel1Bamboo = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING); //créée la parcel
+        Parcel parcel1Bamboo = new Parcel(); //créée la parcel
         parcel1Bamboo.addBamboo(); //ajoute 1 bamboo
         board.placeParcel(parcel1Bamboo, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
 
@@ -74,8 +74,8 @@ class PeasantBotTest {
 
     @Test
     void drawMission() {
-        assertEquals(0, game.getGameData().getPeasantMissions().size());//0 mission dans son inventaire
+        assertEquals(0, game.getGameInteraction().getInventoryPeasantMissions().size());//0 mission dans son inventaire
         peasantBot.botPlay();//fait jouer le paysan(il vas piocher)
-        assertEquals(1, game.getGameData().getPeasantMissions().size());//1 mission dans son inventaire
+        assertEquals(1, game.getGameInteraction().getInventoryPeasantMissions().size());//1 mission dans son inventaire
     }
 }

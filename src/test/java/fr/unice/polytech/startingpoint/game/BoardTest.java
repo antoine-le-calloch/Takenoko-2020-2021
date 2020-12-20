@@ -22,15 +22,15 @@ public class BoardTest {
 
     @BeforeEach
     public void initialize(){
-        game = new Game(new BotType[]{BotType.RANDOM},4);
+        game = new Game();
         board = game.getBoard();
     }
 
     @Test
     void normTesting(){
         assertEquals(2,Coordinate.getNorm(new Coordinate(1,-1,0),new Coordinate(1,0,-1)));
-        assertNotEquals(17,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(3,0,-3)));
-        assertEquals(0,Coordinate.getNorm(new Coordinate(0,0,0),new Coordinate(0,0,0)));
+        assertNotEquals(17,Coordinate.getNorm(new Coordinate(),new Coordinate(3,0,-3)));
+        assertEquals(0,Coordinate.getNorm(new Coordinate(),new Coordinate()));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class BoardTest {
         board.placeParcel(new Parcel(), new Coordinate(1, -1, 0));
         for (int i = 0; i < 10; i++) {
             board.moveCharacter(CharacterType.PEASANT,new Coordinate(1,-1,0));
-            board.moveCharacter(CharacterType.PEASANT,new Coordinate(0,0,0));
+            board.moveCharacter(CharacterType.PEASANT,new Coordinate());
         }
         assertEquals(4,board.getPlacedParcels().get(new Coordinate(1,-1,0)).getNbBamboo());
     }

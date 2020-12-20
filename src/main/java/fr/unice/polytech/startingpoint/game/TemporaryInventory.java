@@ -43,8 +43,8 @@ class TemporaryInventory {
             throw new NoSuchElementException("Player has not played correctly.");
     }
 
-    void reset(int stamina) {
-        this.stamina = stamina;
+    void reset() {
+        this.stamina = 2;
         parcel = null;
         actionTypeList.clear();
         parcelList.clear();

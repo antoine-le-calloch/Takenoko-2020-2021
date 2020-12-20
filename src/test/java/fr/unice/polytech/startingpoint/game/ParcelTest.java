@@ -59,7 +59,6 @@ class ParcelTest {
         assertEquals(parcel.getNbBamboo(),0);
     }
 
-
     /**
      * <h1><u>TEST IMPROVEMENT</u></h1>
      */

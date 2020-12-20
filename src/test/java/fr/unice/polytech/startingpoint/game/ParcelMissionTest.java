@@ -36,14 +36,14 @@ public class ParcelMissionTest {
         mission2 = new ParcelMission(ColorType.RED, 3, FormType.LINE);
         mission3 = new ParcelMission(ColorType.BLUE, 2, FormType.TRIANGLE);
         mission4 = new ParcelMission(ColorType.BLUE, 3, FormType.LINE);
-        game = new Game(new BotType[]{BotType.RANDOM},4);
+        game = new Game();
         board = game.getBoard();
         resource = game.getResource();
-        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel2 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel3 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel4 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        bot = new RandomBot(game, game.getRules());
+        parcel1 = new Parcel(ColorType.RED);
+        parcel2 = new Parcel(ColorType.RED);
+        parcel3 = new Parcel(ColorType.RED);
+        parcel4 = new Parcel(ColorType.RED);
+        bot = new RandomBot(game.getGameInteraction(), game.getRules());
     }
 
     @Test
@@ -53,20 +53,17 @@ public class ParcelMissionTest {
         assertEquals(mission1, mission1);
     }
 
-
     /**
-     * <h1><u>CHECK MISSIONPARCEL</u></h1>
+     * <h1><u>CHECK PARCEL MISSIONS</u></h1>
      */
-
 
     @Test void checkMissionTriangle(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertEquals(2, mission1.checkMission(board,game.getGameData().getInventory()));
+        assertEquals(2, mission1.checkMission(board,game.getPlayerData().getInventory()));
     }
-
 
     @Test void checkMissionLineOnBoard(){
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
@@ -74,7 +71,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertEquals(3,mission2.checkMission(board,game.getGameData().getInventory()));
+        assertEquals(3,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
 
     /**
@@ -82,7 +79,7 @@ public class ParcelMissionTest {
      */
 
     @Test void checkNoMissionTriangle(){
-        assertEquals(0, mission1.checkMission(board, game.getGameData().getInventory()));
+        assertEquals(0, mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 
     @Test void triangleOnBoardGoodColor(){ //checkTriangle
@@ -101,14 +98,12 @@ public class ParcelMissionTest {
         assertFalse(mission3.checkFormIrrigateWithColor(board, new Coordinate(1, 0, -1), new Coordinate(1, -1, 0)));
     }
 
-
     @Test void triangleNotIrrigated() { //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
     }
-
 
     @Test void wrongTriangle() { //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
@@ -117,10 +112,10 @@ public class ParcelMissionTest {
     }
 
     /**
-     * <h1><u>CAS LIGNE</u></h1>
+     * <h1><u>CAS LINE</u></h1>
      */
 
-    @Test void ligneOnBoardGoodColor(){ //check Line
+    @Test void lineOnBoardGoodColor(){ //check Line
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
@@ -129,7 +124,7 @@ public class ParcelMissionTest {
         assertTrue(mission1.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
     }
 
-    @Test void ligneOnBoardBadColor() { //check Line
+    @Test void lineOnBoardBadColor() { //check Line
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
@@ -138,7 +133,7 @@ public class ParcelMissionTest {
         assertFalse(mission3.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
     }
 
-    @Test void ligneNotIrrigated() { //checkLine
+    @Test void lineNotIrrigated() { //checkLine
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
@@ -155,9 +150,7 @@ public class ParcelMissionTest {
         assertFalse(mission1.checkFormIrrigateWithColor(board, new Coordinate(0, -1, 1), new Coordinate(0, 1, -1)));
     }
 
-
-    @Test void checkNoMissionLigne(){
-        assertEquals(0,mission2.checkMission(board,game.getGameData().getInventory()));
+    @Test void checkNoMissionLine(){
+        assertEquals(0,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
-
 }

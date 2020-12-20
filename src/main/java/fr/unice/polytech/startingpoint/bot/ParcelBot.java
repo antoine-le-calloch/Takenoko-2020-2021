@@ -43,8 +43,8 @@ public class ParcelBot extends Bot {
      * @param rules
      *            <b>Rules object.</b>
      */
-    public ParcelBot(Game game, Rules rules) {
-        super(game, rules);
+    public ParcelBot(PlayerInteraction playerInteraction, Rules rules) {
+        super(playerInteraction, rules);
     }
 
     /**
@@ -73,7 +73,7 @@ public class ParcelBot extends Bot {
      */
 
     public boolean isJudiciousDrawMission(int cptAction){
-        return game.getResourceSize(ResourceType.PARCEL_MISSION) > 0 && cptAction != 0;
+        return playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0 && cptAction != 0;
     }
 
     /**
@@ -82,12 +82,12 @@ public class ParcelBot extends Bot {
      */
     public boolean isJudiciousPutParcel(int cptAction){
         if(cptAction != NB_ACTION) {
-            for (ParcelMission mission : game.getInventoryParcelMission()) {
+            for (ParcelMission mission : playerInteraction.getInventoryParcelMissions()) {
                 if (bestCoordinatesForMission(mission).size() == 0)
                     return false;
             }
         }
-        return game.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && cptAction != 0;
+        return playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && cptAction != 0;
     }
 
     /**
@@ -95,7 +95,7 @@ public class ParcelBot extends Bot {
      * @see Game
      */
     public boolean isJudiciousPutCanal(int cptAction){
-        return game.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && cptAction != 0;
+        return playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && cptAction != 0;
     }
 
     /**
@@ -108,7 +108,7 @@ public class ParcelBot extends Bot {
     //Pour chaque mission, pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     public void putParcel() {
         try {
-            List<ParcelInformation> parcelInformationList = game.drawParcels();
+            List<ParcelInformation> parcelInformationList = playerInteraction.drawParcels();
             List<Coordinate> bestCoords = new ArrayList<>();
             ParcelInformation bestColor = new ParcelInformation();
             int minTurn = NB_TURN_MAX;
@@ -145,7 +145,7 @@ public class ParcelBot extends Bot {
         List<Coordinate> bestCoords = null;
         int minTurnToEndOneMission = NB_TURN_MAX;
 
-        for (ParcelMission mission : game.getInventoryParcelMission()) {
+        for (ParcelMission mission : playerInteraction.getInventoryParcelMissions()) {
             if (colorAvailable.equals(mission.getColor()) && bestCoordinatesForMission(mission).size() < minTurnToEndOneMission){
                 bestCoords = bestCoordinatesForMission(mission);
                 minTurnToEndOneMission = bestCoords.size();
@@ -201,13 +201,13 @@ public class ParcelBot extends Bot {
             return null;
 
         for (Coordinate coord : form) {
-            if(coord.isCentral() || (game.isPlacedParcel(coord) && !game.getPlacedParcelsColor(coord).equals(mission.getColor())))
+            if(coord.isCentral() || (playerInteraction.isPlacedParcel(coord) && !playerInteraction.getPlacedParcelsColor(coord).equals(mission.getColor())))
                 return null;
 
-            if(!game.isPlacedParcel(coord))
+            if(!playerInteraction.isPlacedParcel(coord))
                 coordNeedeToDoMission.add(coord);
 
-            if(!rules.isPlayableParcel(coord) && !game.isPlacedParcel(coord) && coordAroundUse(coord) != null){
+            if(!rules.isPlayableParcel(coord) && !playerInteraction.isPlacedParcel(coord) && coordAroundUse(coord) != null){
                 for (Coordinate laidCoord : Coordinate.getInCommonAroundCoordinates(coord,coordAroundUse(coord))) {
                     if(rules.isPlayableParcel(laidCoord)) {
                         coordNeedeToDoMission.add(laidCoord);
@@ -215,7 +215,7 @@ public class ParcelBot extends Bot {
                     }
                 }
             }
-            else if(!rules.isPlayableParcel(coord) && !game.isPlacedParcel(coord))
+            else if(!rules.isPlayableParcel(coord) && !playerInteraction.isPlacedParcel(coord))
                 coordNeedeToDoMission.add(Coordinate.getInCommonAroundCoordinates(coord,form.get(1)).get(0));
         }
         return new ArrayList<>(coordNeedeToDoMission);
@@ -223,7 +223,7 @@ public class ParcelBot extends Bot {
 
     public Coordinate coordAroundUse(Coordinate coord){
         for (Coordinate coordAround : coord.coordinatesAround()) {
-            if(game.isPlacedParcel(coordAround))
+            if(playerInteraction.isPlacedParcel(coordAround))
                 return coordAround;
         }
         return null;
@@ -248,12 +248,12 @@ public class ParcelBot extends Bot {
      */
     public boolean putCanal() {
         try {
-            game.drawCanal();
+            playerInteraction.drawCanal();
             List<Coordinate> fullForm = findFullFormInMission();
             Coordinate[] bestCoordinatesCanal = null;
 
             for (Coordinate coordinateForm : fullForm) {
-                if (!game.isIrrigatedParcel(coordinateForm))
+                if (!playerInteraction.isIrrigatedParcel(coordinateForm))
                     bestCoordinatesCanal = getBestCanal(coordinateForm);
             }
 
@@ -271,7 +271,7 @@ public class ParcelBot extends Bot {
     }
 
     public List<Coordinate> findFullFormInMission() {
-        for (ParcelMission mission : game.getInventoryParcelMission()) {
+        for (ParcelMission mission : playerInteraction.getInventoryParcelMissions()) {
             for (Coordinate coordinate : allPlaces()) {
                 if(coordNeedeToDoMission(coordinate,mission) != null && coordNeedeToDoMission(coordinate,mission).size() == 0) {
                     return setForm(coordinate, mission.getFormType());

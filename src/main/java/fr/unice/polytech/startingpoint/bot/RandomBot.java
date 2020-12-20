@@ -1,9 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.Coordinate;
-import fr.unice.polytech.startingpoint.game.Game;
-import fr.unice.polytech.startingpoint.game.ParcelInformation;
-import fr.unice.polytech.startingpoint.game.Rules;
+import fr.unice.polytech.startingpoint.game.*;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
@@ -41,8 +38,8 @@ public class RandomBot extends Bot {
      * @param rules
      *            <b>Rules object.</b>
      */
-    public RandomBot(Game game, Rules rules) {
-        super(game, rules);
+    public RandomBot(PlayerInteraction playerInteraction, Rules rules) {
+        super(playerInteraction, rules);
         random = new Random();
         random2 = new Random();
     }
@@ -64,18 +61,18 @@ public class RandomBot extends Bot {
     public void botPlay(){
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && game.getResourceSize(ResourceType.ALL_MISSION) > 0) {// pioche mission
+        if (randAction == 0 && playerInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0) {// pioche mission
             int randMission = random2.nextInt(3);
 
-            if (randMission == 0 && game.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
+            if (randMission == 0 && playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
                 drawMission(MissionType.PARCEL);
-            if (randMission == 1 && game.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+            if (randMission == 1 && playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
                 drawMission(MissionType.PANDA);
-            if (randMission == 2 && game.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
+            if (randMission == 2 && playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
                 drawMission(MissionType.PEASANT);
         }
 
-        else if (randAction == 1 && game.getResourceSize(ResourceType.CANAL) > 0) {  // place canal
+        else if (randAction == 1 && playerInteraction.getResourceSize(ResourceType.CANAL) > 0) {  // place canal
             if (possibleCoordinatesCanal().size() > 0) {
                 List<Coordinate[]> list = possibleCoordinatesCanal();
                 Collections.shuffle(list);
@@ -84,7 +81,7 @@ public class RandomBot extends Bot {
             }
         }
 
-        else if (randAction == 2 && game.getResourceSize(ResourceType.PARCEL) > 0){ // place parcel
+        else if (randAction == 2 && playerInteraction.getResourceSize(ResourceType.PARCEL) > 0){ // place parcel
             List<ParcelInformation> parcelList = drawParcel();
             Collections.shuffle(parcelList);
             selectParcel(parcelList.get(0));
