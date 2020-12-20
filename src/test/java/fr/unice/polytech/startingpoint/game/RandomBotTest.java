@@ -1,9 +1,6 @@
-
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.RandomBot;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
-import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
@@ -31,20 +28,16 @@ public class RandomBotTest {
     Game game;
     RandomBot rdmBot1;
     Board board;
-    Parcel parcel1;
     Resource resource;
     Rules rules;
-    PlayerData playerData;
 
 
     @BeforeEach
     public void setUp() {
 
-        game = new Game(new BotType[]{BotType.RANDOM}, 3);
+        game = new Game();
         rules = game.getRules();
-        playerData = game.getPlayerData();
         board = game.getBoard();
-        parcel1 = new Parcel(ColorType.NO_COLOR, ImprovementType.NOTHING);
         rdmBot1 = (RandomBot) game.getPlayerData().getBot();
         resource = game.getResource();
     }
@@ -57,11 +50,11 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(0);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand, mockRand2);//set les Random mock
 
-        assertEquals(0, playerData.getMissions().size());
+        assertEquals(0, game.getGameInteraction().getInventoryMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1, playerData.getMissions().size());
+        assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
 
-        assertEquals(MissionType.PARCEL, playerData.getMissions().get(0).missionType);
+        assertEquals(MissionType.PARCEL, game.getGameInteraction().getInventoryMissions().get(0).missionType);
     }
 
 
@@ -73,10 +66,10 @@ public class RandomBotTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(1);//donne une val au random pour choisir la mission
         rdmBot1.setRand(mockRand, mockRand2);//set les Random mock
 
-        assertEquals(0, playerData.getMissions().size());
+        assertEquals(0, game.getGameInteraction().getInventoryMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1, playerData.getMissions().size());
-        assertEquals(MissionType.PANDA, playerData.getMissions().get(0).missionType);
+        assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(MissionType.PANDA, game.getGameInteraction().getInventoryMissions().get(0).missionType);
     }
 
     @Test
@@ -88,14 +81,14 @@ public class RandomBotTest {
         rdmBot1.setRand(mockRand, mockRand2);//set les Random mock
 
 
-        assertEquals(0, playerData.getMissions().size());
+        assertEquals(0, game.getGameInteraction().getInventoryMissions().size());
         rdmBot1.botPlay();
-        assertEquals(1, playerData.getMissions().size());
-        assertEquals(MissionType.PEASANT, playerData.getMissions().get(0).missionType);
+        assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(MissionType.PEASANT, game.getGameInteraction().getInventoryMissions().get(0).missionType);
     }
 
     @Test
-    public void putCanal() throws BadPlaceParcelException {
+    public void putCanal(){
         Random mockRand = mock(Random.class);
         board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(1, -1, 0));//ajoute une pièce ou mettre le canal
         board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(0, -1, 1));//ajoute une pièce ou mettre le canal
@@ -118,15 +111,12 @@ public class RandomBotTest {
         assertEquals(2,board.getPlacedParcels().size());//2 parcels (central + la parcel posée)
     }
 
-
-
-
     @Test
-    public void movePanda() throws BadPlaceParcelException {
+    public void movePanda(){
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(3);//donne une val au random pour piocher une mission
         Coordinate central = new Coordinate(0,0,0);
-        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(1,-1,0));//ajoute une pièce ou mettre le panda
+        board.placeParcel(new Parcel(), new Coordinate(1,-1,0));//ajoute une pièce ou mettre le panda
         rdmBot1.setRand(mockRand,new Random());//set les Random mock
 
         assertEquals(central,board.getCharacter(CharacterType.PANDA).getCoordinate());//Le Panda est au centre
@@ -135,18 +125,17 @@ public class RandomBotTest {
     }
 
     @Test
-    public void movePaesant() throws BadPlaceParcelException {
+    public void movePeasant(){
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(4);//donne une val au random pour piocher une mission
         Coordinate central = new Coordinate(0,0,0);
-        Parcel parcel1Bamboo = new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING);//parcel qui aura plus d'un bamboo pour recevoir le paysan
+        Parcel parcel1Bamboo = new Parcel();//parcel qui aura plus d'un bamboo pour recevoir le paysan
         parcel1Bamboo.addBamboo();//ajout d'un bamboo
-        board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(1,-1,0));//ajoute une pièce ou mettre le paysan
+        board.placeParcel(new Parcel(), new Coordinate(1,-1,0));//ajoute une pièce ou mettre le paysan
         rdmBot1.setRand(mockRand,new Random());//set les Random mock
 
         assertEquals(central,board.getCharacter(CharacterType.PEASANT).getCoordinate());//Le Paesant est au centre
         rdmBot1.botPlay();
         assertNotEquals(central,board.getCharacter(CharacterType.PEASANT).getCoordinate());//Le Paesant n'est plus au centre
     }
-
 }

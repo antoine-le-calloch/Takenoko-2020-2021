@@ -10,28 +10,28 @@ package fr.unice.polytech.startingpoint.type;
  */
 
 public enum BotType {
-    RANDOM{
+    RANDOM {
         @Override
         public String toString() {
             return "Random Bot";
         }
     }
     ,
-    PARCELBOT{
+    PARCEL_BOT {
         @Override
         public String toString() {
             return "Parcel Bot";
         }
     }
     ,
-    PANDABOT{
+    PANDA_BOT {
         @Override
         public String toString() {
             return "Panda Bot";
         }
     }
     ,
-    PEASANTBOT{
+    PEASANT_BOT {
         @Override
         public String toString() {
             return "Peasant Bot";

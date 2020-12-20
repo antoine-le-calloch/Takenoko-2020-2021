@@ -75,7 +75,6 @@ public class CoordinateTest {
         assertFalse(new Coordinate(-2,-1,3).isOnTheSameLine(new Coordinate(2,1,-3)));
     }
 
-
     @Test
     public void goodUnitVector(){
         assertEquals(new Coordinate(1,-1,0),Coordinate.getUnitVector(new Coordinate(0,0,0),new Coordinate(5,-5,0)));

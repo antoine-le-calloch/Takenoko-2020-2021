@@ -10,14 +10,14 @@ package fr.unice.polytech.startingpoint.type;
  */
 
 public enum CharacterType {
-    PEASANT{
+    PEASANT {
         @Override
         public String toString() {
             return "Peasant";
         }
     }
     ,
-    PANDA{
+    PANDA {
         @Override
         public String toString() {
             return "Panda";

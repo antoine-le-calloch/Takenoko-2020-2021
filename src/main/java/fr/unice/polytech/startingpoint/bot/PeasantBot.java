@@ -34,14 +34,14 @@ public class PeasantBot extends Bot {
      * @param rules
      *            <b>Rules object.</b>
      */
-    public PeasantBot(Game game, Rules rules) {
-        super(game, rules);
+    public PeasantBot(PlayerInteraction playerInteraction, Rules rules) {
+        super(playerInteraction, rules);
     }
 
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        if (game.getInventoryMission().size() < 5 && game.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
+        if (playerInteraction.getInventoryMissions().size() < 5 && playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
             drawMission(MissionType.PEASANT);
 
         if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
@@ -55,7 +55,7 @@ public class PeasantBot extends Bot {
      */
     public Coordinate strategyMovePeasant(List<Coordinate> coordinateList) {
         for (Coordinate coordinate : coordinateList) {
-            if (game.getPlacedParcelsNbBamboo(coordinate) > 1) {
+            if (playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 1) {
                 return coordinate;
             }
         }

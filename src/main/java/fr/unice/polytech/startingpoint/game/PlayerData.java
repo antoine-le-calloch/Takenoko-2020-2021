@@ -1,141 +1,125 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.bot.*;
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.bot.Bot;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.ColorType;
 
-import java.util.*;
+import java.util.List;
 
-/**
- * Classe stockant les données des joueurs au cours d'une partie
- * @author Manuel Enzo
- * @author Naud Eric
- * @author Madern Loic
- * @author Le Calloch Antoine
- * @version 2020.12.04
- */
+public class PlayerData {
+    private final Bot bot;
+    private final Inventory inventory;
+    private final TemporaryInventory temporaryInventory;
+    private int score;
+    private int missionsDone;
 
-class PlayerData {
-    private final Game game;
-    private final Map<Bot,Inventory> botData;// Bot - int[ nbMission , score]
-    private int numBot;
-    private static int NB_MISSION;
-
-    PlayerData(BotType[] botTypes, Game game, int nbMission) {
-        this.game = game;
-        botData = new LinkedHashMap<>();
-        NB_MISSION = nbMission;
-        numBot = 0;
-        initializeBot(botTypes, game);
+    public PlayerData(Bot bot, Inventory inventory,TemporaryInventory temporaryInventory){
+        this.bot = bot;
+        this.inventory = inventory;
+        this.temporaryInventory = temporaryInventory;
+        score = 0;
+        missionsDone = 0;
     }
 
-    //Initialise les robots en fonction de leur nom associé passé en paramètre
-    private void initializeBot(BotType[] botTypes, Game game){
-        for (BotType botType : botTypes) {
-            switch (botType) {
-                case RANDOM:
-                    botData.put(new RandomBot(game, game.getRules()), new Inventory());
-                    break;
-                case PARCELBOT:
-                    botData.put(new ParcelBot(game, game.getRules()), new Inventory());
-                    break;
-                case PEASANTBOT:
-                    botData.put(new PeasantBot(game, game.getRules()), new Inventory());
-                    break;
-                case PANDABOT:
-                    botData.put(new PandaBot(game, game.getRules()), new Inventory());
-                    break;
-            }
-        }
+    boolean add(ActionType actionType) {
+        return temporaryInventory.add(actionType);
     }
 
-    void nextBot() {
-        numBot = (numBot+1) % botData.size();
+    void remove(ActionType actionType) {
+        temporaryInventory.remove(actionType);
     }
 
-    //Permet de verifier si un bot à fait suffisament de mission pour que la partie s'arrête
-    boolean isContinue(){
-        for (int missionDoneBy1P : getMissionsDone()) {
-            if (missionDoneBy1P >= NB_MISSION)
-                return false;
-        }
-        return true;
+    void looseStamina() throws OutOfResourcesException {
+        temporaryInventory.looseStamina();
     }
 
-    /*Si une mission qu'un bot a est faites, sa mission est supprimée de son deck,
-    il gagne les points de cette mission et on ajoute 1 à son compteur de mission faites*/
-    void missionDone(){
-        List<Mission> toRemove = new ArrayList<>();
-        int count;  // PB SI LE BOT A PAS DE MISSION
-        for(Mission mission : getMissions()){
-            if( (count = mission.checkMission(game.getBoard(),getInventory())) != 0){
-                completedMission(count);
-                toRemove.add(mission);
-            }
-        }
-        subMissions(toRemove);
+    void saveParcels(List<Parcel> parcelList) {
+        temporaryInventory.saveParcels(parcelList);
     }
 
-    void completedMission( int count) {
-        getInventory().addScore(count);
+    void saveParcel(Parcel parcel) {
+        temporaryInventory.saveParcel(parcel);
     }
 
-    void completedMission(int numBot, int count) {
-        getInventory().addScore(count);
+    Parcel getParcel(){
+        return temporaryInventory.getParcel();
     }
 
-    void addMission(Mission mission) {
-        getInventory().addMission(mission);
+    List<Parcel> getParcelsSaved() {
+        return temporaryInventory.getParcelsSaved();
+    }
+
+    void hasPlayedCorrectly() {
+        temporaryInventory.hasPlayedCorrectly();
+    }
+
+    boolean contains(ActionType actionType) {
+        return temporaryInventory.contains(actionType);
+    }
+
+    void resetTemporaryInventory() {
+        temporaryInventory.reset();
     }
 
     void addCanal(Canal canal) {
-        getInventory().addCanal(canal);
+        inventory.addCanal(canal);
+    }
+
+    Canal pickCanal() throws OutOfResourcesException {
+        return inventory.pickCanal();
     }
 
     void addBamboo(ColorType colorType){
-        getInventory().addBamboo(colorType);
+        inventory.addBamboo(colorType);
+    }
+
+    void addMission(Mission mission){
+        inventory.addMission(mission);
     }
 
     void subMissions(List<Mission> toRemove) {
-        getInventory().subMissions(toRemove);
+        inventory.subMissions(toRemove);
     }
 
-    Bot getBot() {
-        return new ArrayList<>(botData.keySet()).get(numBot);
+    void addScore(int score){
+        this.score += score;
+        missionsDone ++;
     }
 
-    Inventory getInventory() {
-        return botData.get(getBot());
+    int getScore() {
+        return score;
     }
 
-    List<Integer> getMissionsDone() {
-        List<Integer> missionsDone = new ArrayList<>();
-        for (Inventory inventory : botData.values()){
-            missionsDone.add(inventory.getMissionsDone());
-        }
+    int getMissionsDone() {
         return missionsDone;
     }
 
-    public List<Integer> getScores() {
-        List<Integer> Score = new ArrayList<>();
-        for (Inventory inventory : botData.values()) {
-            Score.add(inventory.getScore());
-        }
-        return Score;
+    Bot getBot() {
+        return bot;
     }
 
-    List<ParcelMission> getParcelMissions(){
-        return getInventory().getParcelMissions();
+    Inventory getInventory() {
+        return inventory;
     }
 
-    List<PandaMission> getPandaMissions(){
-        return getInventory().getPandaMissions();
+    TemporaryInventory getTemporaryInventory() {
+        return temporaryInventory;
     }
 
-    List<PeasantMission> getPeasantMissions(){
-        return getInventory().getPeasantMissions();
+    List<ParcelMission> getParcelMissions() {
+        return inventory.getParcelMissions();
+    }
+
+    List<PandaMission> getPandaMissions() {
+        return inventory.getPandaMissions();
+    }
+
+    List<PeasantMission> getPeasantMissions() {
+        return inventory.getPeasantMissions();
     }
 
     List<Mission> getMissions() {
-        return getInventory().getMissions();
+        return inventory.getMissions();
     }
 }

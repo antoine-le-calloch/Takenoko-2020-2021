@@ -1,8 +1,14 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.type.*;
 
 import org.junit.jupiter.api.*;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,59 +23,240 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class GameTest {
-    Game game1;
-    Game game2;
-    Game game3;
-    Game game4;
-    Game game5;
+    Game game;
+    PlayerInteraction playerInteraction;
 
-    @BeforeEach public void Setup() {
-        game1 = new Game(new BotType[]{BotType.RANDOM, BotType.PARCELBOT},4);
-        game2 = new Game(new BotType[]{BotType.PARCELBOT, BotType.PARCELBOT},4);
-        game3 = new Game(new BotType[]{BotType.PARCELBOT},4);
-        game4 = new Game(new BotType[]{BotType.RANDOM, BotType.PARCELBOT, BotType.RANDOM},4);
-        game5 = new Game(new BotType[]{},4);
-
+    @BeforeEach
+    void Setup() {
+        game = new Game();
+        playerInteraction = game.getGameInteraction();
     }
 
-    @Test public void numberPlayers(){
-        assertNotEquals(game1,game2);
-        assertNotEquals(game1,game3);
-        assertNotEquals(game1,game4);
-        assertNotEquals(game1,game5);
-        assertNotEquals(game1,null);
+    @Test
+    void botDrawCanalLessStaminaAndAddCanalToInventory() throws OutOfResourcesException, RulesViolationException {
+        assertEquals(0,game.getPlayerData().getInventory().getInventoryCanal().size());
+        assertEquals(27, playerInteraction.getResourceSize(ResourceType.CANAL));
+        assertEquals(2,game.getTemporaryInventory().getStamina());
+
+        playerInteraction.drawCanal();
+
+        assertEquals(1,game.getPlayerData().getInventory().getInventoryCanal().size());
+        assertEquals(26, playerInteraction.getResourceSize(ResourceType.CANAL));
+        assertEquals(1,game.getTemporaryInventory().getStamina());
     }
 
-    @Test public void bots(){
-        assertEquals( 2,game1.getPlayerData().getScores().size() );
-        assertEquals( 0,game5.getPlayerData().getScores().size() );
-        assertNotEquals( 2,game4.getPlayerData().getScores().size());
-        assertNotEquals(game5.getPlayerData().getScores(), null);
-    }
-
-    @Test public void resource(){
-        assertEquals(game1.getResource(),game1.getResource());
-        assertNotEquals(game1.getResource(),game2.getResource());
-        assertNotEquals(game1.getResource(),null);
-    }
-
-    //vérifie que le partie se finie au bout de 4 missions faites par un bot
-    @Test public void isFinished(){
-
-        assertTrue(game1.getPlayerData().isContinue());
-        for(int i=0; i<4;i++) {
-            game1.getPlayerData().completedMission(0, 1);
+    @Test
+    void botDrawTooMuchCanal() throws OutOfResourcesException {
+        for (int i = 0; i < 27; i++) {
+            game.getResource().drawCanal();
         }
-        assertFalse(game1.getPlayerData().isContinue());
+        assertThrows(OutOfResourcesException.class,() -> playerInteraction.drawCanal());
     }
 
-    @Test public void missionsDone(){
-        assertEquals(0,game1.getPlayerData().getScores().get(0));
-        assertEquals(0,game1.getPlayerData().getMissions().size());
-        game1.getPlayerData().addMission(new PandaMission(ColorType.RED,3));
-        game1.getPlayerData().addBamboo(ColorType.RED);
-        game1.getPlayerData().missionDone();
-        assertTrue(game1.getPlayerData().getScores().get(0)>game1.getPlayerData().getScores().get(1));
-        assertEquals(0,game1.getPlayerData().getMissions().size());
+    @Test
+    void botDrawTwoCanalInTheSameRound() throws OutOfResourcesException, RulesViolationException {
+        playerInteraction.drawCanal();
+        assertThrows(RulesViolationException.class,() -> playerInteraction.drawCanal());
+    }
+
+    @Test
+    void botDrawParcelMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, RulesViolationException {
+        assertEquals(0, playerInteraction.getInventoryMissions().size());
+        assertEquals(0, playerInteraction.getInventoryParcelMissions().size());
+        assertEquals(15, playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION));
+        assertEquals(2,game.getTemporaryInventory().getStamina());
+
+        playerInteraction.drawMission(MissionType.PARCEL);
+
+        assertEquals(1, playerInteraction.getInventoryMissions().size());
+        assertEquals(1, playerInteraction.getInventoryParcelMissions().size());
+        assertEquals(14, playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION));
+        assertEquals(1,game.getTemporaryInventory().getStamina());
+    }
+
+    @Test
+    void botDrawTooMuchParcelMission() throws OutOfResourcesException {
+        for (int i = 0; i < 15; i++) {
+            game.getResource().drawMission(MissionType.PARCEL);
+        }
+        assertThrows(OutOfResourcesException.class,() -> playerInteraction.drawMission(MissionType.PARCEL));
+    }
+
+    @Test
+    void botDrawTwoParcelMissionInTheSameRound() throws OutOfResourcesException, RulesViolationException {
+        playerInteraction.drawMission(MissionType.PARCEL);
+        assertThrows(RulesViolationException.class,() -> playerInteraction.drawMission(MissionType.PARCEL));
+    }
+
+    @Test
+    void botDrawPandaMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, RulesViolationException {
+        assertEquals(0, playerInteraction.getInventoryMissions().size());
+        assertEquals(0, playerInteraction.getInventoryPandaMissions().size());
+        assertEquals(15, playerInteraction.getResourceSize(ResourceType.PANDA_MISSION));
+        assertEquals(2,game.getTemporaryInventory().getStamina());
+
+        playerInteraction.drawMission(MissionType.PANDA);
+
+        assertEquals(1, playerInteraction.getInventoryMissions().size());
+        assertEquals(1, playerInteraction.getInventoryPandaMissions().size());
+        assertEquals(14, playerInteraction.getResourceSize(ResourceType.PANDA_MISSION));
+        assertEquals(1,game.getTemporaryInventory().getStamina());
+    }
+
+    @Test
+    void botDrawTooMuchPandaMission() throws OutOfResourcesException {
+        for (int i = 0; i < 15; i++) {
+            game.getResource().drawMission(MissionType.PANDA);
+        }
+        assertThrows(OutOfResourcesException.class,() -> playerInteraction.drawMission(MissionType.PANDA));
+    }
+
+    @Test
+    void botDrawTwoPandaMissionInTheSameRound() throws OutOfResourcesException, RulesViolationException {
+        playerInteraction.drawMission(MissionType.PANDA);
+        assertThrows(RulesViolationException.class,() -> playerInteraction.drawMission(MissionType.PANDA));
+    }
+
+    @Test
+    void botDrawPeasantMissionLessStaminaAndAddMissionToInventory() throws OutOfResourcesException, RulesViolationException {
+        assertEquals(0, playerInteraction.getInventoryMissions().size());
+        assertEquals(0, playerInteraction.getInventoryPeasantMissions().size());
+        assertEquals(15, playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION));
+        assertEquals(2,game.getTemporaryInventory().getStamina());
+
+        playerInteraction.drawMission(MissionType.PEASANT);
+
+        assertEquals(1, playerInteraction.getInventoryMissions().size());
+        assertEquals(1, playerInteraction.getInventoryPeasantMissions().size());
+        assertEquals(14, playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION));
+        assertEquals(1,game.getTemporaryInventory().getStamina());
+    }
+
+    @Test
+    void botDrawTooMuchPeasantMission() throws OutOfResourcesException {
+        for (int i = 0; i < 15; i++) {
+            game.getResource().drawMission(MissionType.PEASANT);
+        }
+        assertThrows(OutOfResourcesException.class,() -> playerInteraction.drawMission(MissionType.PEASANT));
+    }
+
+    @Test
+    void botDrawTwoPeasantMissionInTheSameRound() throws OutOfResourcesException, RulesViolationException {
+        playerInteraction.drawMission(MissionType.PEASANT);
+        assertThrows(RulesViolationException.class,() -> playerInteraction.drawMission(MissionType.PEASANT));
+    }
+
+    @Test
+    void botDrawAndPlaceParcelLessStaminaAndAddParcelToTemporaryInventoryAndBoard() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+        assertDoesNotThrow(() -> game.getTemporaryInventory().hasPlayedCorrectly());
+
+        assertEquals(0,game.getTemporaryInventory().getParcelsSaved().size());
+        assertEquals(32, playerInteraction.getResourceSize(ResourceType.PARCEL));
+        assertEquals(2,game.getTemporaryInventory().getStamina());
+        assertEquals(1, playerInteraction.getPlacedCoordinates().size());
+
+        List<ParcelInformation> parcels = playerInteraction.drawParcels();
+
+        assertThrows(NoSuchElementException.class,() -> game.getTemporaryInventory().hasPlayedCorrectly());
+
+        assertEquals(3,game.getTemporaryInventory().getParcelsSaved().size());
+
+        playerInteraction.selectParcel(parcels.get(0));
+
+        assertThrows(NoSuchElementException.class,() -> game.getTemporaryInventory().hasPlayedCorrectly());
+
+        assertEquals(31, playerInteraction.getResourceSize(ResourceType.PARCEL));
+        assertEquals(1,game.getTemporaryInventory().getStamina());
+
+        playerInteraction.placeParcel(new Coordinate(0,-1,1));
+
+        assertDoesNotThrow(() -> game.getTemporaryInventory().hasPlayedCorrectly());
+
+        assertEquals(2, playerInteraction.getPlacedCoordinates().size());
+    }
+
+    @Test
+    void botDrawTooMuchParcel() throws OutOfResourcesException {
+        for (int i = 0; i < 32; i++) {
+            game.getResource().selectParcel(game.getResource().drawParcels().get(0));
+        }
+        assertThrows(OutOfResourcesException.class,() -> playerInteraction.drawParcels());
+    }
+
+    @Test
+    void botDrawTwoTimesInTheSameTurn() throws OutOfResourcesException, RulesViolationException {
+        playerInteraction.drawParcels();
+        assertThrows(RulesViolationException.class,() -> playerInteraction.drawParcels());
+    }
+
+    @Test
+    void botSelectTwoTimesInTheSameTurn() throws OutOfResourcesException, RulesViolationException {
+        List<ParcelInformation> drawParcels =  playerInteraction.drawParcels();
+        playerInteraction.selectParcel(drawParcels.get(0));
+        assertThrows(RulesViolationException.class,() -> playerInteraction.selectParcel(drawParcels.get(1)));
+    }
+
+    @Test
+    void botPlaceTwoTimesInTheSameTurn() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+        List<ParcelInformation> drawParcels =  playerInteraction.drawParcels();
+        playerInteraction.selectParcel(drawParcels.get(0));
+        playerInteraction.placeParcel(new Coordinate(0,-1,1));
+        assertThrows(RulesViolationException.class,() -> playerInteraction.placeParcel(new Coordinate(0,1,-1)));
+    }
+
+    @Test
+    void botPlaceWrongParcelAndThenGoodAndRetryToPlace() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+        playerInteraction.selectParcel(playerInteraction.drawParcels().get(0));
+        assertThrows(BadCoordinateException.class,() -> playerInteraction.placeParcel(new Coordinate(0,-2,2)));
+        playerInteraction.placeParcel(new Coordinate(0,-1,1));
+        assertThrows(RulesViolationException.class, () -> playerInteraction.placeParcel(new Coordinate(1,-1,0)));
+    }
+
+    @Test
+    void botPlaceCanal() throws OutOfResourcesException, RulesViolationException {
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        playerInteraction.drawCanal();
+        assertDoesNotThrow(() -> playerInteraction.placeCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0)));
+    }
+
+    @Test
+    void botPlaceWrongCanalAndThenGoodAndRetryToPlace() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
+        playerInteraction.drawCanal();
+        game.getPlayerData().resetTemporaryInventory();
+        assertThrows(BadCoordinateException.class, () -> playerInteraction.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));
+        playerInteraction.placeCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0));
+        assertThrows(RulesViolationException.class, () -> playerInteraction.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));
+    }
+
+    @Test
+    void botMovePanda(){
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        assertDoesNotThrow(() -> playerInteraction.moveCharacter(CharacterType.PANDA, new Coordinate(1,-1,0)));
+    }
+
+    @Test
+    void botMoveWrongPandaAndThenGoodAndRetryToMove(){
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
+        assertThrows(BadCoordinateException.class, () -> playerInteraction.moveCharacter(CharacterType.PANDA,new Coordinate(1,-1,0)));
+        assertDoesNotThrow(() -> playerInteraction.moveCharacter(CharacterType.PANDA,new Coordinate(0,-1,1)));
+        assertThrows(RulesViolationException.class, () -> playerInteraction.moveCharacter(CharacterType.PANDA,new Coordinate()));
+    }
+
+    @Test
+    void botMovePeasant(){
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        assertDoesNotThrow(() -> playerInteraction.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0)));
+    }
+
+    @Test
+    void botMoveWrongPeasantAndThenGoodAndRetryToMove(){
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(0,-1,1));
+        assertThrows(BadCoordinateException.class, () -> playerInteraction.moveCharacter(CharacterType.PEASANT,new Coordinate(1,-1,0)));
+        assertDoesNotThrow(() -> playerInteraction.moveCharacter(CharacterType.PEASANT,new Coordinate(0,-1,1)));
+        assertThrows(RulesViolationException.class, () -> playerInteraction.moveCharacter(CharacterType.PEASANT,new Coordinate()));
     }
 }

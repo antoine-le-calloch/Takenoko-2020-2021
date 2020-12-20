@@ -11,21 +11,21 @@ package fr.unice.polytech.startingpoint.type;
 
 
 public enum MissionType{
-    PARCEL{
+    PARCEL {
         @Override
         public String toString() {
             return "Parcel";
         }
     }
     ,
-    PANDA{
+    PANDA {
         @Override
         public String toString() {
             return "Panda";
         }
     }
     ,
-    PEASANT{
+    PEASANT {
         @Override
         public String toString() {
             return "Peasant";

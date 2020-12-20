@@ -1,28 +1,28 @@
 package fr.unice.polytech.startingpoint.type;
 
 public enum ImprovementType {
-    ENCLOSURE{
+    ENCLOSURE {
         @Override
         public String toString() {
             return "Enclosure";
         }
     }
     ,
-    FERTILIZER{
+    FERTILIZER {
         @Override
         public String toString() {
             return "Fertilizer";
         }
     }
     ,
-    WATERSHED{
+    WATERSHED {
         @Override
         public String toString() {
             return "Watershed";
         }
     }
     ,
-    NOTHING{
+    NOTHING {
         @Override
         public String toString() {
             return "Nothing";

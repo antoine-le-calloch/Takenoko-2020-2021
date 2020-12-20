@@ -1,9 +1,8 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
+import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
-import fr.unice.polytech.startingpoint.exception.BadMoveCharacterException;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import org.junit.jupiter.api.*;
 
@@ -24,7 +23,6 @@ public class PeasantMissionTest {
     Board board;
     PeasantMission mission1;
     PeasantMission mission2;
-    Parcel parcel1;
 
     @BeforeEach
     void setUp(){
@@ -32,20 +30,19 @@ public class PeasantMissionTest {
         mission2 = new PeasantMission(ColorType.BLUE, 2);
         game = new Game();
         board = game.getBoard();
-        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
     }
 
     @Test
-    void missionComplete() throws BadMoveCharacterException, OutOfResourcesException {
-        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
-        game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
+    void missionComplete() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+        board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
+        game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
         assertEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 
     @Test
-    void wrongColor() throws BadMoveCharacterException, OutOfResourcesException {
-        board.placeParcel(new Parcel(ColorType.RED,ImprovementType.NOTHING),new Coordinate(1,-1,0));
-        game.moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
+    void wrongColor() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+        board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
+        game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
         assertEquals(0,mission2.checkMission(board, game.getPlayerData().getInventory()));
     }
 

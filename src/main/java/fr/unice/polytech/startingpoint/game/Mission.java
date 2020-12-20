@@ -1,14 +1,24 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 
 /**
- * Interface representant les caractéristiques communes des missions
+ * <h1>{@link Mission} :</h1>
+ *
+ * <p>This class provides a skeletal implementation of the {@link PeasantMission},
+ * {@link ParcelMission}, {@link PandaMission} classes.</p>
+ *
+ * <p>The programmer needs only to extend this class and provide
+ * implementations for the {@link #checkMission(Board, Inventory)} method.</p>
+ *
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
  * @author Le Calloch Antoine
- * @version 2020.12.03
+ * @see MissionType
+ * @see ColorType
+ * @version 0.5
  */
 
 abstract class Mission {
@@ -16,26 +26,49 @@ abstract class Mission {
     protected final ColorType colorType;
     protected final int points;
 
+    /**
+     * <p>Set up a mission. Initialize all variables.</p>
+     *
+     * @param missionType
+     *            <b>the missionType of the mission</b>
+     * @param colorType
+     *            <b>the colorType of the mission</b>
+     * @param points
+     *            <b>the points of the mission</b>
+     */
     Mission(MissionType missionType, ColorType colorType, int points){
         this.missionType = missionType;
         this.colorType = colorType;
         this.points = points;
     }
 
-    //Vérifie si la mission est faite
+    /**
+     * <p>check if a mission is done</p>
+     *
+     * @param board
+     *            <b>Board object.</b>
+     * @param inventory
+     *            <b>Inventory object.</b>
+     */
     abstract int checkMission(Board board, Inventory inventory);
 
-    //Renvoie la couleur de la mission
+    /**
+     * @return <b>the missionType of the mission</b>
+     */
     public MissionType getMissionType() {
         return missionType;
     }
 
-    //Renvoie la couleur de la mission
+    /**
+     * @return <b>the colorType of the mission</b>
+     */
     public ColorType getColor() {
         return colorType;
     }
 
-    //Renvoie la couleur de la mission
+    /**
+     * @return <b>the points of the mission</b>
+     */
     public int getPoints() {
         return points;
     }

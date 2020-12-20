@@ -2,7 +2,9 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.type.*;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+
 import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -18,49 +20,52 @@ public class ResourceTest {
     Resource resource;
 
     @BeforeEach
-    public void initialize(){
+    void initialize(){
         resource = new Resource();
     }
 
-    @Test public void goodInitializeParcel(){
+    @Test
+    void goodInitializeParcel(){
         assertEquals(32, resource.getDeckParcel().size());
     }
 
-    @Test public void goodInitializeCanal(){
+    @Test
+    void goodInitializeCanal(){
         assertEquals(27, resource.getDeckCanal().size());
     }
 
 
-    @Test public void goodInitializeMission(){
+    @Test
+    void goodInitializeMission(){
         assertEquals(45, resource.getNbMission());
     }
 
     @Test
-    public void parcelDecrease() throws OutOfResourcesException {
-        resource.selectParcel(resource.drawParcel().get(0));
+    void parcelDecrease() throws OutOfResourcesException {
+        resource.selectParcel(resource.drawParcels().get(0));
         assertEquals(31,resource.getDeckParcel().size());
     }
 
     @Test
-    public void canalDecrease() throws OutOfResourcesException {
+    void canalDecrease() throws OutOfResourcesException {
         resource.drawCanal();
         assertEquals(26,resource.getDeckCanal().size());
     }
 
     @Test
-    public void missionDecreasePeasant() throws OutOfResourcesException {
+    void missionDecreasePeasant() throws OutOfResourcesException {
         resource.drawMission(MissionType.PEASANT);
         assertEquals(44,resource.getNbMission());
     }
 
     @Test
-    public void missionDecreasePanda() throws OutOfResourcesException {
+    void missionDecreasePanda() throws OutOfResourcesException {
         resource.drawMission(MissionType.PANDA);
         assertEquals(44,resource.getNbMission());
     }
 
     @Test
-    public void missionDecreaseParcel() throws OutOfResourcesException {
+    void missionDecreaseParcel() throws OutOfResourcesException {
         resource.drawMission(MissionType.PARCEL);
         assertEquals(44,resource.getNbMission());
     }
@@ -76,18 +81,28 @@ public class ResourceTest {
             resource.drawCanal();
         }
         assertTrue(resource.isEmpty());
+        assertThrows(OutOfResourcesException.class, () -> resource.drawCanal());
     }
 
     @Test
     void outOfCParcel() throws OutOfResourcesException {
         for (int i = 0; i < 32; i++) {
-            resource.selectParcel(resource.drawParcel().get(0));
+            resource.selectParcel(resource.drawParcels().get(0));
         }
         assertTrue(resource.isEmpty());
+        assertThrows(OutOfResourcesException.class, () -> resource.drawParcels());
     }
 
     @Test
-    void outOfMissions(){
+    void outOfMissions() throws OutOfResourcesException {
+        for (int i = 0; i < 15; i++) {
+            resource.drawMission(MissionType.PANDA);
+            resource.drawMission(MissionType.PARCEL);
+            resource.drawMission(MissionType.PEASANT);
+        }
         assertTrue(resource.isEmpty());
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PANDA));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PEASANT));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PARCEL));
     }
 }

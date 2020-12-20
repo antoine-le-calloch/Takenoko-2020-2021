@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
 
 import java.util.stream.IntStream;
@@ -35,27 +34,23 @@ public class PandaMissionTest {
         game = new Game();
         board = game.getBoard();
         resource = game.getResource();
-        bot = new RandomBot(game, game.getRules());
-        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel2 = new Parcel(ColorType.BLUE,ImprovementType.NOTHING);
+        bot = new RandomBot(game.getGameInteraction(), game.getRules());
+        parcel1 = new Parcel(ColorType.RED);
+        parcel2 = new Parcel(ColorType.BLUE);
     }
 
     @Test
-    void missionCompleteGoodColor() throws BadPlaceParcelException {
+    void missionCompleteGoodColor(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));  // parcel red
-        IntStream.range(0, 4).forEach(i -> {
-            game.getPlayerData().getInventory().addBamboo(parcel1.getColor());
-        });
+        IntStream.range(0, 4).forEach(i -> game.getPlayerData().getInventory().addBamboo(parcel1.getColor()));
         assertEquals(4,game.getPlayerData().getInventory().getBamboo(ColorType.RED));
         assertEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
     }
 
     @Test
-    void missionIncompleteBadColor() throws BadPlaceParcelException {
+    void missionIncompleteBadColor(){
         board.placeParcel(parcel2,new Coordinate(1,-1,0)); // parcel blue
-        IntStream.range(0, 5).forEach(i -> {
-            game.getPlayerData().getInventory().addBamboo(parcel2.getColor());
-        });
+        IntStream.range(0, 5).forEach(i -> game.getPlayerData().getInventory().addBamboo(parcel2.getColor()));
         assertEquals(0,game.getPlayerData().getInventory().getBamboo(ColorType.RED));
         assertEquals(5,game.getPlayerData().getInventory().getBamboo(ColorType.BLUE));
         assertEquals(0,mission1.checkMission(board, game.getPlayerData().getInventory()));

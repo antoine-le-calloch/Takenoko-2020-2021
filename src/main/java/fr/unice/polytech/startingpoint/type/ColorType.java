@@ -10,24 +10,24 @@ package fr.unice.polytech.startingpoint.type;
  */
 
 public enum ColorType {
-    RED{
+    RED {
         @Override
         public String toString() {
             return "Red";
         }
     }
     ,
-    BLUE{
+    BLUE {
         @Override
         public String toString() {
             return "Blue";
         }
     }
     ,
-    NO_COLOR{
+    NO_COLOR {
         @Override
         public String toString() {
-            return "No_Color";
+            return "No Color";
         }
     }
 }

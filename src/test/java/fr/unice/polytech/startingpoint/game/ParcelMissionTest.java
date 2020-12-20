@@ -1,12 +1,8 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
-import fr.unice.polytech.startingpoint.game.*;
 import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import org.junit.jupiter.api.*;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,11 +39,11 @@ public class ParcelMissionTest {
         game = new Game();
         board = game.getBoard();
         resource = game.getResource();
-        parcel1 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel2 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel3 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        parcel4 = new Parcel(ColorType.RED,ImprovementType.NOTHING);
-        bot = new RandomBot(game, game.getRules());
+        parcel1 = new Parcel(ColorType.RED);
+        parcel2 = new Parcel(ColorType.RED);
+        parcel3 = new Parcel(ColorType.RED);
+        parcel4 = new Parcel(ColorType.RED);
+        bot = new RandomBot(game.getGameInteraction(), game.getRules());
     }
 
     @Test
@@ -57,32 +53,24 @@ public class ParcelMissionTest {
         assertEquals(mission1, mission1);
     }
 
-
     /**
-     * <h1><u>CHECK MISSIONPARCEL</u></h1>
+     * <h1><u>CHECK PARCEL MISSIONS</u></h1>
      */
 
-
     @Test void checkMissionTriangle(){
-        parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
-        parcel2.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
-        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
-        board.placeParcel(parcel1,parcel1.getCoordinates());
-        board.placeParcel(parcel2,parcel2.getCoordinates());
-        board.placeParcel(parcel3,parcel3.getCoordinates());
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel2,new Coordinate(0,-1,1));
+        board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
         assertEquals(2, mission1.checkMission(board,game.getPlayerData().getInventory()));
     }
 
-
-    @Test void checkMissionLigneOnBoard(){
-        parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated();
-        parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
-        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
-        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
-        board.placeParcel(parcel4,parcel4.getCoordinates());
-        board.placeParcel(parcel1,parcel1.getCoordinates());
-        board.placeParcel(parcel2,parcel2.getCoordinates());
-        board.placeParcel(parcel3,parcel3.getCoordinates());
+    @Test void checkMissionLineOnBoard(){
+        board.placeParcel(parcel4,new Coordinate(0,-1,1));
+        board.placeParcel(parcel1,new Coordinate(1,0,-1));
+        board.placeParcel(parcel2,new Coordinate(1,-1,0));
+        board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
         assertEquals(3,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
 
@@ -97,21 +85,18 @@ public class ParcelMissionTest {
     @Test void triangleOnBoardGoodColor(){ //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
-        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
         assertTrue(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
     }
 
     @Test void triangleOnBoardBadColor() { //checkTriangle
-        parcel1.setCoordinates(new Coordinate(1, -1, 0)).setIrrigated();
-        parcel2.setCoordinates(new Coordinate(0, -1, 1)).setIrrigated();
-        parcel3.setCoordinates(new Coordinate(1, -2, 1)).setIrrigated();
         board.placeParcel(parcel1, new Coordinate(1, -1, 0));
         board.placeParcel(parcel2, new Coordinate(0, -1, 1));
         board.placeParcel(parcel3, new Coordinate(1, -2, 1));
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
         assertFalse(mission3.checkFormIrrigateWithColor(board, new Coordinate(1, 0, -1), new Coordinate(1, -1, 0)));
     }
-
 
     @Test void triangleNotIrrigated() { //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
@@ -120,35 +105,35 @@ public class ParcelMissionTest {
         assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
     }
 
+    @Test void wrongTriangle() { //checkTriangle
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel4,new Coordinate(0,-1,1));
+        assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
+    }
+
     /**
-     * <h1><u>CAS LIGNE</u></h1>
+     * <h1><u>CAS LINE</u></h1>
      */
 
-    @Test void ligneOnBoardGoodColor(){ //check Line
+    @Test void lineOnBoardGoodColor(){ //check Line
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated();
-        parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
-        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
-        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
         assertTrue(mission1.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
     }
 
-    @Test void ligneOnBoardBadColor() { //check Line
-        parcel1.setCoordinates(new Coordinate(1,0,-1)).setIrrigated();
-        parcel2.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
-        parcel3.setCoordinates(new Coordinate(1,-2,1)).setIrrigated();
-        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
+    @Test void lineOnBoardBadColor() { //check Line
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
         assertFalse(mission3.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
     }
 
-    @Test void ligneNotIrrigated() { //checkLine
+    @Test void lineNotIrrigated() { //checkLine
         board.placeParcel(parcel4,new Coordinate(0,-1,1));
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
@@ -156,28 +141,16 @@ public class ParcelMissionTest {
         assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(0, -1, 1),new Coordinate(0, 1, -1)));
     }
 
-
-    @Test void wrongTriangle() { //checkTriangle
-        parcel1.setCoordinates(new Coordinate(1,-1,0)).setIrrigated();
-        parcel4.setCoordinates(new Coordinate(0,-1,1)).setIrrigated();
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel4,new Coordinate(0,-1,1));
-        assertFalse(mission1.checkFormIrrigateWithColor(board,new Coordinate(1, 0, -1),new Coordinate(1, -1, 0)));
-    }
-
     @Test void wrongLine() { //checkLine
-        parcel1.setCoordinates(new Coordinate(0, -1, 1)).setIrrigated();
-        parcel4.setCoordinates(new Coordinate(0, -2, 2)).setIrrigated();
         board.placeParcel(parcel1, new Coordinate(0, -1, 1));
         board.placeParcel(parcel2, new Coordinate(1, -1, 0));
         board.placeParcel(parcel3, new Coordinate(1, -2, 1));
         board.placeParcel(parcel4, new Coordinate(0, -2, 2));
+        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
         assertFalse(mission1.checkFormIrrigateWithColor(board, new Coordinate(0, -1, 1), new Coordinate(0, 1, -1)));
     }
 
-
-    @Test void checkNoMissionLigne(){
+    @Test void checkNoMissionLine(){
         assertEquals(0,mission2.checkMission(board,game.getPlayerData().getInventory()));
     }
-
 }

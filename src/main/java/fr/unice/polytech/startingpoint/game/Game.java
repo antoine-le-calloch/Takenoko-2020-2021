@@ -1,9 +1,13 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.*;
+import fr.unice.polytech.startingpoint.bot.PandaBot;
+import fr.unice.polytech.startingpoint.bot.ParcelBot;
+import fr.unice.polytech.startingpoint.bot.PeasantBot;
+import fr.unice.polytech.startingpoint.bot.RandomBot;
+import fr.unice.polytech.startingpoint.type.BotType;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,42 +19,111 @@ import java.util.List;
  * @version 2020.12.03
  */
 
-public class Game{
-    private Resource resource;
-    private Board board;
-    private Rules rules;
-    private TemporaryInventory temporaryInventory;
-    private final PlayerData playerData;
+class Game{
+    private final Resource resource;
+    private final Board board;
+    private final Rules rules;
+    private final PlayerInteraction playerInteraction;
+    private final List<PlayerData> botData;
+    private final int NB_MISSION;
+    private int numBot;
 
-    //Normal Constructor
-    Game(BotType[] botTypes,int nbMission){
-        initializeGame();
-        playerData = new PlayerData(botTypes, this,nbMission);
-        temporaryInventory = new TemporaryInventory(2);
-    }
-
-    //Test Constructor
-    Game(){
-        initializeGame();
-        playerData = new PlayerData(new BotType[]{BotType.RANDOM}, this,0);
-        temporaryInventory = new TemporaryInventory();
-    }
-
-    private void initializeGame(){
+    Game(BotType[] botTypes,int nbMission,int stamina){
         resource = new Resource();
         board = new Board();
-        rules = new Rules(resource,board);
+        rules = new Rules(board);
+        playerInteraction = new PlayerInteraction(this);
+        botData = new LinkedList<>();
+        NB_MISSION = nbMission;
+        numBot = 0;
+        initializeBot(botTypes, stamina);
+    }
+
+    Game(BotType[] botTypes){
+        this(botTypes,4,2);
+    }
+
+    Game(){
+        this(new BotType[]{BotType.RANDOM});
+    }
+
+    /**Initialize all bots.
+     *
+     * @param botTypes
+     *                  <b>The lists of bots to initialize.</b>
+     * @param stamina
+     *                  <b>The base stamina.</b>
+     */
+    private void initializeBot(BotType[] botTypes, int stamina){
+        for (BotType botType : botTypes) {
+            switch (botType) {
+                case RANDOM:
+                    botData.add( new PlayerData( new RandomBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    break;
+                case PARCEL_BOT:
+                    botData.add( new PlayerData( new ParcelBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    break;
+                case PEASANT_BOT:
+                    botData.add( new PlayerData( new PeasantBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    break;
+                case PANDA_BOT:
+                    botData.add( new PlayerData( new PandaBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+            }
+        }
     }
 
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
-        while(playerData.isContinue() && (!resource.isEmpty())) {
-            temporaryInventory = new TemporaryInventory(2);
-            playerData.getBot().botPlay();
-            temporaryInventory.hasPlayedCorrectly();
-            playerData.missionDone();
-            playerData.nextBot();
+        while( isContinue() && (!resource.isEmpty())) {
+            botPlay();
+            missionDone();
+            nextBot();
         }
+    }
+
+    private void botPlay() {
+        getPlayerData().resetTemporaryInventory();
+        getPlayerData().getBot().botPlay();
+        getPlayerData().hasPlayedCorrectly();
+    }
+
+    /**Set the next bot to play.
+     */
+    void nextBot() {
+        numBot = (numBot+1) % botData.size();
+    }
+
+    /**@return <b>True if nobody has done the number of missions required to win.</b>
+     */
+    boolean isContinue(){
+        for (int missionDoneBy1P : getMissionsDone()) {
+            if (missionDoneBy1P >= NB_MISSION)
+                return false;
+        }
+        return true;
+    }
+
+    /**Check missions of the current bot and, if done, remove it and add points to the current inventory.
+     */
+    void missionDone(){
+        List<Mission> toRemove = new ArrayList<>();
+        int count;
+        for(Mission mission : getPlayerData().getMissions()){
+            if( (count = mission.checkMission(board,getPlayerData().getInventory())) != 0){
+                completedMission(count);
+                toRemove.add(mission);
+            }
+        }
+        getPlayerData().subMissions(toRemove);
+    }
+
+    /**Add points to the current inventory.
+     *
+     * @param count
+     *              <b>The number of points to add.</b>
+     */
+    void completedMission(int count) {
+        getPlayerData().addScore(count);
     }
 
     Board getBoard() {
@@ -65,138 +138,40 @@ public class Game{
         return rules;
     }
 
-    PlayerData getPlayerData() {
-        return playerData;
+    PlayerInteraction getGameInteraction() {
+        return playerInteraction;
     }
 
+    /**
+     * @return <b>The current playerData in use.</b>
+     */
+    PlayerData getPlayerData(){
+        return botData.get(numBot);
+    }
+
+    TemporaryInventory getTemporaryInventory(){
+        return getPlayerData().getTemporaryInventory();
+    }
+
+    /**
+     * @return <b>The number of mission done by all bots.</b>
+     */
+    List<Integer> getMissionsDone() {
+        List<Integer> missionsDone = new ArrayList<>();
+        for (PlayerData playerData : botData){
+            missionsDone.add(playerData.getMissionsDone());
+        }
+        return missionsDone;
+    }
+
+    /**
+     * @return <b>The score of all bots.</b>
+     */
     List<Integer> getScores(){
-        return playerData.getScores();
-    }
-
-    /**
-     * <h1><u>BOT INTERACTIONS</u></h1>
-     */
-
-    public void drawCanal() throws OutOfResourcesException {
-        temporaryInventory.looseStamina();
-        playerData.addCanal(resource.drawCanal());
-    }
-
-    public void drawMission(MissionType missionType) throws OutOfResourcesException {
-        temporaryInventory.looseStamina();
-        playerData.addMission(resource.drawMission(missionType));
-    }
-
-    public List<ColorType> drawParcels() throws IllegalAccessException, OutOfResourcesException {
-        if (!temporaryInventory.hasAlreadyDrawn()){
-            temporaryInventory.looseStamina();
-            temporaryInventory.saveParcels(resource.drawParcel());
-            List<ColorType> colorTypeList = new ArrayList<>();
-            for(Parcel parcel : temporaryInventory.getParcelsSaved()){
-                colorTypeList.add(parcel.getColor());
-            }
-            return colorTypeList;
+        List<Integer> Score = new ArrayList<>();
+        for (PlayerData playerData : botData) {
+            Score.add(playerData.getScore());
         }
-        throw new IllegalAccessException("Already used this method.");
-    }
-
-    public void selectParcel(ColorType colorType){
-        for (Parcel parcel : temporaryInventory.getParcelsSaved()){
-            if (parcel.getColor() == colorType){
-                temporaryInventory.add(parcel);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Wrong Parcel asked.");
-    }
-
-    public void placeParcel(Coordinate coordinate) throws BadPlaceParcelException {
-        if(rules.isPlayableParcel(coordinate)){
-            board.placeParcel(temporaryInventory.getParcel(),coordinate);
-        }
-        else
-            throw new BadPlaceParcelException(coordinate);
-    }
-
-    public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws BadPlaceCanalException, OutOfResourcesException {
-        if (rules.isPlayableCanal(coordinate1, coordinate2))
-            board.placeCanal(playerData.getInventory().pickCanal(), coordinate1, coordinate2);
-        else
-            throw new BadPlaceCanalException(coordinate1, coordinate2);
-    }
-
-    public void moveCharacter(CharacterType characterType, Coordinate coordinate) throws BadMoveCharacterException, OutOfResourcesException {
-        if(rules.isMovableCharacter(characterType,coordinate)){
-            temporaryInventory.looseStamina();
-            try {
-                board.moveCharacter(characterType, coordinate);
-                playerData.addBamboo(board.getPlacedParcels().get(coordinate).getColor());
-            }
-            catch (CantDeleteBambooException ignored) {
-            }
-        }
-        else
-            throw new BadMoveCharacterException(coordinate);
-    }
-
-
-    /**
-     * <h1><u>BOT GETTERS</u></h1>
-     */
-
-    public boolean isPlacedParcel(Coordinate coordinate) {
-        return board.isPlacedParcel(coordinate);
-    }
-
-    public boolean isIrrigatedParcel(Coordinate coordinate) {
-        return board.isPlacedAndIrrigatedParcel(coordinate);
-    }
-
-    public ColorType getPlacedParcelsColor(Coordinate coordinate) {
-        return board.getPlacedParcels().get(coordinate).getColor();
-    }
-
-    public int getPlacedParcelsNbBamboo(Coordinate coordinate) {
-        return board.getPlacedParcels().get(coordinate).getNbBamboo();
-    }
-
-    public List<Coordinate> getPlacedCoordinates(){
-        return new ArrayList<>(board.getPlacedParcels().keySet());
-    }
-
-    public List<ParcelMission> getInventoryParcelMission() {
-        return playerData.getParcelMissions();
-    }
-
-    public List<PandaMission> getInventoryPandaMission() {
-        return playerData.getPandaMissions();
-    }
-
-    public List<PeasantMission> getInventoryPeasantMission() {
-        return playerData.getPeasantMissions();
-    }
-
-    public List<Mission> getInventoryMission() {
-        return playerData.getMissions();
-    }
-
-    public int getResourceSize(ResourceType resourceType){
-        switch (resourceType){
-            case PEASANT_MISSION:
-                return resource.getDeckPeasantMission().size();
-            case PANDA_MISSION:
-                return resource.getDeckPandaMission().size();
-            case PARCEL_MISSION:
-                return resource.getDeckParcelMission().size();
-            case PARCEL:
-                return resource.getDeckParcel().size();
-            case CANAL:
-                return resource.getDeckCanal().size();
-            case ALL_MISSION:
-                return resource.getNbMission();
-            default:
-                throw new IllegalArgumentException("Wrong ResourceType.");
-        }
-
+        return Score;
     }
 }

@@ -1,17 +1,15 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.ParcelBot;
-import fr.unice.polytech.startingpoint.exception.BadPlaceParcelException;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -29,27 +27,38 @@ class ParcelBotTest {
     ParcelMission missionRedTriangle;
     ParcelMission missionBlueLine;
     ParcelMission missionRedLine;
+
     Coordinate coordinate1;
     Coordinate coordinate2;
     Coordinate coordinate3;
     Coordinate coordinate4;
-    ParcelBot parcelBot;
+    Coordinate coordinate5;
+    Coordinate coordinate7;
+    Coordinate coordinate8;
+
     Game game;
+    Board board;
+    ParcelBot parcelBot;
 
     @BeforeEach
     public void setUp() {
-        game = new Game();
-        parcelBot = new ParcelBot(game, new Rules(new Resource(), new Board()));
-
-        coordinate1 = new Coordinate(1, 0, -1); //0-2h
-        coordinate2 = new Coordinate(1, -1, 0); //2-4h
-        coordinate3 = new Coordinate(0, -1, 1); //4-6h
-        coordinate4 = new Coordinate(1, -2, 1); //4h éloigné de un
-
         missionBlueTriangle = new ParcelMission(ColorType.BLUE, 1, FormType.TRIANGLE);
         missionRedTriangle = new ParcelMission(ColorType.RED, 1, FormType.TRIANGLE);
         missionBlueLine = new ParcelMission(ColorType.BLUE, 1, FormType.LINE);
         missionRedLine = new ParcelMission(ColorType.RED, 1, FormType.LINE);
+
+        coordinate1 = new Coordinate(1, 0, -1); //0-2h
+        coordinate2 = new Coordinate(1, -1, 0); //2-4h
+        coordinate3 = new Coordinate(0, -1, 1); //4-6h
+        coordinate4 = new Coordinate(-1, 0, 1); //6-8h
+        coordinate5 = new Coordinate(-1, 1, 0); //8-10h
+
+        coordinate7 = new Coordinate(1, -2, 1); //4h éloigné de un
+        coordinate8 = new Coordinate(-1, -1, 2); //6h éloigné de un
+
+        game = new Game();
+        board = game.getBoard();
+        parcelBot = new ParcelBot(game.getGameInteraction(), game.getRules());
     }
 
 
@@ -58,17 +67,17 @@ class ParcelBotTest {
 
         assertEquals(coordinate1,triangleForm.get(0));
         assertEquals(coordinate2,triangleForm.get(1));
-        assertEquals(coordinate4,triangleForm.get(2));
+        assertEquals(coordinate7,triangleForm.get(2));
     }
 
     @Test void TriangleForm(){
         List<Coordinate> triangleForm = parcelBot.setForm(coordinate2, FormType.TRIANGLE);
 
         assertEquals(coordinate2,triangleForm.get(0));
-        assertEquals(coordinate4,triangleForm.get(1));
+        assertEquals(coordinate7,triangleForm.get(1));
         assertEquals(coordinate3,triangleForm.get(2));
     }
-
+///////////////////////////////
 
     @Test void coordAroundUse_Central(){
         Coordinate coordAroundUse = parcelBot.coordAroundUse(coordinate1);
@@ -77,47 +86,57 @@ class ParcelBotTest {
     }
 
     @Test void coordAroundUse_Coordinate3(){
-        game.getBoard().placeParcel(new Parcel(),coordinate3);
-        Coordinate coordAroundUse = parcelBot.coordAroundUse(coordinate4);
+        board.placeParcel(new Parcel(),coordinate3);
+        assertTrue(board.isPlacedParcel(coordinate3));
+        Coordinate coordAroundUse = parcelBot.coordAroundUse(coordinate7);
 
         assertEquals(coordinate3,coordAroundUse);
     }
 
     @Test void coordAroundUse_None(){
-        Coordinate coordAroundUse = parcelBot.coordAroundUse(coordinate4);
+        Coordinate coordAroundUse = parcelBot.coordAroundUse(coordinate7);
 
         assertNull(coordAroundUse);
     }
-
+///////////////////////////////
 
     @Test void coordNeedToDoBlueTriangle_1BlueParcelPut(){
-        game.getBoard().placeParcel(new Parcel(ColorType.BLUE),coordinate2);
+        board.placeParcel(new Parcel(ColorType.BLUE),coordinate2);
         List<Coordinate> coordNeedToDoBlueTriangle = parcelBot.coordNeedToDoMission(coordinate2,missionBlueTriangle);
 
         assertEquals(2,coordNeedToDoBlueTriangle.size());
         assertEquals(coordinate3,coordNeedToDoBlueTriangle.get(0));
-        assertEquals(coordinate4,coordNeedToDoBlueTriangle.get(1));
+        assertEquals(coordinate7,coordNeedToDoBlueTriangle.get(1));
     }
 
     @Test void coordNeedToDoBlueTriangle_1RedParcelPut(){
-        game.getBoard().placeParcel(new Parcel(ColorType.RED),coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate2);
         List<Coordinate> coordNeedToDoBlueTriangle = parcelBot.coordNeedToDoMission(coordinate2,missionBlueTriangle);
 
         assertNull(coordNeedToDoBlueTriangle);
     }
 
+    @Test void coordNeedToDoBlueTriangle_0ParcelPut(){
+        List<Coordinate> coordNeedToDoRedLine = parcelBot.coordNeedToDoMission(coordinate2,missionBlueTriangle);
+
+        assertEquals(3,coordNeedToDoRedLine.size());
+        assertEquals(coordinate2,coordNeedToDoRedLine.get(0));
+        assertEquals(coordinate3,coordNeedToDoRedLine.get(1));
+        assertEquals(coordinate7,coordNeedToDoRedLine.get(2));
+    }
+
     @Test void coordNeedToDoRedLine_1RedParcelPut(){
-        game.getBoard().placeParcel(new Parcel(ColorType.RED),coordinate1);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate1);
         List<Coordinate> coordNeedToDoRedLine = parcelBot.coordNeedToDoMission(coordinate1,missionRedLine);
 
         assertEquals(3,coordNeedToDoRedLine.size());
         assertEquals(coordinate2,coordNeedToDoRedLine.get(0));
         assertEquals(coordinate3,coordNeedToDoRedLine.get(1));
-        assertEquals(coordinate4,coordNeedToDoRedLine.get(2));
+        assertEquals(coordinate7,coordNeedToDoRedLine.get(2));
     }
 
     @Test void coordNeedToDoRedLine_1BlueParcelPut(){
-        game.getBoard().placeParcel(new Parcel(ColorType.BLUE),coordinate1);
+        board.placeParcel(new Parcel(ColorType.BLUE),coordinate1);
         List<Coordinate> coordNeedToDoRedLine = parcelBot.coordNeedToDoMission(coordinate1,missionRedLine);
 
         assertNull(coordNeedToDoRedLine);
@@ -129,22 +148,118 @@ class ParcelBotTest {
         assertEquals(4,coordNeedToDoRedLine.size());
         assertEquals(coordinate2,coordNeedToDoRedLine.get(0));
         assertEquals(coordinate3,coordNeedToDoRedLine.get(1));
-        assertEquals(coordinate4,coordNeedToDoRedLine.get(2));
+        assertEquals(coordinate7,coordNeedToDoRedLine.get(2));
         assertEquals(coordinate1,coordNeedToDoRedLine.get(3));
     }
+///////////////////////////////
 
-
-    @Test void bestCoordinatesForMissionRedLine(){
+    @Test void bestCoordinatesForMissionRedLine_1RedParcelPut(){
+        board.placeParcel(new Parcel(ColorType.RED),coordinate2);
         List<Coordinate> coordNeedToDoRedLine = parcelBot.bestCoordinatesForMission(missionRedLine);
 
-        assertEquals(4,coordNeedToDoRedLine.size());
-        assertEquals(coordinate2,coordNeedToDoRedLine.get(0));
-        assertEquals(coordinate3,coordNeedToDoRedLine.get(1));
-        assertEquals(coordinate4,coordNeedToDoRedLine.get(2));
-        assertEquals(coordinate1,coordNeedToDoRedLine.get(3));
+        assertEquals(3,coordNeedToDoRedLine.size());
+        assertEquals(coordinate3,coordNeedToDoRedLine.get(0));
+        assertEquals(coordinate7,coordNeedToDoRedLine.get(1));
+        assertEquals(coordinate1,coordNeedToDoRedLine.get(2));
+    }
+///////////////////////////////
+
+    @Test void bestCoordinatesIn0Mission_RedParcelAvailable(){
+        board.placeParcel(new Parcel(ColorType.RED),coordinate2);
+        List<Coordinate> bestCoordinatesForAllMission = parcelBot.bestCoordsInAllMission(ColorType.RED);
+
+        assertNull(bestCoordinatesForAllMission);
+    }
+///////////////////////////////
+
+    @Test void putParcel_0Mission(){
+        assertEquals(1,board.getPlacedParcels().size());
+        parcelBot.putParcel();
+        assertEquals(2,board.getPlacedParcels().size());
+    }
+///////////////////////////////
+
+    @Test void BestCanalToIrrigateCoordinate4_0CanalPut(){
+        board.placeParcel(new Parcel(ColorType.RED),coordinate1);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate3);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate7);
+        Coordinate []bestCanal = parcelBot.getBestCanal(coordinate7);
+
+        System.out.println(bestCanal[0]);
+        System.out.println(bestCanal[1]);
+        assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate2)));
+        assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate3)));
     }
 
+    @Test void BestCanalToIrrigateCoordinate4_1CanalPut(){
+        board.placeParcel(new Parcel(ColorType.RED),coordinate1);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate3);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate7);
+        board.placeCanal(new Canal(),coordinate2,coordinate3);
+        Coordinate []bestCanal = parcelBot.getBestCanal(coordinate7);
 
+        assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate7)));
+    }
+///////////////////////////////
+
+    @Test void findEndMissionWithoutCanal_0Mission(){
+        assertEquals(0,parcelBot.coordEndMissionNoIrrigate().size());
+    }
+///////////////////////////////
+
+    @Test void putCanal_0Mission(){
+        board.placeParcel(new Parcel(ColorType.RED),coordinate1);
+        board.placeParcel(new Parcel(ColorType.RED),coordinate2);
+
+        assertEquals(0,board.getPlacedCanals().size());
+        parcelBot.putCanal();
+        assertEquals(1,board.getPlacedCanals().size());
+    }
+///////////////////////////////
+
+    @Test void judiciousDrawMission(){
+        assertTrue(parcelBot.isJudiciousDrawMission(2));
+    }
+
+    @Test void notJudiciousDrawMission_NoStamina(){
+        assertFalse(parcelBot.isJudiciousPutParcel(0));
+    }
+///////////////////////////////
+
+    @Test void judiciousPutParcel(){
+        assertTrue(parcelBot.isJudiciousPutParcel(2));
+    }
+
+    @Test void notJudiciousPutParcel_NoStamina(){
+        assertFalse(parcelBot.isJudiciousPutParcel(0));
+    }
+///////////////////////////////
+
+    @Test void judiciousPutCanal(){
+        board.placeParcel(new Parcel(),coordinate1);
+        board.placeParcel(new Parcel(),coordinate2);
+        assertTrue(parcelBot.isJudiciousPutCanal(2));
+    }
+
+    @Test void notJudiciousPutCanal_0PossiblePlace(){
+        assertFalse(parcelBot.isJudiciousPutCanal(2));
+    }
+
+    @Test void notJudiciousPutCanal_NoStamina(){
+        assertFalse(parcelBot.isJudiciousPutParcel(0));
+    }
+///////////////////////////////
+
+    @Test void botDrawMissionAndPutParcel(){
+        assertEquals(0,game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(1,board.getPlacedParcels().size());
+        parcelBot.botPlay();
+        assertEquals(1,game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(2,board.getPlacedParcels().size());
+    }
+///////////////////////////////
     /*@Test
     public void placesForLineStartAtCoord1Line_Empty() {
         List<Coordinate> placesForLine = new ArrayList<>(parcelBot.parcelsToPlaceToDoForm(coordinate1, FormType.LINE, ColorType.RED));

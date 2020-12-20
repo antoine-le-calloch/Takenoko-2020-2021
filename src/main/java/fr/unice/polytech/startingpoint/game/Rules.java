@@ -16,32 +16,28 @@ import fr.unice.polytech.startingpoint.type.CharacterType;
  */
 
 public final class Rules {
-    private final Resource resource ;
     private final Board board;
 
     /**
      * <p>Set up the rules. Initialize all variables.</p>
      *
-     * @param resource
-     *            <b>Resource object.</b>
      * @param board
      *            <b>Board object.</b>
      */
-    Rules(Resource resource, Board board){
-        this.resource = resource;
+    Rules(Board board){
         this.board = board;
     }
 
     /**@return <b>True, if the parcel is playable on the coordinates specified in parameter.</b>
      */
-    public boolean isPlayableParcel(Coordinate coord){
-        if (coord.isCentral())
+    public boolean isPlayableParcel(Coordinate coordinate){
+        if (coordinate.isCentral())
             return false;
         int nbParcelAround = 0;
-        for(Coordinate coordAround : coord.coordinatesAround()) {
-            if(board.isPlacedParcel(coordAround))
+        for(Coordinate coordinateAround : coordinate.coordinatesAround()) {
+            if(board.isPlacedParcel(coordinateAround))
                 nbParcelAround++;
-            if(coordAround.isCentral())
+            if(coordinateAround.isCentral())
                 return true;
         }
         return nbParcelAround>1;

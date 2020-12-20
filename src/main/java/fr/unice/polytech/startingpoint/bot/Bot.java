@@ -1,11 +1,16 @@
 package fr.unice.polytech.startingpoint.bot;
 
+import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.CharacterType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 
-import fr.unice.polytech.startingpoint.exception.*;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * <h1>{@link Bot} :</h1>
@@ -29,17 +34,17 @@ import java.util.*;
  */
 
 public abstract class Bot {
-    protected final Game game;
+    protected final PlayerInteraction playerInteraction;
     protected final Rules rules;
 
     /**
      * <p>Set up the bot. Initialize all variables.</p>
      *
-     * @param game
+     * @param playerInteraction
      *            <b>Game object.</b>
      */
-    public Bot(Game game, Rules rules) {
-        this.game = game;
+    public Bot(PlayerInteraction playerInteraction, Rules rules) {
+        this.playerInteraction = playerInteraction;
         this.rules = rules;
     }
 
@@ -54,36 +59,41 @@ public abstract class Bot {
      */
     public void drawMission(MissionType missionType){
         try {
-            game.drawMission(missionType);
+            playerInteraction.drawMission(missionType);
         }
-        catch (OutOfResourcesException e) {
+        catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
 
     /**@return Preview a list of 3 ColorTypes from the resources.
      */
-    public List<ColorType> drawParcel() {
+    public List<ParcelInformation> drawParcel() {
         try {
-            return game.drawParcels();
+            return playerInteraction.drawParcels();
         }
-        catch (IllegalAccessException | OutOfResourcesException e) {
+        catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public void selectParcel(ColorType colorType){
-        game.selectParcel(colorType);
+    public void selectParcel(ParcelInformation parcelInformation){
+        try {
+            playerInteraction.selectParcel(parcelInformation);
+        }
+        catch (RulesViolationException e) {
+            e.printStackTrace();
+        }
     }
 
     /**<p>Draw a canal in the resources and place it in the inventory.</p>
      */
     public void drawCanal() {
         try {
-            game.drawCanal();
+            playerInteraction.drawCanal();
         }
-        catch (OutOfResourcesException e) {
+        catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
@@ -95,9 +105,9 @@ public abstract class Bot {
      */
     public void placeParcel(Coordinate coordinate){
         try {
-            game.placeParcel(coordinate);
+            playerInteraction.placeParcel(coordinate);
         }
-        catch (BadPlaceParcelException e) {
+        catch (BadCoordinateException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
@@ -109,9 +119,9 @@ public abstract class Bot {
      */
     public void placeCanal(Coordinate[] coordinates) {
         try {
-            game.placeCanal(coordinates[0],coordinates[1]);
+            playerInteraction.placeCanal(coordinates[0],coordinates[1]);
         }
-        catch (BadPlaceCanalException | OutOfResourcesException e) {
+        catch (OutOfResourcesException | BadCoordinateException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
@@ -123,8 +133,9 @@ public abstract class Bot {
      */
     public void movePanda(Coordinate coordinate) {
         try {
-            game.moveCharacter(CharacterType.PANDA,coordinate);
-        } catch (BadMoveCharacterException | OutOfResourcesException e) {
+            playerInteraction.moveCharacter(CharacterType.PANDA,coordinate);
+        }
+        catch (OutOfResourcesException | BadCoordinateException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
@@ -136,8 +147,9 @@ public abstract class Bot {
      */
     public void movePeasant(Coordinate coordinate){
         try {
-            game.moveCharacter(CharacterType.PEASANT,coordinate);
-        } catch (BadMoveCharacterException | OutOfResourcesException e) {
+            playerInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
+        }
+        catch (OutOfResourcesException | BadCoordinateException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
@@ -146,7 +158,7 @@ public abstract class Bot {
      */
     public List<Coordinate> allPlaces(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : game.getPlacedCoordinates()) {
+        for(Coordinate c : playerInteraction.getPlacedCoordinates()) {
             possibleCoordinates.add(c);
             for (Coordinate offSet : Coordinate.offSets()){
                 possibleCoordinates.add(new Coordinate(c,offSet));
@@ -159,7 +171,7 @@ public abstract class Bot {
      */
     public List<Coordinate> possibleCoordinatesParcel(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : game.getPlacedCoordinates()) {
+        for(Coordinate c : playerInteraction.getPlacedCoordinates()) {
             for (Coordinate offSet : Coordinate.offSets()){
                 if(rules.isPlayableParcel(new Coordinate(c,offSet))){
                     possibleCoordinates.add(new Coordinate(c,offSet));
@@ -173,8 +185,8 @@ public abstract class Bot {
      */
     public List<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate1 : game.getPlacedCoordinates()){
-            for(Coordinate coordinate2 : game.getPlacedCoordinates()){
+        for(Coordinate coordinate1 : playerInteraction.getPlacedCoordinates()){
+            for(Coordinate coordinate2 : playerInteraction.getPlacedCoordinates()){
                 if (rules.isPlayableCanal(coordinate1, coordinate2))
                     possibleCoordinates.add(new Coordinate[]{coordinate1, coordinate2});
             }
@@ -186,7 +198,7 @@ public abstract class Bot {
      */
     public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate : game.getPlacedCoordinates()) {
+        for(Coordinate coordinate : playerInteraction.getPlacedCoordinates()) {
             if (rules.isMovableCharacter(CharacterType.PANDA,coordinate)){
                 possibleCoordinates.add(coordinate);
             }
@@ -198,7 +210,7 @@ public abstract class Bot {
      */
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : game.getPlacedCoordinates()) {
+        for(Coordinate c : playerInteraction.getPlacedCoordinates()) {
             if (rules.isMovableCharacter(CharacterType.PEASANT,c)){
                 possibleCoordinates.add(c);
             }
