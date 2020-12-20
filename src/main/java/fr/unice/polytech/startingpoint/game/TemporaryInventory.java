@@ -66,6 +66,10 @@ class TemporaryInventory {
         return parcelList;
     }
 
+    List<ActionType> getActionTypeList() {
+        return new ArrayList<>(actionTypeList);
+    }
+
     int getStamina() {
         return stamina;
     }

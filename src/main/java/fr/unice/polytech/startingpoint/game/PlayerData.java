@@ -30,6 +30,10 @@ public class PlayerData {
         temporaryInventory.remove(actionType);
     }
 
+    boolean contains(ActionType actionType) {
+        return temporaryInventory.contains(actionType);
+    }
+
     void looseStamina() throws OutOfResourcesException {
         temporaryInventory.looseStamina();
     }
@@ -52,10 +56,6 @@ public class PlayerData {
 
     void hasPlayedCorrectly() {
         temporaryInventory.hasPlayedCorrectly();
-    }
-
-    boolean contains(ActionType actionType) {
-        return temporaryInventory.contains(actionType);
     }
 
     void resetTemporaryInventory() {

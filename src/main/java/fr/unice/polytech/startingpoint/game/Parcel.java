@@ -61,6 +61,8 @@ class Parcel {
 
     void setImprovementType(ImprovementType improvementType) {
         parcelInformation.setImprovementType(improvementType);
+        if (improvementType == ImprovementType.WATERSHED)
+            setIrrigated();
     }
 
     //Renvoie si la parcelle est irriguée ou non

@@ -204,7 +204,7 @@ public class ParcelBot extends Bot {
         //    return null;
 
         for (Coordinate coord : form) {
-            if(coord.isCentral() || (playerInteraction.isPlacedParcel(coord) && !playerInteraction.getPlacedParcelsColor(coord).equals(mission.getColor())))
+            if(coord.isCentral() || (playerInteraction.isPlacedParcel(coord) && !playerInteraction.getPlacedParcelInformation(coord).getColorType().equals(mission.getColor())))
                 return null;
 
             if(!playerInteraction.isPlacedParcel(coord))

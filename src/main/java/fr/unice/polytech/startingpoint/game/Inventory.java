@@ -40,6 +40,12 @@ class Inventory {
         inventoryBamboo = new int[]{0,0};
     }
 
+    /**<p>Add a {@link Canal} in the inventory.</p>
+     */
+    void addCanal(Canal canal){
+        inventoryCanal.add(canal);
+    }
+
     /**@return <b>A canal and remove it from the inventory.</b>
      */
     Canal pickCanal() throws OutOfResourcesException {
@@ -59,18 +65,6 @@ class Inventory {
             inventoryBamboo[colorType.ordinal()] ++;
     }
 
-    /**<p>Add a {@link Canal} in the inventory.</p>
-     */
-    void addCanal(Canal canal){
-        inventoryCanal.add(canal);
-    }
-
-    /**<p>Add a {@link Mission} in the inventory.</p>
-     */
-    void addMission(Mission mission){
-        inventoryMission.add(mission);
-    }
-
     /**<p>Sub one bamboo of the {@link ColorType} specified in parameter.</p>
      *
      * @param colorType
@@ -79,6 +73,12 @@ class Inventory {
     void subBamboo(ColorType colorType){
         if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NO_COLOR))
             inventoryBamboo[colorType.ordinal()] --;
+    }
+
+    /**<p>Add a {@link Mission} in the inventory.</p>
+     */
+    void addMission(Mission mission){
+        inventoryMission.add(mission);
     }
 
     /**<p>Remove all {@link Mission} specified in the {@link List} in parameters.</p>
