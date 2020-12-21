@@ -26,6 +26,7 @@ import java.util.List;
  */
 
 public class PandaBot extends Bot {
+    StratRushPanda stratRushPanda = new StratRushPanda(this);
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
@@ -41,22 +42,7 @@ public class PandaBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        if (playerInteraction.getInventoryMissions().size() < 5 && playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
-            drawMission(MissionType.PANDA);
-        if (strategyMovePanda(possibleCoordinatesPanda()) != null)
-                movePanda(strategyMovePanda(possibleCoordinatesPanda()));
+        stratRushPanda.stratRushPanda();
     }
 
-    /**@param coordinateList
-     *            <b>The list of coordinates containing places where we want to move the Panda.</b>
-     * @return <b>Return the first coordinate where the parcel has at least one bamboo.</b>
-     */
-    public Coordinate strategyMovePanda(List<Coordinate> coordinateList) {
-        for (Coordinate coordinate : coordinateList) {
-            if (playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0) {
-                return coordinate;
-            }
-        }
-        return null;
-    }
 }

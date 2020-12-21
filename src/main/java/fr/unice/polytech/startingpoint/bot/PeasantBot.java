@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 public class PeasantBot extends Bot {
-
+    StratMissionPeasant stratMissionPeasant = new StratMissionPeasant(this);
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
      * @param game
@@ -41,24 +41,6 @@ public class PeasantBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        if (playerInteraction.getInventoryMissions().size() < 5 && playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
-            drawMission(MissionType.PEASANT);
-
-        if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
-            movePeasant(strategyMovePeasant(possibleCoordinatesPeasant()));
-
-    }
-
-    /**@param coordinateList
-     *            <b>The list of coordinates containing places where we want to move the Peasant.</b>
-     * @return <b>Return the first coordinate where the parcel has at least two bamboos.</b>
-     */
-    public Coordinate strategyMovePeasant(List<Coordinate> coordinateList) {
-        for (Coordinate coordinate : coordinateList) {
-            if (playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 1) {
-                return coordinate;
-            }
-        }
-        return null;
+        stratMissionPeasant.stratPeasant();
     }
 }
