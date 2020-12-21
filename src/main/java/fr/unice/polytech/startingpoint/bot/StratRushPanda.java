@@ -9,10 +9,7 @@ import java.util.List;
 public class StratRushPanda {
     Bot bot;
 
-    /**
-     * <p></p>
-     *
-     * @param bot
+    /**@param bot
      */
     public StratRushPanda(Bot bot) {
         this.bot = bot;
@@ -24,7 +21,6 @@ public class StratRushPanda {
         if (strategyMovePanda(bot.possibleCoordinatesPanda()) != null)
             bot.movePanda(strategyMovePanda(bot.possibleCoordinatesPanda()));
     }
-
 
     /**@param coordinateList
      *            <b>The list of coordinates containing places where we want to move the Panda.</b>
@@ -38,5 +34,4 @@ public class StratRushPanda {
         }
         return null;
     }
-
 }

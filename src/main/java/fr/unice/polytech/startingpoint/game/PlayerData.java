@@ -8,7 +8,7 @@ import fr.unice.polytech.startingpoint.type.ColorType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerData {
+public final class PlayerData {
     private final Bot bot;
     private final Inventory inventory;
     private final TemporaryInventory temporaryInventory;
@@ -141,5 +141,4 @@ public class PlayerData {
     List<Mission> getMissions() {
         return inventory.getMissions();
     }
-
 }

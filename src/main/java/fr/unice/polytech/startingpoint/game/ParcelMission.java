@@ -21,7 +21,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  * @version 0.5
  */
 
-public class ParcelMission extends Mission {
+public final class ParcelMission extends Mission {
     private final FormType formType;
 
     /**

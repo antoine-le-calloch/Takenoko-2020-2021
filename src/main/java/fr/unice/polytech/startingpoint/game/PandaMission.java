@@ -20,7 +20,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  * @version 0.5
  */
 
-public class PandaMission extends Mission {
+public final class PandaMission extends Mission {
 
     /**
      * <p>Set up a panda mission. Initialize all variables.</p>

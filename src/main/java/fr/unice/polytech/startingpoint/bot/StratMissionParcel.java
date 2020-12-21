@@ -17,10 +17,7 @@ import java.util.stream.Collectors;
 public class StratMissionParcel{
     Bot bot;
 
-    /**
-     * <p></p>
-     *
-     * @param bot
+    /**@param bot
      */
     public StratMissionParcel(Bot bot) {
         this.bot = bot;
@@ -286,10 +283,4 @@ public class StratMissionParcel{
         }
         return bestCanal;
     }
-
-
-
-
-
-
 }

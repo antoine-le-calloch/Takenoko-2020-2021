@@ -46,11 +46,6 @@ class StratMissionParcelTest {
 
     @BeforeEach
     public void setUp() {
-        missionBlueTriangle = new ParcelMission(ColorType.BLUE, 1, FormType.TRIANGLE);
-        missionRedTriangle = new ParcelMission(ColorType.RED, 1, FormType.TRIANGLE);
-        missionBlueLine = new ParcelMission(ColorType.BLUE, 1, FormType.LINE);
-        missionRedLine = new ParcelMission(ColorType.RED, 1, FormType.LINE);
-
         coordinate1 = new Coordinate(1, 0, -1); //0-2h
         coordinate2 = new Coordinate(1, -1, 0); //2-4h
         coordinate3 = new Coordinate(0, -1, 1); //4-6h
@@ -65,6 +60,11 @@ class StratMissionParcelTest {
         parcelBot = new ParcelBot(game.getGameInteraction(), game.getRules());
 
         stratMissionParcel = new StratMissionParcel(parcelBot);
+
+        missionBlueTriangle = new ParcelMission(board,ColorType.BLUE, 1, FormType.TRIANGLE);
+        missionRedTriangle = new ParcelMission(board,ColorType.RED, 1, FormType.TRIANGLE);
+        missionBlueLine = new ParcelMission(board,ColorType.BLUE, 1, FormType.LINE);
+        missionRedLine = new ParcelMission(board,ColorType.RED, 1, FormType.LINE);
     }
 
 

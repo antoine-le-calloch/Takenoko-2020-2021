@@ -20,7 +20,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  * @version 0.5
  */
 
-public class PeasantMission extends Mission {
+public final class PeasantMission extends Mission {
 
     /**
      * <p>Set up a peasant mission. Initialize all variables.</p>

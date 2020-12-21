@@ -3,7 +3,7 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
 
-public class ParcelInformation {
+public final class ParcelInformation {
     private final ColorType colorType;
     private ImprovementType improvementType;
 

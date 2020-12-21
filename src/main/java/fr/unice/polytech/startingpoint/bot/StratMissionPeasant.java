@@ -8,16 +8,11 @@ import java.util.List;
 
 public class StratMissionPeasant {
     Bot bot;
-
-    /**
-     * <p></p>
-     *
-     * @param bot
+    /**@param bot
      */
     public StratMissionPeasant(Bot bot) {
         this.bot = bot;
     }
-
 
     /**<p>The actions of the bot during his turn.</p>
      */

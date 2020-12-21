@@ -44,5 +44,4 @@ public class PandaBot extends Bot {
     public void botPlay() {
         stratRushPanda.stratRushPanda();
     }
-
 }

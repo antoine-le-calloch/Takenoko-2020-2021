@@ -18,7 +18,7 @@ import java.util.List;
  * @version 0.5
  */
 
-public class Stat {
+public final class Stat {
     private final List<List<Integer>> gameData;
     private final BotType[] botList;
     private final int[][] botScores;

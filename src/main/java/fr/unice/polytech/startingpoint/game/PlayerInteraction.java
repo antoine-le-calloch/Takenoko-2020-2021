@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PlayerInteraction {
+public final class PlayerInteraction {
     private final Game game;
     private final Board board;
     private final Resource resource;

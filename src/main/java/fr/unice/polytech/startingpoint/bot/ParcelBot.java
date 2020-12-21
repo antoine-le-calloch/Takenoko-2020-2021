@@ -47,7 +47,8 @@ public class ParcelBot extends Bot {
         super(playerInteraction, rules);
     }
 
-    @Override
+    /**<p>The actions of the bot during his turn.</p>
+     */
     public void botPlay() {
         stratMissionParcel.stratParcel();
     }
