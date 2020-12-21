@@ -91,7 +91,7 @@ public class PlayerData {
         return score;
     }
 
-    int getMissionsDone() {
+    public int getMissionsDone() {
         return missionsDone;
     }
 
@@ -122,4 +122,5 @@ public class PlayerData {
     List<Mission> getMissions() {
         return inventory.getMissions();
     }
+
 }

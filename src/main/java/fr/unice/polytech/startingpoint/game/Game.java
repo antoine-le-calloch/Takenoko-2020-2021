@@ -1,9 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.bot.PandaBot;
-import fr.unice.polytech.startingpoint.bot.ParcelBot;
-import fr.unice.polytech.startingpoint.bot.PeasantBot;
-import fr.unice.polytech.startingpoint.bot.RandomBot;
+import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.type.BotType;
 
 import java.util.ArrayList;
@@ -68,6 +65,10 @@ class Game{
                     break;
                 case PANDA_BOT:
                     botData.add( new PlayerData( new PandaBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    break;
+                case INTELLIGENT_BOT:
+                    botData.add( new PlayerData( new IntelligentBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    break;
             }
         }
     }

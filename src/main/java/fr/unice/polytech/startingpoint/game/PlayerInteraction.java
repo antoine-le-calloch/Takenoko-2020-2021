@@ -22,7 +22,7 @@ public class PlayerInteraction {
         rules = game.getRules();
     }
 
-    private PlayerData getPlayerData() {
+    public PlayerData getPlayerData() {
         return game.getPlayerData();
     }
 

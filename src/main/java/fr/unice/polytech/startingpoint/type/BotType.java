@@ -37,4 +37,11 @@ public enum BotType {
             return "Peasant Bot";
         }
     }
+    ,
+    INTELLIGENT_BOT {
+        @Override
+        public String toString() {
+            return "Intelligent Bot";
+        }
+    }
 }
