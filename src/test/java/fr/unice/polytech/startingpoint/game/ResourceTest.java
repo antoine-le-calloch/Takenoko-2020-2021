@@ -17,11 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 public class ResourceTest {
+    Board board;
     Resource resource;
 
     @BeforeEach
     void initialize(){
-        resource = new Resource();
+        board = new Board();
+        resource = new Resource(board);
     }
 
     @Test

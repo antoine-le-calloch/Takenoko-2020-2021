@@ -65,14 +65,30 @@ class Inventory {
             inventoryBamboo[colorType.ordinal()] ++;
     }
 
+    /**<p>Sub bamboo(s) of the {@link ColorType} specified in parameter.</p>
+     *
+     * @param colorType
+     *          <b>The {@link ColorType} of the bamboo we want to remove.</b>
+     * @param colorType
+     *          <b>The {@link ColorType} of the bamboo we want to remove.</b>
+     * @return
+     */
+    boolean subBamboo(ColorType colorType, int nbBamboo){
+        if(inventoryBamboo[colorType.ordinal()] >= nbBamboo && !colorType.equals(ColorType.NO_COLOR)){
+            inventoryBamboo[colorType.ordinal()] -= nbBamboo;
+            return true;
+        }
+        return false;
+    }
+
     /**<p>Sub one bamboo of the {@link ColorType} specified in parameter.</p>
      *
      * @param colorType
      *          <b>The {@link ColorType} of the bamboo we want to remove.</b>
+     * @return
      */
-    void subBamboo(ColorType colorType){
-        if(inventoryBamboo[colorType.ordinal()]>0 && !colorType.equals(ColorType.NO_COLOR))
-            inventoryBamboo[colorType.ordinal()] --;
+    boolean subBamboo(ColorType colorType){
+        return subBamboo(colorType,1);
     }
 
     /**<p>Add a {@link Mission} in the inventory.</p>

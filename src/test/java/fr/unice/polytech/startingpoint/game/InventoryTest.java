@@ -22,7 +22,7 @@ public class InventoryTest {
         inventory = new Inventory();
         board = new Board();
         parcel = new Parcel(ColorType.BLUE);
-        mission = new ParcelMission( ColorType.BLUE, 0, FormType.LINE);
+        mission = new ParcelMission(board,ColorType.BLUE, 0, FormType.LINE);
     }
 
     @Test

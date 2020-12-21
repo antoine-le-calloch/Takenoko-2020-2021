@@ -20,18 +20,18 @@ import java.util.List;
  */
 
 class Game{
-    private final Resource resource;
     private final Board board;
     private final Rules rules;
+    private final Resource resource;
     private final PlayerInteraction playerInteraction;
     private final List<PlayerData> botData;
     private final int NB_MISSION;
     private int numBot;
 
     Game(BotType[] botTypes,int nbMission,int stamina){
-        resource = new Resource();
         board = new Board();
         rules = new Rules(board);
+        resource = new Resource(board);
         playerInteraction = new PlayerInteraction(this);
         botData = new LinkedList<>();
         NB_MISSION = nbMission;
@@ -74,17 +74,14 @@ class Game{
 
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
-        while( isContinue() && (!resource.isEmpty())) {
+        while( isContinue() ) {
             botPlay();
-            missionDone();
             nextBot();
         }
     }
 
     private void botPlay() {
-        getPlayerData().resetTemporaryInventory();
-        getPlayerData().getBot().botPlay();
-        getPlayerData().hasPlayedCorrectly();
+        getPlayerData().botPlay();
     }
 
     /**Set the next bot to play.
@@ -100,30 +97,7 @@ class Game{
             if (missionDoneBy1P >= NB_MISSION)
                 return false;
         }
-        return true;
-    }
-
-    /**Check missions of the current bot and, if done, remove it and add points to the current inventory.
-     */
-    void missionDone(){
-        List<Mission> toRemove = new ArrayList<>();
-        int count;
-        for(Mission mission : getPlayerData().getMissions()){
-            if( (count = mission.checkMission(board,getPlayerData().getInventory())) != 0){
-                completedMission(count);
-                toRemove.add(mission);
-            }
-        }
-        getPlayerData().subMissions(toRemove);
-    }
-
-    /**Add points to the current inventory.
-     *
-     * @param count
-     *              <b>The number of points to add.</b>
-     */
-    void completedMission(int count) {
-        getPlayerData().addScore(count);
+        return !resource.isEmpty();
     }
 
     Board getBoard() {

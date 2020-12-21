@@ -10,7 +10,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  * {@link ParcelMission}, {@link PandaMission} classes.</p>
  *
  * <p>The programmer needs only to extend this class and provide
- * implementations for the {@link #checkMission(Board, Inventory)} method.</p>
+ * implementations for the {@link #checkMission(Inventory)} method.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -22,6 +22,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  */
 
 abstract class Mission {
+    protected final Board board;
     protected final MissionType missionType;
     protected final ColorType colorType;
     protected final int points;
@@ -36,21 +37,16 @@ abstract class Mission {
      * @param points
      *            <b>the points of the mission</b>
      */
-    Mission(MissionType missionType, ColorType colorType, int points){
+    Mission(Board board, MissionType missionType, ColorType colorType, int points){
+        this.board = board;
         this.missionType = missionType;
         this.colorType = colorType;
         this.points = points;
     }
 
-    /**
-     * <p>check if a mission is done</p>
-     *
-     * @param board
-     *            <b>Board object.</b>
-     * @param inventory
-     *            <b>Inventory object.</b>
+    /**<p>check if a mission is done</p>
      */
-    abstract int checkMission(Board board, Inventory inventory);
+    abstract boolean checkMission(Inventory inventory);
 
     /**
      * @return <b>the missionType of the mission</b>

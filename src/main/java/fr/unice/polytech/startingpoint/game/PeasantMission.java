@@ -8,7 +8,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  *
  * <p>This class create and check if the {@link PeasantMission} is done.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link #checkMission(Board, Inventory)} method from the {@link Mission}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link #checkMission(Inventory)} method from the {@link Mission}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -30,24 +30,18 @@ public class PeasantMission extends Mission {
      * @param points
      *            <b>the points of the mission</b>
      */
-    PeasantMission(ColorType colorType, int points){
-        super(MissionType.PEASANT,colorType,points);
+    PeasantMission(Board board, ColorType colorType, int points){
+        super(board, MissionType.PEASANT,colorType,points);
     }
 
-    /**
-     * <p>check peasant if a mission is done</p>
-     *
-     * @param board
-     *            <b>Board object.</b>
-     * @param inventory
-     *            <b>Inventory object.</b>
+    /**<p>check peasant if a mission is done</p>
      */
-    int checkMission(Board board, Inventory inventory) {
+    boolean checkMission(Inventory inventory) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
             int NB_BAMBOO = 2;
             if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType)
-                return points;
+                return true;
         }
-        return 0;
+        return false;
     }
 }

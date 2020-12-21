@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class MissionTest {
+    Board board;
     Mission mission1;
     Mission mission2;
     Mission mission3;
@@ -23,12 +24,13 @@ class MissionTest {
     Mission mission6;
 
     @BeforeEach void setUp(){
-        mission1 = new ParcelMission(ColorType.RED, 2, FormType.TRIANGLE);
-        mission2 = new ParcelMission(ColorType.BLUE, 3, FormType.LINE);
-        mission3 = new PandaMission(ColorType.RED, 0);
-        mission4 = new PandaMission(ColorType.BLUE, 1);
-        mission5 = new PeasantMission(ColorType.RED, 0);
-        mission6 = new PeasantMission(ColorType.BLUE, 1);
+        board = new Board();
+        mission1 = new ParcelMission(board,ColorType.RED, 2, FormType.TRIANGLE);
+        mission2 = new ParcelMission(board,ColorType.BLUE, 3, FormType.LINE);
+        mission3 = new PandaMission(board,ColorType.RED, 0);
+        mission4 = new PandaMission(board,ColorType.BLUE, 1);
+        mission5 = new PeasantMission(board,ColorType.RED, 0);
+        mission6 = new PeasantMission(board,ColorType.BLUE, 1);
     }
 
     @Test void newMissionParcel(){

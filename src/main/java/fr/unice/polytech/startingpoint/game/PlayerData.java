@@ -5,6 +5,7 @@ import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerData {
@@ -20,6 +21,24 @@ public class PlayerData {
         this.temporaryInventory = temporaryInventory;
         score = 0;
         missionsDone = 0;
+    }
+
+    void botPlay() {
+        resetTemporaryInventory();
+        bot.botPlay();
+        hasPlayedCorrectly();
+        missionDone();
+    }
+
+    void missionDone(){
+        List<Mission> toRemove = new ArrayList<>();
+        for(Mission mission : getMissions()){
+            if(mission.checkMission(inventory)){
+                addScore(mission.getPoints());
+                toRemove.add(mission);
+            }
+        }
+        subMissions(toRemove);
     }
 
     boolean add(ActionType actionType) {

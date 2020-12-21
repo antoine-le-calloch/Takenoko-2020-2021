@@ -9,7 +9,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  *
  * <p>This class create and check if the {@link ParcelMission} is done.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link #checkMission(Board, Inventory)} method from the {@link Mission}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link #checkMission(Inventory)} method from the {@link Mission}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -32,40 +32,30 @@ public class ParcelMission extends Mission {
      * @param points
      *            <b>the points of the mission</b>
      */
-    ParcelMission(ColorType colorType, int points,FormType formType) {
-        super(MissionType.PARCEL,colorType,points);
+    ParcelMission(Board board, ColorType colorType, int points,FormType formType) {
+        super(board, MissionType.PARCEL,colorType,points);
         this.formType = formType;
     }
 
     /**
      * <p>check if a parcel mission is done, use checkFormIrrigateWithColor as a function of the form</p>
      *
-     * @param board
-     *            <b>Board object.</b>
-     * @param inventory
-     *            <b>Inventory object.</b>
      * @return <b>the number of point if the mission is done, if not , return 0</b>
      */
-    int checkMission(Board board, Inventory inventory) {
+    boolean checkMission(Inventory inventory) {
         switch (formType) {
             case TRIANGLE:
-                if (checkFormIrrigateWithColor(board, new Coordinate(1, 0, -1), new Coordinate(1, -1, 0)))
-                    return points;
-                return 0;
+                return checkFormIrrigateWithColor(new Coordinate(1, 0, -1), new Coordinate(1, -1, 0));
             case LINE:
-                if (checkFormIrrigateWithColor(board, new Coordinate(0, -1, 1), new Coordinate(0, 1, -1)))
-                    return points;
-                return 0;
+                return checkFormIrrigateWithColor(new Coordinate(0, -1, 1), new Coordinate(0, 1, -1));
             default:
-                return 0;
+                return false;
         }
     }
 
     /**
      * <p>check if a form in on the board, all parcels have to be irrigated and must have the good color.</p>
      *
-     * @param board
-     *            <b>Board object.</b>
      * @param coordinate1
      *            <b>first coordinate to add to the parcel's coordinate
      *            to check is the there is a parcel irrigated and with a good color on the board.</b>
@@ -74,7 +64,7 @@ public class ParcelMission extends Mission {
      *      *            to check is the there is a parcel irrigated and with a good color on the board.</b>
      * @return <b>true if the form is on the board</b>
      */
-    boolean checkFormIrrigateWithColor(Board board, Coordinate coordinate1, Coordinate coordinate2) {
+    boolean checkFormIrrigateWithColor(Coordinate coordinate1, Coordinate coordinate2) {
         for (Coordinate coordinate : board.getPlacedParcels().keySet()) {
             if (board.isPlacedAndIrrigatedParcel(coordinate) &&
                     board.isPlacedAndIrrigatedParcel(new Coordinate(coordinate, coordinate1)) &&

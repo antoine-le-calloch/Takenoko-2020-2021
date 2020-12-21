@@ -6,8 +6,7 @@ import fr.unice.polytech.startingpoint.type.*;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests unitaires
@@ -26,28 +25,28 @@ public class PeasantMissionTest {
 
     @BeforeEach
     void setUp(){
-        mission1 = new PeasantMission(ColorType.RED, 2);
-        mission2 = new PeasantMission(ColorType.BLUE, 2);
         game = new Game();
         board = game.getBoard();
+        mission1 = new PeasantMission(board,ColorType.RED, 2);
+        mission2 = new PeasantMission(board,ColorType.BLUE, 2);
     }
 
     @Test
     void missionComplete() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
         game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
+        assertTrue(mission1.checkMission(game.getPlayerData().getInventory()));
     }
 
     @Test
     void wrongColor() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
         game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertEquals(0,mission2.checkMission(board, game.getPlayerData().getInventory()));
+        assertFalse(mission2.checkMission(game.getPlayerData().getInventory()));
     }
 
     @Test
     void notEnoughBamboo(){
-        assertNotEquals(2,mission1.checkMission(board, game.getPlayerData().getInventory()));
+        assertFalse(mission1.checkMission(game.getPlayerData().getInventory()));
     }
 }
