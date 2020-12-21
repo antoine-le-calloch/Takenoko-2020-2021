@@ -13,7 +13,7 @@ public class IntelligentBot extends Bot {
     }
 
     public void botPlay() {
-        if (playerInteraction.getPlayerData().getMissionsDone() < NB_CHANGE_STRAT)
+        if (playerInteraction.getNumberMissionsDone() < NB_CHANGE_STRAT)
             stratMissionParcel.stratParcel();
         else
             stratRushPanda.stratRushPanda();

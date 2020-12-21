@@ -91,7 +91,7 @@ public class PlayerData {
         return score;
     }
 
-    public int getMissionsDone() {
+    int getMissionsDone() {
         return missionsDone;
     }
 

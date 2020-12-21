@@ -7,6 +7,7 @@ import fr.unice.polytech.startingpoint.type.*;
 
 import org.junit.jupiter.api.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -325,5 +326,17 @@ class PlayerInteractionTest {
         assertEquals(new ParcelInformation(ImprovementType.WATERSHED),playerInteraction.getPlacedParcelInformation(new Coordinate(1,-1,0)));
         assertEquals(new ParcelInformation(ColorType.RED),playerInteraction.getPlacedParcelInformation(new Coordinate(0,-1,1)));
         assertEquals(new ParcelInformation(ColorType.BLUE,ImprovementType.ENCLOSURE),playerInteraction.getPlacedParcelInformation(new Coordinate(1,-2,1)));
+    }
+
+    @Test
+    void testGetPlacedCoordinatesByColor(){
+        game.getBoard().placeParcel(new Parcel(ColorType.RED),new Coordinate(0,-1,1));
+        game.getBoard().placeParcel(new Parcel(ColorType.BLUE),new Coordinate(1,-1,0));
+        ArrayList<Coordinate> placedCoordinatesByRedColor= (ArrayList<Coordinate>) playerInteraction.getPlacedCoordinatesByColor(ColorType.RED);
+        ArrayList<Coordinate> placedCoordinatesByBlueColor= (ArrayList<Coordinate>) playerInteraction.getPlacedCoordinatesByColor(ColorType.BLUE);
+        assertEquals(new Coordinate(0,-1,1),placedCoordinatesByRedColor.get(0));
+        assertEquals(new Coordinate(1,-1,0),placedCoordinatesByBlueColor.get(0));
+        assertNotEquals(new Coordinate(1,-1,0),placedCoordinatesByRedColor.get(0));
+        assertNotEquals(new Coordinate(0,-1,1),placedCoordinatesByBlueColor.get(0));
     }
 }

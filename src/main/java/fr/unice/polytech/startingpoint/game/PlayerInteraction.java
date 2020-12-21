@@ -8,6 +8,7 @@ import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlayerInteraction {
     private final Game game;
@@ -127,6 +128,9 @@ public class PlayerInteraction {
      * <h1><u>BOT GETTERS</u></h1>
      */
 
+    public int getNumberMissionsDone(){
+        return getPlayerData().getMissionsDone();
+    }
     public boolean isPlacedParcel(Coordinate coordinate) {
         return board.isPlacedParcel(coordinate);
     }
@@ -145,6 +149,13 @@ public class PlayerInteraction {
 
     public List<Coordinate> getPlacedCoordinates(){
         return new ArrayList<>(board.getPlacedParcels().keySet());
+    }
+    public List<Coordinate> getPlacedCoordinatesByColor(ColorType color){
+
+        return (board.getPlacedParcels().keySet()
+               .stream()
+                .filter(coordinate -> getPlacedParcelInformation(coordinate).getColorType().equals(color))
+               .collect(Collectors.toList()));
     }
 
     /**
