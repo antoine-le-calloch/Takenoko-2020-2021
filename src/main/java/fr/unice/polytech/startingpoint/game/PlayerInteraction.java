@@ -152,7 +152,7 @@ public class PlayerInteraction {
     }
     public List<Coordinate> getPlacedCoordinatesByColor(ColorType color){
 
-        return (board.getPlacedParcels().keySet()
+        return (getPlacedCoordinates()
                .stream()
                 .filter(coordinate -> getPlacedParcelInformation(coordinate).getColorType().equals(color))
                .collect(Collectors.toList()));
