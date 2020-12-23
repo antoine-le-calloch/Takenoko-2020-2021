@@ -14,22 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class MissionPeasantStratTest {
     Board board;
     Parcel parcel1;
-    Bot peasantBot;
     Coordinate coordinate1;
     Game game;
     Bot bot;
-    Rules rules;
     MissionPeasantStrat stratMissionPeasant;
 
     @BeforeEach
     void setUp() {
         game = new Game();
         board = game.getBoard();
-        rules = game.getRules();
         parcel1 = new Parcel();
-        bot = new PeasantBot(game.getGameInteraction(), rules);
+        bot = new PeasantBot(game.getGameInteraction());
         coordinate1 = new Coordinate(1, -1, 0);
-        stratMissionPeasant = new MissionPeasantStrat(bot, rules);
+        stratMissionPeasant = new MissionPeasantStrat(bot);
     }
     /**
      <h2><u>Strategy Move Peasant</u></h2>

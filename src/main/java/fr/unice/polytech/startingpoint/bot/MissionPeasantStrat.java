@@ -11,8 +11,8 @@ public class MissionPeasantStrat extends Strategie{
 
     /**@param bot
      */
-    public MissionPeasantStrat(Bot bot, Rules rules) {
-        super(bot, rules);
+    public MissionPeasantStrat(Bot bot) {
+        super(bot);
     }
 
     /**<p>The actions of the bot during his turn.</p>

@@ -27,9 +27,9 @@ class RushPandaStratTest {
         board = game.getBoard();
         rules = game.getRules();
         parcel1 = new Parcel();
-        bot = new PandaBot(game.getGameInteraction(), rules);
+        bot = new PandaBot(game.getGameInteraction());
         coordinate1 = new Coordinate(1, -1, 0);
-        rushPandaStrat = new RushPandaStrat(bot, rules);
+        rushPandaStrat = new RushPandaStrat(bot);
     }
 
     /**

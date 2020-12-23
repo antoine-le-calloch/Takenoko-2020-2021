@@ -32,7 +32,7 @@ public class PandaMissionTest {
         game = new Game();
         board = game.getBoard();
         resource = game.getResource();
-        bot = new RandomBot(game.getGameInteraction(), game.getRules());
+        bot = new RandomBot(game.getGameInteraction());
         parcel1 = new Parcel(ColorType.RED);
         parcel2 = new Parcel(ColorType.BLUE);
         mission1 = new PandaMission(board,ColorType.RED, 2);

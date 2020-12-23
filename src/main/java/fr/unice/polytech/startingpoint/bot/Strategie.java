@@ -13,9 +13,9 @@ public abstract class Strategie {
     protected final Bot bot;
     protected final Rules rules;
 
-    public Strategie(Bot bot, Rules rules) {
+    public Strategie(Bot bot) {
         this.bot = bot;
-        this.rules = rules;
+        this.rules = bot.playerInteraction.getRules();
     }
 
     /**<p>The actions of the bot during his turn.</p>

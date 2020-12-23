@@ -147,6 +147,10 @@ public final class PlayerInteraction {
         return board.getPlacedParcels().get(coordinate).getNbBamboo();
     }
 
+    public Rules getRules(){
+        return  rules;
+    }
+
     public List<Coordinate> getPlacedCoordinates(){
         return new ArrayList<>(board.getPlacedParcels().keySet());
     }

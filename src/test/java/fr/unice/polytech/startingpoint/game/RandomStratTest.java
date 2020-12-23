@@ -33,7 +33,7 @@ public class RandomStratTest {
         board = game.getBoard();
         rdmBot1 = (RandomBot) game.getPlayerData().getBot();
         resource = game.getResource();
-        randomStrat = new RandomStrat(rdmBot1, rules);
+        randomStrat = new RandomStrat(rdmBot1);
     }
 
     @Test

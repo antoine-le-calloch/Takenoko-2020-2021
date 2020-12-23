@@ -22,7 +22,7 @@ import fr.unice.polytech.startingpoint.game.*;
  */
 
 public class ParcelBot extends Bot {
-    MissionParcelStrat stratMissionParcel = new MissionParcelStrat(this, rules);
+    MissionParcelStrat stratMissionParcel = new MissionParcelStrat(this);
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
@@ -31,8 +31,8 @@ public class ParcelBot extends Bot {
      * @param rules
      *            <b>Rules object.</b>
      */
-    public ParcelBot(PlayerInteraction playerInteraction, Rules rules) {
-        super(playerInteraction, rules);
+    public ParcelBot(PlayerInteraction playerInteraction) {
+        super(playerInteraction);
     }
 
     /**<p>The actions of the bot during his turn.</p>

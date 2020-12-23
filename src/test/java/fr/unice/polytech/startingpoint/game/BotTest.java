@@ -21,23 +21,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class BotTest {
     private Game game;
     private Parcel parcel1;
-    private Parcel parcel2;
-    private Parcel parcel3;
     private ParcelBot bot1;
     private Board board;
-    private Rules rules;
     private Strategie strategie;
 
     @BeforeEach
     public void setUp(){
         game = new Game();
         parcel1 = new Parcel(ColorType.BLUE);
-        parcel2 = new Parcel();
-        parcel3 = new Parcel();
-        bot1 = new ParcelBot(game.getGameInteraction(),game.getRules());
+        bot1 = new ParcelBot(game.getGameInteraction());
         board = game.getBoard();
-        rules = game.getRules();
-        strategie = new RandomStrat(bot1, rules);
+        strategie = new RandomStrat(bot1);
     }
 
 

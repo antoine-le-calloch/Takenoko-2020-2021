@@ -57,9 +57,9 @@ class MissionParcelStratTest {
 
         game = new Game();
         board = game.getBoard();
-        parcelBot = new ParcelBot(game.getGameInteraction(), game.getRules());
+        parcelBot = new ParcelBot(game.getGameInteraction());
 
-        stratMissionParcel = new MissionParcelStrat(parcelBot, game.getRules());
+        stratMissionParcel = new MissionParcelStrat(parcelBot);
 
         missionBlueTriangle = new ParcelMission(board,ColorType.BLUE, 1, FormType.TRIANGLE);
         missionRedTriangle = new ParcelMission(board,ColorType.RED, 1, FormType.TRIANGLE);

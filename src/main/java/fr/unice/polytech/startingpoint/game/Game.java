@@ -55,19 +55,19 @@ class Game{
         for (BotType botType : botTypes) {
             switch (botType) {
                 case RANDOM:
-                    botData.add( new PlayerData( new RandomBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    botData.add( new PlayerData( new RandomBot(playerInteraction) , new Inventory() , new TemporaryInventory(stamina) ) );
                     break;
                 case PARCEL_BOT:
-                    botData.add( new PlayerData( new ParcelBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    botData.add( new PlayerData( new ParcelBot(playerInteraction) , new Inventory() , new TemporaryInventory(stamina) ) );
                     break;
                 case PEASANT_BOT:
-                    botData.add( new PlayerData( new PeasantBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    botData.add( new PlayerData( new PeasantBot(playerInteraction) , new Inventory() , new TemporaryInventory(stamina) ) );
                     break;
                 case PANDA_BOT:
-                    botData.add( new PlayerData( new PandaBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    botData.add( new PlayerData( new PandaBot(playerInteraction) , new Inventory() , new TemporaryInventory(stamina) ) );
                     break;
                 case INTELLIGENT_BOT:
-                    botData.add( new PlayerData( new IntelligentBot(playerInteraction, rules ) , new Inventory() , new TemporaryInventory(stamina) ) );
+                    botData.add( new PlayerData( new IntelligentBot(playerInteraction) , new Inventory() , new TemporaryInventory(stamina) ) );
                     break;
             }
         }

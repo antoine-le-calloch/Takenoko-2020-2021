@@ -11,8 +11,8 @@ public class RushPandaStrat extends Strategie{
 
     /**@param bot
      */
-    public RushPandaStrat(Bot bot, Rules rules) {
-        super(bot, rules);
+    public RushPandaStrat(Bot bot) {
+        super(bot);
     }
 
     public void stratOneTurn(){

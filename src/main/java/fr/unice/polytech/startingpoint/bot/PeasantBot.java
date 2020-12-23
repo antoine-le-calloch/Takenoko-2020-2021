@@ -22,7 +22,7 @@ import fr.unice.polytech.startingpoint.game.*;
  */
 
 public class PeasantBot extends Bot {
-    MissionPeasantStrat stratMissionPeasant = new MissionPeasantStrat(this, rules);
+    MissionPeasantStrat stratMissionPeasant = new MissionPeasantStrat(this);
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
      * @param game
@@ -30,8 +30,8 @@ public class PeasantBot extends Bot {
      * @param rules
      *            <b>Rules object.</b>
      */
-    public PeasantBot(PlayerInteraction playerInteraction, Rules rules) {
-        super(playerInteraction, rules);
+    public PeasantBot(PlayerInteraction playerInteraction) {
+        super(playerInteraction);
     }
 
     /**<p>The actions of the bot during his turn.</p>

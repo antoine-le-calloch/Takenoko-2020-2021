@@ -22,8 +22,8 @@ public class RandomStrat extends Strategie{
      * @param rules
      *            <b>Rules object.</b>
      */
-    public RandomStrat(Bot bot, Rules rules) {
-        super(bot, rules);
+    public RandomStrat(Bot bot) {
+        super(bot);
         random = new Random();
         random2 = new Random();
     }

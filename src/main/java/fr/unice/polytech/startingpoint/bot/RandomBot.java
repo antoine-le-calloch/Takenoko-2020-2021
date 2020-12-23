@@ -24,7 +24,7 @@ import java.util.Random;
  */
 
 public class RandomBot extends Bot {
-    RandomStrat randomStrat = new RandomStrat(this, rules);
+    RandomStrat randomStrat = new RandomStrat(this);
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass and initialize two {@link Random} objects.</p>
      *
@@ -33,8 +33,8 @@ public class RandomBot extends Bot {
      * @param rules
      *            <b>Rules object.</b>
      */
-    public RandomBot(PlayerInteraction playerInteraction, Rules rules) {
-        super(playerInteraction, rules);
+    public RandomBot(PlayerInteraction playerInteraction) {
+        super(playerInteraction);
     }
 
     /**<p>The actions of the bot during his turn.</p>

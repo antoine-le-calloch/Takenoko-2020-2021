@@ -32,7 +32,6 @@ import java.util.List;
 
 public abstract class Bot {
     protected final PlayerInteraction playerInteraction;
-    protected final Rules rules;
     final int NB_ACTION = 2;
 
     /**
@@ -41,9 +40,8 @@ public abstract class Bot {
      * @param playerInteraction
      *            <b>Game object.</b>
      */
-    public Bot(PlayerInteraction playerInteraction, Rules rules) {
+    public Bot(PlayerInteraction playerInteraction) {
         this.playerInteraction = playerInteraction;
-        this.rules = rules;
     }
 
     /**<p>The actions of the bot during his turn.</p>

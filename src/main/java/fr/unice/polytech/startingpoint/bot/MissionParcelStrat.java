@@ -18,8 +18,8 @@ public class MissionParcelStrat extends Strategie{
 
     /**@param bot
      */
-    public MissionParcelStrat(Bot bot, Rules rules) {
-        super(bot, rules);
+    public MissionParcelStrat(Bot bot) {
+        super(bot);
     }
 
     public void stratOneTurn(){

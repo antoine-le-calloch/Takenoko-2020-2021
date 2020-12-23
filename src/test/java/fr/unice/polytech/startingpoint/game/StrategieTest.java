@@ -29,10 +29,10 @@ public class StrategieTest {
         parcel1 = new Parcel(ColorType.BLUE);
         parcel2 = new Parcel();
         parcel3 = new Parcel();
-        bot1 = new ParcelBot(game.getGameInteraction(),game.getRules());
+        bot1 = new ParcelBot(game.getGameInteraction());
         board = game.getBoard();
         rules = game.getRules();
-        strategie = new RandomStrat(bot1, rules);
+        strategie = new RandomStrat(bot1);
     }
 
 
