@@ -1,25 +1,25 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
+import fr.unice.polytech.startingpoint.game.Rules;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
 import java.util.List;
 
-public class StratRushPanda {
-    Bot bot;
+public class RushPandaStrat extends Strategie{
 
     /**@param bot
      */
-    public StratRushPanda(Bot bot) {
-        this.bot = bot;
+    public RushPandaStrat(Bot bot, Rules rules) {
+        super(bot, rules);
     }
 
-    public void stratRushPanda(){
+    public void stratOneTurn(){
         if (bot.playerInteraction.getInventoryMissions().size() < 5 && bot.playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
             bot.drawMission(MissionType.PANDA);
-        if (strategyMovePanda(bot.possibleCoordinatesPanda()) != null)
-            bot.movePanda(strategyMovePanda(bot.possibleCoordinatesPanda()));
+        if (strategyMovePanda(possibleCoordinatesPanda()) != null)
+            bot.movePanda(strategyMovePanda(possibleCoordinatesPanda()));
     }
 
     /**@param coordinateList

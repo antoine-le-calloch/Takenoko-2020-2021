@@ -2,7 +2,7 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.bot.ParcelBot;
-import fr.unice.polytech.startingpoint.bot.StratMissionParcel;
+import fr.unice.polytech.startingpoint.bot.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import org.junit.jupiter.api.*;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
  * @version 2020.12.03
  */
 
-class StratMissionParcelTest {
+class MissionParcelStratTest {
 
     ParcelMission missionBlueTriangle;
     ParcelMission missionRedTriangle;
@@ -42,7 +42,7 @@ class StratMissionParcelTest {
     Board board;
     Bot parcelBot;
 
-    StratMissionParcel stratMissionParcel;
+    MissionParcelStrat stratMissionParcel;
 
     @BeforeEach
     public void setUp() {
@@ -59,7 +59,7 @@ class StratMissionParcelTest {
         board = game.getBoard();
         parcelBot = new ParcelBot(game.getGameInteraction(), game.getRules());
 
-        stratMissionParcel = new StratMissionParcel(parcelBot);
+        stratMissionParcel = new MissionParcelStrat(parcelBot, game.getRules());
 
         missionBlueTriangle = new ParcelMission(board,ColorType.BLUE, 1, FormType.TRIANGLE);
         missionRedTriangle = new ParcelMission(board,ColorType.RED, 1, FormType.TRIANGLE);

@@ -1,18 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
-import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.FormType;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * <h1>{@link ParcelBot} :</h1>
@@ -34,7 +22,7 @@ import java.util.stream.Collectors;
  */
 
 public class ParcelBot extends Bot {
-    StratMissionParcel stratMissionParcel = new StratMissionParcel(this);
+    MissionParcelStrat stratMissionParcel = new MissionParcelStrat(this, rules);
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
@@ -50,6 +38,6 @@ public class ParcelBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        stratMissionParcel.stratParcel();
+        stratMissionParcel.stratOneTurn();
     }
 }

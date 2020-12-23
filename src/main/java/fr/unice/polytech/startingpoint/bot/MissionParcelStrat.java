@@ -14,16 +14,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class StratMissionParcel{
-    Bot bot;
+public class MissionParcelStrat extends Strategie{
 
     /**@param bot
      */
-    public StratMissionParcel(Bot bot) {
-        this.bot = bot;
+    public MissionParcelStrat(Bot bot, Rules rules) {
+        super(bot, rules);
     }
 
-    public void stratParcel(){
+    public void stratOneTurn(){
         int cptAction = bot.NB_ACTION;
         if (isJudiciousDrawMission(cptAction)) {
             bot.drawMission(MissionType.PARCEL);
@@ -60,7 +59,7 @@ public class StratMissionParcel{
                     return false;
             }
         }
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && bot.possibleCoordinatesParcel().size()>0 && cptAction != 0;
+        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && cptAction != 0;
     }
 
     /**
@@ -68,7 +67,7 @@ public class StratMissionParcel{
      * @see PlayerInteraction
      */
     public boolean isJudiciousPutCanal(int cptAction){
-        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && bot.possibleCoordinatesCanal().size() > 0 && cptAction != 0;
+        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && cptAction != 0;
     }
 
     /**
@@ -96,7 +95,7 @@ public class StratMissionParcel{
 
             if(bestCoords.size() != 0) {
                 for (Coordinate coordinate : bestCoords) {
-                    if(bot.rules.isPlayableParcel(coordinate)) {
+                    if(rules.isPlayableParcel(coordinate)) {
                         bot.selectParcel(bestColor);
                         bot.placeParcel(coordinate);
                         break;
@@ -106,7 +105,7 @@ public class StratMissionParcel{
             }
             else {
                 bot.selectParcel(parcelInformationList.get(0));
-                bot.placeParcel(bot.possibleCoordinatesParcel().get(0));
+                bot.placeParcel(possibleCoordinatesParcel().get(0));
             }
 
         } catch (OutOfResourcesException | RulesViolationException e) {
@@ -143,7 +142,7 @@ public class StratMissionParcel{
         List<Coordinate> bestCoordinates = new ArrayList<>();
         int minTurnToEndForm = -1;
 
-        for (Coordinate hightCoord : bot.allPlaces()) {
+        for (Coordinate hightCoord : allPlaces()) {
             List<Coordinate> parcelsToPlaceToDoForm = coordNeedToDoMission(hightCoord, mission);
 
             if(parcelsToPlaceToDoForm != null && (minTurnToEndForm == -1 || parcelsToPlaceToDoForm.size() < minTurnToEndForm)){
@@ -183,15 +182,15 @@ public class StratMissionParcel{
             if(!bot.playerInteraction.isPlacedParcel(coord))
                 coordNeedeToDoMission.add(coord);
 
-            if(!bot.rules.isPlayableParcel(coord) && !bot.playerInteraction.isPlacedParcel(coord) && coordAroundUse(coord) != null){
+            if(!rules.isPlayableParcel(coord) && !bot.playerInteraction.isPlacedParcel(coord) && coordAroundUse(coord) != null){
                 for (Coordinate laidCoord : Coordinate.getInCommonAroundCoordinates(coord,coordAroundUse(coord))) {
-                    if(bot.rules.isPlayableParcel(laidCoord)) {
+                    if(rules.isPlayableParcel(laidCoord)) {
                         coordNeedeToDoMission.add(laidCoord);
                         break;
                     }
                 }
             }
-            else if(!bot.rules.isPlayableParcel(coord) && !bot.playerInteraction.isPlacedParcel(coord))
+            else if(!rules.isPlayableParcel(coord) && !bot.playerInteraction.isPlacedParcel(coord))
                 if(coordNotPossible == null)
                     coordNotPossible = coord;
                 else
@@ -200,9 +199,9 @@ public class StratMissionParcel{
 
         if(coordNotPossible != null && coordNotPossible.coordinatesAround().stream().filter(coordNeedeToDoMission::contains).count() < 2){
             List<Coordinate>  coordsNeed =  Coordinate.getInCommonAroundCoordinates(coordNotPossible,coordNotPossible.coordinatesAround().stream().filter(coordNeedeToDoMission::contains).collect(Collectors.toList()).get(0));
-            if(bot.rules.isPlayableParcel(coordsNeed.get(0)))
+            if(rules.isPlayableParcel(coordsNeed.get(0)))
                 coordNeedeToDoMission.add(coordsNeed.get(0));
-            else if(bot.rules.isPlayableParcel(coordsNeed.get(1)))
+            else if(rules.isPlayableParcel(coordsNeed.get(1)))
                 coordNeedeToDoMission.add(coordsNeed.get(1));
             else
                 return null;
@@ -252,7 +251,7 @@ public class StratMissionParcel{
                 return true;
             }
 
-            bot.placeCanal(bot.possibleCoordinatesCanal().get(0));
+            bot.placeCanal(possibleCoordinatesCanal().get(0));
             return false;
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
@@ -262,7 +261,7 @@ public class StratMissionParcel{
 
     public List<Coordinate> coordEndMissionNoIrrigate() {
         for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
-            for (Coordinate coordinate : bot.allPlaces()) {
+            for (Coordinate coordinate : allPlaces()) {
                 if(coordNeedToDoMission(coordinate,mission) != null && coordNeedToDoMission(coordinate,mission).size() == 0) {
                     return setForm(coordinate, mission.getFormType());
                 }
@@ -275,7 +274,7 @@ public class StratMissionParcel{
         int normMin = -1;
         Coordinate[] bestCanal = null;
 
-        for (Coordinate[] coordinatesCanal : bot.possibleCoordinatesCanal()) {
+        for (Coordinate[] coordinatesCanal : possibleCoordinatesCanal()) {
             if(normMin == -1 || (Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[0])+Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[1])) < normMin) {
                 normMin = Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[0]) + Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[1]);
                 bestCanal = coordinatesCanal;

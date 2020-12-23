@@ -4,8 +4,8 @@ import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 import fr.unice.polytech.startingpoint.game.Rules;
 
 public class IntelligentBot extends Bot {
-    StratRushPanda stratRushPanda = new StratRushPanda(this);
-    StratMissionParcel stratMissionParcel = new StratMissionParcel(this);
+    RushPandaStrat rushPandaStrat = new RushPandaStrat(this, rules);
+    MissionParcelStrat stratMissionParcel = new MissionParcelStrat(this, rules);
     int NB_CHANGE_STRAT = 2;
 
     public IntelligentBot(PlayerInteraction playerInteraction, Rules rules) {
@@ -14,8 +14,8 @@ public class IntelligentBot extends Bot {
 
     public void botPlay() {
         if (playerInteraction.getNumberMissionsDone() < NB_CHANGE_STRAT)
-            stratMissionParcel.stratParcel();
+            stratMissionParcel.stratOneTurn();
         else
-            stratRushPanda.stratRushPanda();
+            rushPandaStrat.stratOneTurn();
     }
 }

@@ -1,9 +1,9 @@
 package fr.unice.polytech.startingpoint.game;
 
 
+import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.bot.PandaBot;
-import fr.unice.polytech.startingpoint.bot.StratRushPanda;
-import fr.unice.polytech.startingpoint.type.BotType;
+import fr.unice.polytech.startingpoint.bot.RushPandaStrat;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,14 +13,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class StratRushPandaTest {
+class RushPandaStratTest {
     Board board;
     Parcel parcel1;
-    PandaBot bot;
+    Bot bot;
     Coordinate coordinate1;
     Game game;
     Rules rules;
-    StratRushPanda stratRushPanda;
+    RushPandaStrat rushPandaStrat;
 
     @BeforeEach void setUp() {
         game = new Game();
@@ -29,7 +29,7 @@ class StratRushPandaTest {
         parcel1 = new Parcel();
         bot = new PandaBot(game.getGameInteraction(), rules);
         coordinate1 = new Coordinate(1, -1, 0);
-        stratRushPanda = new StratRushPanda(bot);
+        rushPandaStrat = new RushPandaStrat(bot, rules);
     }
 
     /**
@@ -39,14 +39,14 @@ class StratRushPandaTest {
 
     @Test
     void coordWhereMovePanda_0parcel() {
-        assertNull(stratRushPanda.strategyMovePanda(bot.possibleCoordinatesPanda()));//Pas de parcel, il ne bouge pas
+        assertNull(rushPandaStrat.strategyMovePanda(rushPandaStrat.possibleCoordinatesPanda()));//Pas de parcel, il ne bouge pas
     }
 
 
     @Test
     void coordWhereMovePanda_1parcelWithBamboo() {
         board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        assertEquals(coordinate1, stratRushPanda.strategyMovePanda(bot.possibleCoordinatesPanda()));//Le panda veut aller dessus
+        assertEquals(coordinate1, rushPandaStrat.strategyMovePanda(rushPandaStrat.possibleCoordinatesPanda()));//Le panda veut aller dessus
     }
 
     @Test
@@ -59,8 +59,8 @@ class StratRushPandaTest {
         board.placeParcel(new Parcel(),coordParcel2);//place la parcel (un bamboo pousse)
         board.placeParcel(new Parcel(),coordParcel3);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
         board.placeParcel(new Parcel(),coordParcel4);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
-        List<Coordinate> possibleCoordinates = bot.possibleCoordinatesPanda();
-        assertEquals(coordParcel1, stratRushPanda.strategyMovePanda(possibleCoordinates));
+        List<Coordinate> possibleCoordinates = rushPandaStrat.possibleCoordinatesPanda();
+        assertEquals(coordParcel1, rushPandaStrat.strategyMovePanda(possibleCoordinates));
     }
 
     @Test

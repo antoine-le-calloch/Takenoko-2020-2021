@@ -1,10 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
-
-import java.util.List;
 
 /**
  * <h1>{@link PeasantBot} :</h1>
@@ -26,7 +22,7 @@ import java.util.List;
  */
 
 public class PeasantBot extends Bot {
-    StratMissionPeasant stratMissionPeasant = new StratMissionPeasant(this);
+    MissionPeasantStrat stratMissionPeasant = new MissionPeasantStrat(this, rules);
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
      * @param game
@@ -41,6 +37,6 @@ public class PeasantBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        stratMissionPeasant.stratPeasant();
+        stratMissionPeasant.stratOneTurn();
     }
 }

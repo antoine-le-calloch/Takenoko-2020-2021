@@ -2,10 +2,10 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.ParcelBot;
 
+import fr.unice.polytech.startingpoint.bot.RandomStrat;
+import fr.unice.polytech.startingpoint.bot.Strategie;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
-
-import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +26,7 @@ class BotTest {
     private ParcelBot bot1;
     private Board board;
     private Rules rules;
+    private Strategie strategie;
 
     @BeforeEach
     public void setUp(){
@@ -36,80 +37,15 @@ class BotTest {
         bot1 = new ParcelBot(game.getGameInteraction(),game.getRules());
         board = game.getBoard();
         rules = game.getRules();
+        strategie = new RandomStrat(bot1, rules);
     }
 
-    @Test
-    public void initializeNextCoordinatesNextToCentral(){
-        List<Coordinate> nextTocentral = bot1.possibleCoordinatesParcel();
-        assertEquals(6,nextTocentral.size());
-        Coordinate randomco = nextTocentral.get(0);
-        assertEquals(2,    Coordinate.getNorm(new Coordinate(0,0,0),randomco));
-        int[] tabco = randomco.getCoordinate();
-        int sumco = tabco[0] + tabco[1] + tabco[2];
-        assertEquals(0,sumco);
-    }
-
-    @Test
-    public void initializeNextCoordinatesAwayFromCentral(){
-
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        List<Coordinate> awayFromCentral =  bot1.allPlaces();
-        Collections.shuffle(awayFromCentral);
-        Coordinate randomCo=awayFromCentral.get(0);
-        int [] tabco= randomCo.getCoordinate();
-        int sumco=tabco[0]+tabco[1]+tabco[2];
-        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomCo)<19);
-        assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomCo)>=0);
-        assertEquals(0,sumco);
-    }
-
-
-    @Test
-    public void possibleCoordinatesParcelTest(){
-        List<Coordinate> possibleCo = bot1.possibleCoordinatesParcel();
-        Collections.shuffle(possibleCo);
-        assertTrue(rules.isPlayableParcel(possibleCo.get(0)));
-    }
-
-    @Test
-    public void notPossibleCoordinatesCanal(){
-        List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
-        assertEquals(possibleCanals.size(),0);
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
-        board.placeParcel(parcel3,new Coordinate(2,-1,-1));
-
-        List<Coordinate[]>possibleCanals2 = bot1.possibleCoordinatesCanal();
-        assertEquals(possibleCanals2.size(),2);
-    }
-
-    @Test
-    public void possibleCoordinatesCanal() {
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
-        List<Coordinate[]> possibleCanals = bot1.possibleCoordinatesCanal();
-        Collections.shuffle(possibleCanals);
-        Coordinate[] tabco = possibleCanals.get(0);
-        assertTrue(rules.isPlayableCanal(tabco[0],tabco[1]));
-    }
-
-    @Test
-    public void notExistPossibleCoordinatesBamboo(){
-        assertEquals(0,bot1.possibleCoordinatesPanda().size());
-    }
-
-    @Test
-    public void ExistPossibleCoordinatesBamboo(){
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        assertTrue(board.getPlacedParcels().get(new Coordinate(1,-1,0)).getIrrigated());
-        assertEquals(new Coordinate(1,-1,0), bot1.possibleCoordinatesPanda().get(0));
-    }
 
 
     @Test
     public void movePanda(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.movePanda(bot1.possibleCoordinatesPanda().get(0));
+        bot1.movePanda(strategie.possibleCoordinatesPanda().get(0));
         assertEquals(1, game.getPlayerData().getInventory().getBamboo(ColorType.BLUE));
         assertEquals(0,parcel1.getNbBamboo());
     }
@@ -117,18 +53,8 @@ class BotTest {
     @Test
     public void movePeasant(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        bot1.movePeasant(bot1.possibleCoordinatesPanda().get(0));
+        bot1.movePeasant(strategie.possibleCoordinatesPanda().get(0));
         assertEquals(2,parcel1.getNbBamboo());
     }
 
-    @Test
-    public void freePlaceInitialStates(){
-        List<Coordinate> newPlaces = bot1.possibleCoordinatesParcel();
-        assertEquals(new Coordinate(1,-1,0),newPlaces.get(0));
-        assertEquals(new Coordinate(0,-1,1),newPlaces.get(1));
-        assertEquals(new Coordinate(-1,1,0),newPlaces.get(2));
-        assertEquals(new Coordinate(0,1,-1),newPlaces.get(3));
-        assertEquals(new Coordinate(1,0,-1),newPlaces.get(4));
-        assertEquals(new Coordinate(-1,0,1),newPlaces.get(5));
-    }
 }

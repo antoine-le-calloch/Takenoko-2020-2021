@@ -1,27 +1,28 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
+import fr.unice.polytech.startingpoint.game.Rules;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
 import java.util.List;
 
-public class StratMissionPeasant {
-    Bot bot;
+public class MissionPeasantStrat extends Strategie{
+
     /**@param bot
      */
-    public StratMissionPeasant(Bot bot) {
-        this.bot = bot;
+    public MissionPeasantStrat(Bot bot, Rules rules) {
+        super(bot, rules);
     }
 
     /**<p>The actions of the bot during his turn.</p>
      */
-    public void stratPeasant() {
+    public void stratOneTurn() {
         if (bot.playerInteraction.getInventoryMissions().size() < 5 && bot.playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
             bot.drawMission(MissionType.PEASANT);
 
-        if (strategyMovePeasant(bot.possibleCoordinatesPeasant()) != null)
-            bot.movePeasant(strategyMovePeasant(bot.possibleCoordinatesPeasant()));
+        if (strategyMovePeasant(possibleCoordinatesPeasant()) != null)
+            bot.movePeasant(strategyMovePeasant(possibleCoordinatesPeasant()));
 
     }
 

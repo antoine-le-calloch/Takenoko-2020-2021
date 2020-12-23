@@ -1,10 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
-
-import java.util.List;
 
 /**
  * <h1>{@link PandaBot} :</h1>
@@ -26,7 +22,7 @@ import java.util.List;
  */
 
 public class PandaBot extends Bot {
-    StratRushPanda stratRushPanda = new StratRushPanda(this);
+    RushPandaStrat rushPandaStrat = new RushPandaStrat(this, rules);
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
@@ -42,6 +38,6 @@ public class PandaBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        stratRushPanda.stratRushPanda();
+        rushPandaStrat.stratOneTurn();
     }
 }
