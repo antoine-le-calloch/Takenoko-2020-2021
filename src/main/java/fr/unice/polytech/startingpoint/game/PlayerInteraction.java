@@ -12,15 +12,9 @@ import java.util.stream.Collectors;
 
 public final class PlayerInteraction {
     private final Game game;
-    private final Board board;
-    private final Resource resource;
-    private final Rules rules;
 
     PlayerInteraction(Game game){
         this.game = game;
-        board = game.getBoard();
-        resource = game.getResource();
-        rules = game.getRules();
     }
 
     public PlayerData getPlayerData() {
@@ -30,7 +24,7 @@ public final class PlayerInteraction {
     public void drawCanal() throws OutOfResourcesException, RulesViolationException {
         if (getPlayerData().add(ActionType.DRAW_CANAL)){
             getPlayerData().looseStamina();
-            getPlayerData().addCanal(resource.drawCanal());
+            getPlayerData().addCanal(game.getResource().drawCanal());
         }
         else
             throw new RulesViolationException("Already used this method.");
@@ -39,7 +33,7 @@ public final class PlayerInteraction {
     public void drawMission(MissionType missionType) throws OutOfResourcesException, RulesViolationException {
         if (getPlayerData().add(ActionType.DRAW_MISSION)){
             getPlayerData().looseStamina();
-            getPlayerData().addMission(resource.drawMission(missionType));
+            getPlayerData().addMission(game.getResource().drawMission(missionType));
         }
         else
             throw new RulesViolationException("Already used this method.");
@@ -48,7 +42,7 @@ public final class PlayerInteraction {
     public List<ParcelInformation> drawParcels() throws OutOfResourcesException, RulesViolationException {
         if (getPlayerData().add(ActionType.DRAW_PARCELS)){
             getPlayerData().looseStamina();
-            getPlayerData().saveParcels(resource.drawParcels());
+            getPlayerData().saveParcels(game.getResource().drawParcels());
             List<ParcelInformation> parcelInformationList = new ArrayList<>();
             for(Parcel parcel : getPlayerData().getParcelsSaved()){
                 parcelInformationList.add(parcel.getParcelInformation());
@@ -64,7 +58,7 @@ public final class PlayerInteraction {
             if (getPlayerData().contains(ActionType.DRAW_PARCELS)){
                 for (Parcel parcel : getPlayerData().getParcelsSaved()){
                     if (parcel.getParcelInformation() == parcelInformation){
-                        resource.selectParcel(parcel);
+                        game.getResource().selectParcel(parcel);
                         getPlayerData().saveParcel(parcel);
                         return;
                     }
@@ -81,8 +75,8 @@ public final class PlayerInteraction {
     public void placeParcel(Coordinate coordinate) throws BadCoordinateException, RulesViolationException {
         if (getPlayerData().add(ActionType.PLACE_PARCEL)){
             if (getPlayerData().contains(ActionType.DRAW_PARCELS) && getPlayerData().contains(ActionType.SELECT_PARCEL)){
-                if(rules.isPlayableParcel(coordinate)){
-                    board.placeParcel(getPlayerData().getParcel(),coordinate);
+                if(game.getRules().isPlayableParcel(coordinate)){
+                    game.getBoard().placeParcel(getPlayerData().getParcel(),coordinate);
                 }
                 else{
                     getPlayerData().remove(ActionType.PLACE_PARCEL);
@@ -98,8 +92,8 @@ public final class PlayerInteraction {
 
     public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         if (getPlayerData().add(ActionType.PLACE_CANAL)) {
-            if (rules.isPlayableCanal(coordinate1, coordinate2))
-                board.placeCanal(getPlayerData().pickCanal(), coordinate1, coordinate2);
+            if (game.getRules().isPlayableCanal(coordinate1, coordinate2))
+                game.getBoard().placeCanal(getPlayerData().pickCanal(), coordinate1, coordinate2);
             else{
                 getPlayerData().remove(ActionType.PLACE_CANAL);
                 throw new BadCoordinateException("The canal can't be place on these coordinates : " + coordinate1.toString() + " " + coordinate2.toString());
@@ -111,9 +105,9 @@ public final class PlayerInteraction {
 
     public void moveCharacter(CharacterType characterType, Coordinate coordinate) throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
         if (getPlayerData().add(ActionType.get(characterType))) {
-            if (rules.isMovableCharacter(characterType, coordinate)) {
+            if (game.getRules().isMovableCharacter(characterType, coordinate)) {
                 getPlayerData().looseStamina();
-                getPlayerData().addBamboo(board.moveCharacter(characterType, coordinate));
+                getPlayerData().addBamboo(game.getBoard().moveCharacter(characterType, coordinate));
             }
             else{
                 getPlayerData().remove(ActionType.get(characterType));
@@ -132,27 +126,27 @@ public final class PlayerInteraction {
         return getPlayerData().getMissionsDone();
     }
     public boolean isPlacedParcel(Coordinate coordinate) {
-        return board.isPlacedParcel(coordinate);
+        return game.getBoard().isPlacedParcel(coordinate);
     }
 
     public boolean isIrrigatedParcel(Coordinate coordinate) {
-        return board.isPlacedAndIrrigatedParcel(coordinate);
+        return game.getBoard().isPlacedAndIrrigatedParcel(coordinate);
     }
 
     public ParcelInformation getPlacedParcelInformation(Coordinate coordinate) {
-        return board.getPlacedParcels().get(coordinate).getParcelInformation();
+        return game.getBoard().getPlacedParcels().get(coordinate).getParcelInformation();
     }
 
     public int getPlacedParcelsNbBamboo(Coordinate coordinate) {
-        return board.getPlacedParcels().get(coordinate).getNbBamboo();
+        return game.getBoard().getPlacedParcels().get(coordinate).getNbBamboo();
     }
 
     public Rules getRules(){
-        return  rules;
+        return  game.getRules();
     }
 
     public List<Coordinate> getPlacedCoordinates(){
-        return new ArrayList<>(board.getPlacedParcels().keySet());
+        return new ArrayList<>(game.getBoard().getPlacedParcels().keySet());
     }
     public List<Coordinate> getPlacedCoordinatesByColor(ColorType color){
 
@@ -193,17 +187,17 @@ public final class PlayerInteraction {
     public int getResourceSize(ResourceType resourceType){
         switch (resourceType){
             case PEASANT_MISSION:
-                return resource.getDeckPeasantMission().size();
+                return game.getResource().getDeckPeasantMission().size();
             case PANDA_MISSION:
-                return resource.getDeckPandaMission().size();
+                return game.getResource().getDeckPandaMission().size();
             case PARCEL_MISSION:
-                return resource.getDeckParcelMission().size();
+                return game.getResource().getDeckParcelMission().size();
             case PARCEL:
-                return resource.getDeckParcel().size();
+                return game.getResource().getDeckParcel().size();
             case CANAL:
-                return resource.getDeckCanal().size();
+                return game.getResource().getDeckCanal().size();
             case ALL_MISSION:
-                return resource.getNbMission();
+                return game.getResource().getNbMission();
             default:
                 throw new IllegalTypeException("Wrong ResourceType.");
         }

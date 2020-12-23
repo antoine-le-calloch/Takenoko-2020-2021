@@ -32,7 +32,6 @@ import java.util.List;
 
 public abstract class Bot {
     protected final PlayerInteraction playerInteraction;
-    final int NB_ACTION = 2;
 
     /**
      * <p>Set up the bot. Initialize all variables.</p>
