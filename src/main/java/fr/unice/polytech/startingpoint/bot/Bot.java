@@ -32,7 +32,7 @@ import java.util.List;
 
 public abstract class Bot {
     protected final PlayerInteraction playerInteraction;
-    Rules rules;
+    protected final Rules rules;
     final int NB_ACTION = 2;
 
     /**

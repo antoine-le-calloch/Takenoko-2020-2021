@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class Strategie {
-    Bot bot;
+    protected final Bot bot;
     protected final Rules rules;
 
     public Strategie(Bot bot, Rules rules) {
