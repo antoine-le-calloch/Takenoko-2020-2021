@@ -1,13 +1,16 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
+import fr.unice.polytech.startingpoint.game.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.Rules;
 import fr.unice.polytech.startingpoint.type.CharacterType;
+import fr.unice.polytech.startingpoint.type.ColorType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class Strategie {
     protected final Bot bot;
@@ -86,6 +89,36 @@ public abstract class Strategie {
         }
         return new ArrayList<>(possibleCoordinates);
     }
+
+
+
+
+    /**@return <b>A list of playable coordinates around a coordinate given </b>
+     **/
+
+    public List<Coordinate> playableCoordinatesAroundACoordinateGivenCo(Coordinate coordinate){
+        return coordinate.coordinatesAround().stream()
+                .filter(c->rules.isPlayableParcel(c) && !bot.playerInteraction.isPlacedParcel(c))
+                .collect(Collectors.toList());
+    }
+
+
+    /**@return <b>A list of all possible coordinates next to all parcels with the color given </b>
+     **/
+
+    public List<Coordinate> allPosssibleCoordinatesNextToParcelsWithAColor(ColorType colorGiven){
+
+        Set<Coordinate> posssibleCoNextToParcelsWithAColor=new HashSet<>();
+        List<Coordinate> placedCoordinatesByColor=bot.playerInteraction.getPlacedCoordinatesByColor(colorGiven);
+
+
+        for (Coordinate  placedCoordinate: placedCoordinatesByColor)
+            posssibleCoNextToParcelsWithAColor.addAll(playableCoordinatesAroundACoordinateGivenCo(placedCoordinate));
+
+
+        return new ArrayList<>(posssibleCoNextToParcelsWithAColor);
+    }
+
 
 
 

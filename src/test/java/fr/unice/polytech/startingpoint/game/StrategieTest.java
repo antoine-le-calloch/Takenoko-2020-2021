@@ -26,9 +26,9 @@ public class StrategieTest {
     @BeforeEach
     public void setUp(){
         game = new Game();
-        parcel1 = new Parcel(ColorType.BLUE);
-        parcel2 = new Parcel();
-        parcel3 = new Parcel();
+        parcel1 = new Parcel(ColorType.RED);
+        parcel2 = new Parcel(ColorType.RED);
+        parcel3 = new Parcel(ColorType.BLUE);
         bot1 = new ParcelBot(game.getGameInteraction());
         board = game.getBoard();
         rules = game.getRules();
@@ -114,4 +114,36 @@ public class StrategieTest {
         assertEquals(new Coordinate(1,0,-1),newPlaces.get(4));
         assertEquals(new Coordinate(-1,0,1),newPlaces.get(5));
     }
+
+
+
+    /** <h2><b>Test  posssibleCoordinatesNextToParcelsWithAColor </b></h2>
+     */
+
+    @Test
+    public void noParcelsSoNoPossibleCoordinatesForAnyColorGiven(){
+        List<Coordinate> allPossibleCoNextToBlue=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.BLUE);
+        List<Coordinate> allPossibleCoNextToRed=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.RED);
+        assertEquals(0,allPossibleCoNextToBlue.size());
+        assertEquals(0,allPossibleCoNextToRed.size());
+    }
+
+    @Test
+    public void twoRedParcelPlaced(){
+        Coordinate expectedCo1=new Coordinate(0,1,-1);//11h
+        Coordinate expectedCo2=new Coordinate(0,-1,1);//5h
+        Coordinate expectedCo3=new Coordinate(2,-1,-1);//2h distant 2 du centre
+        board.placeParcel(parcel1,new Coordinate(1,0,-1));//3h
+        board.placeParcel(parcel2,new Coordinate(1,-1,0));//2h
+        List<Coordinate> allPossibleCoNextToBlue=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.BLUE);
+        List<Coordinate> allPossibleCoNextToRed=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.RED);
+        assertEquals(0,allPossibleCoNextToBlue.size());
+        assertEquals(3,allPossibleCoNextToRed.size());
+        assertTrue(allPossibleCoNextToRed.contains(expectedCo1));
+        assertTrue(allPossibleCoNextToRed.contains(expectedCo2));
+        assertTrue(allPossibleCoNextToRed.contains(expectedCo3));
+    }
+
+
+
 }
