@@ -6,6 +6,8 @@ import fr.unice.polytech.startingpoint.type.ActionType;
 import java.util.*;
 
 class TemporaryInventory {
+    private final int NUMBER_MIN_OF_STAMINA=0;
+    private final int INITIAL_STAMINA=2;
     private int stamina;
     private Parcel parcel;
     private List<Parcel> parcelList;
@@ -21,7 +23,7 @@ class TemporaryInventory {
 
     void looseStamina() throws OutOfResourcesException {
         stamina --;
-        if (stamina < 0)
+        if (stamina < NUMBER_MIN_OF_STAMINA)
             throw new OutOfResourcesException("No more stamina.");
     }
 
@@ -44,7 +46,7 @@ class TemporaryInventory {
     }
 
     void reset() {
-        this.stamina = 2;
+        this.stamina = INITIAL_STAMINA;
         parcel = null;
         actionTypeList.clear();
         parcelList.clear();

@@ -13,7 +13,9 @@ import fr.unice.polytech.startingpoint.type.ImprovementType;
  */
 
 class Parcel {
-    private int nbBamboo = 0;
+    private final int NUMBER_MINIMAL_OF_BAMBOOS=0;
+    private final int NUMBER_MAXIMAL_OF_BAMBOOS=4;
+    private int nbBamboo = NUMBER_MINIMAL_OF_BAMBOOS;
     private boolean irrigated = false;
     private final ParcelInformation parcelInformation;
 
@@ -37,15 +39,15 @@ class Parcel {
 
     //Ajoute un bamboo à la parcelle
     void addBamboo(){
-        if (nbBamboo < 4)
+        if (nbBamboo < NUMBER_MAXIMAL_OF_BAMBOOS)
             nbBamboo ++;
-        if (nbBamboo < 4 && parcelInformation.getImprovementType() == ImprovementType.FERTILIZER)
+        if (nbBamboo < NUMBER_MAXIMAL_OF_BAMBOOS && parcelInformation.getImprovementType() == ImprovementType.FERTILIZER)
             nbBamboo ++;
     }
 
     //Supprime un bambou de la parcelle
     ColorType delBamboo(){
-        if (nbBamboo > 0 && parcelInformation.getImprovementType() != ImprovementType.ENCLOSURE){
+        if (nbBamboo > NUMBER_MINIMAL_OF_BAMBOOS && parcelInformation.getImprovementType() != ImprovementType.ENCLOSURE){
             nbBamboo --;
             return parcelInformation.getColorType();
         }

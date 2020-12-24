@@ -145,7 +145,7 @@ class Resource {
      * @throws OutOfResourcesException
      */
     Canal drawCanal() throws OutOfResourcesException {
-        if (deckCanal.size() != 0) {
+        if (!deckCanal.isEmpty()) {
             Canal canal = deckCanal.get(0);
             deckCanal.remove(canal);
             return canal;
@@ -164,17 +164,17 @@ class Resource {
     Mission drawMission(MissionType type) throws OutOfResourcesException {
         switch (type) {
             case PARCEL:
-                if (deckMissionParcel.size() > 0) {
+                if (!deckMissionParcel.isEmpty()) {
                     return deckMissionParcel.remove(0);
                 }
                 throw new OutOfResourcesException("No more ParcelMission to draw.");
             case PEASANT:
-                if (deckMissionPeasant.size() > 0) {
+                if (!deckMissionPeasant.isEmpty()) {
                     return deckMissionPeasant.remove(0);
                 }
                 throw new OutOfResourcesException("No more PeasantMission to draw.");
             case PANDA:
-                if (deckMissionPanda.size() > 0) {
+                if (!deckMissionPanda.isEmpty()) {
                     return deckMissionPanda.remove(0);
                 }
                 throw new OutOfResourcesException("No more PandaMission to draw.");
@@ -186,8 +186,8 @@ class Resource {
     /**@return <b>True, if the resources are considers empty.</b>
      */
     boolean isEmpty(){
-        return ( (deckCanal.size()==0 || deckParcel.size()==0) ||
-                (deckMissionParcel.size()==0 && deckMissionPanda.size()==0 && deckMissionPeasant.size()==0) );
+        return ( (deckCanal.isEmpty() || deckParcel.isEmpty()) ||
+                (deckMissionParcel.isEmpty() && deckMissionPanda.isEmpty() && deckMissionPeasant.isEmpty()) );
     }
 
     /**@return <b>The list of {@link ParcelMission}.</b>
