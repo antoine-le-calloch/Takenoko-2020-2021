@@ -24,12 +24,14 @@ import fr.unice.polytech.startingpoint.game.*;
 public class PandaBot extends Bot {
     RushPandaStrat rushPandaStrat = new RushPandaStrat(this);
 
+    public RushPandaStrat getRushPandaStrat() {
+        return rushPandaStrat;
+    }
+
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
      * @param playerInteraction
      *            <b>Game object.</b>
-     * @param rules
-     *            <b>Rules object.</b>
      */
     public PandaBot(PlayerInteraction playerInteraction) {
         super(playerInteraction);

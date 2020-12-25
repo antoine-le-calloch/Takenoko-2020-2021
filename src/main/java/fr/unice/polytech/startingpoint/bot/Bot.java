@@ -31,6 +31,10 @@ import java.util.List;
  */
 
 public abstract class Bot {
+    public PlayerInteraction getPlayerInteraction() {
+        return playerInteraction;
+    }
+
     protected final PlayerInteraction playerInteraction;
     int NB_ACTION = 2;
     /**

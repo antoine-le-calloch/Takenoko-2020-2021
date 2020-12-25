@@ -1,11 +1,9 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
-import fr.unice.polytech.startingpoint.game.Rules;
+import fr.unice.polytech.startingpoint.game.PandaMission;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
-
-import java.util.List;
 
 public class RushPandaStrat extends Strategie{
 
@@ -18,18 +16,20 @@ public class RushPandaStrat extends Strategie{
     public void stratOneTurn(){
         if (bot.playerInteraction.getInventoryMissions().size() < 5 && bot.playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
             bot.drawMission(MissionType.PANDA);
-        if (strategyMovePanda(possibleCoordinatesPanda()) != null)
-            bot.movePanda(strategyMovePanda(possibleCoordinatesPanda()));
+        if (strategyMovePanda() != null)
+            bot.movePanda(strategyMovePanda());
     }
 
-    /**@param coordinateList
-     *            <b>The list of coordinates containing places where we want to move the Panda.</b>
-     * @return <b>Return the first coordinate where the parcel has at least one bamboo.</b>
+    /** @return <b>Return the first coordinate where the parcel has at least one bamboo and the same color
+     * as the list of Panda mission</b>
      */
-    public Coordinate strategyMovePanda(List<Coordinate> coordinateList) {
-        for (Coordinate coordinate : coordinateList) {
+    public Coordinate strategyMovePanda() {
+        for (Coordinate coordinate : possibleCoordinatesPanda()) {
             if (bot.playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0) {
-                return coordinate;
+                for (PandaMission pandaMission : bot.playerInteraction.getInventoryPandaMissions() ) {
+                    if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(pandaMission.getColor()))
+                        return coordinate;
+                }
             }
         }
         return null;
