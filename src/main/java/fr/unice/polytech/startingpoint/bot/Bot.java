@@ -57,44 +57,23 @@ public abstract class Bot {
      *            <b>The type of the mission the bot want to draw.</b>
      */
     public void drawMission(MissionType missionType){
-        try {
-            playerInteraction.drawMission(missionType);
-        }
-        catch (OutOfResourcesException | RulesViolationException e) {
-            e.printStackTrace();
-        }
+        playerInteraction.drawMission(missionType);
     }
 
     /**@return Preview a list of 3 ColorTypes from the resources.
      */
     public List<ParcelInformation> drawParcel() {
-        try {
-            return playerInteraction.drawParcels();
-        }
-        catch (OutOfResourcesException | RulesViolationException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return playerInteraction.drawParcels();
     }
 
     public void selectParcel(ParcelInformation parcelInformation){
-        try {
-            playerInteraction.selectParcel(parcelInformation);
-        }
-        catch (RulesViolationException e) {
-            e.printStackTrace();
-        }
+        playerInteraction.selectParcel(parcelInformation);
     }
 
     /**<p>Draw a canal in the resources and place it in the inventory.</p>
      */
     public void drawCanal() {
-        try {
-            playerInteraction.drawCanal();
-        }
-        catch (OutOfResourcesException | RulesViolationException e) {
-            e.printStackTrace();
-        }
+        playerInteraction.drawCanal();
     }
 
     /**<p>Place a parcel at the coordinates specified in the following parameters.</p>
@@ -103,12 +82,7 @@ public abstract class Bot {
      *            <b>The coordinates where the bot want to place the parcel on the board.</b>
      */
     public void placeParcel(Coordinate coordinate){
-        try {
-            playerInteraction.placeParcel(coordinate);
-        }
-        catch (BadCoordinateException | RulesViolationException e) {
-            e.printStackTrace();
-        }
+        playerInteraction.placeParcel(coordinate);
     }
 
     /**<p>Place a canal at the coordinates specified in the following parameter.</p>
@@ -117,12 +91,7 @@ public abstract class Bot {
      *            <b>The coordinates where the bot want to place the canal on the board.</b>
      */
     public void placeCanal(Coordinate[] coordinates) {
-        try {
-            playerInteraction.placeCanal(coordinates[0],coordinates[1]);
-        }
-        catch (OutOfResourcesException | BadCoordinateException | RulesViolationException e) {
-            e.printStackTrace();
-        }
+        playerInteraction.placeCanal(coordinates[0],coordinates[1]);
     }
 
     /**<p>Move the Panda to coordinates specified in the following parameter.</p>
@@ -131,12 +100,7 @@ public abstract class Bot {
      *            <b>The coordinates where the bot want to move the Panda on the board.</b>
      */
     public void movePanda(Coordinate coordinate) {
-        try {
-            playerInteraction.moveCharacter(CharacterType.PANDA,coordinate);
-        }
-        catch (OutOfResourcesException | BadCoordinateException | RulesViolationException e) {
-            e.printStackTrace();
-        }
+        playerInteraction.moveCharacter(CharacterType.PANDA,coordinate);
     }
 
     /**<p>Move the Peasant to coordinates specified in the following parameter.</p>
@@ -145,11 +109,6 @@ public abstract class Bot {
      *            <b>The coordinates where the bot want to move the Peasant on the board.</b>
      */
     public void movePeasant(Coordinate coordinate){
-        try {
-            playerInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
-        }
-        catch (OutOfResourcesException | BadCoordinateException | RulesViolationException e) {
-            e.printStackTrace();
-        }
+        playerInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
     }
 }

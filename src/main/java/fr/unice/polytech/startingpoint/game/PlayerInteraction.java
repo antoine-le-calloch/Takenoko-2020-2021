@@ -21,7 +21,7 @@ public final class PlayerInteraction {
         return game.getPlayerData();
     }
 
-    public void drawCanal() throws OutOfResourcesException, RulesViolationException {
+    public void drawCanal() {
         if (getPlayerData().add(ActionType.DRAW_CANAL)){
             getPlayerData().looseStamina();
             getPlayerData().addCanal(game.getResource().drawCanal());
@@ -30,7 +30,7 @@ public final class PlayerInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-    public void drawMission(MissionType missionType) throws OutOfResourcesException, RulesViolationException {
+    public void drawMission(MissionType missionType) {
         if (getPlayerData().add(ActionType.DRAW_MISSION)){
             getPlayerData().looseStamina();
             getPlayerData().addMission(game.getResource().drawMission(missionType));
@@ -39,7 +39,7 @@ public final class PlayerInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-    public List<ParcelInformation> drawParcels() throws OutOfResourcesException, RulesViolationException {
+    public List<ParcelInformation> drawParcels() {
         if (getPlayerData().add(ActionType.DRAW_PARCELS)){
             getPlayerData().looseStamina();
             getPlayerData().saveParcels(game.getResource().drawParcels());
@@ -53,7 +53,7 @@ public final class PlayerInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-    public void selectParcel(ParcelInformation parcelInformation) throws RulesViolationException {
+    public void selectParcel(ParcelInformation parcelInformation){
         if (getPlayerData().add(ActionType.SELECT_PARCEL)){
             if (getPlayerData().contains(ActionType.DRAW_PARCELS)){
                 for (Parcel parcel : getPlayerData().getParcelsSaved()){
@@ -72,7 +72,7 @@ public final class PlayerInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-    public void placeParcel(Coordinate coordinate) throws BadCoordinateException, RulesViolationException {
+    public void placeParcel(Coordinate coordinate){
         if (getPlayerData().add(ActionType.PLACE_PARCEL)){
             if (getPlayerData().contains(ActionType.DRAW_PARCELS) && getPlayerData().contains(ActionType.SELECT_PARCEL)){
                 if(game.getRules().isPlayableParcel(coordinate)){
@@ -90,7 +90,7 @@ public final class PlayerInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-    public void placeCanal(Coordinate coordinate1, Coordinate coordinate2) throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+    public void placeCanal(Coordinate coordinate1, Coordinate coordinate2){
         if (getPlayerData().add(ActionType.PLACE_CANAL)) {
             if (game.getRules().isPlayableCanal(coordinate1, coordinate2))
                 game.getBoard().placeCanal(getPlayerData().pickCanal(), coordinate1, coordinate2);
@@ -103,7 +103,7 @@ public final class PlayerInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-    public void moveCharacter(CharacterType characterType, Coordinate coordinate) throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+    public void moveCharacter(CharacterType characterType, Coordinate coordinate){
         if (getPlayerData().add(ActionType.get(characterType))) {
             if (game.getRules().isMovableCharacter(characterType, coordinate)) {
                 getPlayerData().looseStamina();

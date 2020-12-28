@@ -32,14 +32,14 @@ public class PeasantMissionTest {
     }
 
     @Test
-    void missionComplete() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+    void missionComplete() {
         board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
         game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
         assertTrue(mission1.checkMission(game.getPlayerData().getInventory()));
     }
 
     @Test
-    void wrongColor() throws OutOfResourcesException, BadCoordinateException, RulesViolationException {
+    void wrongColor() {
         board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
         game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
         assertFalse(mission2.checkMission(game.getPlayerData().getInventory()));

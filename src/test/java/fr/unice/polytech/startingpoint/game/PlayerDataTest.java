@@ -23,7 +23,7 @@ public class PlayerDataTest {
     }
 
     @Test
-    void temporaryInventory() throws OutOfResourcesException {
+    void temporaryInventory() {
         playerData.looseStamina();
         playerData.looseStamina();
         assertThrows(OutOfResourcesException.class,() -> playerData.looseStamina());
@@ -55,7 +55,7 @@ public class PlayerDataTest {
     }
 
     @Test
-    void inventory() throws OutOfResourcesException {
+    void inventory(){
         playerData.addCanal(new Canal());
         assertEquals(1,playerData.getInventory().getInventoryCanal().size());
         playerData.pickCanal();

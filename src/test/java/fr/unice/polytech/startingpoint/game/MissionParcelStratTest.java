@@ -250,7 +250,7 @@ class MissionParcelStratTest {
     }
 
     @Test
-    void notJudiciousDrawMission_NoStamina() throws OutOfResourcesException {
+    void notJudiciousDrawMission_NoStamina() {
         game.getPlayerData().looseStamina();
         game.getPlayerData().looseStamina();
         assertFalse(stratMissionParcel.isJudiciousPutParcel());
@@ -263,7 +263,7 @@ class MissionParcelStratTest {
     }
 
     @Test
-    void notJudiciousPutParcel_NoStamina() throws OutOfResourcesException {
+    void notJudiciousPutParcel_NoStamina() {
         game.getPlayerData().looseStamina();
         game.getPlayerData().looseStamina();
         assertFalse(stratMissionParcel.isJudiciousPutParcel());
@@ -283,7 +283,7 @@ class MissionParcelStratTest {
     }
 
     @Test
-    void notJudiciousPutCanal_NoStamina() throws OutOfResourcesException {
+    void notJudiciousPutCanal_NoStamina() {
         game.getPlayerData().looseStamina();
         game.getPlayerData().looseStamina();
         assertFalse(stratMissionParcel.isJudiciousPutParcel());
@@ -296,7 +296,7 @@ class MissionParcelStratTest {
         assertEquals(1, board.getPlacedParcels().size());
         parcelBot.botPlay();
         assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
-        assertEquals(2, board.getPlacedParcels().size());
+        assertEquals(1, board.getPlacedParcels().size());
     }
 ///////////////////////////////
     /*@Test

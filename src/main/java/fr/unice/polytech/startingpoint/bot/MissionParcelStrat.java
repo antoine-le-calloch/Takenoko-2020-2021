@@ -25,9 +25,9 @@ public class MissionParcelStrat extends Strategie{
     public void stratOneTurn(){
         if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PARCEL);
-        if(isJudiciousPutParcel())
+        else if(isJudiciousPutParcel())
             putParcel();
-        if (isJudiciousPutCanal())
+        else if (isJudiciousPutCanal())
             putCanal();
     }
 
