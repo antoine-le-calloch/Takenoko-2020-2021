@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 import fr.unice.polytech.startingpoint.game.Rules;
+import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
@@ -42,10 +43,10 @@ public class RandomStrat extends Strategie{
 
     /**<p>The actions of the bot during his turn.</p>
      */
-    public void stratOneTurn(){
+    public void stratOneTurn(List<ActionType> actionAlreadyPlay){
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && bot.playerInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0) {// pioche mission
+        if (randAction == 0 && bot.playerInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 && !actionAlreadyPlay.contains(ActionType.DRAW_MISSION)) {// pioche mission
             int randMission = random2.nextInt(3);
 
             if (randMission == 0 && bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
@@ -54,37 +55,42 @@ public class RandomStrat extends Strategie{
                 bot.drawMission(MissionType.PANDA);
             if (randMission == 2 && bot.playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
                 bot.drawMission(MissionType.PEASANT);
+
+            actionAlreadyPlay.add(ActionType.DRAW_MISSION);
         }
 
-        else if (randAction == 1 && bot.playerInteraction.getResourceSize(ResourceType.CANAL) > 0) {  // place canal
+        else if (randAction == 1 && bot.playerInteraction.getResourceSize(ResourceType.CANAL) > 0 && !actionAlreadyPlay.contains(ActionType.DRAW_CANAL)) {  // place canal
             if (possibleCoordinatesCanal().size() > 0) {
                 List<Coordinate[]> list = possibleCoordinatesCanal();
                 Collections.shuffle(list);
                 bot.drawCanal();
                 bot.placeCanal(list.get(0));
+                actionAlreadyPlay.add(ActionType.DRAW_CANAL);
             }
         }
 
-        else if (randAction == 2 && bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0){ // place parcel
+        else if (randAction == 2 && bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !actionAlreadyPlay.contains(ActionType.DRAW_PARCELS)){ // place parcel
             List<ParcelInformation> parcelList = bot.drawParcel();
             Collections.shuffle(parcelList);
             bot.selectParcel(parcelList.get(0));
             List<Coordinate> list = possibleCoordinatesParcel();
             Collections.shuffle(list);
             bot.placeParcel(list.get(0));
+            actionAlreadyPlay.add(ActionType.DRAW_PARCELS);
         }
 
-        else if (randAction == 3 && possibleCoordinatesPanda().size() != 0) {
+        else if (randAction == 3 && possibleCoordinatesPanda().size() != 0 && !actionAlreadyPlay.contains(ActionType.MOVE_PANDA)) {
             List<Coordinate> list = possibleCoordinatesPanda();
             Collections.shuffle(list);
             bot.movePanda(list.get(0));
+            actionAlreadyPlay.add(ActionType.MOVE_PANDA);
         }
 
-        else if (possibleCoordinatesPeasant().size() != 0 ) {
+        else if (possibleCoordinatesPeasant().size() != 0 && !actionAlreadyPlay.contains(ActionType.MOVE_PEASANT)) {
             List<Coordinate> list = possibleCoordinatesPeasant();
             Collections.shuffle(list);
             bot.movePeasant(list.get(0));
+            actionAlreadyPlay.add(ActionType.MOVE_PEASANT);
         }
     }
-
 }

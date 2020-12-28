@@ -4,10 +4,12 @@ import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.bot.ParcelBot;
 import fr.unice.polytech.startingpoint.bot.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import org.junit.jupiter.api.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -246,27 +248,27 @@ class MissionParcelStratTest {
 
     @Test
     void judiciousDrawMission(){
-        assertTrue(stratMissionParcel.isJudiciousDrawMission());
+        assertTrue(stratMissionParcel.isJudiciousDrawMission(new ArrayList<>()));
     }
 
     @Test
-    void notJudiciousDrawMission_NoStamina() {
-        game.getPlayerData().looseStamina();
-        game.getPlayerData().looseStamina();
-        assertFalse(stratMissionParcel.isJudiciousPutParcel());
+    void notJudiciousDrawMission_ActionAlreadyPlay() {
+        List<ActionType> actionAlreadyPlay = new ArrayList<>();
+        actionAlreadyPlay.add(ActionType.DRAW_MISSION);
+        assertFalse(stratMissionParcel.isJudiciousDrawMission(actionAlreadyPlay));
     }
 ///////////////////////////////
 
     @Test
     void judiciousPutParcel() {
-        assertTrue(stratMissionParcel.isJudiciousPutParcel());
+        assertTrue(stratMissionParcel.isJudiciousPutParcel(new ArrayList<>()));
     }
 
     @Test
-    void notJudiciousPutParcel_NoStamina() {
-        game.getPlayerData().looseStamina();
-        game.getPlayerData().looseStamina();
-        assertFalse(stratMissionParcel.isJudiciousPutParcel());
+    void notJudiciousPutParcel_ActionAlreadyPlay() {
+        List<ActionType> actionAlreadyPlay = new ArrayList<>();
+        actionAlreadyPlay.add(ActionType.DRAW_PARCELS);
+        assertFalse(stratMissionParcel.isJudiciousPutParcel(actionAlreadyPlay));
     }
 ///////////////////////////////
 
@@ -274,19 +276,19 @@ class MissionParcelStratTest {
     void judiciousPutCanal() {
         board.placeParcel(new Parcel(), coordinate1);
         board.placeParcel(new Parcel(), coordinate2);
-        assertTrue(stratMissionParcel.isJudiciousPutCanal());
+        assertTrue(stratMissionParcel.isJudiciousPutCanal(new ArrayList<>()));
     }
 
     @Test
     void notJudiciousPutCanal_0PossiblePlace() {
-        assertFalse(stratMissionParcel.isJudiciousPutCanal());
+        assertFalse(stratMissionParcel.isJudiciousPutCanal(new ArrayList<>()));
     }
 
     @Test
-    void notJudiciousPutCanal_NoStamina() {
-        game.getPlayerData().looseStamina();
-        game.getPlayerData().looseStamina();
-        assertFalse(stratMissionParcel.isJudiciousPutParcel());
+    void notJudiciousPutCanal_ActionAlreadyPlay() {
+        List<ActionType> actionAlreadyPlay = new ArrayList<>();
+        actionAlreadyPlay.add(ActionType.DRAW_CANAL);
+        assertFalse(stratMissionParcel.isJudiciousPutCanal(actionAlreadyPlay));
     }
 ///////////////////////////////
 
@@ -296,7 +298,7 @@ class MissionParcelStratTest {
         assertEquals(1, board.getPlacedParcels().size());
         parcelBot.botPlay();
         assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
-        assertEquals(1, board.getPlacedParcels().size());
+        assertEquals(2, board.getPlacedParcels().size());
     }
 ///////////////////////////////
     /*@Test

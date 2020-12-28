@@ -1,6 +1,10 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.*;
+import fr.unice.polytech.startingpoint.type.ActionType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <h1>{@link PeasantBot} :</h1>
@@ -37,6 +41,11 @@ public class PeasantBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        stratMissionPeasant.stratOneTurn();
+        int stamina = playerInteraction.getStamina();
+        List<ActionType> actionPlay = new ArrayList<>();
+        while(stamina!=0){
+            stratMissionPeasant.stratOneTurn(actionPlay);
+            stamina--;
+        }
     }
 }

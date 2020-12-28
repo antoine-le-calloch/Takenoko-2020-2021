@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.type.ActionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -55,17 +56,15 @@ public class MissionPeasantStratTest {
 
     @Test
     void movePeasant_1Parcel2Bamboo()  {
-
-        Resource resource = Mockito.mock(Resource.class);
-        List<Mission> deckVide = new ArrayList<>();
-        Mockito.when(resource.getDeckPandaMission()).thenReturn(deckVide);//empêche de piocher une mission
+        List<ActionType> actionAlreadyPlay = new ArrayList<>();
+        actionAlreadyPlay.add(ActionType.DRAW_MISSION);//empêche de piocher une mission
 
         Parcel parcel1Bamboo = new Parcel(); //créée la parcel
         parcel1Bamboo.addBamboo(); //ajoute 1 bamboo
         board.placeParcel(parcel1Bamboo, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
 
         assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//2 bamboo sur la parcel
-        stratMissionPeasant.stratOneTurn();//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
+        stratMissionPeasant.stratOneTurn(actionAlreadyPlay);//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
 
         assertEquals(3,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
     }
@@ -73,7 +72,7 @@ public class MissionPeasantStratTest {
     @Test
     void drawMission() {
         assertEquals(0, game.getGameInteraction().getInventoryPeasantMissions().size());//0 mission dans son inventaire
-        stratMissionPeasant.stratOneTurn();//fait jouer le paysan(il vas piocher)
+        stratMissionPeasant.stratOneTurn(new ArrayList<>());//fait jouer le paysan(il vas piocher)
         //assertEquals(1, game.getGameInteraction().getInventoryPeasantMissions().size());//1 mission dans son inventaire
     }
 }

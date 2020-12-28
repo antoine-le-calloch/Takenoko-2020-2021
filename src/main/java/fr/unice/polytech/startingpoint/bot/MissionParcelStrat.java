@@ -3,10 +3,7 @@ package fr.unice.polytech.startingpoint.bot;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.FormType;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,43 +19,51 @@ public class MissionParcelStrat extends Strategie{
         super(bot);
     }
 
-    public void stratOneTurn(){
-        if (isJudiciousDrawMission())
+    public void stratOneTurn(List<ActionType> actionAlreadyPlay){
+        if (isJudiciousDrawMission(actionAlreadyPlay)) {
             bot.drawMission(MissionType.PARCEL);
-        else if(isJudiciousPutParcel())
+            actionAlreadyPlay.add(ActionType.DRAW_MISSION);
+        }
+
+        else if(isJudiciousPutParcel(actionAlreadyPlay)) {
             putParcel();
-        else if (isJudiciousPutCanal())
+            actionAlreadyPlay.add(ActionType.DRAW_PARCELS);
+        }
+
+        else if (isJudiciousPutCanal(actionAlreadyPlay)) {
             putCanal();
+            actionAlreadyPlay.add(ActionType.DRAW_CANAL);
+        }
     }
 
     /**
      * @return <b>True if the bot can draw a mission.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousDrawMission(){
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0 && bot.playerInteraction.getStamina() > 0;
+    public boolean isJudiciousDrawMission(List<ActionType> actionAlreadyPlay){
+        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !actionAlreadyPlay.contains(ActionType.DRAW_MISSION);
     }
 
     /**
      * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousPutParcel(){
-        if(bot.playerInteraction.getStamina() != bot.NB_ACTION) {
+    public boolean isJudiciousPutParcel(List<ActionType> actionAlreadyPlay){
+        if(actionAlreadyPlay.size() != 0) {
             for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
                 if (bestCoordinatesForMission(mission).size() == 0)
                     return false;
             }
         }
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && bot.playerInteraction.getStamina() > 0;
+        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && !actionAlreadyPlay.contains(ActionType.DRAW_PARCELS);
     }
 
     /**
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousPutCanal(){
-        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && bot.playerInteraction.getStamina() > 0;
+    public boolean isJudiciousPutCanal(List<ActionType> actionAlreadyPlay){
+        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !actionAlreadyPlay.contains(ActionType.DRAW_CANAL);
     }
 
     /**

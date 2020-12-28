@@ -1,6 +1,11 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.*;
+import fr.unice.polytech.startingpoint.type.ActionType;
+
+import javax.swing.text.DefaultEditorKit;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <h1>{@link ParcelBot} :</h1>
@@ -28,8 +33,6 @@ public class ParcelBot extends Bot {
      *
      * @param playerInteraction
      *            <b>Game object.</b>
-     * @param rules
-     *            <b>Rules object.</b>
      */
     public ParcelBot(PlayerInteraction playerInteraction) {
         super(playerInteraction);
@@ -38,6 +41,11 @@ public class ParcelBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        stratMissionParcel.stratOneTurn();
+        int stamina = playerInteraction.getStamina();
+        List<ActionType> actionPlay = new ArrayList<>();
+        while(stamina!=0){
+            stratMissionParcel.stratOneTurn(actionPlay);
+            stamina--;
+        }
     }
 }

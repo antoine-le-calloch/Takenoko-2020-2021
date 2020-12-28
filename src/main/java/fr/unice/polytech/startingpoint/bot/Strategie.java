@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.bot;
 import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.Rules;
+import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 
@@ -23,7 +24,7 @@ public abstract class Strategie {
 
     /**<p>The actions of the bot during his turn.</p>
      */
-    public abstract void stratOneTurn();
+    public abstract void stratOneTurn(List<ActionType> actionAlreadyPlay);
 
 
     /**@return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>

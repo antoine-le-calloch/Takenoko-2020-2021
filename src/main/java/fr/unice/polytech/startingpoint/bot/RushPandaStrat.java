@@ -2,8 +2,14 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.PandaMission;
+import fr.unice.polytech.startingpoint.game.ParcelMission;
+import fr.unice.polytech.startingpoint.game.PlayerInteraction;
+import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RushPandaStrat extends Strategie{
 
@@ -13,11 +19,31 @@ public class RushPandaStrat extends Strategie{
         super(bot);
     }
 
-    public void stratOneTurn(){
-        if (bot.playerInteraction.getInventoryMissions().size() < 5 && bot.playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+    public void stratOneTurn(List<ActionType> actionAlreadyPlay){
+        if (isJudiciousDrawMission(actionAlreadyPlay)) {
             bot.drawMission(MissionType.PANDA);
-        if (strategyMovePanda() != null)
+            actionAlreadyPlay.add(ActionType.DRAW_MISSION);
+        }
+        else if (isJudiciousMovePanda(actionAlreadyPlay)) {
             bot.movePanda(strategyMovePanda());
+            actionAlreadyPlay.add(ActionType.MOVE_PANDA);
+        }
+    }
+
+    /**
+     * @return <b>True if the bot can draw a mission.</b>
+     * @see PlayerInteraction
+     */
+    public boolean isJudiciousDrawMission(List<ActionType> actionAlreadyPlay){
+        return bot.playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 && !actionAlreadyPlay.contains(ActionType.DRAW_MISSION);
+    }
+
+    /**
+     * @return <b>True if the bot can move the panda.</b>
+     * @see PlayerInteraction
+     */
+    public boolean isJudiciousMovePanda(List<ActionType> actionAlreadyPlay){
+        return strategyMovePanda() != null && !actionAlreadyPlay.contains(ActionType.MOVE_PANDA);
     }
 
     /** @return <b>Return the first coordinate where the parcel has at least one bamboo and the same color

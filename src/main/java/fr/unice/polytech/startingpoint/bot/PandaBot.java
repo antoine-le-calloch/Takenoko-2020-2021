@@ -1,6 +1,10 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.*;
+import fr.unice.polytech.startingpoint.type.ActionType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <h1>{@link PandaBot} :</h1>
@@ -40,6 +44,11 @@ public class PandaBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        rushPandaStrat.stratOneTurn();
+        int stamina = playerInteraction.getStamina();
+        List<ActionType> actionPlay = new ArrayList<>();
+        while(stamina!=0){
+            rushPandaStrat.stratOneTurn(actionPlay);
+            stamina--;
+        }
     }
 }
