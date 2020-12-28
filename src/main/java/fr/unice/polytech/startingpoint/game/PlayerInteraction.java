@@ -125,6 +125,7 @@ public final class PlayerInteraction {
     public int getNumberMissionsDone(){
         return getPlayerData().getMissionsDone();
     }
+
     public boolean isPlacedParcel(Coordinate coordinate) {
         return game.getBoard().isPlacedParcel(coordinate);
     }
@@ -139,6 +140,10 @@ public final class PlayerInteraction {
 
     public int getPlacedParcelsNbBamboo(Coordinate coordinate) {
         return game.getBoard().getPlacedParcels().get(coordinate).getNbBamboo();
+    }
+
+    public int getStamina(){
+        return game.getPlayerData().getStamina();
     }
 
     public Rules getRules(){

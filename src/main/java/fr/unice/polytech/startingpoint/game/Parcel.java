@@ -39,15 +39,16 @@ class Parcel {
 
     //Ajoute un bamboo à la parcelle
     void addBamboo(){
-        if (nbBamboo < NUMBER_MAXIMAL_OF_BAMBOOS)
+        if (nbBamboo < NUMBER_MAXIMAL_OF_BAMBOOS){
+            if (getImprovement().equals(ImprovementType.FERTILIZER))
+                nbBamboo ++;
             nbBamboo ++;
-        if (nbBamboo < NUMBER_MAXIMAL_OF_BAMBOOS && parcelInformation.getImprovementType() == ImprovementType.FERTILIZER)
-            nbBamboo ++;
+        }
     }
 
     //Supprime un bambou de la parcelle
     ColorType delBamboo(){
-        if (nbBamboo > NUMBER_MINIMAL_OF_BAMBOOS && parcelInformation.getImprovementType() != ImprovementType.ENCLOSURE){
+        if (nbBamboo > NUMBER_MINIMAL_OF_BAMBOOS && !getImprovement().equals(ImprovementType.ENCLOSURE)){
             nbBamboo --;
             return parcelInformation.getColorType();
         }

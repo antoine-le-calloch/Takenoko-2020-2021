@@ -15,10 +15,10 @@ public final class PlayerData {
     private int score;
     private int missionsDone;
 
-    public PlayerData(Bot bot, Inventory inventory,TemporaryInventory temporaryInventory){
+    public PlayerData(Bot bot, int stamina){
         this.bot = bot;
-        this.inventory = inventory;
-        this.temporaryInventory = temporaryInventory;
+        inventory = new Inventory();
+        temporaryInventory = new TemporaryInventory(stamina);
         score = 0;
         missionsDone = 0;
     }
@@ -112,6 +112,10 @@ public final class PlayerData {
 
     int getMissionsDone() {
         return missionsDone;
+    }
+
+    int getStamina() {
+        return temporaryInventory.getStamina();
     }
 
     Bot getBot() {

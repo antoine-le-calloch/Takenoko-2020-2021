@@ -23,51 +23,42 @@ public class MissionParcelStrat extends Strategie{
     }
 
     public void stratOneTurn(){
-        int cptAction = bot.NB_ACTION;
-        if (isJudiciousDrawMission(cptAction)) {
+        if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PARCEL);
-            cptAction--;
-        }
-
-        if(isJudiciousPutParcel(cptAction)) {
+        if(isJudiciousPutParcel())
             putParcel();
-            cptAction--;
-        }
-
-        if (isJudiciousPutCanal(cptAction)){
+        if (isJudiciousPutCanal())
             putCanal();
-        }
     }
 
     /**
      * @return <b>True if the bot can draw a mission.</b>
      * @see PlayerInteraction
      */
-
-    public boolean isJudiciousDrawMission(int cptAction){
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0 && cptAction != 0;
+    public boolean isJudiciousDrawMission(){
+        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0 && bot.playerInteraction.getStamina() > 0;
     }
 
     /**
      * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousPutParcel(int cptAction){
-        if(cptAction != bot.NB_ACTION) {
+    public boolean isJudiciousPutParcel(){
+        if(bot.playerInteraction.getStamina() != bot.NB_ACTION) {
             for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
                 if (bestCoordinatesForMission(mission).size() == 0)
                     return false;
             }
         }
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && cptAction != 0;
+        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && bot.playerInteraction.getStamina() > 0;
     }
 
     /**
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousPutCanal(int cptAction){
-        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && cptAction != 0;
+    public boolean isJudiciousPutCanal(){
+        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && bot.playerInteraction.getStamina() > 0;
     }
 
     /**

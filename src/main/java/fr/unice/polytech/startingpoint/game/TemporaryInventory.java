@@ -6,8 +6,7 @@ import fr.unice.polytech.startingpoint.type.ActionType;
 import java.util.*;
 
 class TemporaryInventory {
-    private final int NUMBER_MIN_OF_STAMINA=0;
-    private final int INITIAL_STAMINA=2;
+    private final int INITIAL_STAMINA;
     private int stamina;
     private Parcel parcel;
     private List<Parcel> parcelList;
@@ -15,7 +14,8 @@ class TemporaryInventory {
 
     //Normal Constructor
     TemporaryInventory(int stamina){
-        this.stamina = stamina;
+        INITIAL_STAMINA = stamina;
+        this.stamina = INITIAL_STAMINA;
         parcel = null;
         actionTypeList = new HashSet<>();
         parcelList = new ArrayList<>();
@@ -23,7 +23,7 @@ class TemporaryInventory {
 
     void looseStamina() throws OutOfResourcesException {
         stamina --;
-        if (stamina < NUMBER_MIN_OF_STAMINA)
+        if (stamina < 0)
             throw new OutOfResourcesException("No more stamina.");
     }
 
@@ -45,11 +45,15 @@ class TemporaryInventory {
             throw new NoSuchElementException("Player has not played correctly.");
     }
 
-    void reset() {
-        this.stamina = INITIAL_STAMINA;
+    void reset(int stamina) {
+        this.stamina = stamina;
         parcel = null;
         actionTypeList.clear();
         parcelList.clear();
+    }
+
+    void reset() {
+        reset(INITIAL_STAMINA);
     }
 
     boolean contains(ActionType actionType) {

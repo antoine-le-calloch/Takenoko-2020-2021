@@ -3,6 +3,7 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.bot.ParcelBot;
 import fr.unice.polytech.startingpoint.bot.MissionParcelStrat;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import org.junit.jupiter.api.*;
@@ -244,24 +245,28 @@ class MissionParcelStratTest {
 ///////////////////////////////
 
     @Test
-    void judiciousDrawMission() {
-        assertTrue(stratMissionParcel.isJudiciousDrawMission(2));
+    void judiciousDrawMission(){
+        assertTrue(stratMissionParcel.isJudiciousDrawMission());
     }
 
     @Test
-    void notJudiciousDrawMission_NoStamina() {
-        assertFalse(stratMissionParcel.isJudiciousPutParcel(0));
+    void notJudiciousDrawMission_NoStamina() throws OutOfResourcesException {
+        game.getPlayerData().looseStamina();
+        game.getPlayerData().looseStamina();
+        assertFalse(stratMissionParcel.isJudiciousPutParcel());
     }
 ///////////////////////////////
 
     @Test
     void judiciousPutParcel() {
-        assertTrue(stratMissionParcel.isJudiciousPutParcel(2));
+        assertTrue(stratMissionParcel.isJudiciousPutParcel());
     }
 
     @Test
-    void notJudiciousPutParcel_NoStamina() {
-        assertFalse(stratMissionParcel.isJudiciousPutParcel(0));
+    void notJudiciousPutParcel_NoStamina() throws OutOfResourcesException {
+        game.getPlayerData().looseStamina();
+        game.getPlayerData().looseStamina();
+        assertFalse(stratMissionParcel.isJudiciousPutParcel());
     }
 ///////////////////////////////
 
@@ -269,17 +274,19 @@ class MissionParcelStratTest {
     void judiciousPutCanal() {
         board.placeParcel(new Parcel(), coordinate1);
         board.placeParcel(new Parcel(), coordinate2);
-        assertTrue(stratMissionParcel.isJudiciousPutCanal(2));
+        assertTrue(stratMissionParcel.isJudiciousPutCanal());
     }
 
     @Test
     void notJudiciousPutCanal_0PossiblePlace() {
-        assertFalse(stratMissionParcel.isJudiciousPutCanal(2));
+        assertFalse(stratMissionParcel.isJudiciousPutCanal());
     }
 
     @Test
-    void notJudiciousPutCanal_NoStamina() {
-        assertFalse(stratMissionParcel.isJudiciousPutParcel(0));
+    void notJudiciousPutCanal_NoStamina() throws OutOfResourcesException {
+        game.getPlayerData().looseStamina();
+        game.getPlayerData().looseStamina();
+        assertFalse(stratMissionParcel.isJudiciousPutParcel());
     }
 ///////////////////////////////
 
