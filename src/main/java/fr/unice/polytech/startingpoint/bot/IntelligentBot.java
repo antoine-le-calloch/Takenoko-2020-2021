@@ -17,14 +17,11 @@ public class IntelligentBot extends Bot {
     }
 
     public void botPlay() {
-        int stamina = playerInteraction.getStamina();
-        List<ActionType> actionPlay = new ArrayList<>();
-        while(stamina!=0){
+        while(playerInteraction.getStamina()!=0){
             if (playerInteraction.getNumberMissionsDone() < NB_CHANGE_STRAT)
-                stratMissionParcel.stratOneTurn(actionPlay);
+                stratMissionParcel.stratOneTurn();
             else
-                rushPandaStrat.stratOneTurn(actionPlay);
-            stamina--;
+                rushPandaStrat.stratOneTurn();
         }
     }
 }

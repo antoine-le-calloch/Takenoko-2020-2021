@@ -19,51 +19,51 @@ public class MissionParcelStrat extends Strategie{
         super(bot);
     }
 
-    public void stratOneTurn(List<ActionType> actionAlreadyPlay){
-        if (isJudiciousDrawMission(actionAlreadyPlay)) {
+    public void stratOneTurn(){
+        if (isJudiciousDrawMission()) {
             bot.drawMission(MissionType.PARCEL);
-            actionAlreadyPlay.add(ActionType.DRAW_MISSION);
         }
 
-        else if(isJudiciousPutParcel(actionAlreadyPlay)) {
+        else if(isJudiciousPutParcel()) {
             putParcel();
-            actionAlreadyPlay.add(ActionType.DRAW_PARCELS);
         }
 
-        else if (isJudiciousPutCanal(actionAlreadyPlay)) {
+        else if (isJudiciousPutCanal()) {
             putCanal();
-            actionAlreadyPlay.add(ActionType.DRAW_CANAL);
         }
+
+        else
+            bot.playerInteraction.looseStamina();
     }
 
     /**
      * @return <b>True if the bot can draw a mission.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousDrawMission(List<ActionType> actionAlreadyPlay){
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !actionAlreadyPlay.contains(ActionType.DRAW_MISSION);
+    public boolean isJudiciousDrawMission(){
+        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.playerInteraction.contains(ActionType.DRAW_MISSION);
     }
 
     /**
      * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousPutParcel(List<ActionType> actionAlreadyPlay){
-        if(actionAlreadyPlay.size() != 0) {
+    public boolean isJudiciousPutParcel(){
+        if(bot.playerInteraction.getActionTypeList().size() != 0) {
             for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
                 if (bestCoordinatesForMission(mission).size() == 0)
                     return false;
             }
         }
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && !actionAlreadyPlay.contains(ActionType.DRAW_PARCELS);
+        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && !bot.playerInteraction.contains(ActionType.DRAW_PARCELS);
     }
 
     /**
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousPutCanal(List<ActionType> actionAlreadyPlay){
-        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !actionAlreadyPlay.contains(ActionType.DRAW_CANAL);
+    public boolean isJudiciousPutCanal(){
+        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.playerInteraction.contains(ActionType.DRAW_CANAL);
     }
 
     /**

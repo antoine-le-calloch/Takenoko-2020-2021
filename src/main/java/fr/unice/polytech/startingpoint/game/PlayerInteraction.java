@@ -142,6 +142,18 @@ public final class PlayerInteraction {
         return game.getBoard().getPlacedParcels().get(coordinate).getNbBamboo();
     }
 
+    public List<ActionType> getActionTypeList() {
+        return new ArrayList<>(game.getPlayerData().getTemporaryInventory().getActionTypeList());
+    }
+
+    public boolean contains(ActionType action){
+        return game.getPlayerData().contains(action);
+    }
+
+    public void looseStamina(){
+        game.getPlayerData().looseStamina();
+    }
+
     public int getStamina(){
         return game.getPlayerData().getStamina();
     }

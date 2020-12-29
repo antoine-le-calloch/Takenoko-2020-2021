@@ -41,11 +41,8 @@ public class PeasantBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        int stamina = playerInteraction.getStamina();
-        List<ActionType> actionPlay = new ArrayList<>();
-        while(stamina!=0){
-            stratMissionPeasant.stratOneTurn(actionPlay);
-            stamina--;
+        while(playerInteraction.getStamina()!=0){
+            stratMissionPeasant.stratOneTurn();
         }
     }
 }

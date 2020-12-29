@@ -248,27 +248,25 @@ class MissionParcelStratTest {
 
     @Test
     void judiciousDrawMission(){
-        assertTrue(stratMissionParcel.isJudiciousDrawMission(new ArrayList<>()));
+        assertTrue(stratMissionParcel.isJudiciousDrawMission());
     }
 
     @Test
     void notJudiciousDrawMission_ActionAlreadyPlay() {
-        List<ActionType> actionAlreadyPlay = new ArrayList<>();
-        actionAlreadyPlay.add(ActionType.DRAW_MISSION);
-        assertFalse(stratMissionParcel.isJudiciousDrawMission(actionAlreadyPlay));
+        game.getTemporaryInventory().add(ActionType.DRAW_MISSION);
+        assertFalse(stratMissionParcel.isJudiciousDrawMission());
     }
 ///////////////////////////////
 
     @Test
     void judiciousPutParcel() {
-        assertTrue(stratMissionParcel.isJudiciousPutParcel(new ArrayList<>()));
+        assertTrue(stratMissionParcel.isJudiciousPutParcel());
     }
 
     @Test
     void notJudiciousPutParcel_ActionAlreadyPlay() {
-        List<ActionType> actionAlreadyPlay = new ArrayList<>();
-        actionAlreadyPlay.add(ActionType.DRAW_PARCELS);
-        assertFalse(stratMissionParcel.isJudiciousPutParcel(actionAlreadyPlay));
+        game.getTemporaryInventory().add(ActionType.DRAW_PARCELS);
+        assertFalse(stratMissionParcel.isJudiciousPutParcel());
     }
 ///////////////////////////////
 
@@ -276,19 +274,18 @@ class MissionParcelStratTest {
     void judiciousPutCanal() {
         board.placeParcel(new Parcel(), coordinate1);
         board.placeParcel(new Parcel(), coordinate2);
-        assertTrue(stratMissionParcel.isJudiciousPutCanal(new ArrayList<>()));
+        assertTrue(stratMissionParcel.isJudiciousPutCanal());
     }
 
     @Test
     void notJudiciousPutCanal_0PossiblePlace() {
-        assertFalse(stratMissionParcel.isJudiciousPutCanal(new ArrayList<>()));
+        assertFalse(stratMissionParcel.isJudiciousPutCanal());
     }
 
     @Test
     void notJudiciousPutCanal_ActionAlreadyPlay() {
-        List<ActionType> actionAlreadyPlay = new ArrayList<>();
-        actionAlreadyPlay.add(ActionType.DRAW_CANAL);
-        assertFalse(stratMissionParcel.isJudiciousPutCanal(actionAlreadyPlay));
+        game.getTemporaryInventory().add(ActionType.DRAW_CANAL);
+        assertFalse(stratMissionParcel.isJudiciousPutCanal());
     }
 ///////////////////////////////
 

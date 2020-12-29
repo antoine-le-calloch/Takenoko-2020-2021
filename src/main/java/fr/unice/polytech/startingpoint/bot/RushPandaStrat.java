@@ -19,31 +19,33 @@ public class RushPandaStrat extends Strategie{
         super(bot);
     }
 
-    public void stratOneTurn(List<ActionType> actionAlreadyPlay){
-        if (isJudiciousDrawMission(actionAlreadyPlay)) {
+    public void stratOneTurn(){
+        if (isJudiciousDrawMission()) {
             bot.drawMission(MissionType.PANDA);
-            actionAlreadyPlay.add(ActionType.DRAW_MISSION);
         }
-        else if (isJudiciousMovePanda(actionAlreadyPlay)) {
+
+        else if (isJudiciousMovePanda()) {
             bot.movePanda(strategyMovePanda());
-            actionAlreadyPlay.add(ActionType.MOVE_PANDA);
         }
+
+        else
+            bot.playerInteraction.looseStamina();
     }
 
     /**
      * @return <b>True if the bot can draw a mission.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousDrawMission(List<ActionType> actionAlreadyPlay){
-        return bot.playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 && !actionAlreadyPlay.contains(ActionType.DRAW_MISSION);
+    public boolean isJudiciousDrawMission(){
+        return bot.playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 && !bot.playerInteraction.contains(ActionType.DRAW_MISSION);
     }
 
     /**
      * @return <b>True if the bot can move the panda.</b>
      * @see PlayerInteraction
      */
-    public boolean isJudiciousMovePanda(List<ActionType> actionAlreadyPlay){
-        return strategyMovePanda() != null && !actionAlreadyPlay.contains(ActionType.MOVE_PANDA);
+    public boolean isJudiciousMovePanda(){
+        return strategyMovePanda() != null && !bot.playerInteraction.contains(ActionType.MOVE_PANDA);
     }
 
     /** @return <b>Return the first coordinate where the parcel has at least one bamboo and the same color

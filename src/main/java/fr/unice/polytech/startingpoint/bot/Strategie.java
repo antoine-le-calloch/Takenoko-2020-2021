@@ -24,8 +24,7 @@ public abstract class Strategie {
 
     /**<p>The actions of the bot during his turn.</p>
      */
-    public abstract void stratOneTurn(List<ActionType> actionAlreadyPlay);
-
+    public abstract void stratOneTurn();
 
     /**@return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>
      */
