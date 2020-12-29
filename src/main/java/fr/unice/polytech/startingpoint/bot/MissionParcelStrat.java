@@ -2,7 +2,10 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
-import fr.unice.polytech.startingpoint.game.*;
+import fr.unice.polytech.startingpoint.game.Coordinate;
+import fr.unice.polytech.startingpoint.game.ParcelInformation;
+import fr.unice.polytech.startingpoint.game.ParcelMission;
+import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
@@ -20,20 +23,12 @@ public class MissionParcelStrat extends Strategie{
     }
 
     public void stratOneTurn(){
-        if (isJudiciousDrawMission()) {
+        if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PARCEL);
-        }
-
-        else if(isJudiciousPutParcel()) {
+        else if(isJudiciousPutParcel())
             putParcel();
-        }
-
-        else if (isJudiciousPutCanal()) {
+        else if (isJudiciousPutCanal())
             putCanal();
-        }
-
-        else
-            bot.playerInteraction.looseStamina();
     }
 
     /**

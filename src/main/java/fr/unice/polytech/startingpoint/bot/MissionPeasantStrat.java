@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.PlayerInteraction;
-import fr.unice.polytech.startingpoint.game.Rules;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
@@ -20,16 +19,10 @@ public class MissionPeasantStrat extends Strategie{
     /**<p>The actions of the bot during his turn.</p>
      */
     public void stratOneTurn(){
-        if (isJudiciousDrawMission()){
+        if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PEASANT);
-        }
-
-        else if (isJudiciousMovePeasant()) {
+        else if (isJudiciousMovePeasant())
             bot.movePeasant(strategyMovePeasant(possibleCoordinatesPeasant()));
-        }
-
-        else
-            bot.playerInteraction.looseStamina();
     }
 
     /**

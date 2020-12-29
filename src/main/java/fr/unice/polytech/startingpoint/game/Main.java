@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.bot.RandomBot;
 import fr.unice.polytech.startingpoint.type.BotType;
 
 /**

@@ -1,10 +1,7 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.*;
-import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -33,8 +30,6 @@ public class RandomBot extends Bot {
      *
      * @param playerInteraction
      *            <b>PlayerInteraction object.</b>
-     * @param rules
-     *            <b>Rules object.</b>
      */
     public RandomBot(PlayerInteraction playerInteraction) {
         super(playerInteraction);
@@ -43,7 +38,7 @@ public class RandomBot extends Bot {
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        while(playerInteraction.getStamina()!=0){
+        for (int i = playerInteraction.getStamina();i > 0; i--) {
             randomStrat.stratOneTurn();
         }
     }

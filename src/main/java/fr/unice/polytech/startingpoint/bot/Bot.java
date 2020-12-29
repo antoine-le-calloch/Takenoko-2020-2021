@@ -1,9 +1,8 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
-import fr.unice.polytech.startingpoint.exception.RulesViolationException;
-import fr.unice.polytech.startingpoint.game.*;
+import fr.unice.polytech.startingpoint.game.Coordinate;
+import fr.unice.polytech.startingpoint.game.ParcelInformation;
+import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 

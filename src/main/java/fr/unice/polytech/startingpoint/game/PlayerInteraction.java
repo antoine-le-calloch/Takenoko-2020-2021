@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.type.*;
 
@@ -143,15 +142,11 @@ public final class PlayerInteraction {
     }
 
     public List<ActionType> getActionTypeList() {
-        return new ArrayList<>(game.getPlayerData().getTemporaryInventory().getActionTypeList());
+        return game.getPlayerData().getTemporaryInventory().getActionTypeList();
     }
 
     public boolean contains(ActionType action){
         return game.getPlayerData().contains(action);
-    }
-
-    public void looseStamina(){
-        game.getPlayerData().looseStamina();
     }
 
     public int getStamina(){

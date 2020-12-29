@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.Bot;
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 
@@ -53,7 +52,7 @@ public final class PlayerData {
         return temporaryInventory.contains(actionType);
     }
 
-    void looseStamina() throws OutOfResourcesException {
+    void looseStamina(){
         temporaryInventory.looseStamina();
     }
 
@@ -85,7 +84,7 @@ public final class PlayerData {
         inventory.addCanal(canal);
     }
 
-    Canal pickCanal() throws OutOfResourcesException {
+    Canal pickCanal(){
         return inventory.pickCanal();
     }
 

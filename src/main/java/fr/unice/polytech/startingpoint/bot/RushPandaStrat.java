@@ -2,14 +2,10 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.PandaMission;
-import fr.unice.polytech.startingpoint.game.ParcelMission;
 import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RushPandaStrat extends Strategie{
 
@@ -20,16 +16,10 @@ public class RushPandaStrat extends Strategie{
     }
 
     public void stratOneTurn(){
-        if (isJudiciousDrawMission()) {
+        if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PANDA);
-        }
-
-        else if (isJudiciousMovePanda()) {
+        else if (isJudiciousMovePanda())
             bot.movePanda(strategyMovePanda());
-        }
-
-        else
-            bot.playerInteraction.looseStamina();
     }
 
     /**

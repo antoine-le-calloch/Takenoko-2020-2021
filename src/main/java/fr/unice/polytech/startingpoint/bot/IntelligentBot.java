@@ -1,11 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.PlayerInteraction;
-import fr.unice.polytech.startingpoint.game.Rules;
-import fr.unice.polytech.startingpoint.type.ActionType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class IntelligentBot extends Bot {
     RushPandaStrat rushPandaStrat = new RushPandaStrat(this);
@@ -17,7 +12,7 @@ public class IntelligentBot extends Bot {
     }
 
     public void botPlay() {
-        while(playerInteraction.getStamina()!=0){
+        for (int i = playerInteraction.getStamina();i > 0; i--){
             if (playerInteraction.getNumberMissionsDone() < NB_CHANGE_STRAT)
                 stratMissionParcel.stratOneTurn();
             else

@@ -2,8 +2,6 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.ParcelInformation;
-import fr.unice.polytech.startingpoint.game.PlayerInteraction;
-import fr.unice.polytech.startingpoint.game.Rules;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
@@ -20,8 +18,6 @@ public class RandomStrat extends Strategie{
      *
      * @param bot
      *            <b>Bot object.</b>
-     * @param rules
-     *            <b>Rules object.</b>
      */
     public RandomStrat(Bot bot) {
         super(bot);
@@ -86,8 +82,5 @@ public class RandomStrat extends Strategie{
             Collections.shuffle(list);
             bot.movePeasant(list.get(0));
         }
-
-        else
-            bot.playerInteraction.looseStamina();
     }
 }
