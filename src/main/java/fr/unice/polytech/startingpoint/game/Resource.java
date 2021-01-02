@@ -95,7 +95,9 @@ class Resource {
         deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.WATERSHED));
         deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.FERTILIZER));
         deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.ENCLOSURE));
-        for (int i = 0; i < nbMissionParcel / 2; i++){
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.ENCLOSURE));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.ENCLOSURE));
+        for (int i = 0; i < nbMissionParcel / 3; i++){
             deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.NOTHING));
             deckMissionPeasant.add(new PeasantMission(board,ColorType.BLUE, 4,ImprovementType.NOTHING));
         }

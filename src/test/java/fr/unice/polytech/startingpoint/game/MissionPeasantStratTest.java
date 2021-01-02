@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,7 +26,7 @@ public class MissionPeasantStratTest {
     void setUp() {
         game = new Game();
         board = game.getBoard();
-        parcel1 = new Parcel();
+        parcel1 = new Parcel(ColorType.BLUE);
         bot = new PeasantBot(game.getGameInteraction());
         coordinate1 = new Coordinate(1, -1, 0);
         stratMissionPeasant = new MissionPeasantStrat(bot);
@@ -36,37 +38,40 @@ public class MissionPeasantStratTest {
 
     @Test
     void coordWhereMovePeasant_0parcel() {
-        assertNull(stratMissionPeasant.strategyMovePeasant(stratMissionPeasant.possibleCoordinatesPanda()));//Pas de parcel, il ne bouge pas
+        assertNull(stratMissionPeasant.strategyMovePeasant());//Pas de parcel, il ne bouge pas
     }
 
     @Test
-    void coordWhereMovePeasant_1parcelWith1Bamboo() {
+    void noMissionSoPeasentNotMove() {
         board.placeParcel(parcel1, coordinate1);//place la parcel (un bamboo pousse)
-        assertNull(stratMissionPeasant.strategyMovePeasant(stratMissionPeasant.possibleCoordinatesPanda()));
+        assertNull(stratMissionPeasant.strategyMovePeasant());
+    }
+    @Test
+    void possibleParcelColorDifferentFromTheActualMission() {
+        board.placeParcel(parcel1, coordinate1);
+        game.getPlayerData().addMission(new PeasantMission(board,ColorType.RED,1, ImprovementType.NOTHING));
+        assertNull(stratMissionPeasant.strategyMovePeasant());
     }
 
     @Test
-    void coordWhereMovePeasant_1parcelWith2Bamboo() {
-        Parcel parcel2Bamboo = new Parcel(); //créée une parcel
-        parcel2Bamboo.addBamboo();
-        parcel2Bamboo.addBamboo(); //ajoute 2 bamboo
-        board.placeParcel(parcel2Bamboo,coordinate1);// ;//ajoute la parcel avec 2 bamboo a la liste des parcels posée
-        assertEquals(coordinate1,stratMissionPeasant.strategyMovePeasant(stratMissionPeasant.possibleCoordinatesPeasant()));
+    void missionColorSameAsPossibleParcel() {
+
+        board.placeParcel(parcel1,coordinate1);// ;//ajoute la parcel avec 2 bamboo a la liste des parcels posée
+        game.getPlayerData().addMission(new PeasantMission(board,ColorType.BLUE,1, ImprovementType.NOTHING));
+        assertEquals(coordinate1,stratMissionPeasant.strategyMovePeasant());
     }
 
     @Test
     void movePeasant_1Parcel2Bamboo()  {
         game.getTemporaryInventory().add(ActionType.DRAW_MISSION);//empêche de piocher une mission
-
-        Parcel parcel1Bamboo = new Parcel(); //créée la parcel
-        parcel1Bamboo.addBamboo(); //ajoute 1 bamboo
-        board.placeParcel(parcel1Bamboo, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
-
-        assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//2 bamboo sur la parcel
+        board.placeParcel(parcel1, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
+        game.getPlayerData().addMission(new PeasantMission(board,ColorType.BLUE,1, ImprovementType.NOTHING));
+        assertEquals(1,board.getPlacedParcels().get(coordinate1).getNbBamboo());
         stratMissionPeasant.stratOneTurn();//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
-
-        assertEquals(3,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
+        assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
     }
+
+
 
     @Test
     void drawMission() {
