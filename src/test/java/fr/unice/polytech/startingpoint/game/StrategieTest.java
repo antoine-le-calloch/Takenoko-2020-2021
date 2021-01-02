@@ -28,7 +28,7 @@ public class StrategieTest {
         game = new Game();
         parcel1 = new Parcel(ColorType.RED);
         parcel2 = new Parcel(ColorType.RED);
-        parcel3 = new Parcel(ColorType.BLUE);
+        parcel3 = new Parcel(ColorType.GREEN);
         bot1 = new ParcelBot(game.getGameInteraction());
         board = game.getBoard();
         rules = game.getRules();
@@ -122,7 +122,7 @@ public class StrategieTest {
 
     @Test
     public void noParcelsSoNoPossibleCoordinatesForAnyColorGiven(){
-        List<Coordinate> allPossibleCoNextToBlue=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.BLUE);
+        List<Coordinate> allPossibleCoNextToBlue=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.GREEN);
         List<Coordinate> allPossibleCoNextToRed=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.RED);
         assertEquals(0,allPossibleCoNextToBlue.size());
         assertEquals(0,allPossibleCoNextToRed.size());
@@ -135,7 +135,7 @@ public class StrategieTest {
         Coordinate expectedCo3=new Coordinate(2,-1,-1);//2h distant 2 du centre
         board.placeParcel(parcel1,new Coordinate(1,0,-1));//3h
         board.placeParcel(parcel2,new Coordinate(1,-1,0));//2h
-        List<Coordinate> allPossibleCoNextToBlue=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.BLUE);
+        List<Coordinate> allPossibleCoNextToBlue=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.GREEN);
         List<Coordinate> allPossibleCoNextToRed=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.RED);
         assertEquals(0,allPossibleCoNextToBlue.size());
         assertEquals(3,allPossibleCoNextToRed.size());

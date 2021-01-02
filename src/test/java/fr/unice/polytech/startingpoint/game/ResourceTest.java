@@ -28,7 +28,7 @@ public class ResourceTest {
 
     @Test
     void goodInitializeParcel(){
-        assertEquals(32, resource.getDeckParcel().size());
+        assertEquals(27, resource.getDeckParcel().size());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class ResourceTest {
     @Test
     void parcelDecrease() throws OutOfResourcesException {
         resource.selectParcel(resource.drawParcels().get(0));
-        assertEquals(31,resource.getDeckParcel().size());
+        assertEquals(26,resource.getDeckParcel().size());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class ResourceTest {
 
     @Test
     void outOfCParcel() throws OutOfResourcesException {
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 27; i++) {
             resource.selectParcel(resource.drawParcels().get(0));
         }
         assertTrue(resource.isEmpty());

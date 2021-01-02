@@ -41,8 +41,8 @@ public class ParcelMissionTest {
         parcel4 = new Parcel(ColorType.RED);
         mission1 = new ParcelMission(board,ColorType.RED, 2, FormType.TRIANGLE);
         mission2 = new ParcelMission(board,ColorType.RED, 3, FormType.LINE);
-        mission3 = new ParcelMission(board,ColorType.BLUE, 2, FormType.TRIANGLE);
-        mission4 = new ParcelMission(board,ColorType.BLUE, 3, FormType.LINE);
+        mission3 = new ParcelMission(board,ColorType.GREEN, 2, FormType.TRIANGLE);
+        mission4 = new ParcelMission(board,ColorType.GREEN, 3, FormType.LINE);
         bot = new RandomBot(game.getGameInteraction());
     }
 

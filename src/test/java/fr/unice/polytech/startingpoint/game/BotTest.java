@@ -28,7 +28,7 @@ class BotTest {
     @BeforeEach
     public void setUp(){
         game = new Game();
-        parcel1 = new Parcel(ColorType.BLUE);
+        parcel1 = new Parcel(ColorType.GREEN);
         bot1 = new ParcelBot(game.getGameInteraction());
         board = game.getBoard();
         strategie = new RandomStrat(bot1);
@@ -40,7 +40,7 @@ class BotTest {
     public void movePanda(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         bot1.movePanda(strategie.possibleCoordinatesPanda().get(0));
-        assertEquals(1, game.getPlayerData().getInventory().getBamboo(ColorType.BLUE));
+        assertEquals(1, game.getPlayerData().getInventory().getBamboo(ColorType.GREEN));
         assertEquals(0,parcel1.getNbBamboo());
     }
 

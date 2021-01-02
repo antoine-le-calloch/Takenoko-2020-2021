@@ -26,7 +26,7 @@ class RushPandaStratTest {
 
         board = game.getBoard();
         rules = game.getRules();
-        parcel1 = new Parcel(ColorType.BLUE);
+        parcel1 = new Parcel(ColorType.GREEN);
         bot= (PandaBot) game.getPlayerData().getBot();
         coordinate1 = new Coordinate(1, -1, 0);
 
@@ -48,7 +48,7 @@ class RushPandaStratTest {
     @Test
     void coordWhereMovePanda_1parcelWithBamboo() {
         board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(board,ColorType.BLUE,1));
+        game.getPlayerData().addMission(new PandaMission(board,ColorType.GREEN,1));
         assertEquals(coordinate1, bot.getRushPandaStrat().strategyMovePanda());//Le panda veut aller dessus
     }
     @Test
@@ -68,7 +68,7 @@ class RushPandaStratTest {
         board.placeParcel(new Parcel(),coordParcel2);//place la parcel (un bamboo pousse)
         board.placeParcel(new Parcel(),coordParcel3);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
         board.placeParcel(new Parcel(),coordParcel4);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
-        game.getPlayerData().addMission(new PandaMission(board,ColorType.BLUE,1));
+        game.getPlayerData().addMission(new PandaMission(board,ColorType.GREEN,1));
         assertEquals(coordParcel1, bot.getRushPandaStrat().strategyMovePanda());
     }
 
@@ -76,7 +76,7 @@ class RushPandaStratTest {
     void movePanda_1ParcelEtBamboo() {
         board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
         assertEquals(1,board.getPlacedParcels().get(coordinate1).getNbBamboo());//1 bamboo sur la parcel
-        game.getPlayerData().addMission(new PandaMission(board,ColorType.BLUE,1));
+        game.getPlayerData().addMission(new PandaMission(board,ColorType.GREEN,1));
         bot.botPlay();
         assertEquals(0,board.getPlacedParcels().get(coordinate1).getNbBamboo());//0 bamboo sur la parcel
     }
@@ -84,8 +84,8 @@ class RushPandaStratTest {
     @Test
     void movePanda_WhereNoImprovement(){
         board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(ColorType.BLUE, ImprovementType.ENCLOSURE),new Coordinate(0,-1,1));
-        game.getPlayerData().addMission(new PandaMission(board,ColorType.BLUE,1));
+        board.placeParcel(new Parcel(ColorType.GREEN, ImprovementType.ENCLOSURE),new Coordinate(0,-1,1));
+        game.getPlayerData().addMission(new PandaMission(board,ColorType.GREEN,1));
         assertEquals(coordinate1,bot.getRushPandaStrat().strategyMovePanda());
     }
 

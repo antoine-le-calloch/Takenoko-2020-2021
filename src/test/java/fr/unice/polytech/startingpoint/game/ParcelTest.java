@@ -101,7 +101,7 @@ class ParcelTest {
 
     @Test
     void delBambooWithImprovement() {
-        Parcel parcel = new Parcel(ColorType.BLUE,ImprovementType.ENCLOSURE);
+        Parcel parcel = new Parcel(ColorType.GREEN,ImprovementType.ENCLOSURE);
         parcel.setIrrigated();
         assertEquals(ColorType.NO_COLOR, parcel.delBamboo());
     }

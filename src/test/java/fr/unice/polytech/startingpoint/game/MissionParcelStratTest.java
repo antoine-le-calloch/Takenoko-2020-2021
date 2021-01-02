@@ -64,9 +64,9 @@ class MissionParcelStratTest {
 
         stratMissionParcel = new MissionParcelStrat(parcelBot);
 
-        missionBlueTriangle = new ParcelMission(board,ColorType.BLUE, 1, FormType.TRIANGLE);
+        missionBlueTriangle = new ParcelMission(board,ColorType.GREEN, 1, FormType.TRIANGLE);
         missionRedTriangle = new ParcelMission(board,ColorType.RED, 1, FormType.TRIANGLE);
-        missionBlueLine = new ParcelMission(board,ColorType.BLUE, 1, FormType.LINE);
+        missionBlueLine = new ParcelMission(board,ColorType.GREEN, 1, FormType.LINE);
         missionRedLine = new ParcelMission(board,ColorType.RED, 1, FormType.LINE);
     }
 
@@ -116,7 +116,7 @@ class MissionParcelStratTest {
 
     @Test
     void coordNeedToDoBlueTriangle_1BlueParcelPut() {
-        board.placeParcel(new Parcel(ColorType.BLUE), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
         List<Coordinate> coordNeedToDoBlueTriangle = stratMissionParcel.coordNeedToDoMission(coordinate2, missionBlueTriangle);
 
         assertEquals(2, coordNeedToDoBlueTriangle.size());
@@ -155,7 +155,7 @@ class MissionParcelStratTest {
 
     @Test
     void coordNeedToDoRedLine_1BlueParcelPut() {
-        board.placeParcel(new Parcel(ColorType.BLUE), coordinate1);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate1);
         List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.coordNeedToDoMission(coordinate1, missionRedLine);
 
         assertNull(coordNeedToDoRedLine);

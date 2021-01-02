@@ -26,11 +26,11 @@ class MissionTest {
     @BeforeEach void setUp(){
         board = new Board();
         mission1 = new ParcelMission(board,ColorType.RED, 2, FormType.TRIANGLE);
-        mission2 = new ParcelMission(board,ColorType.BLUE, 3, FormType.LINE);
+        mission2 = new ParcelMission(board,ColorType.GREEN, 3, FormType.LINE);
         mission3 = new PandaMission(board,ColorType.RED, 0);
-        mission4 = new PandaMission(board,ColorType.BLUE, 1);
+        mission4 = new PandaMission(board,ColorType.GREEN, 1);
         mission5 = new PeasantMission(board,ColorType.RED, 0,ImprovementType.NOTHING);
-        mission6 = new PeasantMission(board,ColorType.BLUE, 1,ImprovementType.NOTHING);
+        mission6 = new PeasantMission(board,ColorType.GREEN, 1,ImprovementType.NOTHING);
     }
 
     @Test void newMissionParcel(){

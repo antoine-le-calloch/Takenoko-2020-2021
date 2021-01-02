@@ -34,7 +34,7 @@ public class PandaMissionTest {
         resource = game.getResource();
         bot = new RandomBot(game.getGameInteraction());
         parcel1 = new Parcel(ColorType.RED);
-        parcel2 = new Parcel(ColorType.BLUE);
+        parcel2 = new Parcel(ColorType.GREEN);
         mission1 = new PandaMission(board,ColorType.RED, 2);
         mission2 = new PandaMission(board,ColorType.RED, 3);
     }
@@ -52,7 +52,7 @@ public class PandaMissionTest {
         board.placeParcel(parcel2,new Coordinate(1,-1,0)); // parcel blue
         IntStream.range(0, 5).forEach(i -> game.getPlayerData().getInventory().addBamboo(parcel2.getColor()));
         assertEquals(0,game.getPlayerData().getInventory().getBamboo(ColorType.RED));
-        assertEquals(5,game.getPlayerData().getInventory().getBamboo(ColorType.BLUE));
+        assertEquals(5,game.getPlayerData().getInventory().getBamboo(ColorType.GREEN));
         assertFalse(mission1.checkMission(game.getPlayerData().getInventory()));
     }
 

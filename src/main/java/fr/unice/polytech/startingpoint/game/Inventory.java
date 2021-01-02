@@ -37,7 +37,7 @@ class Inventory {
     Inventory(){
         inventoryMission = new ArrayList<>();
         inventoryCanal = new ArrayList<>();
-        inventoryBamboo = new int[]{0,0};
+        inventoryBamboo = new int[]{0,0,0};
     }
 
     /**<p>Add a {@link Canal} in the inventory.</p>

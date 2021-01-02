@@ -17,10 +17,17 @@ public enum ColorType {
         }
     }
     ,
-    BLUE {
+    GREEN {
         @Override
         public String toString() {
-            return "Blue";
+            return "Green";
+        }
+    }
+    ,
+    YELLOW {
+        @Override
+        public String toString() {
+            return "Yellow";
         }
     }
     ,

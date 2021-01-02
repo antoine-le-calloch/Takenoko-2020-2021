@@ -152,7 +152,7 @@ class PlayerInteractionTest {
         assertDoesNotThrow(() -> game.getTemporaryInventory().hasPlayedCorrectly());
 
         assertEquals(0,game.getTemporaryInventory().getParcelsSaved().size());
-        assertEquals(32, playerInteraction.getResourceSize(ResourceType.PARCEL));
+        assertEquals(27, playerInteraction.getResourceSize(ResourceType.PARCEL));
         assertEquals(2,game.getTemporaryInventory().getStamina());
         assertEquals(1, playerInteraction.getPlacedCoordinates().size());
 
@@ -166,7 +166,7 @@ class PlayerInteractionTest {
 
         assertThrows(NoSuchElementException.class,() -> game.getTemporaryInventory().hasPlayedCorrectly());
 
-        assertEquals(31, playerInteraction.getResourceSize(ResourceType.PARCEL));
+        assertEquals(26, playerInteraction.getResourceSize(ResourceType.PARCEL));
         assertEquals(1,game.getTemporaryInventory().getStamina());
 
         playerInteraction.placeParcel(new Coordinate(0,-1,1));
@@ -178,7 +178,7 @@ class PlayerInteractionTest {
 
     @Test
     void botDrawTooMuchParcel() {
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 27; i++) {
             game.getResource().selectParcel(game.getResource().drawParcels().get(0));
         }
         assertThrows(OutOfResourcesException.class,() -> playerInteraction.drawParcels());
@@ -321,19 +321,19 @@ class PlayerInteractionTest {
     void placedParcelInformation(){
         game.getBoard().placeParcel(new Parcel(ImprovementType.WATERSHED),new Coordinate(1,-1,0));
         game.getBoard().placeParcel(new Parcel(ColorType.RED),new Coordinate(0,-1,1));
-        game.getBoard().placeParcel(new Parcel(ColorType.BLUE,ImprovementType.ENCLOSURE),new Coordinate(1,-2,1));
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN,ImprovementType.ENCLOSURE),new Coordinate(1,-2,1));
         assertEquals(new ParcelInformation(),playerInteraction.getPlacedParcelInformation(new Coordinate()));
         assertEquals(new ParcelInformation(ImprovementType.WATERSHED),playerInteraction.getPlacedParcelInformation(new Coordinate(1,-1,0)));
         assertEquals(new ParcelInformation(ColorType.RED),playerInteraction.getPlacedParcelInformation(new Coordinate(0,-1,1)));
-        assertEquals(new ParcelInformation(ColorType.BLUE,ImprovementType.ENCLOSURE),playerInteraction.getPlacedParcelInformation(new Coordinate(1,-2,1)));
+        assertEquals(new ParcelInformation(ColorType.GREEN,ImprovementType.ENCLOSURE),playerInteraction.getPlacedParcelInformation(new Coordinate(1,-2,1)));
     }
 
     @Test
     void testGetPlacedCoordinatesByColor(){
         game.getBoard().placeParcel(new Parcel(ColorType.RED),new Coordinate(0,-1,1));
-        game.getBoard().placeParcel(new Parcel(ColorType.BLUE),new Coordinate(1,-1,0));
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN),new Coordinate(1,-1,0));
         ArrayList<Coordinate> placedCoordinatesByRedColor= (ArrayList<Coordinate>) playerInteraction.getPlacedCoordinatesByColor(ColorType.RED);
-        ArrayList<Coordinate> placedCoordinatesByBlueColor= (ArrayList<Coordinate>) playerInteraction.getPlacedCoordinatesByColor(ColorType.BLUE);
+        ArrayList<Coordinate> placedCoordinatesByBlueColor= (ArrayList<Coordinate>) playerInteraction.getPlacedCoordinatesByColor(ColorType.GREEN);
         assertEquals(new Coordinate(0,-1,1),placedCoordinatesByRedColor.get(0));
         assertEquals(new Coordinate(1,-1,0),placedCoordinatesByBlueColor.get(0));
         assertNotEquals(new Coordinate(1,-1,0),placedCoordinatesByRedColor.get(0));

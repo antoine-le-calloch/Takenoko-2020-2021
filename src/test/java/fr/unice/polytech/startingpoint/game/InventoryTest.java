@@ -21,8 +21,8 @@ public class InventoryTest {
     public void setUp(){
         inventory = new Inventory();
         board = new Board();
-        parcel = new Parcel(ColorType.BLUE);
-        mission = new ParcelMission(board,ColorType.BLUE, 0, FormType.LINE);
+        parcel = new Parcel(ColorType.GREEN);
+        mission = new ParcelMission(board,ColorType.GREEN, 0, FormType.LINE);
     }
 
     @Test

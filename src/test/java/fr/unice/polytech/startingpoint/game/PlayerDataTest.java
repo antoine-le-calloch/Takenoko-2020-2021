@@ -64,7 +64,7 @@ public class PlayerDataTest {
         assertThrows(OutOfResourcesException.class,() -> playerData.pickCanal());
 
         playerData.addBamboo(ColorType.RED);
-        playerData.addBamboo(ColorType.BLUE);
+        playerData.addBamboo(ColorType.GREEN);
         assertArrayEquals(new int[]{1,1},playerData.getInventory().getBamboo());
 
         playerData.addMission(new ParcelMission(game.getBoard(), ColorType.RED,3, FormType.TRIANGLE));

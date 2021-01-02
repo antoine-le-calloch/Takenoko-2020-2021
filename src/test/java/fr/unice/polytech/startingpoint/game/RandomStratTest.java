@@ -36,7 +36,7 @@ public class RandomStratTest {
         randomStrat = new RandomStrat(rdmBot1);
     }
 
-    /*@Test
+    @Test
     public void drawMissionParcel() {
         Random mockRand = mock(Random.class);
         Random mockRand2 = mock(Random.class);
@@ -49,10 +49,10 @@ public class RandomStratTest {
         assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
 
         assertEquals(MissionType.PARCEL, game.getGameInteraction().getInventoryMissions().get(0).missionType);
-    }*/
+    }
 
 
-    /*@Test
+    @Test
     public void drawMissionPanda() {
         Random mockRand = mock(Random.class);
         Random mockRand2 = mock(Random.class);
@@ -131,5 +131,5 @@ public class RandomStratTest {
         assertEquals(central,board.getCharacter(CharacterType.PEASANT).getCoordinate());//Le Paesant est au centre
         randomStrat.stratOneTurn();
         assertNotEquals(central,board.getCharacter(CharacterType.PEASANT).getCoordinate());//Le Paesant n'est plus au centre
-    }*/
+    }
 }

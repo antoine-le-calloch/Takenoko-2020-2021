@@ -43,15 +43,24 @@ class Resource {
     /**Initialize {@link Parcel} deck.
      */
     private void initializeDeckParcel(){
-        int nbParcel = 32;
-        for (int i = 0; i < (nbParcel / 8); i++){
-            for (ColorType colorType : ColorType.values()){
-                for (ImprovementType improvementType : ImprovementType.values()){
-                    if (!colorType.equals(ColorType.NO_COLOR))
-                        deckParcel.add(new Parcel(colorType,improvementType));
-                }
-            }
+        for (int i = 0; i<6; i++) {
+            deckParcel.add(new Parcel(ColorType.GREEN, ImprovementType.NOTHING));
+            deckParcel.add(new Parcel(ColorType.YELLOW, ImprovementType.NOTHING));
         }
+        for (int i = 0; i<4; i++)
+            deckParcel.add(new Parcel(ColorType.GREEN, ImprovementType.NOTHING));
+
+        for (int i = 0; i<2; i++) {
+            deckParcel.add(new Parcel(ColorType.GREEN, ImprovementType.WATERSHED));
+            deckParcel.add(new Parcel(ColorType.GREEN, ImprovementType.ENCLOSURE));
+        }
+        deckParcel.add(new Parcel(ColorType.GREEN,ImprovementType.FERTILIZER));
+        deckParcel.add(new Parcel(ColorType.YELLOW, ImprovementType.WATERSHED));
+        deckParcel.add(new Parcel(ColorType.YELLOW, ImprovementType.ENCLOSURE));
+        deckParcel.add(new Parcel(ColorType.YELLOW,ImprovementType.FERTILIZER));
+        deckParcel.add(new Parcel(ColorType.RED, ImprovementType.WATERSHED));
+        deckParcel.add(new Parcel(ColorType.RED, ImprovementType.ENCLOSURE));
+        deckParcel.add(new Parcel(ColorType.RED,ImprovementType.FERTILIZER));
     }
 
     /**Initialize {@link Mission} decks.
@@ -65,13 +74,19 @@ class Resource {
     /**Initialize {@link ParcelMission} deck.
      */
     private void initializeDeckMissionParcel(Board board){
-        int nbMissionParcel = 15;
-        for (int i = 0; i < nbMissionParcel / 5; i++){
-            deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 2, FormType.TRIANGLE));
-            deckMissionParcel.add(new ParcelMission(board,ColorType.BLUE, 3, FormType.TRIANGLE));
-            deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 3, FormType.LINE));
-            deckMissionParcel.add(new ParcelMission(board,ColorType.BLUE, 4, FormType.LINE));
-            deckMissionParcel.add(new ParcelMission(board,ColorType.BLUE, 4, FormType.LINE));
+        int nbMissionParcel = 9;
+        deckMissionParcel.add(new ParcelMission(board,ColorType.GREEN, 2, FormType.LINE));
+        deckMissionParcel.add(new ParcelMission(board,ColorType.GREEN, 2, FormType.TRIANGLE));
+        deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, 3, FormType.LINE));
+        deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, 3, FormType.TRIANGLE));
+        deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 4, FormType.LINE));
+        deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 4, FormType.TRIANGLE));
+
+        //mauvaise mission
+        for (int i = 0; i < nbMissionParcel / 3; i++){
+            deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, 3, FormType.TRIANGLE));
+            deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 4, FormType.LINE));
+            deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 4, FormType.TRIANGLE));
         }
         Collections.shuffle(deckMissionParcel);
     }
@@ -79,27 +94,39 @@ class Resource {
     /**Initialize {@link PandaMission} deck.
      */
     private void initializeDeckMissionPanda(Board board){
-        int nbMissionParcel = 15;
-        deckMissionPanda.add(new PandaMission(board,ColorType.RED, 3));
-        for (int i = 0; i < nbMissionParcel / 2; i++){
-            deckMissionPanda.add(new PandaMission(board,ColorType.RED, 3));
-            deckMissionPanda.add(new PandaMission(board,ColorType.BLUE, 3));
-        }
+        for (int i = 0; i<5; i++)
+            deckMissionPanda.add(new PandaMission(board,ColorType.GREEN, 3));
+        for (int i = 0; i<4; i++)
+            deckMissionPanda.add(new PandaMission(board,ColorType.YELLOW, 4));
+        for (int i = 0; i<3; i++)
+            deckMissionPanda.add(new PandaMission(board,ColorType.RED, 5));
+
+        //mauvaise mission
+        for (int i = 0; i<3; i++)
+            deckMissionPanda.add(new PandaMission(board,ColorType.RED, 5));
+
         Collections.shuffle(deckMissionPanda);
     }
 
     /**Initialize {@link PeasantMission} deck.
      */
     private void initializeDeckMissionPeasant(Board board){
-        int nbMissionParcel = 15;
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.WATERSHED));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.FERTILIZER));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.ENCLOSURE));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.ENCLOSURE));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.ENCLOSURE));
-        for (int i = 0; i < nbMissionParcel / 3; i++){
-            deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 4,ImprovementType.NOTHING));
-            deckMissionPeasant.add(new PeasantMission(board,ColorType.BLUE, 4,ImprovementType.NOTHING));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 5,ImprovementType.FERTILIZER));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 6,ImprovementType.WATERSHED));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 6,ImprovementType.ENCLOSURE));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 7,ImprovementType.NOTHING));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 3,ImprovementType.FERTILIZER));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 4,ImprovementType.WATERSHED));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 4,ImprovementType.ENCLOSURE));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 5,ImprovementType.NOTHING));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 4,ImprovementType.FERTILIZER));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 5,ImprovementType.WATERSHED));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 5,ImprovementType.ENCLOSURE));
+        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 6,ImprovementType.NOTHING));
+
+        //mauvaise mission
+        for (int i = 0; i < 3; i++){
+            deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 4,ImprovementType.NOTHING));
         }
         Collections.shuffle(deckMissionPeasant);
     }

@@ -29,10 +29,10 @@ public class PeasantMissionTest {
         game = new Game();
         board = game.getBoard();
         missionRed = new PeasantMission(board,ColorType.RED, 2,ImprovementType.NOTHING);
-        missionBlue = new PeasantMission(board,ColorType.BLUE, 2,ImprovementType.NOTHING);
-        missionFertiziler = new PeasantMission(board,ColorType.BLUE, 2,ImprovementType.FERTILIZER);
-        missionWaterShed = new PeasantMission(board,ColorType.BLUE, 2,ImprovementType.WATERSHED);
-        missionEnclosure = new PeasantMission(board,ColorType.BLUE, 2,ImprovementType.ENCLOSURE);
+        missionBlue = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.NOTHING);
+        missionFertiziler = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.FERTILIZER);
+        missionWaterShed = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.WATERSHED);
+        missionEnclosure = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.ENCLOSURE);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class PeasantMissionTest {
 
     @Test
     void wrongImprovement(){
-        board.placeParcel(new Parcel(ColorType.BLUE,ImprovementType.FERTILIZER),new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ColorType.GREEN,ImprovementType.FERTILIZER),new Coordinate(1,-1,0));
         assertFalse(missionEnclosure.checkMission(game.getPlayerData().getInventory()));
         assertFalse(missionWaterShed.checkMission(game.getPlayerData().getInventory()));
     }

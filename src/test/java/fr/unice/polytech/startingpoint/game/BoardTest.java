@@ -74,8 +74,8 @@ public class BoardTest {
     //bambous pousse autour si irrigué + même couleur
     @Test
     void actionPeasantSameColorAroundAndIrrigated(){
-        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
-        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1,0,-1));
+        board.placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1,0,-1));
         board.moveCharacter(CharacterType.PEASANT, new Coordinate(1, -1, 0));
         assertEquals(2,board.getPlacedParcels().get(new Coordinate(1,0,-1)).getNbBamboo());
     }
@@ -83,7 +83,7 @@ public class BoardTest {
     //bambous pousse pas autour si couleur diff
     @Test
     void actionPeasantDifferentColorAround(){
-        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1, -1, 0));
         board.placeParcel(new Parcel(ColorType.RED), new Coordinate(1,0,-1));
         board.moveCharacter(CharacterType.PEASANT, new Coordinate(1, -1, 0));
         assertEquals(1,board.getPlacedParcels().get(new Coordinate(1,0,-1)).getNbBamboo());
@@ -92,8 +92,8 @@ public class BoardTest {
     //bambous pousse pas autour si non irriguée
     @Test
     void actionPeasantNotIrrigatedAround(){
-        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, -1, 0));
-        board.placeParcel(new Parcel(ColorType.BLUE), new Coordinate(1, 0, -1));
+        board.placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1, -1, 0));
+        board.placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1, 0, -1));
         board.placeParcel(new Parcel(ColorType.RED), new Coordinate(2,-1,-1));
         board.moveCharacter(CharacterType.PEASANT, new Coordinate(1, -1, 0));
         assertEquals(0,board.getPlacedParcels().get(new Coordinate(2,-1,-1)).getNbBamboo());
