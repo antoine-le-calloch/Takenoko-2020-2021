@@ -4,6 +4,7 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.bot.PandaBot;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -78,6 +79,14 @@ class RushPandaStratTest {
         game.getPlayerData().addMission(new PandaMission(board,ColorType.BLUE,1));
         bot.botPlay();
         assertEquals(0,board.getPlacedParcels().get(coordinate1).getNbBamboo());//0 bamboo sur la parcel
+    }
+
+    @Test
+    void movePanda_WhereNoImprovement(){
+        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
+        board.placeParcel(new Parcel(ColorType.BLUE, ImprovementType.ENCLOSURE),new Coordinate(0,-1,1));
+        game.getPlayerData().addMission(new PandaMission(board,ColorType.BLUE,1));
+        assertEquals(coordinate1,bot.getRushPandaStrat().strategyMovePanda());
     }
 
     @Test

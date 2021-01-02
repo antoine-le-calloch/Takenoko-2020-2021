@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.PandaMission;
 import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
@@ -45,7 +46,7 @@ public class RushPandaStrat extends Strategie{
         for (Coordinate coordinate : possibleCoordinatesPanda()) {
             if (bot.playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0) {
                 for (PandaMission pandaMission : bot.playerInteraction.getInventoryPandaMissions() ) {
-                    if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(pandaMission.getColor()))
+                    if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(pandaMission.getColor()) && !bot.playerInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE))
                         return coordinate;
                 }
             }
