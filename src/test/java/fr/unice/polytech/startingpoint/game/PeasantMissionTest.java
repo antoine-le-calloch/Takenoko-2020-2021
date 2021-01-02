@@ -1,9 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
-import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.type.*;
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,33 +17,48 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PeasantMissionTest {
     Game game;
     Board board;
-    PeasantMission mission1;
-    PeasantMission mission2;
+    PeasantMission missionRed;
+    PeasantMission missionBlue;
+    PeasantMission missionFertiziler;
+    PeasantMission missionWaterShed;
+    PeasantMission missionEnclosure;
 
+    
     @BeforeEach
     void setUp(){
         game = new Game();
         board = game.getBoard();
-        mission1 = new PeasantMission(board,ColorType.RED, 2);
-        mission2 = new PeasantMission(board,ColorType.BLUE, 2);
+        missionRed = new PeasantMission(board,ColorType.RED, 2,ImprovementType.NOTHING);
+        missionBlue = new PeasantMission(board,ColorType.BLUE, 2,ImprovementType.NOTHING);
+        missionFertiziler = new PeasantMission(board,ColorType.BLUE, 2,ImprovementType.FERTILIZER);
+        missionWaterShed = new PeasantMission(board,ColorType.BLUE, 2,ImprovementType.WATERSHED);
+        missionEnclosure = new PeasantMission(board,ColorType.BLUE, 2,ImprovementType.ENCLOSURE);
     }
 
     @Test
     void missionComplete() {
         board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
         game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertTrue(mission1.checkMission(game.getPlayerData().getInventory()));
+        assertTrue(missionRed.checkMission(game.getPlayerData().getInventory()));
     }
 
     @Test
     void wrongColor() {
         board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
         game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertFalse(mission2.checkMission(game.getPlayerData().getInventory()));
+        assertFalse(missionBlue.checkMission(game.getPlayerData().getInventory()));
     }
 
     @Test
     void notEnoughBamboo(){
-        assertFalse(mission1.checkMission(game.getPlayerData().getInventory()));
+        assertFalse(missionRed.checkMission(game.getPlayerData().getInventory()));
     }
+
+    @Test
+    void wrongImprovement(){
+        board.placeParcel(new Parcel(ColorType.BLUE,ImprovementType.FERTILIZER),new Coordinate(1,-1,0));
+        assertFalse(missionEnclosure.checkMission(game.getPlayerData().getInventory()));
+        assertFalse(missionWaterShed.checkMission(game.getPlayerData().getInventory()));
+    }
+
 }

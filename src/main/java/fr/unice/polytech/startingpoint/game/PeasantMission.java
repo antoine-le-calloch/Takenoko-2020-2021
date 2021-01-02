@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 
 /**
@@ -21,6 +22,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  */
 
 public final class PeasantMission extends Mission {
+    private final ImprovementType improvementType;
 
     /**
      * <p>Set up a peasant mission. Initialize all variables.</p>
@@ -30,8 +32,9 @@ public final class PeasantMission extends Mission {
      * @param points
      *            <b>the points of the mission</b>
      */
-    PeasantMission(Board board, ColorType colorType, int points){
+    PeasantMission(Board board, ColorType colorType, int points, ImprovementType improvementType){
         super(board, MissionType.PEASANT,colorType,points);
+        this.improvementType=improvementType;
     }
 
     /**<p>check peasant if a mission is done</p>
@@ -39,9 +42,16 @@ public final class PeasantMission extends Mission {
     boolean checkMission(Inventory inventory) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
             int NB_BAMBOO = 2;
-            if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType)
-                return true;
+            if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType){
+                if(improvementType.equals(ImprovementType.NOTHING))
+                    return true;
+                else if(parcel.getImprovement().equals(improvementType)){
+                    return true;
+                }
+            }
+
         }
         return false;
     }
+    
 }

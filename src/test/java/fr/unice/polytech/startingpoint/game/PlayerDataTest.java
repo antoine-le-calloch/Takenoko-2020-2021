@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class PlayerDataTest {
 
         playerData.addMission(new ParcelMission(game.getBoard(), ColorType.RED,3, FormType.TRIANGLE));
         playerData.addMission(new PandaMission(game.getBoard(), ColorType.RED,2));
-        playerData.addMission(new PeasantMission(game.getBoard(), ColorType.RED,4));
+        playerData.addMission(new PeasantMission(game.getBoard(), ColorType.RED,4, ImprovementType.NOTHING));
         assertEquals(3,playerData.getMissions().size());
         assertEquals(1,playerData.getParcelMissions().size());
         assertEquals(1,playerData.getPandaMissions().size());

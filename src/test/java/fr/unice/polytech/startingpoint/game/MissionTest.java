@@ -29,8 +29,8 @@ class MissionTest {
         mission2 = new ParcelMission(board,ColorType.BLUE, 3, FormType.LINE);
         mission3 = new PandaMission(board,ColorType.RED, 0);
         mission4 = new PandaMission(board,ColorType.BLUE, 1);
-        mission5 = new PeasantMission(board,ColorType.RED, 0);
-        mission6 = new PeasantMission(board,ColorType.BLUE, 1);
+        mission5 = new PeasantMission(board,ColorType.RED, 0,ImprovementType.NOTHING);
+        mission6 = new PeasantMission(board,ColorType.BLUE, 1,ImprovementType.NOTHING);
     }
 
     @Test void newMissionParcel(){
