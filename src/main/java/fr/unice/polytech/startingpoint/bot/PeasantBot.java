@@ -1,7 +1,7 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.PeasantMission;
-import fr.unice.polytech.startingpoint.game.PlayerInteraction;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 
 /**
  * <h1>{@link PeasantBot} :</h1>
@@ -26,14 +26,14 @@ public class PeasantBot extends Bot {
     MissionPeasantStrat stratMissionPeasant = new MissionPeasantStrat(this);
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      */
-    public PeasantBot(PlayerInteraction playerInteraction) {
-        super(playerInteraction);
+    public PeasantBot(GameInteraction gameInteraction) {
+        super(gameInteraction);
     }
 
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        for (int i = playerInteraction.getStamina();i > 0; i--){
+        for (int i = gameInteraction.getStamina();i > 0; i--){
             stratMissionPeasant.stratOneTurn();
         }
     }

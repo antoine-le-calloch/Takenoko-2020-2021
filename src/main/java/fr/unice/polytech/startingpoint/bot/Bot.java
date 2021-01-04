@@ -2,7 +2,7 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.ParcelInformation;
-import fr.unice.polytech.startingpoint.game.PlayerInteraction;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 
@@ -31,15 +31,15 @@ import java.util.List;
 
 public abstract class Bot {
 
-    protected final PlayerInteraction playerInteraction;
+    protected final GameInteraction gameInteraction;
     /**
      * <p>Set up the bot. Initialize all variables.</p>
      *
-     * @param playerInteraction
+     * @param gameInteraction
      *            <b>Game object.</b>
      */
-    public Bot(PlayerInteraction playerInteraction) {
-        this.playerInteraction = playerInteraction;
+    public Bot(GameInteraction gameInteraction) {
+        this.gameInteraction = gameInteraction;
     }
 
     /**<p>The actions of the bot during his turn.</p>
@@ -52,23 +52,23 @@ public abstract class Bot {
      *            <b>The type of the mission the bot want to draw.</b>
      */
     public void drawMission(MissionType missionType){
-        playerInteraction.drawMission(missionType);
+        gameInteraction.drawMission(missionType);
     }
 
     /**@return Preview a list of 3 ColorTypes from the resources.
      */
     public List<ParcelInformation> drawParcel() {
-        return playerInteraction.drawParcels();
+        return gameInteraction.drawParcels();
     }
 
     public void selectParcel(ParcelInformation parcelInformation){
-        playerInteraction.selectParcel(parcelInformation);
+        gameInteraction.selectParcel(parcelInformation);
     }
 
     /**<p>Draw a canal in the resources and place it in the inventory.</p>
      */
     public void drawCanal() {
-        playerInteraction.drawCanal();
+        gameInteraction.drawCanal();
     }
 
     /**<p>Place a parcel at the coordinates specified in the following parameters.</p>
@@ -77,7 +77,7 @@ public abstract class Bot {
      *            <b>The coordinates where the bot want to place the parcel on the board.</b>
      */
     public void placeParcel(Coordinate coordinate){
-        playerInteraction.placeParcel(coordinate);
+        gameInteraction.placeParcel(coordinate);
     }
 
     /**<p>Place a canal at the coordinates specified in the following parameter.</p>
@@ -86,7 +86,7 @@ public abstract class Bot {
      *            <b>The coordinates where the bot want to place the canal on the board.</b>
      */
     public void placeCanal(Coordinate[] coordinates) {
-        playerInteraction.placeCanal(coordinates[0],coordinates[1]);
+        gameInteraction.placeCanal(coordinates[0],coordinates[1]);
     }
 
     /**<p>Move the Panda to coordinates specified in the following parameter.</p>
@@ -95,7 +95,7 @@ public abstract class Bot {
      *            <b>The coordinates where the bot want to move the Panda on the board.</b>
      */
     public void movePanda(Coordinate coordinate) {
-        playerInteraction.moveCharacter(CharacterType.PANDA,coordinate);
+        gameInteraction.moveCharacter(CharacterType.PANDA,coordinate);
     }
 
     /**<p>Move the Peasant to coordinates specified in the following parameter.</p>
@@ -104,8 +104,8 @@ public abstract class Bot {
      *            <b>The coordinates where the bot want to move the Peasant on the board.</b>
      */
     public void movePeasant(Coordinate coordinate){
-        playerInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
+        gameInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
     }
 
-    public PlayerInteraction getPlayerInteraction(){return playerInteraction;}
+    public GameInteraction getGameInteraction(){return gameInteraction;}
 }

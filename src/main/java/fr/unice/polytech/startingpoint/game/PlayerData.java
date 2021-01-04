@@ -1,11 +1,15 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.Bot;
+import fr.unice.polytech.startingpoint.game.mission.PandaMission;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public final class PlayerData {
     private final Bot bot;
@@ -26,18 +30,37 @@ public final class PlayerData {
         resetTemporaryInventory();
         bot.botPlay();
         hasPlayedCorrectly();
-        missionDone();
     }
 
-    void missionDone(){
-        List<Mission> toRemove = new ArrayList<>();
-        for(Mission mission : getMissions()){
-            if(mission.checkMission(inventory)){
-                addScore(mission.getPoints());
-                toRemove.add(mission);
+    public void checkMissions(Map<Coordinate,Parcel> coordinateParcelMap){
+        List<PandaMission> toRemovePandaMission = new ArrayList<>();
+        List<ParcelMission> toRemoveParcelMission = new ArrayList<>();
+        List<PeasantMission> toRemovePeasantMission = new ArrayList<>();
+
+        for(PandaMission pandaMission : inventory.getPandaMissions()){
+            if(pandaMission.checkMission(inventory)){
+                addScore(pandaMission.getPoints());
+                toRemovePandaMission.add(pandaMission);
             }
         }
-        subMissions(toRemove);
+
+        for(ParcelMission parcelMission : inventory.getParcelMissions()){
+            if(parcelMission.checkMission(coordinateParcelMap)){
+                addScore(parcelMission.getPoints());
+                toRemoveParcelMission.add(parcelMission);
+            }
+        }
+
+        for(PeasantMission peasantMission : inventory.getPeasantMissions()){
+            if(peasantMission.checkMission(new ArrayList<>(coordinateParcelMap.values()))){
+                addScore(peasantMission.getPoints());
+                toRemovePeasantMission.add(peasantMission);
+            }
+        }
+
+        inventory.subPandaMissions(toRemovePandaMission);
+        inventory.subParcelMissions(toRemoveParcelMission);
+        inventory.subPeasantMissions(toRemovePeasantMission);
     }
 
     boolean add(ActionType actionType) {
@@ -92,12 +115,16 @@ public final class PlayerData {
         inventory.addBamboo(colorType);
     }
 
-    void addMission(Mission mission){
-        inventory.addMission(mission);
+    void addMission(PandaMission mission){
+        inventory.addPandaMission(mission);
     }
 
-    void subMissions(List<Mission> toRemove) {
-        inventory.subMissions(toRemove);
+    void addMission(ParcelMission mission){
+        inventory.addParcelMission(mission);
+    }
+
+    void addMission(PeasantMission mission){
+        inventory.addPeasantMission(mission);
     }
 
     void addScore(int score){
@@ -129,20 +156,16 @@ public final class PlayerData {
         return temporaryInventory;
     }
 
-    List<ParcelMission> getParcelMissions() {
+    public List<ParcelMission> getParcelMissions() {
         return inventory.getParcelMissions();
     }
 
-    List<PandaMission> getPandaMissions() {
+    public List<PandaMission> getPandaMissions() {
         return inventory.getPandaMissions();
     }
 
-    List<PeasantMission> getPeasantMissions() {
+    public List<PeasantMission> getPeasantMissions() {
         return inventory.getPeasantMissions();
-    }
-
-    List<Mission> getMissions() {
-        return inventory.getMissions();
     }
 
     public int[] getInventoryBamboo() { return  inventory.getInventoryBamboo();

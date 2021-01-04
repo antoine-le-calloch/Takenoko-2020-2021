@@ -20,7 +20,7 @@ class Game{
     private final Board board;
     private final Rules rules;
     private final Resource resource;
-    private final PlayerInteraction playerInteraction;
+    private final GameInteraction gameInteraction;
     private final List<PlayerData> botData;
     private final int NB_MISSION;
     private int numBot;
@@ -28,8 +28,8 @@ class Game{
     private Game(BotType[] botTypes, int nbMission, int stamina){
         board = new Board();
         rules = new Rules(board);
-        resource = new Resource(board);
-        playerInteraction = new PlayerInteraction(this);
+        resource = new Resource();
+        gameInteraction = new GameInteraction(this);
         botData = new LinkedList<>();
         NB_MISSION = nbMission;
         numBot = 0;
@@ -55,19 +55,19 @@ class Game{
         for (BotType botType : botTypes) {
             switch (botType) {
                 case RANDOM:
-                    botData.add( new PlayerData( new RandomBot(playerInteraction), stamina ) );
+                    botData.add( new PlayerData( new RandomBot(gameInteraction), stamina ) );
                     break;
                 case PARCEL_BOT:
-                    botData.add( new PlayerData( new ParcelBot(playerInteraction), stamina ) );
+                    botData.add( new PlayerData( new ParcelBot(gameInteraction), stamina ) );
                     break;
                 case PEASANT_BOT:
-                    botData.add( new PlayerData( new PeasantBot(playerInteraction), stamina ) );
+                    botData.add( new PlayerData( new PeasantBot(gameInteraction), stamina ) );
                     break;
                 case PANDA_BOT:
-                    botData.add( new PlayerData( new PandaBot(playerInteraction), stamina ) );
+                    botData.add( new PlayerData( new PandaBot(gameInteraction), stamina ) );
                     break;
                 case INTELLIGENT_BOT:
-                    botData.add( new PlayerData( new IntelligentBot(playerInteraction), stamina ) );
+                    botData.add( new PlayerData( new IntelligentBot(gameInteraction), stamina ) );
                     break;
             }
         }
@@ -83,6 +83,7 @@ class Game{
 
     private void botPlay() {
         getPlayerData().botPlay();
+        getPlayerData().checkMissions(board.getPlacedParcels());
     }
 
     /**Set the next bot to play.
@@ -113,8 +114,8 @@ class Game{
         return rules;
     }
 
-    PlayerInteraction getGameInteraction() {
-        return playerInteraction;
+    GameInteraction getGameInteraction() {
+        return gameInteraction;
     }
 
     /**

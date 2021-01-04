@@ -44,11 +44,9 @@ public class RandomStratTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(0);//donne une val au random pour choisir la mission
         randomStrat.setRand(mockRand, mockRand2);//set les Random mock
 
-        assertEquals(0, game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(0, game.getGameInteraction().getInventoryParcelMissions().size());
         randomStrat.stratOneTurn();
-        assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
-
-        assertEquals(MissionType.PARCEL, game.getGameInteraction().getInventoryMissions().get(0).missionType);
+        assertEquals(1, game.getGameInteraction().getInventoryParcelMissions().size());
     }
 
 
@@ -60,10 +58,9 @@ public class RandomStratTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(1);//donne une val au random pour choisir la mission
         randomStrat.setRand(mockRand, mockRand2);//set les Random mock
 
-        assertEquals(0, game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(0, game.getGameInteraction().getInventoryPandaMissions().size());
         randomStrat.stratOneTurn();
-        assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
-        assertEquals(MissionType.PANDA, game.getGameInteraction().getInventoryMissions().get(0).missionType);
+        assertEquals(1, game.getGameInteraction().getInventoryPandaMissions().size());
     }
 
     @Test
@@ -75,10 +72,9 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand, mockRand2);//set les Random mock
 
 
-        assertEquals(0, game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(0, game.getGameInteraction().getInventoryPeasantMissions().size());
         randomStrat.stratOneTurn();
-        assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
-        assertEquals(MissionType.PEASANT, game.getGameInteraction().getInventoryMissions().get(0).missionType);
+        assertEquals(1, game.getGameInteraction().getInventoryPeasantMissions().size());
     }
 
     @Test

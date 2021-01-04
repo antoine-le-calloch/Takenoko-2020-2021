@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +19,7 @@ class InventoryTest {
     @BeforeEach
     void setUp(){
         inventory = new Inventory();
-        Board board = new Board();
-        mission = new ParcelMission(board,ColorType.GREEN, 0, FormType.LINE);
+        mission = new ParcelMission(ColorType.GREEN, FormType.LINE, 0);
     }
 
     @Test
@@ -72,13 +72,5 @@ class InventoryTest {
         inventory.subTwoBamboos(ColorType.GREEN);
         assertEquals(0, inventory.getInventoryBamboo()[0]);
         assertEquals(1, inventory.getInventoryBamboo()[1]);
-    }
-
-    @Test
-    void inventoryMission(){
-        inventory.addMission(mission);
-        assertEquals(1, inventory.getMissions().size());
-        inventory.subMissions(new ArrayList<>(Collections.singletonList(mission)));
-        assertEquals(0, inventory.getMissions().size());
     }
 }

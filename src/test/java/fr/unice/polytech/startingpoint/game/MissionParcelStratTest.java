@@ -3,13 +3,12 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.bot.ParcelBot;
 import fr.unice.polytech.startingpoint.bot.MissionParcelStrat;
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import org.junit.jupiter.api.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,10 +63,10 @@ class MissionParcelStratTest {
 
         stratMissionParcel = new MissionParcelStrat(parcelBot);
 
-        missionBlueTriangle = new ParcelMission(board,ColorType.GREEN, 1, FormType.TRIANGLE);
-        missionRedTriangle = new ParcelMission(board,ColorType.RED, 1, FormType.TRIANGLE);
-        missionBlueLine = new ParcelMission(board,ColorType.GREEN, 1, FormType.LINE);
-        missionRedLine = new ParcelMission(board,ColorType.RED, 1, FormType.LINE);
+        missionBlueTriangle = new ParcelMission(ColorType.GREEN, FormType.TRIANGLE, 1);
+        missionRedTriangle = new ParcelMission(ColorType.RED, FormType.TRIANGLE, 1);
+        missionBlueLine = new ParcelMission(ColorType.GREEN, FormType.LINE, 1);
+        missionRedLine = new ParcelMission(ColorType.RED, FormType.LINE, 1);
     }
 
 
@@ -291,10 +290,10 @@ class MissionParcelStratTest {
 
     @Test
     void botDrawMissionAndPutParcel() {
-        assertEquals(0, game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(0, game.getGameInteraction().getInventoryParcelMissions().size());
         assertEquals(1, board.getPlacedParcels().size());
         parcelBot.botPlay();
-        assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
+        assertEquals(1, game.getGameInteraction().getInventoryParcelMissions().size());
         assertEquals(2, board.getPlacedParcels().size());
     }
 ///////////////////////////////

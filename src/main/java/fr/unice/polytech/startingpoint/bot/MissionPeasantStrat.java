@@ -1,8 +1,8 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
-import fr.unice.polytech.startingpoint.game.PeasantMission;
-import fr.unice.polytech.startingpoint.game.PlayerInteraction;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.MissionType;
@@ -29,18 +29,18 @@ public class MissionPeasantStrat extends Strategie{
 
     /**
      * @return <b>True if the bot can draw a mission.</b>
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public boolean isJudiciousDrawMission(){
-        return bot.playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0 && !bot.playerInteraction.contains(ActionType.DRAW_MISSION);
+        return bot.gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION);
     }
 
     /**
      * @return <b>True if the bot can move the paesant.</b>
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public boolean isJudiciousMovePeasant(){
-        return strategyMovePeasant() != null && !bot.playerInteraction.contains(ActionType.MOVE_PEASANT);
+        return strategyMovePeasant() != null && !bot.gameInteraction.contains(ActionType.MOVE_PEASANT);
     }
 
     /**
@@ -48,10 +48,10 @@ public class MissionPeasantStrat extends Strategie{
      * @return <b>Return the first coordinate where the parcel has at least two bamboos.</b>
      */
     public Coordinate strategyMovePeasant() {
-        for(PeasantMission mission : bot.playerInteraction.getInventoryPeasantMissions()) {
+        for(PeasantMission mission : bot.gameInteraction.getInventoryPeasantMissions()) {
             if (!mission.getImprovementType().equals(ImprovementType.WHATEVER)) {
                 for (Coordinate coordinate : possibleCoordinatesPeasant()) {
-                    if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColor())) {
+                    if (bot.gameInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColorType())) {
                         return coordinate;
                     }
                 }

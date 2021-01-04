@@ -1,12 +1,11 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
 
-import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests unitaires
@@ -19,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PandaMissionTest {
     Board board;
-    Mission mission1;
-    Mission mission2;
-    Mission mission3;
+    PandaMission mission1;
+    PandaMission mission2;
+    PandaMission mission3;
     Inventory inventory;
 
     @BeforeEach
@@ -29,9 +28,9 @@ public class PandaMissionTest {
         inventory = new Inventory();
 
         board = new Board();
-        mission1 = new PandaMission(board,ColorType.RED, 2);
-        mission2 = new PandaMission(board,ColorType.RED, 3);
-        mission3 = new PandaMission(board,ColorType.ALL_COLOR, 3);
+        mission1 = new PandaMission(ColorType.RED, 2);
+        mission2 = new PandaMission(ColorType.RED, 3);
+        mission3 = new PandaMission(ColorType.ALL_COLOR, 3);
     }
 
     @Test

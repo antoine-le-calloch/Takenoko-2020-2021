@@ -1,8 +1,10 @@
 package fr.unice.polytech.startingpoint.game;
 
-
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.game.mission.PandaMission;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
@@ -26,17 +28,17 @@ import java.util.List;
  */
 
 class Resource {
-    private final List<Mission> deckMissionParcel = new ArrayList<>();
-    private final List<Mission> deckMissionPanda = new ArrayList<>();
-    private final List<Mission> deckMissionPeasant = new ArrayList<>();
+    private final List<PandaMission> deckPandaMission = new ArrayList<>();
+    private final List<ParcelMission> deckParcelMission = new ArrayList<>();
+    private final List<PeasantMission> deckPeasantMission = new ArrayList<>();
     private final List<Parcel> deckParcel = new ArrayList<>();
     private final List<Canal> deckCanal = new ArrayList<>();
 
     /**Initialize all decks.
      */
-    Resource(Board board){
+    Resource(){
         initializeDeckParcel();
-        initializeDeckMission(board);
+        initializeDeckMission();
         initializeDeckCanal();
     }
 
@@ -63,68 +65,66 @@ class Resource {
         deckParcel.add(new Parcel(ColorType.RED,ImprovementType.FERTILIZER));
     }
 
-    /**Initialize {@link Mission} decks.
-     */
-    private void initializeDeckMission(Board board) {
-        initializeDeckMissionParcel(board);
-        initializeDeckMissionPanda(board);
-        initializeDeckMissionPeasant(board);
+    private void initializeDeckMission() {
+        initializeDeckMissionParcel();
+        initializeDeckMissionPanda();
+        initializeDeckMissionPeasant();
     }
 
     /**Initialize {@link ParcelMission} deck.
      */
-    private void initializeDeckMissionParcel(Board board){
-        deckMissionParcel.add(new ParcelMission(board,ColorType.GREEN, 2, FormType.LINE));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.GREEN, 2, FormType.TRIANGLE));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.GREEN, 2, FormType.ARC));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.GREEN, 3, FormType.DIAMOND));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, 3, FormType.LINE));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, 3, FormType.TRIANGLE));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, 3, FormType.ARC));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, 4, FormType.DIAMOND));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 4, FormType.LINE));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 4, FormType.TRIANGLE));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 4, FormType.ARC));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.RED, 5, FormType.DIAMOND));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, ColorType.GREEN, 3, FormType.DIAMOND));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.YELLOW, ColorType.RED, 5, FormType.DIAMOND));
-        deckMissionParcel.add(new ParcelMission(board,ColorType.RED, ColorType.GREEN,4, FormType.DIAMOND));
-        Collections.shuffle(deckMissionParcel);
+    private void initializeDeckMissionParcel(){
+        deckParcelMission.add(new ParcelMission(ColorType.GREEN, FormType.LINE, 2));
+        deckParcelMission.add(new ParcelMission(ColorType.GREEN, FormType.TRIANGLE, 2));
+        deckParcelMission.add(new ParcelMission(ColorType.GREEN, FormType.ARC, 2));
+        deckParcelMission.add(new ParcelMission(ColorType.GREEN, FormType.DIAMOND, 3));
+        deckParcelMission.add(new ParcelMission(ColorType.YELLOW, FormType.LINE, 3));
+        deckParcelMission.add(new ParcelMission(ColorType.YELLOW, FormType.TRIANGLE, 3));
+        deckParcelMission.add(new ParcelMission(ColorType.YELLOW, FormType.ARC, 3));
+        deckParcelMission.add(new ParcelMission(ColorType.YELLOW, FormType.DIAMOND, 4));
+        deckParcelMission.add(new ParcelMission(ColorType.RED, FormType.LINE, 4));
+        deckParcelMission.add(new ParcelMission(ColorType.RED, FormType.TRIANGLE, 4));
+        deckParcelMission.add(new ParcelMission(ColorType.RED, FormType.ARC, 4));
+        deckParcelMission.add(new ParcelMission(ColorType.RED, FormType.DIAMOND, 5));
+        deckParcelMission.add(new ParcelMission(ColorType.YELLOW, ColorType.GREEN, FormType.DIAMOND, 3));
+        deckParcelMission.add(new ParcelMission(ColorType.YELLOW, ColorType.RED, FormType.DIAMOND, 5));
+        deckParcelMission.add(new ParcelMission(ColorType.RED, ColorType.GREEN, FormType.DIAMOND, 4));
+        Collections.shuffle(deckParcelMission);
     }
 
     /**Initialize {@link PandaMission} deck.
      */
-    private void initializeDeckMissionPanda(Board board){
+    private void initializeDeckMissionPanda(){
         for (int i = 0; i<5; i++)
-            deckMissionPanda.add(new PandaMission(board,ColorType.GREEN, 3));
+            deckPandaMission.add(new PandaMission(ColorType.GREEN, 3));
         for (int i = 0; i<4; i++)
-            deckMissionPanda.add(new PandaMission(board,ColorType.YELLOW, 4));
+            deckPandaMission.add(new PandaMission(ColorType.YELLOW, 4));
         for (int i = 0; i<3; i++) {
-            deckMissionPanda.add(new PandaMission(board, ColorType.RED, 5));
-            deckMissionPanda.add(new PandaMission(board, ColorType.ALL_COLOR, 5));
+            deckPandaMission.add(new PandaMission(ColorType.RED, 5));
+            deckPandaMission.add(new PandaMission(ColorType.ALL_COLOR, 5));
         }
-        Collections.shuffle(deckMissionPanda);
+        Collections.shuffle(deckPandaMission);
     }
 
     /**Initialize {@link PeasantMission} deck.
      */
-    private void initializeDeckMissionPeasant(Board board){
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 5,ImprovementType.FERTILIZER));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 6,ImprovementType.WATERSHED));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 6,ImprovementType.ENCLOSURE));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 7,ImprovementType.NOTHING));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 3,ImprovementType.FERTILIZER));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 4,ImprovementType.WATERSHED));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 4,ImprovementType.ENCLOSURE));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 5,ImprovementType.NOTHING));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 4,ImprovementType.FERTILIZER));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 5,ImprovementType.WATERSHED));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 5,ImprovementType.ENCLOSURE));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 6,ImprovementType.NOTHING));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.GREEN, 8,ImprovementType.WHATEVER));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.YELLOW, 7,ImprovementType.WHATEVER));
-        deckMissionPeasant.add(new PeasantMission(board,ColorType.RED, 6,ImprovementType.WHATEVER));
-        Collections.shuffle(deckMissionPeasant);
+    private void initializeDeckMissionPeasant(){
+        deckPeasantMission.add(new PeasantMission(ColorType.RED, ImprovementType.FERTILIZER, 5));
+        deckPeasantMission.add(new PeasantMission(ColorType.RED, ImprovementType.WATERSHED, 6));
+        deckPeasantMission.add(new PeasantMission(ColorType.RED, ImprovementType.ENCLOSURE, 6));
+        deckPeasantMission.add(new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 7));
+        deckPeasantMission.add(new PeasantMission(ColorType.GREEN, ImprovementType.FERTILIZER, 3));
+        deckPeasantMission.add(new PeasantMission(ColorType.GREEN, ImprovementType.WATERSHED, 4));
+        deckPeasantMission.add(new PeasantMission(ColorType.GREEN, ImprovementType.ENCLOSURE, 4));
+        deckPeasantMission.add(new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 5));
+        deckPeasantMission.add(new PeasantMission(ColorType.YELLOW, ImprovementType.FERTILIZER, 4));
+        deckPeasantMission.add(new PeasantMission(ColorType.YELLOW, ImprovementType.WATERSHED, 5));
+        deckPeasantMission.add(new PeasantMission(ColorType.YELLOW, ImprovementType.ENCLOSURE, 5));
+        deckPeasantMission.add(new PeasantMission(ColorType.YELLOW, ImprovementType.NOTHING, 6));
+        deckPeasantMission.add(new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 8));
+        deckPeasantMission.add(new PeasantMission(ColorType.YELLOW, ImprovementType.WHATEVER, 7));
+        deckPeasantMission.add(new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 6));
+        Collections.shuffle(deckPeasantMission);
     }
 
     /**Initialize {@link Canal} deck.
@@ -178,59 +178,50 @@ class Resource {
         throw new OutOfResourcesException("No more Canal to draw.");
     }
 
-    /**Draw a {@link Mission} with the type specified in parameter.
-     *
-     * @param type
-     *              <b>The {@link MissionType} the bot want to draw.</b>
-     *
-     * @return <b>The mission drawn.</b>
-     * @throws OutOfResourcesException
-     */
-    Mission drawMission(MissionType type) throws OutOfResourcesException {
-        switch (type) {
-            case PARCEL:
-                if (!deckMissionParcel.isEmpty()) {
-                    return deckMissionParcel.remove(0);
-                }
-                throw new OutOfResourcesException("No more ParcelMission to draw.");
-            case PEASANT:
-                if (!deckMissionPeasant.isEmpty()) {
-                    return deckMissionPeasant.remove(0);
-                }
-                throw new OutOfResourcesException("No more PeasantMission to draw.");
-            case PANDA:
-                if (!deckMissionPanda.isEmpty()) {
-                    return deckMissionPanda.remove(0);
-                }
-                throw new OutOfResourcesException("No more PandaMission to draw.");
-            default:
-                throw new IllegalTypeException("Wrong MissionType to draw.");
+    PandaMission drawPandaMission() throws OutOfResourcesException {
+        if (!deckPandaMission.isEmpty()) {
+            return deckPandaMission.remove(0);
         }
+        throw new OutOfResourcesException("No more PandaMission to draw.");
+    }
+
+    ParcelMission drawParcelMission() throws OutOfResourcesException {
+        if (!deckParcelMission.isEmpty()) {
+            return deckParcelMission.remove(0);
+        }
+        throw new OutOfResourcesException("No more ParcelMission to draw.");
+    }
+
+    PeasantMission drawPeasantMission() throws OutOfResourcesException {
+        if (!deckPeasantMission.isEmpty()) {
+            return deckPeasantMission.remove(0);
+        }
+        throw new OutOfResourcesException("No more PeasantMission to draw.");
     }
 
     /**@return <b>True, if the resources are considers empty.</b>
      */
     boolean isEmpty(){
         return ( (deckCanal.isEmpty() || deckParcel.isEmpty()) ||
-                (deckMissionParcel.isEmpty() && deckMissionPanda.isEmpty() && deckMissionPeasant.isEmpty()) );
+                (deckParcelMission.isEmpty() && deckPandaMission.isEmpty() && deckPeasantMission.isEmpty()) );
     }
 
     /**@return <b>The list of {@link ParcelMission}.</b>
      */
-    List<Mission> getDeckParcelMission(){
-        return new ArrayList<>(deckMissionParcel);
+    List<ParcelMission> getDeckParcelMission(){
+        return new ArrayList<>(deckParcelMission);
     }
 
     /**@return <b>The list of {@link PandaMission}.</b>
      */
-    List<Mission> getDeckPandaMission(){
-        return new ArrayList<>(deckMissionPanda);
+    List<PandaMission> getDeckPandaMission(){
+        return new ArrayList<>(deckPandaMission);
     }
 
     /**@return <b>The list of {@link PeasantMission}.</b>
      */
-    List<Mission> getDeckPeasantMission(){
-        return new ArrayList<>(deckMissionPeasant);
+    List<PeasantMission> getDeckPeasantMission(){
+        return new ArrayList<>(deckPeasantMission);
     }
 
     /**@return <b>The list of {@link Parcel}.</b>
@@ -248,6 +239,6 @@ class Resource {
     /**@return <b>The list number of missions.</b>
      */
     int getNbMission(){
-        return deckMissionParcel.size() + deckMissionPanda.size() + deckMissionPeasant.size();
+        return deckParcelMission.size() + deckPandaMission.size() + deckPeasantMission.size();
     }
 }

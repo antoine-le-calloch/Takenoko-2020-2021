@@ -42,18 +42,18 @@ public class RandomStrat extends Strategie{
     public void stratOneTurn(){
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && bot.playerInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 && !bot.playerInteraction.contains(ActionType.DRAW_MISSION)) {// pioche mission
+        if (randAction == 0 && bot.gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION)) {// pioche mission
             int randMission = random2.nextInt(3);
 
-            if (randMission == 0 && bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
+            if (randMission == 0 && bot.gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
                 bot.drawMission(MissionType.PARCEL);
-            if (randMission == 1 && bot.playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+            if (randMission == 1 && bot.gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
                 bot.drawMission(MissionType.PANDA);
-            if (randMission == 2 && bot.playerInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
+            if (randMission == 2 && bot.gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
                 bot.drawMission(MissionType.PEASANT);
         }
 
-        else if (randAction == 1 && bot.playerInteraction.getResourceSize(ResourceType.CANAL) > 0 && !bot.playerInteraction.contains(ActionType.DRAW_CANAL)) {  // place canal
+        else if (randAction == 1 && bot.gameInteraction.getResourceSize(ResourceType.CANAL) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_CANAL)) {  // place canal
             if (possibleCoordinatesCanal().size() > 0) {
                 List<Coordinate[]> list = possibleCoordinatesCanal();
                 Collections.shuffle(list);
@@ -62,7 +62,7 @@ public class RandomStrat extends Strategie{
             }
         }
 
-        else if (randAction == 2 && bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !bot.playerInteraction.contains(ActionType.DRAW_PARCELS)){ // place parcel
+        else if (randAction == 2 && bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS)){ // place parcel
             List<ParcelInformation> parcelList = bot.drawParcel();
             Collections.shuffle(parcelList);
             bot.selectParcel(parcelList.get(0));
@@ -71,13 +71,13 @@ public class RandomStrat extends Strategie{
             bot.placeParcel(list.get(0));
         }
 
-        else if (randAction == 3 && possibleCoordinatesPanda().size() != 0 && !bot.playerInteraction.contains(ActionType.MOVE_PANDA)) {
+        else if (randAction == 3 && possibleCoordinatesPanda().size() != 0 && !bot.gameInteraction.contains(ActionType.MOVE_PANDA)) {
             List<Coordinate> list = possibleCoordinatesPanda();
             Collections.shuffle(list);
             bot.movePanda(list.get(0));
         }
 
-        else if (possibleCoordinatesPeasant().size() != 0 && !bot.playerInteraction.contains(ActionType.MOVE_PEASANT)) {
+        else if (possibleCoordinatesPeasant().size() != 0 && !bot.gameInteraction.contains(ActionType.MOVE_PEASANT)) {
             List<Coordinate> list = possibleCoordinatesPeasant();
             Collections.shuffle(list);
             bot.movePeasant(list.get(0));

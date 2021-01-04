@@ -1,7 +1,7 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.PandaMission;
-import fr.unice.polytech.startingpoint.game.PlayerInteraction;
+import fr.unice.polytech.startingpoint.game.mission.PandaMission;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 
 /**
  * <h1>{@link PandaBot} :</h1>
@@ -31,17 +31,17 @@ public class PandaBot extends Bot {
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
-     * @param playerInteraction
+     * @param gameInteraction
      *            <b>Game object.</b>
      */
-    public PandaBot(PlayerInteraction playerInteraction) {
-        super(playerInteraction);
+    public PandaBot(GameInteraction gameInteraction) {
+        super(gameInteraction);
     }
 
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        for (int i = playerInteraction.getStamina();i > 0; i--){
+        for (int i = gameInteraction.getStamina(); i > 0; i--){
             rushPandaStrat.stratOneTurn();
         }
     }

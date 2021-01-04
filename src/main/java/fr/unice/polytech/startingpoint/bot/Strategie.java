@@ -17,7 +17,7 @@ public abstract class Strategie {
 
     public Strategie(Bot bot) {
         this.bot = bot;
-        this.rules = bot.playerInteraction.getRules();
+        this.rules = bot.gameInteraction.getRules();
     }
 
     /**<p>The actions of the bot during his turn.</p>
@@ -28,7 +28,7 @@ public abstract class Strategie {
      */
     public List<Coordinate> allPlaces(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : bot.playerInteraction.getPlacedCoordinates()) {
+        for(Coordinate c : bot.gameInteraction.getPlacedCoordinates()) {
             possibleCoordinates.add(c);
             for (Coordinate offSet : Coordinate.offSets()){
                 possibleCoordinates.add(new Coordinate(c,offSet));
@@ -41,7 +41,7 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesParcel(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : bot.playerInteraction.getPlacedCoordinates()) {
+        for(Coordinate c : bot.gameInteraction.getPlacedCoordinates()) {
             for (Coordinate offSet : Coordinate.offSets()){
                 if(rules.isPlayableParcel(new Coordinate(c,offSet))){
                     possibleCoordinates.add(new Coordinate(c,offSet));
@@ -55,8 +55,8 @@ public abstract class Strategie {
      */
     public List<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate1 : bot.playerInteraction.getPlacedCoordinates()){
-            for(Coordinate coordinate2 : bot.playerInteraction.getPlacedCoordinates()){
+        for(Coordinate coordinate1 : bot.gameInteraction.getPlacedCoordinates()){
+            for(Coordinate coordinate2 : bot.gameInteraction.getPlacedCoordinates()){
                 if (rules.isPlayableCanal(coordinate1, coordinate2))
                     possibleCoordinates.add(new Coordinate[]{coordinate1, coordinate2});
             }
@@ -68,7 +68,7 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate : bot.playerInteraction.getPlacedCoordinates()) {
+        for(Coordinate coordinate : bot.gameInteraction.getPlacedCoordinates()) {
             if (rules.isMovableCharacter(CharacterType.PANDA,coordinate)){
                 possibleCoordinates.add(coordinate);
             }
@@ -80,7 +80,7 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : bot.playerInteraction.getPlacedCoordinates()) {
+        for(Coordinate c : bot.gameInteraction.getPlacedCoordinates()) {
             if (rules.isMovableCharacter(CharacterType.PEASANT,c)){
                 possibleCoordinates.add(c);
             }
@@ -96,7 +96,7 @@ public abstract class Strategie {
 
     public List<Coordinate> playableCoordinatesAroundACoordinateGivenCo(Coordinate coordinate){
         return coordinate.coordinatesAround().stream()
-                .filter(c->rules.isPlayableParcel(c) && !bot.playerInteraction.isPlacedParcel(c))
+                .filter(c->rules.isPlayableParcel(c) && !bot.gameInteraction.isPlacedParcel(c))
                 .collect(Collectors.toList());
     }
 
@@ -107,7 +107,7 @@ public abstract class Strategie {
     public List<Coordinate> allPosssibleCoordinatesNextToParcelsWithAColor(ColorType colorGiven){
 
         Set<Coordinate> posssibleCoNextToParcelsWithAColor=new HashSet<>();
-        List<Coordinate> placedCoordinatesByColor=bot.playerInteraction.getPlacedCoordinatesByColor(colorGiven);
+        List<Coordinate> placedCoordinatesByColor=bot.gameInteraction.getPlacedCoordinatesByColor(colorGiven);
 
 
         for (Coordinate  placedCoordinate: placedCoordinatesByColor)

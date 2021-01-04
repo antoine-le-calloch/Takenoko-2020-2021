@@ -1,8 +1,8 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Coordinate;
-import fr.unice.polytech.startingpoint.game.PandaMission;
-import fr.unice.polytech.startingpoint.game.PlayerInteraction;
+import fr.unice.polytech.startingpoint.game.mission.PandaMission;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.type.*;
 
 public class RushPandaStrat extends Strategie{
@@ -22,27 +22,27 @@ public class RushPandaStrat extends Strategie{
 
     /**
      * @return <b>True if the bot can draw a mission.</b>
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public boolean isJudiciousDrawMission(){
-        return bot.playerInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 && !bot.playerInteraction.contains(ActionType.DRAW_MISSION);
+        return bot.gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION);
     }
 
     /**
      * @return <b>True if the bot can move the panda.</b>
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public boolean isJudiciousMovePanda(){
-        return strategyMovePanda() != null && !bot.playerInteraction.contains(ActionType.MOVE_PANDA);
+        return strategyMovePanda() != null && !bot.gameInteraction.contains(ActionType.MOVE_PANDA);
     }
 
 
     public Coordinate strategyMovePanda() {
-        for (PandaMission pandaMission : bot.playerInteraction.getInventoryPandaMissions() ) {
-            if (pandaMission.getColor().equals(ColorType.ALL_COLOR))
+        for (PandaMission pandaMission : bot.gameInteraction.getInventoryPandaMissions() ) {
+            if (pandaMission.getColorType().equals(ColorType.ALL_COLOR))
                 return strategyMissionAllColor();
             else
-                return strategyMissionOneColor(pandaMission.getColor());
+                return strategyMissionOneColor(pandaMission.getColorType());
         }
         return null;
     }
@@ -52,9 +52,9 @@ public class RushPandaStrat extends Strategie{
      */
     public Coordinate strategyMissionOneColor(ColorType colorType) {
         for (Coordinate coordinate : possibleCoordinatesPanda()) {
-            if (bot.playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0
-                    && !bot.playerInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE)) {
-                if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(colorType))
+            if (bot.gameInteraction.getPlacedParcelsNbBamboo(coordinate) > 0
+                    && !bot.gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE)) {
+                if (bot.gameInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(colorType))
                     return coordinate;
             }
         }
@@ -63,9 +63,9 @@ public class RushPandaStrat extends Strategie{
 
     public Coordinate strategyMissionAllColor(){
         for (Coordinate coordinate : possibleCoordinatesPanda()) {
-            if (bot.playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0
-                    && !bot.playerInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE)) {
-                if (bot.playerInteraction.getInventoryBamboo()[bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().ordinal()] == 0)
+            if (bot.gameInteraction.getPlacedParcelsNbBamboo(coordinate) > 0
+                    && !bot.gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE)) {
+                if (bot.gameInteraction.getInventoryBamboo()[bot.gameInteraction.getPlacedParcelInformation(coordinate).getColorType().ordinal()] == 0)
                     return coordinate;
             }
         }

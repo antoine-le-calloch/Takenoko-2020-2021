@@ -4,8 +4,8 @@ import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.ParcelInformation;
-import fr.unice.polytech.startingpoint.game.ParcelMission;
-import fr.unice.polytech.startingpoint.game.PlayerInteraction;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
@@ -33,45 +33,45 @@ public class MissionParcelStrat extends Strategie{
 
     /**
      * @return <b>True if the bot can draw a mission.</b>
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public boolean isJudiciousDrawMission(){
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.playerInteraction.contains(ActionType.DRAW_MISSION);
+        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.gameInteraction.contains(ActionType.DRAW_MISSION);
     }
 
     /**
      * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public boolean isJudiciousPutParcel(){
-        if(bot.playerInteraction.getActionTypeList().size() != 0) {
-            for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
+        if(bot.gameInteraction.getActionTypeList().size() != 0) {
+            for (ParcelMission mission : bot.gameInteraction.getInventoryParcelMissions()) {
                 if (bestCoordinatesForMission(mission).size() == 0)
                     return false;
             }
         }
-        return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && !bot.playerInteraction.contains(ActionType.DRAW_PARCELS);
+        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS);
     }
 
     /**
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public boolean isJudiciousPutCanal(){
-        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.playerInteraction.contains(ActionType.DRAW_CANAL);
+        return bot.gameInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.gameInteraction.contains(ActionType.DRAW_CANAL);
     }
 
     /**
      * <p>For each mission, put a parcel to best place to finish it or place a random one.</p>
      *
-     * @see PlayerInteraction
+     * @see GameInteraction
      * @see FormType
      * @see ColorType
      */
     //Pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     public void putParcel() {
         try {
-            List<ParcelInformation> parcelInformationList = bot.playerInteraction.drawParcels();
+            List<ParcelInformation> parcelInformationList = bot.gameInteraction.drawParcels();
             List<Coordinate> bestCoords = new ArrayList<>();
             ParcelInformation bestColor = new ParcelInformation();
             int minTurn = -1;
@@ -108,8 +108,8 @@ public class MissionParcelStrat extends Strategie{
         List<Coordinate> bestCoords = null;
         int minTurnToEndOneMission = -1;
 
-        for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
-            if (colorAvailable.equals(mission.getColor()) && (minTurnToEndOneMission == -1 || bestCoordinatesForMission(mission).size() < minTurnToEndOneMission)){
+        for (ParcelMission mission : bot.gameInteraction.getInventoryParcelMissions()) {
+            if (colorAvailable.equals(mission.getColorType()) && (minTurnToEndOneMission == -1 || bestCoordinatesForMission(mission).size() < minTurnToEndOneMission)){
                 bestCoords = bestCoordinatesForMission(mission);
                 minTurnToEndOneMission = bestCoords.size();
             }
@@ -127,7 +127,7 @@ public class MissionParcelStrat extends Strategie{
      * @see Coordinate
      * @see FormType
      * @see ColorType
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public List<Coordinate> bestCoordinatesForMission(ParcelMission mission){
         List<Coordinate> bestCoordinates = new ArrayList<>();
@@ -156,7 +156,7 @@ public class MissionParcelStrat extends Strategie{
      * @see Coordinate
      * @see FormType
      * @see ColorType
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public List<Coordinate> coordNeedToDoMission(Coordinate hightCoord, ParcelMission mission){
         Coordinate coordNotPossible = null;
@@ -164,13 +164,13 @@ public class MissionParcelStrat extends Strategie{
         List<Coordinate> form = setForm(hightCoord, mission.getFormType());
 
         for (Coordinate coord : form) {
-            if(coord.isCentral() || (bot.playerInteraction.isPlacedParcel(coord) && !bot.playerInteraction.getPlacedParcelInformation(coord).getColorType().equals(mission.getColor())))
+            if(coord.isCentral() || (bot.gameInteraction.isPlacedParcel(coord) && !bot.gameInteraction.getPlacedParcelInformation(coord).getColorType().equals(mission.getColorType())))
                 return null;
 
-            if(!bot.playerInteraction.isPlacedParcel(coord))
+            if(!bot.gameInteraction.isPlacedParcel(coord))
                 coordNeedeToDoMission.add(coord);
 
-            if(!rules.isPlayableParcel(coord) && !bot.playerInteraction.isPlacedParcel(coord) && coordAroundUse(coord) != null){
+            if(!rules.isPlayableParcel(coord) && !bot.gameInteraction.isPlacedParcel(coord) && coordAroundUse(coord) != null){
                 for (Coordinate laidCoord : Coordinate.getInCommonAroundCoordinates(coord,coordAroundUse(coord))) {
                     if(rules.isPlayableParcel(laidCoord)) {
                         coordNeedeToDoMission.add(laidCoord);
@@ -178,7 +178,7 @@ public class MissionParcelStrat extends Strategie{
                     }
                 }
             }
-            else if(!rules.isPlayableParcel(coord) && !bot.playerInteraction.isPlacedParcel(coord))
+            else if(!rules.isPlayableParcel(coord) && !bot.gameInteraction.isPlacedParcel(coord))
                 if(coordNotPossible == null)
                     coordNotPossible = coord;
                 else
@@ -200,7 +200,7 @@ public class MissionParcelStrat extends Strategie{
 
     public Coordinate coordAroundUse(Coordinate coord){
         for (Coordinate coordAround : coord.coordinatesAround()) {
-            if(bot.playerInteraction.isPlacedParcel(coordAround))
+            if(bot.gameInteraction.isPlacedParcel(coordAround))
                 return coordAround;
         }
         return null;
@@ -233,16 +233,16 @@ public class MissionParcelStrat extends Strategie{
      * @return <b>True, if a canal can be place and irrigate a parcel, else, it returns false and place a random canal.</b>
      *
      * @see Coordinate
-     * @see PlayerInteraction
+     * @see GameInteraction
      */
     public boolean putCanal() {
         try {
-            bot.playerInteraction.drawCanal();
+            bot.gameInteraction.drawCanal();
             List<Coordinate> fullForm = coordEndMissionNoIrrigate();
             Coordinate[] bestCoordinatesCanal = null;
 
             for (Coordinate coordinateForm : fullForm) {
-                if (!bot.playerInteraction.isIrrigatedParcel(coordinateForm))
+                if (!bot.gameInteraction.isIrrigatedParcel(coordinateForm))
                     bestCoordinatesCanal = getBestCanal(coordinateForm);
             }
 
@@ -260,7 +260,7 @@ public class MissionParcelStrat extends Strategie{
     }
 
     public List<Coordinate> coordEndMissionNoIrrigate() {
-        for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
+        for (ParcelMission mission : bot.gameInteraction.getInventoryParcelMissions()) {
             for (Coordinate coordinate : allPlaces()) {
                 if(coordNeedToDoMission(coordinate,mission) != null && coordNeedToDoMission(coordinate,mission).size() == 0) {
                     return setForm(coordinate, mission.getFormType());

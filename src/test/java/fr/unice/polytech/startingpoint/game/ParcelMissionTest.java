@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
 
@@ -53,16 +54,16 @@ public class ParcelMissionTest {
         parcel5 = new Parcel(ColorType.GREEN);
         parcel6 = new Parcel(ColorType.GREEN);
 
-        missionTR = new ParcelMission(board,ColorType.RED, 0, FormType.TRIANGLE);
-        missionLR = new ParcelMission(board,ColorType.RED, 0, FormType.LINE);
-        missionDR = new ParcelMission(board,ColorType.RED, 0, FormType.DIAMOND);
-        missionAR = new ParcelMission(board,ColorType.RED, 0, FormType.ARC);
-        missionDBR = new ParcelMission(board,ColorType.RED,ColorType.GREEN, 0, FormType.DIAMOND);
-        missionTG = new ParcelMission(board,ColorType.GREEN, 0, FormType.TRIANGLE);
-        missionLG = new ParcelMission(board,ColorType.GREEN, 0, FormType.LINE);
-        missionDG = new ParcelMission(board,ColorType.GREEN, 0, FormType.DIAMOND);
-        missionAG = new ParcelMission(board,ColorType.GREEN, 0, FormType.ARC);
-        missionDBG = new ParcelMission(board,ColorType.YELLOW,ColorType.GREEN, 0, FormType.DIAMOND);
+        missionTR = new ParcelMission(ColorType.RED, FormType.TRIANGLE, 0);
+        missionLR = new ParcelMission(ColorType.RED, FormType.LINE, 0);
+        missionDR = new ParcelMission(ColorType.RED, FormType.DIAMOND, 0);
+        missionAR = new ParcelMission(ColorType.RED, FormType.ARC, 0);
+        missionDBR = new ParcelMission(ColorType.RED,ColorType.GREEN, FormType.DIAMOND, 0);
+        missionTG = new ParcelMission(ColorType.GREEN, FormType.TRIANGLE, 0);
+        missionLG = new ParcelMission(ColorType.GREEN, FormType.LINE, 0);
+        missionDG = new ParcelMission(ColorType.GREEN, FormType.DIAMOND, 0);
+        missionAG = new ParcelMission(ColorType.GREEN, FormType.ARC, 0);
+        missionDBG = new ParcelMission(ColorType.YELLOW,ColorType.GREEN, FormType.DIAMOND, 0);
     }
 
     @Test
@@ -80,7 +81,7 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionTriangle(){
-        assertFalse(missionTR.checkMission(inventory));
+        assertFalse(missionTR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -89,7 +90,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertTrue(missionTR.checkMission(inventory));
+        assertTrue(missionTR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -98,7 +99,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2, new Coordinate(0, -1, 1));
         board.placeParcel(parcel3, new Coordinate(1, -2, 1));
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionTG.checkMission(inventory));
+        assertFalse(missionTG.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -106,14 +107,14 @@ public class ParcelMissionTest {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(missionTR.checkMission(inventory));
+        assertFalse(missionTR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
     void wrongTriangle() { //checkTriangle
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
-        assertFalse(missionTR.checkMission(inventory));
+        assertFalse(missionTR.checkMission(board.getPlacedParcels()));
     }
 
     /**
@@ -122,7 +123,7 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionLine(){
-        assertFalse(missionLR.checkMission(inventory));
+        assertFalse(missionLR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -131,7 +132,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertTrue(missionLR.checkMission(inventory));
+        assertTrue(missionLR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -140,7 +141,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionLG.checkMission(inventory));
+        assertFalse(missionLG.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -148,7 +149,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel1,new Coordinate(1,0,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(missionLR.checkMission(inventory));
+        assertFalse(missionLR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -157,7 +158,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2, new Coordinate(1, -1, 0));
         board.placeParcel(parcel3, new Coordinate(2, -2, 0));
         board.getPlacedParcels().get(new Coordinate(2,-2,0)).setIrrigated();
-        assertFalse(missionLR.checkMission(inventory));
+        assertFalse(missionLR.checkMission(board.getPlacedParcels()));
     }
 
     /**
@@ -166,7 +167,7 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionDiamond(){
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -177,7 +178,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel4,new Coordinate(0,-2,2));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertTrue(missionDR.checkMission(inventory));
+        assertTrue(missionDR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -188,7 +189,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel4,new Coordinate(0,-2,2));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionDG.checkMission(inventory));
+        assertFalse(missionDG.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -197,9 +198,9 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,-2,1));
         board.placeParcel(parcel4,new Coordinate(0,-2,2));
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -210,7 +211,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel4,new Coordinate(0,-2,2));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
     }
 
     /**
@@ -219,7 +220,7 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionArc(){
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -228,7 +229,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(0,-2,2));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        assertTrue(missionAR.checkMission(inventory));
+        assertTrue(missionAR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -237,7 +238,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(0,-2,2));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        assertFalse(missionAG.checkMission(inventory));
+        assertFalse(missionAG.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -245,7 +246,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(0,-1,1));
         board.placeParcel(parcel3,new Coordinate(0,-2,2));
-        assertFalse(missionAR.checkMission(inventory));
+        assertFalse(missionAR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -253,7 +254,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel1,new Coordinate(0,1,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,0,-1));
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
     }
 
     /**
@@ -262,7 +263,7 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionDiamondBicolor(){
-        assertFalse(missionDBR.checkMission(inventory));
+        assertFalse(missionDBR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -273,7 +274,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel6,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertTrue(missionDBR.checkMission(inventory));
+        assertTrue(missionDBR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -284,7 +285,7 @@ public class ParcelMissionTest {
         board.placeParcel(parcel6,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionDBG.checkMission(inventory));
+        assertFalse(missionDBG.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -293,9 +294,9 @@ public class ParcelMissionTest {
         board.placeParcel(parcel2,new Coordinate(0,-2,2));
         board.placeParcel(parcel5,new Coordinate(1,-1,0));
         board.placeParcel(parcel6,new Coordinate(1,-2,1));
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
         board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
     }
 
     @Test
@@ -306,6 +307,6 @@ public class ParcelMissionTest {
         board.placeParcel(parcel6,new Coordinate(1,-2,1));
         board.getPlacedParcels().get(new Coordinate(0,-3,3)).setIrrigated();
         board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionDR.checkMission(inventory));
+        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
     }
 }

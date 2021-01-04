@@ -1,7 +1,10 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,9 +29,9 @@ public class PeasantMissionTest {
     void setUp(){
         game = new Game();
         board = game.getBoard();
-        missionRed = new PeasantMission(board,ColorType.RED, 2,ImprovementType.NOTHING);
-        missionBlue = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.NOTHING);
-        missionFertiziler = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.FERTILIZER);
+        missionRed = new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 2);
+        missionBlue = new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 2);
+        missionFertiziler = new PeasantMission(ColorType.GREEN, ImprovementType.FERTILIZER, 2);
     }
 
     @Test
@@ -39,7 +42,7 @@ public class PeasantMissionTest {
         parcel1.addBamboo();
         parcel1.addBamboo();
         assertEquals(4, parcel1.getNbBamboo());
-        assertTrue(missionRed.checkMission(game.getPlayerData().getInventory()));
+        assertTrue(missionRed.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
 
     @Test
@@ -58,8 +61,8 @@ public class PeasantMissionTest {
             parcel3.addBamboo();
             parcel4.addBamboo();
         }
-        Mission speciaMissionGreen = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.WHATEVER);
-        assertTrue(speciaMissionGreen.checkMission(game.getPlayerData().getInventory()));
+        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
+        assertTrue(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
 
     @Test
@@ -75,8 +78,8 @@ public class PeasantMissionTest {
             parcel2.addBamboo();
             parcel3.addBamboo();
         }
-        Mission speciaMissionGreen = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.WHATEVER);
-        assertFalse(speciaMissionGreen.checkMission(game.getPlayerData().getInventory()));
+        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
+        assertFalse(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
 
     @Test
@@ -90,8 +93,8 @@ public class PeasantMissionTest {
         parcel1.addBamboo();
         parcel2.addBamboo();
         parcel3.addBamboo();
-        Mission speciaMissionGreen = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.WHATEVER);
-        assertFalse(speciaMissionGreen.checkMission(game.getPlayerData().getInventory()));
+        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
+        assertFalse(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
 
     @Test
@@ -107,8 +110,8 @@ public class PeasantMissionTest {
             parcel2.addBamboo();
             parcel3.addBamboo();
         }
-        Mission speciaMissionYellow = new PeasantMission(board,ColorType.YELLOW, 2,ImprovementType.WHATEVER);
-        assertTrue(speciaMissionYellow.checkMission(game.getPlayerData().getInventory()));
+        PeasantMission specialMissionGreen = new PeasantMission(ColorType.YELLOW, ImprovementType.WHATEVER, 2);
+        assertTrue(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
 
     @Test
@@ -121,29 +124,28 @@ public class PeasantMissionTest {
             parcel1.addBamboo();
             parcel2.addBamboo();
         }
-        Mission specialMissionRed = new PeasantMission(board,ColorType.RED, 2,ImprovementType.WHATEVER);
-        assertTrue(specialMissionRed.checkMission(game.getPlayerData().getInventory()));
+        PeasantMission specialMissionGreen = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
+        assertTrue(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
 
     @Test
     void wrongColor() {
         board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
         game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertFalse(missionBlue.checkMission(game.getPlayerData().getInventory()));
+        assertFalse(missionBlue.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
 
     @Test
     void notEnoughBamboo(){
-        assertFalse(missionRed.checkMission(game.getPlayerData().getInventory()));
+        assertFalse(missionRed.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
 
     @Test
     void wrongImprovement(){
-        Mission missionWaterShed = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.WATERSHED);
-        Mission missionEnclosure = new PeasantMission(board,ColorType.GREEN, 2,ImprovementType.ENCLOSURE);
+        PeasantMission missionWaterShed = new PeasantMission(ColorType.GREEN, ImprovementType.WATERSHED, 2);
+        PeasantMission missionEnclosure = new PeasantMission(ColorType.GREEN, ImprovementType.ENCLOSURE, 2);
         board.placeParcel(new Parcel(ColorType.GREEN,ImprovementType.FERTILIZER),new Coordinate(1,-1,0));
-        assertFalse(missionEnclosure.checkMission(game.getPlayerData().getInventory()));
-        assertFalse(missionWaterShed.checkMission(game.getPlayerData().getInventory()));
+        assertFalse(missionEnclosure.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
+        assertFalse(missionWaterShed.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
     }
-
 }

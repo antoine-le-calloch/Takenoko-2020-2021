@@ -12,7 +12,7 @@ import fr.unice.polytech.startingpoint.type.ImprovementType;
  * @version 0.5
  */
 
-class Parcel {
+public final class Parcel {
     private final int NUMBER_MINIMAL_OF_BAMBOOS = 0;
     private final int NUMBER_MAXIMAL_OF_BAMBOOS = 4;
     private int nbBamboo = NUMBER_MINIMAL_OF_BAMBOOS;
@@ -69,24 +69,24 @@ class Parcel {
     }
 
     //Renvoie si la parcelle est irriguée ou non
-    boolean getIrrigated(){
+    public boolean getIrrigated(){
         return irrigated;
     }
 
     //Renvoie la couleur de la parcelle
-    ColorType getColor() {
+    public ColorType getColor() {
         return parcelInformation.getColorType();
     }
 
-    ImprovementType getImprovement(){
+    public ImprovementType getImprovement(){
         return parcelInformation.getImprovementType();
     }
 
-    ParcelInformation getParcelInformation() {
+    public ParcelInformation getParcelInformation() {
         return parcelInformation;
     }
 
-    int getNbBamboo(){
+    public int getNbBamboo(){
         return nbBamboo;
     }
 }

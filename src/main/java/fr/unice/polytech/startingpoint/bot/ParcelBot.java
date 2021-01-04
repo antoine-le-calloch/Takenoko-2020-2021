@@ -1,7 +1,7 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.ParcelMission;
-import fr.unice.polytech.startingpoint.game.PlayerInteraction;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 
 /**
  * <h1>{@link ParcelBot} :</h1>
@@ -27,17 +27,17 @@ public class ParcelBot extends Bot {
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
-     * @param playerInteraction
+     * @param gameInteraction
      *            <b>Game object.</b>
      */
-    public ParcelBot(PlayerInteraction playerInteraction) {
-        super(playerInteraction);
+    public ParcelBot(GameInteraction gameInteraction) {
+        super(gameInteraction);
     }
 
     /**<p>The actions of the bot during his turn.</p>
      */
     public void botPlay() {
-        for (int i = playerInteraction.getStamina();i > 0; i--){
+        for (int i = gameInteraction.getStamina(); i > 0; i--){
             stratMissionParcel.stratOneTurn();
         }
     }

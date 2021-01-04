@@ -1,6 +1,9 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
+import fr.unice.polytech.startingpoint.game.mission.PandaMission;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
@@ -68,15 +71,12 @@ public class PlayerDataTest {
         playerData.addBamboo(ColorType.YELLOW);
         assertArrayEquals(new int[]{1,1,1},playerData.getInventory().getInventoryBamboo());
 
-        playerData.addMission(new ParcelMission(game.getBoard(), ColorType.RED,3, FormType.TRIANGLE));
-        playerData.addMission(new PandaMission(game.getBoard(), ColorType.RED,2));
-        playerData.addMission(new PeasantMission(game.getBoard(), ColorType.RED,4, ImprovementType.NOTHING));
-        assertEquals(3,playerData.getMissions().size());
+        playerData.addMission(new ParcelMission(ColorType.RED, FormType.TRIANGLE, 3));
+        playerData.addMission(new PandaMission(ColorType.RED,2));
+        playerData.addMission(new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 4));
         assertEquals(1,playerData.getParcelMissions().size());
         assertEquals(1,playerData.getPandaMissions().size());
         assertEquals(1,playerData.getPeasantMissions().size());
-        playerData.subMissions(playerData.getMissions());
-        assertEquals(0,playerData.getMissions().size());
     }
 
     @Test

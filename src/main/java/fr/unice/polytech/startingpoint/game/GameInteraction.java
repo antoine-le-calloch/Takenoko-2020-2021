@@ -3,16 +3,19 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
+import fr.unice.polytech.startingpoint.game.mission.PandaMission;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class PlayerInteraction {
+public final class GameInteraction {
     private final Game game;
 
-    PlayerInteraction(Game game){
+    GameInteraction(Game game){
         this.game = game;
     }
 
@@ -32,7 +35,17 @@ public final class PlayerInteraction {
     public void drawMission(MissionType missionType) {
         if (getPlayerData().add(ActionType.DRAW_MISSION)){
             getPlayerData().looseStamina();
-            getPlayerData().addMission(game.getResource().drawMission(missionType));
+            switch (missionType){
+                case PANDA:
+                    getPlayerData().addMission(game.getResource().drawPandaMission());
+                    break;
+                case PARCEL:
+                    getPlayerData().addMission(game.getResource().drawParcelMission());
+                    break;
+                case PEASANT:
+                    getPlayerData().addMission(game.getResource().drawPeasantMission());
+                    break;
+            }
         }
         else
             throw new RulesViolationException("Already used this method.");
@@ -187,13 +200,6 @@ public final class PlayerInteraction {
      */
     public List<PeasantMission> getInventoryPeasantMissions(){
         return getPlayerData().getPeasantMissions();
-    }
-
-    /**
-     * @return <b>The {@link Mission} list of the current bot.</b>
-     */
-    public List<Mission> getInventoryMissions() {
-        return getPlayerData().getMissions();
     }
 
     public int[] getInventoryBamboo() {

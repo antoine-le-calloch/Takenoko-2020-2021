@@ -5,8 +5,6 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
 import java.util.Random;
 
 public class WeatherDice {
-
-
     private Random random;
     private final int FACES= WeatherType.values().length;
 
@@ -21,5 +19,3 @@ public class WeatherDice {
         return WeatherType.values()[result];
     }
 }
-
-

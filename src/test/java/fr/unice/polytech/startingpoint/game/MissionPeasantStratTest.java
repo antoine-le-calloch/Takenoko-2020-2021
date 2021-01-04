@@ -1,15 +1,12 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -49,7 +46,7 @@ public class MissionPeasantStratTest {
     @Test
     void possibleParcelColorDifferentFromTheActualMission() {
         board.placeParcel(parcel1, coordinate1);
-        game.getPlayerData().addMission(new PeasantMission(board,ColorType.RED,1, ImprovementType.NOTHING));
+        game.getPlayerData().addMission(new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 1));
         assertNull(stratMissionPeasant.strategyMovePeasant());
     }
 
@@ -57,7 +54,7 @@ public class MissionPeasantStratTest {
     void missionColorSameAsPossibleParcel() {
 
         board.placeParcel(parcel1,coordinate1);// ;//ajoute la parcel avec 2 bamboo a la liste des parcels posée
-        game.getPlayerData().addMission(new PeasantMission(board,ColorType.GREEN,1, ImprovementType.NOTHING));
+        game.getPlayerData().addMission(new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 1));
         assertEquals(coordinate1,stratMissionPeasant.strategyMovePeasant());
     }
 
@@ -65,7 +62,7 @@ public class MissionPeasantStratTest {
     void movePeasant_1Parcel2Bamboo()  {
         game.getTemporaryInventory().add(ActionType.DRAW_MISSION);//empêche de piocher une mission
         board.placeParcel(parcel1, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
-        game.getPlayerData().addMission(new PeasantMission(board,ColorType.GREEN,1, ImprovementType.NOTHING));
+        game.getPlayerData().addMission(new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 1));
         assertEquals(1,board.getPlacedParcels().get(coordinate1).getNbBamboo());
         stratMissionPeasant.stratOneTurn();//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
         assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel

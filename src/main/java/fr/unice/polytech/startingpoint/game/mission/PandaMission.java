@@ -1,26 +1,25 @@
-package fr.unice.polytech.startingpoint.game;
+package fr.unice.polytech.startingpoint.game.mission;
 
+import fr.unice.polytech.startingpoint.game.Inventory;
 import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.MissionType;
 
 /**
  * <h1>{@link PandaMission} :</h1>
  *
  * <p>This class create and check if the {@link PandaMission} is done.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link #checkMission(Inventory)} method from the {@link Mission}.</p>
- *
  * @author Manuel Enzo
  * @author Naud Eric
  * @author Madern Loic
  * @author Le Calloch Antoine
- * @see Mission
  * @see PeasantMission
  * @see ParcelMission
  * @version 0.5
  */
 
-public final class PandaMission extends Mission {
+public final class PandaMission{
+    private final ColorType colorType;
+    private final int points;
     int NB_BAMBOO = 2;
     /**
      * <p>Set up a panda mission. Initialize all variables.</p>
@@ -30,13 +29,14 @@ public final class PandaMission extends Mission {
      * @param points
      *            <b>the points of the mission</b>
      */
-    PandaMission(Board board, ColorType colorType, int points){
-        super(board, MissionType.PANDA,colorType,points);
+    public PandaMission(ColorType colorType, int points){
+        this.colorType = colorType;
+        this.points = points;
     }
 
     /**<p>check panda if a mission is done</p>
      */
-    boolean checkMission(Inventory inventory) {
+    public boolean checkMission(Inventory inventory) {
         if (colorType.equals(ColorType.ALL_COLOR))
             return checkMissionAllColor(inventory);
         else
@@ -60,4 +60,11 @@ public final class PandaMission extends Mission {
         return false;
     }
 
+    public ColorType getColorType() {
+        return colorType;
+    }
+
+    public int getPoints() {
+        return points;
+    }
 }
