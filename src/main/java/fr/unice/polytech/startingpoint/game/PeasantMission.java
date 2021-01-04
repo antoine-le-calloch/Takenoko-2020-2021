@@ -61,7 +61,7 @@ public final class PeasantMission extends Mission {
         int NB_BAMBOO = 3;
         int cpt = 0;
         for (Parcel parcel : board.getPlacedParcels().values()) {
-            if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType)
+            if (parcel.getNbBamboo() >= NB_BAMBOO && parcel.getColor() == colorType)
                 cpt++;
         }
         return cpt >= nbParcel;
