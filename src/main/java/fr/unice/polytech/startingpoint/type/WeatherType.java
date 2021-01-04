@@ -10,4 +10,9 @@ public enum WeatherType {
         @Override
         public String toString(){return "wind";}
     }
+    ,
+    NO_WEATHER{
+        @Override
+        public String toString(){return "no weather";}
+    }
 }

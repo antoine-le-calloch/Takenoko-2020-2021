@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +32,7 @@ public class TemporaryInventoryTest {
 
         assertThrows(OutOfResourcesException.class, () -> temporaryInventory.looseStamina());
 
-        temporaryInventory.reset();
+        temporaryInventory.reset(WeatherType.NO_WEATHER);
         assertEquals(2,temporaryInventory.getStamina());
     }
 
@@ -42,7 +43,7 @@ public class TemporaryInventoryTest {
         temporaryInventory.saveParcel(new Parcel());
         assertEquals(new Parcel().getParcelInformation(),temporaryInventory.getParcel().getParcelInformation());
 
-        temporaryInventory.reset();
+        temporaryInventory.reset(WeatherType.NO_WEATHER);
         assertNull(temporaryInventory.getParcel());
     }
 
@@ -53,7 +54,7 @@ public class TemporaryInventoryTest {
         temporaryInventory.saveParcels(new ArrayList<>(Arrays.asList(new Parcel(),new Parcel(),new Parcel())));
         assertEquals(3,temporaryInventory.getParcelsSaved().size());
 
-        temporaryInventory.reset();
+        temporaryInventory.reset(WeatherType.NO_WEATHER);
         assertTrue(temporaryInventory.getParcelsSaved().isEmpty());
     }
 
@@ -77,7 +78,33 @@ public class TemporaryInventoryTest {
         assertEquals(2,temporaryInventory.getActionTypeList().size());
         assertThrows(NoSuchElementException.class,() -> temporaryInventory.hasPlayedCorrectly());
 
-        temporaryInventory.reset();
+        temporaryInventory.reset(WeatherType.NO_WEATHER);
         assertTrue(temporaryInventory.getActionTypeList().isEmpty());
     }
+
+    @Test void weatherDifferentFromSunSo2Stamina(){
+        //de base no_weather
+        assertEquals(2,temporaryInventory.getStamina());
+        temporaryInventory.reset(WeatherType.NO_WEATHER);
+        assertEquals(2,temporaryInventory.getStamina());
+    }
+
+    @Test void sunWeatherSo3Stamina(){
+        temporaryInventory.reset(WeatherType.SUN);
+        assertEquals(3,temporaryInventory.getStamina());
+    }
+
+    @Test void noWindSoNoDoubleAction(){
+       //par défaut no_weather
+        assertFalse(temporaryInventory.isActionCouldBeDoneTwice());
+        temporaryInventory.setWeatherType(WeatherType.SUN);
+        assertFalse(temporaryInventory.isActionCouldBeDoneTwice());
+    }
+
+    @Test void windWeather(){
+        temporaryInventory.reset(WeatherType.WIND);
+        assertTrue(temporaryInventory.isActionCouldBeDoneTwice());
+    }
+
+
 }

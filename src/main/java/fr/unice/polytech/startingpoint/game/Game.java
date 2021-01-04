@@ -2,10 +2,13 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.type.BotType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Moteur de jeu, creation d'une partie, fait jouer les bots, verifie les missions faites et termine la partie
@@ -24,6 +27,9 @@ class Game{
     private final List<PlayerData> botData;
     private final int NB_MISSION;
     private int numBot;
+    private int round;
+    private final int FIRST_BOT=0;
+    WeatherDice weatherDice;
 
     private Game(BotType[] botTypes, int nbMission, int stamina){
         board = new Board();
@@ -32,8 +38,10 @@ class Game{
         playerInteraction = new PlayerInteraction(this);
         botData = new LinkedList<>();
         NB_MISSION = nbMission;
-        numBot = 0;
+        numBot = FIRST_BOT;
+        round=0;
         initializeBot(botTypes, stamina);
+        weatherDice=new WeatherDice(new Random());
     }
 
     Game(BotType[] botTypes){
@@ -73,16 +81,33 @@ class Game{
         }
     }
 
+    void newRound(){
+        round++;
+    }
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
         while( isContinue() ) {
+            if(numBot==FIRST_BOT)
+                newRound();
             botPlay();
             nextBot();
         }
     }
 
-    private void botPlay() {
-        getPlayerData().botPlay();
+    WeatherType weatherDiceRoll(){
+        return weatherDice.roll();
+    }
+
+
+    /**<p>à partir du 2e tour le dé peut être roll</p>
+     *
+     *
+     */
+    void botPlay() {
+        if(round<2)
+            getPlayerData().botPlay(WeatherType.NO_WEATHER);
+        else
+            getPlayerData().botPlay(weatherDiceRoll());
     }
 
     /**Set the next bot to play.
