@@ -42,16 +42,12 @@ public final class PeasantMission extends Mission {
     boolean checkMission(Inventory inventory) {
         for (Parcel parcel : board.getPlacedParcels().values()) {
             int NB_BAMBOO = 2;
-            if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType){
-                if(improvementType.equals(ImprovementType.NOTHING))
+            if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType && parcel.getImprovement().equals(improvementType)){
                     return true;
-                else if(parcel.getImprovement().equals(improvementType)){
-                    return true;
-                }
             }
-
         }
         return false;
     }
-    
+
+
 }

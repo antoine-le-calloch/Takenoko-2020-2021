@@ -37,6 +37,6 @@ public final class PandaMission extends Mission {
     /**<p>check panda if a mission is done</p>
      */
     boolean checkMission(Inventory inventory){
-        return inventory.subBamboo(colorType);
+        return inventory.subBamboo(colorType,2);
     }
 }
