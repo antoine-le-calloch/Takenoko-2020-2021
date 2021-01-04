@@ -51,7 +51,11 @@ public class MissionPeasantStrat extends Strategie{
      * @return <b>Return the first coordinate where the parcel has at least two bamboos.</b>
      */
     public Coordinate strategyMovePeasant() {
-        for(PeasantMission mission : bot.playerInteraction.getInventoryPeasantMissions()) {
+        if(possibleCoordinatesPeasant().size() != 0)
+            return possibleCoordinatesPeasant().get(0);
+        else
+            return null;
+        /*for(PeasantMission mission : bot.playerInteraction.getInventoryPeasantMissions()) {
             if (!mission.getImprovementType().equals(ImprovementType.WHATEVER)) {
                 for (Coordinate coordinate : possibleCoordinatesPeasant()) {
                     if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColor())) {
@@ -60,6 +64,6 @@ public class MissionPeasantStrat extends Strategie{
                 }
             }
         }
-        return null;
+        return null;*/
     }
 }
