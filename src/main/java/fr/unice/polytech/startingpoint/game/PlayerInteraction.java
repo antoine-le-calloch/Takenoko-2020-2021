@@ -196,6 +196,10 @@ public final class PlayerInteraction {
         return getPlayerData().getMissions();
     }
 
+    public int[] getInventoryBamboo() {
+        return getPlayerData().getInventoryBamboo();
+    }
+
     public int getResourceSize(ResourceType resourceType){
         switch (resourceType){
             case PEASANT_MISSION:

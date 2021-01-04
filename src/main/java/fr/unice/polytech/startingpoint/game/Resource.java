@@ -100,10 +100,8 @@ class Resource {
             deckMissionPanda.add(new PandaMission(board,ColorType.YELLOW, 4));
         for (int i = 0; i<3; i++)
             deckMissionPanda.add(new PandaMission(board,ColorType.RED, 5));
-
-        //mauvaise mission
         for (int i = 0; i<3; i++)
-            deckMissionPanda.add(new PandaMission(board,ColorType.RED, 5));
+            deckMissionPanda.add(new PandaMission(board,ColorType.ALL_COLOR, 5));
 
         Collections.shuffle(deckMissionPanda);
     }

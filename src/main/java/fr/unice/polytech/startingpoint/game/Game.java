@@ -25,7 +25,7 @@ class Game{
     private final int NB_MISSION;
     private int numBot;
 
-    Game(BotType[] botTypes,int nbMission,int stamina){
+    private Game(BotType[] botTypes, int nbMission, int stamina){
         board = new Board();
         rules = new Rules(board);
         resource = new Resource(board);
@@ -87,13 +87,13 @@ class Game{
 
     /**Set the next bot to play.
      */
-    void nextBot() {
+    private void nextBot() {
         numBot = (numBot+1) % botData.size();
     }
 
     /**@return <b>True if nobody has done the number of missions required to win.</b>
      */
-    boolean isContinue(){
+    private boolean isContinue(){
         for (int missionDoneBy1P : getMissionsDone()) {
             if (missionDoneBy1P >= NB_MISSION)
                 return false;
@@ -131,7 +131,7 @@ class Game{
     /**
      * @return <b>The number of mission done by all bots.</b>
      */
-    List<Integer> getMissionsDone() {
+    private List<Integer> getMissionsDone() {
         List<Integer> missionsDone = new ArrayList<>();
         for (PlayerData playerData : botData){
             missionsDone.add(playerData.getMissionsDone());

@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class StrategieTest {
+class StrategieTest {
     private Game game;
     private Parcel parcel1;
     private Parcel parcel2;
@@ -24,7 +24,7 @@ public class StrategieTest {
     private Strategie strategie;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         game = new Game();
         parcel1 = new Parcel(ColorType.RED);
         parcel2 = new Parcel(ColorType.RED);
@@ -38,7 +38,7 @@ public class StrategieTest {
 
 
     @Test
-    public void initializeNextCoordinatesNextToCentral(){
+    void initializeNextCoordinatesNextToCentral(){
         List<Coordinate> nextTocentral = strategie.possibleCoordinatesParcel();
         assertEquals(6,nextTocentral.size());
         Coordinate randomco = nextTocentral.get(0);
@@ -49,7 +49,7 @@ public class StrategieTest {
     }
 
     @Test
-    public void initializeNextCoordinatesAwayFromCentral(){
+    void initializeNextCoordinatesAwayFromCentral(){
 
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         List<Coordinate> awayFromCentral =  strategie.allPlaces();
@@ -64,14 +64,14 @@ public class StrategieTest {
 
 
     @Test
-    public void possibleCoordinatesParcelTest(){
+    void possibleCoordinatesParcelTest(){
         List<Coordinate> possibleCo = strategie.possibleCoordinatesParcel();
         Collections.shuffle(possibleCo);
         assertTrue(rules.isPlayableParcel(possibleCo.get(0)));
     }
 
     @Test
-    public void notPossibleCoordinatesCanal(){
+    void notPossibleCoordinatesCanal(){
         List<Coordinate[]> possibleCanals = strategie.possibleCoordinatesCanal();
         assertEquals(possibleCanals.size(),0);
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
@@ -83,7 +83,7 @@ public class StrategieTest {
     }
 
     @Test
-    public void possibleCoordinatesCanal() {
+    void possibleCoordinatesCanal() {
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         board.placeParcel(parcel2,new Coordinate(1,0,-1));
         List<Coordinate[]> possibleCanals = strategie.possibleCoordinatesCanal();
@@ -93,19 +93,19 @@ public class StrategieTest {
     }
 
     @Test
-    public void notExistPossibleCoordinatesBamboo(){
+    void notExistPossibleCoordinatesBamboo(){
         assertEquals(0,strategie.possibleCoordinatesPanda().size());
     }
 
     @Test
-    public void ExistPossibleCoordinatesBamboo(){
+    void ExistPossibleCoordinatesBamboo(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         assertTrue(board.getPlacedParcels().get(new Coordinate(1,-1,0)).getIrrigated());
         assertEquals(new Coordinate(1,-1,0), strategie.possibleCoordinatesPanda().get(0));
     }
 
     @Test
-    public void freePlaceInitialStates(){
+    void freePlaceInitialStates(){
         List<Coordinate> newPlaces = strategie.possibleCoordinatesParcel();
         assertEquals(new Coordinate(1,-1,0),newPlaces.get(0));
         assertEquals(new Coordinate(0,-1,1),newPlaces.get(1));
@@ -121,7 +121,7 @@ public class StrategieTest {
      */
 
     @Test
-    public void noParcelsSoNoPossibleCoordinatesForAnyColorGiven(){
+    void noParcelsSoNoPossibleCoordinatesForAnyColorGiven(){
         List<Coordinate> allPossibleCoNextToBlue=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.GREEN);
         List<Coordinate> allPossibleCoNextToRed=strategie.allPosssibleCoordinatesNextToParcelsWithAColor(ColorType.RED);
         assertEquals(0,allPossibleCoNextToBlue.size());
@@ -129,7 +129,7 @@ public class StrategieTest {
     }
 
     @Test
-    public void twoRedParcelPlaced(){
+    void twoRedParcelPlaced(){
         Coordinate expectedCo1=new Coordinate(0,1,-1);//11h
         Coordinate expectedCo2=new Coordinate(0,-1,1);//5h
         Coordinate expectedCo3=new Coordinate(2,-1,-1);//2h distant 2 du centre

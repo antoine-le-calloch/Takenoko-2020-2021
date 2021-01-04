@@ -15,18 +15,18 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 2020.12.03
  */
 
-public class BoardTest {
-    Game game;
-    Board board;
+class BoardTest {
+    private Game game;
+    private Board board;
 
     @BeforeEach
-    public void initialize(){
+    void initialize(){
         game = new Game();
         board = game.getBoard();
     }
 
     @Test
-    public void parcelIncrease(){
+    void parcelIncrease(){
         board.placeParcel(new Parcel(),new Coordinate(1,-1,0));
         assertEquals(2,board.getPlacedParcels().size());
     }

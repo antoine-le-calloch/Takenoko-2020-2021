@@ -106,4 +106,6 @@ public abstract class Bot {
     public void movePeasant(Coordinate coordinate){
         playerInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
     }
+
+    public PlayerInteraction getPlayerInteraction(){return playerInteraction;}
 }

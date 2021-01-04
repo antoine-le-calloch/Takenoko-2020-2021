@@ -3,10 +3,7 @@ package fr.unice.polytech.startingpoint.bot;
 import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.PandaMission;
 import fr.unice.polytech.startingpoint.game.PlayerInteraction;
-import fr.unice.polytech.startingpoint.type.ActionType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
+import fr.unice.polytech.startingpoint.type.*;
 
 public class RushPandaStrat extends Strategie{
 
@@ -39,18 +36,41 @@ public class RushPandaStrat extends Strategie{
         return strategyMovePanda() != null && !bot.playerInteraction.contains(ActionType.MOVE_PANDA);
     }
 
+
+    public Coordinate strategyMovePanda() {
+        for (PandaMission pandaMission : bot.playerInteraction.getInventoryPandaMissions() ) {
+            if (pandaMission.getColor().equals(ColorType.ALL_COLOR))
+                return strategyMissionAllColor();
+            else
+                return strategyMissionOneColor(pandaMission.getColor());
+        }
+        return null;
+    }
+
     /** @return <b>Return the first coordinate where the parcel has at least one bamboo and the same color
      * as the list of Panda mission</b>
      */
-    public Coordinate strategyMovePanda() {
+    public Coordinate strategyMissionOneColor(ColorType colorType) {
         for (Coordinate coordinate : possibleCoordinatesPanda()) {
-            if (bot.playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0) {
-                for (PandaMission pandaMission : bot.playerInteraction.getInventoryPandaMissions() ) {
-                    if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(pandaMission.getColor()) && !bot.playerInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE))
-                        return coordinate;
-                }
+            if (bot.playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0
+                    && !bot.playerInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE)) {
+                if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(colorType))
+                    return coordinate;
+            }
+        }
+        return null;
+    }
+
+    public Coordinate strategyMissionAllColor(){
+        for (Coordinate coordinate : possibleCoordinatesPanda()) {
+            if (bot.playerInteraction.getPlacedParcelsNbBamboo(coordinate) > 0
+                    && !bot.playerInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE)) {
+                if (bot.playerInteraction.getInventoryBamboo()[bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().ordinal()] == 0)
+                    return coordinate;
             }
         }
         return null;
     }
 }
+
+
