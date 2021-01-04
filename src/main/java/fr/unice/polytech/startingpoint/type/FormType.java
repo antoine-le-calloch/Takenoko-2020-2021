@@ -24,4 +24,18 @@ public enum FormType {
             return "Line";
         }
     }
+    ,
+    DIAMOND {
+        @Override
+        public String toString() {
+            return "Diamond";
+        }
+    }
+    ,
+    ARC {
+        @Override
+        public String toString() {
+            return "Arc";
+        }
+    }
 }
