@@ -13,8 +13,8 @@ import fr.unice.polytech.startingpoint.type.ImprovementType;
  */
 
 class Parcel {
-    private final int NUMBER_MINIMAL_OF_BAMBOOS=0;
-    private final int NUMBER_MAXIMAL_OF_BAMBOOS=4;
+    private final int NUMBER_MINIMAL_OF_BAMBOOS = 0;
+    private final int NUMBER_MAXIMAL_OF_BAMBOOS = 4;
     private int nbBamboo = NUMBER_MINIMAL_OF_BAMBOOS;
     private boolean irrigated = false;
     private final ParcelInformation parcelInformation;

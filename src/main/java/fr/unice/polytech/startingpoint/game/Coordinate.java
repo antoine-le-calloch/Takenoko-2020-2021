@@ -137,6 +137,13 @@ public final class Coordinate implements Comparable<Coordinate> {
         return new TreeSet<>(Arrays.asList(c1, c2));
     }
 
+    public static List<Coordinate> sumCoordinateToAList(Coordinate baseCoordinate, List<Coordinate> coordinateList) {
+        List<Coordinate> newCoordinateList = new ArrayList<>();
+        for (Coordinate coordinate : coordinateList)
+            newCoordinateList.add(new Coordinate(baseCoordinate,coordinate));
+        return newCoordinateList;
+    }
+
     @Override
     public int compareTo(Coordinate c){
         return  Arrays.compare(this.coordinate,c.coordinate);

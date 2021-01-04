@@ -4,6 +4,10 @@ import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 
+import java.util.List;
+
+import static fr.unice.polytech.startingpoint.type.FormType.*;
+
 /**
  * <h1>{@link ParcelMission} :</h1>
  *
@@ -22,7 +26,9 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  */
 
 public final class ParcelMission extends Mission {
+
     private final FormType formType;
+    private final ColorType colorTypeTwoColorMission;
 
     /**
      * <p>Set up a parcel mission. Initialize all variables.</p>
@@ -32,8 +38,23 @@ public final class ParcelMission extends Mission {
      * @param points
      *            <b>the points of the mission</b>
      */
-    ParcelMission(Board board, ColorType colorType, int points,FormType formType) {
-        super(board, MissionType.PARCEL,colorType,points);
+    ParcelMission(Board board, ColorType colorType, int points, FormType formType) {
+        this(board,colorType,colorType,points,formType);
+    }
+
+    /**
+     * <p>Set up a parcel mission. Initialize all variables.</p>
+     *
+     * @param colorType1
+     *            <b>the colorType of the mission</b>
+     * @param colorType2
+     *            <b>the second colorType of the mission</b>
+     * @param points
+     *            <b>the points of the mission</b>
+     */
+    ParcelMission(Board board, ColorType colorType1, ColorType colorType2, int points, FormType formType) {
+        super(board, MissionType.PARCEL,colorType1,points);
+        this.colorTypeTwoColorMission = colorType2;
         this.formType = formType;
     }
 
@@ -45,52 +66,42 @@ public final class ParcelMission extends Mission {
     boolean checkMission(Inventory inventory) {
         switch (formType) {
             case TRIANGLE:
-                return checkFormOneColor(new Coordinate(1, 0, -1), new Coordinate(1, -1, 0));
+                return checkOneColorForm(TRIANGLE.getOffsetsList());
             case LINE:
-                return checkFormOneColor(new Coordinate(0, -1, 1), new Coordinate(0, 1, -1));
-            case DIAMOND:
-                return checkFormOneColor(new Coordinate(0, -1, 1), new Coordinate(1, -1, 0), new Coordinate(1, 0, -1));
+                return checkOneColorForm(LINE.getOffsetsList());
             case ARC:
-                return checkFormOneColor(new Coordinate(1, 0, -1), new Coordinate(0, -1, 1));
+                return checkOneColorForm(ARC.getOffsetsList());
+            case DIAMOND:
+                return checkTwoColorsForm(DIAMOND.getOffsetsList1(),DIAMOND.getOffsetsList2());
             default:
                 return false;
         }
     }
 
-    /**
-     * <p>check if a form in on the board, all parcels have to be irrigated and must have the good color.</p>
-     *
-     * @param coordinate1
-     *            <b>first coordinate to add to the parcel's coordinate
-     *            to check is the there is a parcel irrigated and with a good color on the board.</b>
-     * @param coordinate2
-     *            <b>second coordinate to add to the parcel's coordinate
-     *      *            to check is the there is a parcel irrigated and with a good color on the board.</b>
-     * @return <b>true if the form is on the board</b>
-     */
-    boolean checkFormOneColor(Coordinate ... coordinates) {
-        for (Coordinate coordinate : board.getPlacedParcels().keySet()) {
-            if ( board.isPlacedAndIrrigatedParcel(coordinate) ){
-                if ( board.getPlacedParcels().get(coordinate).getColor().equals(colorType) ){
-                    int correctParcels = 0;
-                    for (Coordinate c : coordinates) {
-                        if ( board.isPlacedAndIrrigatedParcel(new Coordinate(coordinate,c)) ){
-                            if ( board.getPlacedParcels().get(new Coordinate(coordinate,c)).getColor().equals(colorType) ){
-                                correctParcels ++;
-                            }
-                        }
-                    }
-                    if (correctParcels == coordinates.length)
-                        return true;
-                }
-            }
-        }
+    boolean checkTwoColorsForm(List<Coordinate> coordinateList1, List<Coordinate> coordinateList2) {
+        for (Coordinate coordinate : board.getPlacedParcels().keySet())
+            if (checkBasicForm(colorType,Coordinate.sumCoordinateToAList(coordinate,coordinateList1)))
+                if (checkBasicForm(colorTypeTwoColorMission,Coordinate.sumCoordinateToAList(coordinate,coordinateList2)))
+                    return true;
         return false;
     }
 
-    /**
-     * @return <b>the form of the mission</b>
-     */
+    boolean checkOneColorForm(List<Coordinate> coordinateList) {
+        for (Coordinate coordinate : board.getPlacedParcels().keySet())
+            if (checkBasicForm(colorType,Coordinate.sumCoordinateToAList(coordinate,coordinateList)))
+                return true;
+        return false;
+    }
+
+    boolean checkBasicForm(ColorType colorType, List<Coordinate> coordinateList){
+        int correctParcels = 0;
+        for (Coordinate coordinate : coordinateList)
+            if (board.isPlacedAndIrrigatedParcel(new Coordinate(coordinate)))
+                if (board.getPlacedParcels().get(new Coordinate(coordinate)).getColor().equals(colorType))
+                    correctParcels++;
+        return correctParcels == coordinateList.size();
+    }
+
     public FormType getFormType(){
         return formType;
     }

@@ -25,15 +25,19 @@ public class ParcelMissionTest {
     Parcel parcel2;
     Parcel parcel3;
     Parcel parcel4;
+    Parcel parcel5;
+    Parcel parcel6;
 
     ParcelMission missionTR;
     ParcelMission missionLR;
     ParcelMission missionDR;
     ParcelMission missionAR;
+    ParcelMission missionDBR;
     ParcelMission missionTG;
     ParcelMission missionLG;
     ParcelMission missionDG;
     ParcelMission missionAG;
+    ParcelMission missionDBG;
 
     @BeforeEach
     void setUp(){
@@ -46,15 +50,19 @@ public class ParcelMissionTest {
         parcel2 = new Parcel(ColorType.RED);
         parcel3 = new Parcel(ColorType.RED);
         parcel4 = new Parcel(ColorType.RED);
+        parcel5 = new Parcel(ColorType.GREEN);
+        parcel6 = new Parcel(ColorType.GREEN);
 
         missionTR = new ParcelMission(board,ColorType.RED, 0, FormType.TRIANGLE);
         missionLR = new ParcelMission(board,ColorType.RED, 0, FormType.LINE);
         missionDR = new ParcelMission(board,ColorType.RED, 0, FormType.DIAMOND);
         missionAR = new ParcelMission(board,ColorType.RED, 0, FormType.ARC);
+        missionDBR = new ParcelMission(board,ColorType.RED,ColorType.GREEN, 0, FormType.DIAMOND);
         missionTG = new ParcelMission(board,ColorType.GREEN, 0, FormType.TRIANGLE);
         missionLG = new ParcelMission(board,ColorType.GREEN, 0, FormType.LINE);
         missionDG = new ParcelMission(board,ColorType.GREEN, 0, FormType.DIAMOND);
         missionAG = new ParcelMission(board,ColorType.GREEN, 0, FormType.ARC);
+        missionDBG = new ParcelMission(board,ColorType.YELLOW,ColorType.GREEN, 0, FormType.DIAMOND);
     }
 
     @Test
@@ -245,6 +253,59 @@ public class ParcelMissionTest {
         board.placeParcel(parcel1,new Coordinate(0,1,-1));
         board.placeParcel(parcel2,new Coordinate(1,-1,0));
         board.placeParcel(parcel3,new Coordinate(1,0,-1));
+        assertFalse(missionDR.checkMission(inventory));
+    }
+
+    /**
+     * <h1><u>CAS BICOLORE DIAMOND</u></h1>
+     */
+
+    @Test
+    void checkNoMissionDiamondBicolor(){
+        assertFalse(missionDBR.checkMission(inventory));
+    }
+
+    @Test
+    void diamondBicolorOnBoardGoodColor(){ //check Line
+        board.placeParcel(parcel1,new Coordinate(0,-1,1));
+        board.placeParcel(parcel2,new Coordinate(0,-2,2));
+        board.placeParcel(parcel5,new Coordinate(1,-1,0));
+        board.placeParcel(parcel6,new Coordinate(1,-2,1));
+        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
+        assertTrue(missionDBR.checkMission(inventory));
+    }
+
+    @Test
+    void diamondBicolorOnBoardBadColor() { //check Line
+        board.placeParcel(parcel1,new Coordinate(0,-1,1));
+        board.placeParcel(parcel2,new Coordinate(0,-2,2));
+        board.placeParcel(parcel5,new Coordinate(1,-1,0));
+        board.placeParcel(parcel6,new Coordinate(1,-2,1));
+        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
+        assertFalse(missionDBG.checkMission(inventory));
+    }
+
+    @Test
+    void diamondBicolorNotIrrigated() { //checkLine
+        board.placeParcel(parcel1,new Coordinate(0,-1,1));
+        board.placeParcel(parcel2,new Coordinate(0,-2,2));
+        board.placeParcel(parcel5,new Coordinate(1,-1,0));
+        board.placeParcel(parcel6,new Coordinate(1,-2,1));
+        assertFalse(missionDR.checkMission(inventory));
+        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
+        assertFalse(missionDR.checkMission(inventory));
+    }
+
+    @Test
+    void wrongDiamondBicolor() { //checkLine
+        board.placeParcel(parcel1,new Coordinate(0,-1,1));
+        board.placeParcel(parcel2,new Coordinate(0,-3,3));
+        board.placeParcel(parcel5,new Coordinate(1,-1,0));
+        board.placeParcel(parcel6,new Coordinate(1,-2,1));
+        board.getPlacedParcels().get(new Coordinate(0,-3,3)).setIrrigated();
+        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
         assertFalse(missionDR.checkMission(inventory));
     }
 }
