@@ -144,4 +144,7 @@ public final class PlayerData {
     List<Mission> getMissions() {
         return inventory.getMissions();
     }
+
+    public int[] getInventoryBamboo() { return  inventory.getInventoryBamboo();
+    }
 }

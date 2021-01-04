@@ -21,7 +21,7 @@ import fr.unice.polytech.startingpoint.type.MissionType;
  */
 
 public final class PandaMission extends Mission {
-
+    int NB_BAMBOO = 2;
     /**
      * <p>Set up a panda mission. Initialize all variables.</p>
      *
@@ -36,7 +36,28 @@ public final class PandaMission extends Mission {
 
     /**<p>check panda if a mission is done</p>
      */
-    boolean checkMission(Inventory inventory){
-        return inventory.subBamboo(colorType,2);
+    boolean checkMission(Inventory inventory) {
+        if (colorType.equals(ColorType.ALL_COLOR))
+            return checkMissionAllColor(inventory);
+        else
+            return checkMissionOneColor(inventory, colorType);
     }
+
+    boolean checkMissionAllColor(Inventory inventory){
+        int[] inventoryBamboo = inventory.getInventoryBamboo();
+        if (inventoryBamboo[0] > 0 && inventoryBamboo[1] > 0 && inventoryBamboo[2] > 0){
+            inventory.subOneBambooPerColor();
+            return true;
+        }
+        return false;
+    }
+
+    boolean checkMissionOneColor(Inventory inventory, ColorType colorType){
+        if (inventory.getInventoryBamboo(colorType) >= NB_BAMBOO) {
+            inventory.subTwoBamboos(colorType);
+            return true;
+        }
+        return false;
+    }
+
 }

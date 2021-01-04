@@ -66,7 +66,7 @@ public class PlayerDataTest {
         playerData.addBamboo(ColorType.RED);
         playerData.addBamboo(ColorType.GREEN);
         playerData.addBamboo(ColorType.YELLOW);
-        assertArrayEquals(new int[]{1,1,1},playerData.getInventory().getBamboo());
+        assertArrayEquals(new int[]{1,1,1},playerData.getInventory().getInventoryBamboo());
 
         playerData.addMission(new ParcelMission(game.getBoard(), ColorType.RED,3, FormType.TRIANGLE));
         playerData.addMission(new PandaMission(game.getBoard(), ColorType.RED,2));

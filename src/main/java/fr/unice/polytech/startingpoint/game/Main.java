@@ -11,7 +11,7 @@ import fr.unice.polytech.startingpoint.type.BotType;
  * @version 2020.12.03
  */
 
-public class Main{
+class Main{
 
     public static void main(String... args){
         final int NUMBER_OF_GAMES = 1000;

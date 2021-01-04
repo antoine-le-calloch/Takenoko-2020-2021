@@ -31,6 +31,13 @@ public enum ColorType {
         }
     }
     ,
+    ALL_COLOR {
+        @Override
+        public String toString() {
+            return "All Color";
+        }
+    }
+    ,
     NO_COLOR {
         @Override
         public String toString() {

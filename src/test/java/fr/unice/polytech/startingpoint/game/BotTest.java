@@ -40,7 +40,7 @@ class BotTest {
     public void movePanda(){
         board.placeParcel(parcel1,new Coordinate(1,-1,0));
         bot1.movePanda(strategie.possibleCoordinatesPanda().get(0));
-        assertEquals(1, game.getPlayerData().getInventory().getBamboo(ColorType.GREEN));
+        assertEquals(1, game.getPlayerData().getInventory().getInventoryBamboo(ColorType.GREEN));
         assertEquals(0,parcel1.getNbBamboo());
     }
 

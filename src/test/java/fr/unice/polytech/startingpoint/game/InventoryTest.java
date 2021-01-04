@@ -11,40 +11,71 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InventoryTest {
+class InventoryTest {
     private Inventory inventory;
-    private Board board;
-    private Parcel parcel;
     private ParcelMission mission;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         inventory = new Inventory();
-        board = new Board();
-        parcel = new Parcel(ColorType.GREEN);
+        Board board = new Board();
         mission = new ParcelMission(board,ColorType.GREEN, 0, FormType.LINE);
     }
 
     @Test
-    public void inventoryCanal() throws OutOfResourcesException {
+    void inventoryCanal() throws OutOfResourcesException {
         inventory.addCanal(new Canal());
         inventory.pickCanal();
         assertThrows(OutOfResourcesException.class, () -> inventory.pickCanal());
     }
 
     @Test
-    public void inventoryBamboo() {
-        board.placeParcel(parcel,new Coordinate(1,-1,0));  // parcel blue
-        inventory.addBamboo(parcel.getColor());
-        assertEquals(0, inventory.getBamboo()[0]);
-        assertEquals(1, inventory.getBamboo()[1]);
-        inventory.subBamboo(parcel.getColor());
-        assertEquals(0, inventory.getBamboo()[0]);
-        assertEquals(0, inventory.getBamboo()[1]);
+    void addBambooInventory() {
+        inventory.addBamboo(ColorType.GREEN);
+        assertEquals(0, inventory.getInventoryBamboo()[0]);
+        assertEquals(1, inventory.getInventoryBamboo()[1]);
+        assertEquals(0, inventory.getInventoryBamboo()[2]);
     }
 
     @Test
-    public void inventoryMission(){
+    void deleteTwoBambooInventory() {
+        inventory.addBamboo(ColorType.GREEN);
+        inventory.addBamboo(ColorType.GREEN);
+        inventory.subTwoBamboos(ColorType.GREEN);
+        assertEquals(0, inventory.getInventoryBamboo()[1]);
+    }
+
+    @Test
+    void deleteOneBambooPerColoInventory() {
+        inventory.addBamboo(ColorType.GREEN);
+        inventory.addBamboo(ColorType.YELLOW);
+        inventory.addBamboo(ColorType.RED);
+        inventory.subOneBambooPerColor();
+        assertEquals(0, inventory.getInventoryBamboo()[0]);
+        assertEquals(0, inventory.getInventoryBamboo()[1]);
+        assertEquals(0, inventory.getInventoryBamboo()[2]);
+    }
+
+    @Test
+    void deleteOneBambooPerColoInventoryNotEnoughBamboo() {
+        inventory.addBamboo(ColorType.GREEN);
+        inventory.addBamboo(ColorType.YELLOW);
+        inventory.subOneBambooPerColor();
+        assertEquals(0, inventory.getInventoryBamboo()[0]);
+        assertEquals(1, inventory.getInventoryBamboo()[1]);
+        assertEquals(1, inventory.getInventoryBamboo()[2]);
+    }
+
+    @Test
+    void deleteTwoBambooInventoryNotEnoughBamboo() {
+        inventory.addBamboo(ColorType.GREEN);
+        inventory.subTwoBamboos(ColorType.GREEN);
+        assertEquals(0, inventory.getInventoryBamboo()[0]);
+        assertEquals(1, inventory.getInventoryBamboo()[1]);
+    }
+
+    @Test
+    void inventoryMission(){
         inventory.addMission(mission);
         assertEquals(1, inventory.getMissions().size());
         inventory.subMissions(new ArrayList<>(Collections.singletonList(mission)));

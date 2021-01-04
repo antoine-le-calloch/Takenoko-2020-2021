@@ -73,23 +73,20 @@ class Inventory {
      *          <b>The {@link ColorType} of the bamboo we want to remove.</b>
      * @return
      */
-    boolean subBamboo(ColorType colorType, int nbBamboo){
-        if(inventoryBamboo[colorType.ordinal()] >= nbBamboo && !colorType.equals(ColorType.NO_COLOR)){
-            inventoryBamboo[colorType.ordinal()] -= nbBamboo;
-            return true;
-        }
-        return false;
+    void subTwoBamboos(ColorType colorType){
+        if(inventoryBamboo[colorType.ordinal()] >= 2 && !colorType.equals(ColorType.NO_COLOR))
+            inventoryBamboo[colorType.ordinal()] -= 2;
     }
 
-    /**<p>Sub one bamboo of the {@link ColorType} specified in parameter.</p>
-     *
-     * @param colorType
-     *          <b>The {@link ColorType} of the bamboo we want to remove.</b>
-     * @return
-     */
-    boolean subBamboo(ColorType colorType){
-        return subBamboo(colorType,1);
+    public void subOneBambooPerColor() {
+        if (inventoryBamboo[0] > 0 && inventoryBamboo[1] > 0 && inventoryBamboo[2] > 0) {
+            inventoryBamboo[ColorType.YELLOW.ordinal()]--;
+            inventoryBamboo[ColorType.GREEN.ordinal()]--;
+            inventoryBamboo[ColorType.RED.ordinal()]--;
+        }
     }
+
+
 
     /**<p>Add a {@link Mission} in the inventory.</p>
      */
@@ -111,13 +108,13 @@ class Inventory {
      *
      * @return <b>The number of bamboo of the {@link ColorType} specified in parameter.</b>
      */
-    int getBamboo(ColorType colorType){
+    int getInventoryBamboo(ColorType colorType){
         return inventoryBamboo[colorType.ordinal()];
     }
 
     /**@return <b>The list containing the number of bamboos of each {@link ColorType}.</b>
      */
-    int[] getBamboo() {
+    int[] getInventoryBamboo() {
         return inventoryBamboo.clone();
     }
 
@@ -165,4 +162,5 @@ class Inventory {
         }
         return peasantMissions;
     }
+
 }

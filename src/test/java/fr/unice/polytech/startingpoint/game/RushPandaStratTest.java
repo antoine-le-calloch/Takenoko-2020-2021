@@ -15,22 +15,23 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class RushPandaStratTest {
     Board board;
     Parcel parcel1;
+    Parcel parcel2;
     PandaBot bot;
     Coordinate coordinate1;
+    Coordinate coordinate2;
     Game game;
     Rules rules;
 
 
     @BeforeEach void setUp()  {
         game = new Game(new BotType[]{BotType.PANDA_BOT});
-
         board = game.getBoard();
         rules = game.getRules();
         parcel1 = new Parcel(ColorType.GREEN);
+        parcel2 = new Parcel(ColorType.GREEN);
         bot= (PandaBot) game.getPlayerData().getBot();
         coordinate1 = new Coordinate(1, -1, 0);
-
-
+        coordinate2 = new Coordinate(0, -1, 1);
 
     }
 
@@ -44,18 +45,47 @@ class RushPandaStratTest {
         assertNull(bot.getRushPandaStrat().strategyMovePanda());//Pas de parcel, il ne bouge pas
     }
 
-
     @Test
-    void coordWhereMovePanda_1parcelWithBamboo() {
+    void coordWhereMovePanda_1parcelWithBambooMissionGreenColor() {
         board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
         game.getPlayerData().addMission(new PandaMission(board,ColorType.GREEN,1));
         assertEquals(coordinate1, bot.getRushPandaStrat().strategyMovePanda());//Le panda veut aller dessus
     }
+
+    @Test
+    void coordWhereMovePanda_1parcelWithBambooMissionAllColor() {
+        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
+        game.getPlayerData().addMission(new PandaMission(board,ColorType.ALL_COLOR,1));
+        assertEquals(coordinate1, bot.getRushPandaStrat().strategyMovePanda());//Le panda veut aller dessus
+    }
+
+    @Test
+    void AlreadyHaveABambooInInventory() {
+        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
+        board.placeParcel(parcel2,coordinate2);//place la parcel (un bamboo pousse)
+        game.getPlayerData().addMission(new PandaMission(board,ColorType.ALL_COLOR,1));
+
+        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
+        game.getPlayerData().resetTemporaryInventory();
+        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
+    }
+
+    @Test
+    void AlreadyHaveABambooInInventoryMissionOneColor() {
+        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
+        board.placeParcel(parcel2,coordinate2);//place la parcel (un bamboo pousse)
+        game.getPlayerData().addMission(new PandaMission(board,ColorType.GREEN,1));
+        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
+        game.getPlayerData().resetTemporaryInventory();
+        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
+        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus*/
+    }
+
     @Test
     void colorMissionDifferentFromColorParcelSoNoGoodDeplacement() {
         board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
         game.getPlayerData().addMission(new PandaMission(board,ColorType.RED,1));
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller de dessus
+        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
     }
 
     @Test
