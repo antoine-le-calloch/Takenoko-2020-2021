@@ -163,9 +163,6 @@ public class MissionParcelStrat extends Strategie{
         Set<Coordinate> coordNeedeToDoMission = new HashSet<>();
         List<Coordinate> form = setForm(hightCoord, mission.getFormType());
 
-        //if(mission.getFormType().equals(FormType.LINE) && hightCoord.equals(new Coordinate(0,-1,1)) && !playerInteraction.isPlacedParcel(new Coordinate(0,-2,2)))
-        //    return null;
-
         for (Coordinate coord : form) {
             if(coord.isCentral() || (bot.playerInteraction.isPlacedParcel(coord) && !bot.playerInteraction.getPlacedParcelInformation(coord).getColorType().equals(mission.getColor())))
                 return null;
@@ -213,10 +210,22 @@ public class MissionParcelStrat extends Strategie{
         List<Coordinate> coordForm = new ArrayList<>();
         coordForm.add(hightCoord);
         coordForm.add(new Coordinate(hightCoord,Coordinate.offSets().get(2)));
-        if(form.equals(FormType.LINE))
-            coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(2)));
-        else
-            coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(4)));
+
+        switch (form){
+            case LINE:
+                coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(2)));
+                break;
+            case TRIANGLE:
+                coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(4)));
+                break;
+            case DIAMOND:
+                coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(4)));
+                coordForm.add(new Coordinate(coordForm.get(2),Coordinate.offSets().get(2)));
+                break;
+            case ARC:
+                coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(3)));
+                break;
+        }
         return coordForm;
     }
 
