@@ -4,10 +4,9 @@ import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.PeasantMission;
 import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
-
-
 
 public class MissionPeasantStrat extends Strategie{
 
@@ -24,11 +23,9 @@ public class MissionPeasantStrat extends Strategie{
     public void stratOneTurn(){
         if (isJudiciousDrawMission()) {
             bot.drawMission(MissionType.PEASANT);
-            bot.playerInteraction.getInventoryPeasantMissions().forEach(mission -> System.out.print(mission + "     "));
-            System.out.println();
         }
         else if (isJudiciousMovePeasant()) {
-            //bot.movePeasant(strategyMovePeasant());
+            bot.movePeasant(strategyMovePeasant());
         }
 
     }
@@ -55,9 +52,11 @@ public class MissionPeasantStrat extends Strategie{
      */
     public Coordinate strategyMovePeasant() {
         for(PeasantMission mission : bot.playerInteraction.getInventoryPeasantMissions()) {
-            for (Coordinate coordinate : possibleCoordinatesPeasant()) {
-                if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColor())) {
-                    return coordinate;
+            if (!mission.getImprovementType().equals(ImprovementType.WHATEVER)) {
+                for (Coordinate coordinate : possibleCoordinatesPeasant()) {
+                    if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColor())) {
+                        return coordinate;
+                    }
                 }
             }
         }

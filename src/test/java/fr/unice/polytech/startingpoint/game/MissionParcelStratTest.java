@@ -220,13 +220,13 @@ class MissionParcelStratTest {
         assertEquals(2, board.getPlacedParcels().size());
     }
 
-    @Test
+   /* @Test
     void putParcel_1MissionBlueTriangle() {
         game.getGameInteraction().getPlayerData().getInventory().addMission(missionBlueTriangle);
         assertEquals(1, board.getPlacedParcels().size());
         stratMissionParcel.putParcel();
         assertEquals(2, board.getPlacedParcels().size());
-    }
+    }*/
 ///////////////////////////////
 
     @Test
@@ -317,11 +317,11 @@ class MissionParcelStratTest {
 ///////////////////////////////
 
     @Test
-    void botDrawMissionAndPutParcel() {
+    void DrawMissionAndPutParcel() {
         assertEquals(0, game.getGameInteraction().getInventoryMissions().size());
         assertEquals(1, board.getPlacedParcels().size());
-        parcelBot.botPlay();
+        stratMissionParcel.stratOneTurn();
         assertEquals(1, game.getGameInteraction().getInventoryMissions().size());
-        assertEquals(2, board.getPlacedParcels().size());
+        assertEquals(1, board.getPlacedParcels().size());
     }
 }
