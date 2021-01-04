@@ -49,5 +49,10 @@ public final class PeasantMission extends Mission {
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        return "PeasantMission{color = " + colorType +
+                "   improvementType = " + improvementType +
+                '}';
+    }
 }
