@@ -5,6 +5,7 @@ import fr.unice.polytech.startingpoint.bot.PandaBot;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -66,7 +67,7 @@ class RushPandaStratTest {
         game.getPlayerData().addMission(new PandaMission(board,ColorType.ALL_COLOR,1));
 
         bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        game.getPlayerData().resetTemporaryInventory();
+        game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
         assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
     }
 
@@ -76,7 +77,7 @@ class RushPandaStratTest {
         board.placeParcel(parcel2,coordinate2);//place la parcel (un bamboo pousse)
         game.getPlayerData().addMission(new PandaMission(board,ColorType.GREEN,1));
         bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        game.getPlayerData().resetTemporaryInventory();
+        game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
         bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
         assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus*/
     }

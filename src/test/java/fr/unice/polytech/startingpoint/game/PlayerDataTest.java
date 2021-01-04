@@ -1,10 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
-import fr.unice.polytech.startingpoint.type.ActionType;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.FormType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -47,7 +44,7 @@ public class PlayerDataTest {
         playerData.saveParcel(new Parcel());
         assertNotNull(playerData.getParcel());
 
-        playerData.resetTemporaryInventory();
+        playerData.resetTemporaryInventory(WeatherType.NO_WEATHER);
 
         assertNull(playerData.getParcel());
         assertEquals(0,playerData.getParcelsSaved().size());
@@ -89,4 +86,12 @@ public class PlayerDataTest {
         assertEquals(3,playerData.getScore());
         assertEquals(1,playerData.getMissionsDone());
     }
+
+    @Test
+    void windRolledSo2SameAction(){
+        Game game=new Game(new BotType[]{BotType.PANDA_BOT} );
+        game.getPlayerData().botPlay(WeatherType.WIND);
+        assertEquals(2, game.getPlayerData().getPandaMissions().size());//le panda va piocher 2 fois la mission panda
+    }
+
 }

@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.game.WeatherDice;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -41,6 +42,12 @@ class WeatherDiceTest {
         weatherDice=new WeatherDice(goodNumber);
         assertEquals(WeatherType.SUN,weatherDice.roll());
     }
+
+    @Test void impossibleToRollNoWeather(){
+        weatherDice=new WeatherDice(new Random());
+        assertNotEquals(WeatherType.NO_WEATHER,weatherDice.roll());
+    }
+
 
 
 
