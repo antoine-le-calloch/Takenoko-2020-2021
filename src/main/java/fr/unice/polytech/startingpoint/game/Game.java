@@ -109,6 +109,7 @@ class Game{
             getPlayerData().botPlay(WeatherType.NO_WEATHER);
         else
             getPlayerData().botPlay(weatherDiceRoll());
+        getPlayerData().checkMissions(board.getPlacedParcels());
     }
 
     /**Set the next bot to play.
@@ -124,7 +125,10 @@ class Game{
             if (missionDoneBy1P >= NB_MISSION)
                 return false;
         }
-        return !resource.isEmpty();
+        if(resource.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     Board getBoard() {

@@ -243,7 +243,7 @@ class GameInteractionTest {
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
         gameInteraction.drawCanal();
-        game.getPlayerData().resetTemporaryInventory();
+        game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
         assertThrows(BadCoordinateException.class, () -> gameInteraction.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));
         gameInteraction.placeCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0));
         assertThrows(RulesViolationException.class, () -> gameInteraction.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));

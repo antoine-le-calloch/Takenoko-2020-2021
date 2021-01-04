@@ -27,7 +27,6 @@ public class MissionPeasantStrat extends Strategie{
         else if (isJudiciousMovePeasant()) {
             bot.movePeasant(strategyMovePeasant());
         }
-
     }
 
     /**

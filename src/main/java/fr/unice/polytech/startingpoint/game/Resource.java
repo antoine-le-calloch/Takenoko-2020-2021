@@ -50,7 +50,7 @@ class Resource {
             deckParcel.add(new Parcel(ColorType.YELLOW, ImprovementType.NOTHING));
         }
         for (int i = 0; i<4; i++)
-            deckParcel.add(new Parcel(ColorType.GREEN, ImprovementType.NOTHING));
+            deckParcel.add(new Parcel(ColorType.RED, ImprovementType.NOTHING));
 
         for (int i = 0; i<2; i++) {
             deckParcel.add(new Parcel(ColorType.GREEN, ImprovementType.WATERSHED));
@@ -202,8 +202,8 @@ class Resource {
     /**@return <b>True, if the resources are considers empty.</b>
      */
     boolean isEmpty(){
-        return ( (deckCanal.isEmpty() || deckParcel.isEmpty()) ||
-                (deckParcelMission.isEmpty() && deckPandaMission.isEmpty() && deckPeasantMission.isEmpty()) );
+        return (((deckCanal.isEmpty() || (deckParcel.isEmpty())) &&
+                deckParcelMission.isEmpty() && deckPandaMission.isEmpty() && deckPeasantMission.isEmpty()));
     }
 
     /**@return <b>The list of {@link ParcelMission}.</b>
