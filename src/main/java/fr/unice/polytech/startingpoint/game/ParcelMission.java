@@ -80,15 +80,15 @@ public final class ParcelMission extends Mission {
 
     boolean checkTwoColorsForm(List<Coordinate> coordinateList1, List<Coordinate> coordinateList2) {
         for (Coordinate coordinate : board.getPlacedParcels().keySet())
-            if (checkBasicForm(colorType,Coordinate.sumCoordinateToAList(coordinate,coordinateList1)))
-                if (checkBasicForm(colorTypeTwoColorMission,Coordinate.sumCoordinateToAList(coordinate,coordinateList2)))
+            if (checkBasicForm(colorType,Coordinate.coordinatesOfOffsets(coordinate,coordinateList1)))
+                if (checkBasicForm(colorTypeTwoColorMission,Coordinate.coordinatesOfOffsets(coordinate,coordinateList2)))
                     return true;
         return false;
     }
 
     boolean checkOneColorForm(List<Coordinate> coordinateList) {
         for (Coordinate coordinate : board.getPlacedParcels().keySet())
-            if (checkBasicForm(colorType,Coordinate.sumCoordinateToAList(coordinate,coordinateList)))
+            if (checkBasicForm(colorType,Coordinate.coordinatesOfOffsets(coordinate,coordinateList)))
                 return true;
         return false;
     }
@@ -96,8 +96,8 @@ public final class ParcelMission extends Mission {
     boolean checkBasicForm(ColorType colorType, List<Coordinate> coordinateList){
         int correctParcels = 0;
         for (Coordinate coordinate : coordinateList)
-            if (board.isPlacedAndIrrigatedParcel(new Coordinate(coordinate)))
-                if (board.getPlacedParcels().get(new Coordinate(coordinate)).getColor().equals(colorType))
+            if (board.isPlacedAndIrrigatedParcel(coordinate))
+                if (board.getPlacedParcels().get(coordinate).getColor().equals(colorType))
                     correctParcels++;
         return correctParcels == coordinateList.size();
     }

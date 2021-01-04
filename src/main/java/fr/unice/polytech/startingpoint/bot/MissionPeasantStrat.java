@@ -7,8 +7,6 @@ import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
-
-
 public class MissionPeasantStrat extends Strategie{
 
     /**@param bot
