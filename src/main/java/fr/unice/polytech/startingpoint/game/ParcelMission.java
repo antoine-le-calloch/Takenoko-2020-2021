@@ -45,9 +45,13 @@ public final class ParcelMission extends Mission {
     boolean checkMission(Inventory inventory) {
         switch (formType) {
             case TRIANGLE:
-                return checkFormIrrigateWithColor(new Coordinate(1, 0, -1), new Coordinate(1, -1, 0));
+                return checkFormOneColor(new Coordinate(1, 0, -1), new Coordinate(1, -1, 0));
             case LINE:
-                return checkFormIrrigateWithColor(new Coordinate(0, -1, 1), new Coordinate(0, 1, -1));
+                return checkFormOneColor(new Coordinate(0, -1, 1), new Coordinate(0, 1, -1));
+            case DIAMOND:
+                return checkFormOneColor(new Coordinate(0, -1, 1), new Coordinate(1, -1, 0), new Coordinate(1, 0, -1));
+            case ARC:
+                return checkFormOneColor(new Coordinate(1, 0, -1), new Coordinate(0, -1, 1));
             default:
                 return false;
         }
@@ -64,15 +68,21 @@ public final class ParcelMission extends Mission {
      *      *            to check is the there is a parcel irrigated and with a good color on the board.</b>
      * @return <b>true if the form is on the board</b>
      */
-    boolean checkFormIrrigateWithColor(Coordinate coordinate1, Coordinate coordinate2) {
+    boolean checkFormOneColor(Coordinate ... coordinates) {
         for (Coordinate coordinate : board.getPlacedParcels().keySet()) {
-            if (board.isPlacedAndIrrigatedParcel(coordinate) &&
-                    board.isPlacedAndIrrigatedParcel(new Coordinate(coordinate, coordinate1)) &&
-                    board.isPlacedAndIrrigatedParcel(new Coordinate(coordinate, coordinate2))) {
-                if (board.getPlacedParcels().get(coordinate).getColor().equals(colorType) &&
-                        board.getPlacedParcels().get(new Coordinate(coordinate, coordinate1)).getColor().equals(colorType) &&
-                        board.getPlacedParcels().get(new Coordinate(coordinate, coordinate2)).getColor().equals(colorType) )
-                    return true;
+            if ( board.isPlacedAndIrrigatedParcel(coordinate) ){
+                if ( board.getPlacedParcels().get(coordinate).getColor().equals(colorType) ){
+                    int correctParcels = 0;
+                    for (Coordinate c : coordinates) {
+                        if ( board.isPlacedAndIrrigatedParcel(new Coordinate(coordinate,c)) ){
+                            if ( board.getPlacedParcels().get(new Coordinate(coordinate,c)).getColor().equals(colorType) ){
+                                correctParcels ++;
+                            }
+                        }
+                    }
+                    if (correctParcels == coordinates.length)
+                        return true;
+                }
             }
         }
         return false;

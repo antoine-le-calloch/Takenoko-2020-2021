@@ -31,10 +31,8 @@ class Board {
     //Place une parcelle sur le board si les conditions le permettent
     void placeParcel(Parcel newParcel, Coordinate newCoordinate){
         placedParcels.put(newCoordinate, newParcel);
-        for (Coordinate coordinate : newCoordinate.coordinatesAround()) {
-            if (coordinate.isCentral())
-                newParcel.setIrrigated();
-        }
+        if (newCoordinate.isNextTo(new Coordinate()))
+            newParcel.setIrrigated();
     }
 
     //Place un canal sur le board si les conditions le permettent
