@@ -82,7 +82,7 @@ public class ResourceTest {
         for (int i = 0; i < 27; i++) {
             resource.drawCanal();
         }
-        assertTrue(resource.isEmpty());
+        assertFalse(resource.isEmpty());
         assertThrows(OutOfResourcesException.class, () -> resource.drawCanal());
     }
 
@@ -91,7 +91,7 @@ public class ResourceTest {
         for (int i = 0; i < 27; i++) {
             resource.selectParcel(resource.drawParcels().get(0));
         }
-        assertTrue(resource.isEmpty());
+        assertFalse(resource.isEmpty());
         assertThrows(OutOfResourcesException.class, () -> resource.drawParcels());
     }
 
@@ -102,9 +102,47 @@ public class ResourceTest {
             resource.drawMission(MissionType.PARCEL);
             resource.drawMission(MissionType.PEASANT);
         }
+        assertFalse(resource.isEmpty());
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PANDA));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PEASANT));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PARCEL));
+    }
+
+    @Test
+    void outOfMissionsAndParcel() throws OutOfResourcesException {
+        for (int i = 0; i < 15; i++) {
+            resource.drawMission(MissionType.PANDA);
+            resource.drawMission(MissionType.PARCEL);
+            resource.drawMission(MissionType.PEASANT);
+        }
+
+        for (int i = 0; i < 27; i++) {
+            resource.selectParcel(resource.drawParcels().get(0));
+        }
+
         assertTrue(resource.isEmpty());
         assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PANDA));
         assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PEASANT));
         assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PARCEL));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawParcels());
+    }
+
+    @Test
+    void outOfMissionsAndCanal() throws OutOfResourcesException {
+        for (int i = 0; i < 15; i++) {
+            resource.drawMission(MissionType.PANDA);
+            resource.drawMission(MissionType.PARCEL);
+            resource.drawMission(MissionType.PEASANT);
+        }
+
+        for (int i = 0; i < 27; i++) {
+            resource.drawCanal();
+        }
+
+        assertTrue(resource.isEmpty());
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PANDA));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PEASANT));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawMission(MissionType.PARCEL));
+        assertThrows(OutOfResourcesException.class, () -> resource.drawCanal());
     }
 }

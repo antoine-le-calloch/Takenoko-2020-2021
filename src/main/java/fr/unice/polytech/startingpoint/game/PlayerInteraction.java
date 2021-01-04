@@ -103,10 +103,12 @@ public final class PlayerInteraction {
     }
 
     public void moveCharacter(CharacterType characterType, Coordinate coordinate){
+        ColorType ColorBambooEat;
         if (getPlayerData().add(ActionType.get(characterType))) {
             if (game.getRules().isMovableCharacter(characterType, coordinate)) {
                 getPlayerData().looseStamina();
-                getPlayerData().addBamboo(game.getBoard().moveCharacter(characterType, coordinate));
+                if((ColorBambooEat = game.getBoard().moveCharacter(characterType, coordinate)) != null)
+                    getPlayerData().addBamboo(ColorBambooEat);
             }
             else{
                 getPlayerData().remove(ActionType.get(characterType));

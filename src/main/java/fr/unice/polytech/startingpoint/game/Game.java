@@ -98,7 +98,10 @@ class Game{
             if (missionDoneBy1P >= NB_MISSION)
                 return false;
         }
-        return !resource.isEmpty();
+        if(resource.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     Board getBoard() {

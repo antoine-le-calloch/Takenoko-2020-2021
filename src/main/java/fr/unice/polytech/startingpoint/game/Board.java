@@ -50,13 +50,11 @@ class Board {
 
     //Effectue l’action du personnage passé en paramètre
     private ColorType characterAction(CharacterType characterType){
-        switch (characterType){
-            case PANDA:
+        if(characterType == CharacterType.PANDA)
                 return actionPanda();
-            case PEASANT:
-                actionPeasant();
-        }
-        return ColorType.NO_COLOR;
+
+        actionPeasant();
+        return null;
     }
 
     //supprime un bambou sur la case
@@ -65,15 +63,17 @@ class Board {
     }
 
     //ajoute un bambou sur la case si irrigué + autour si même couleur et irrigué
-    private void actionPeasant(){
+    private void actionPeasant() {
         ColorType color = placedParcels.get(peasant.getCoordinate()).getColor();
         if (placedParcels.get(peasant.getCoordinate()).getIrrigated())
             placedParcels.get(peasant.getCoordinate()).addBamboo();
-        for( Coordinate coordinate : peasant.getCoordinate().coordinatesAround())
+        for( Coordinate coordinate : peasant.getCoordinate().coordinatesAround()){
             if (placedParcels.containsKey(coordinate)) {
                 if (color == placedParcels.get(coordinate).getColor() && placedParcels.get(coordinate).getIrrigated())
                     placedParcels.get(coordinate).addBamboo();
             }
+
+        }
     }
 
     //Renvoie true si une parcelle est posées aux coordonnées passées en paramètre

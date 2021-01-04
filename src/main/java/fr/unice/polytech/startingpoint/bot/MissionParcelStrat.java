@@ -25,10 +25,10 @@ public class MissionParcelStrat extends Strategie{
     public void stratOneTurn(){
         if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PARCEL);
-        else if(isJudiciousPutParcel())
-            putParcel();
         else if (isJudiciousPutCanal())
             putCanal();
+        else if(isJudiciousPutParcel())
+            putParcel();
     }
 
     /**
@@ -44,12 +44,6 @@ public class MissionParcelStrat extends Strategie{
      * @see PlayerInteraction
      */
     public boolean isJudiciousPutParcel(){
-        if(bot.playerInteraction.getActionTypeList().size() != 0) {
-            for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
-                if (bestCoordinatesForMission(mission).size() == 0)
-                    return false;
-            }
-        }
         return bot.playerInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && !bot.playerInteraction.contains(ActionType.DRAW_PARCELS);
     }
 
@@ -58,7 +52,13 @@ public class MissionParcelStrat extends Strategie{
      * @see PlayerInteraction
      */
     public boolean isJudiciousPutCanal(){
-        return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.playerInteraction.contains(ActionType.DRAW_CANAL);
+        if(bot.playerInteraction.getStamina() < 2) {
+            for (ParcelMission mission : bot.playerInteraction.getInventoryParcelMissions()) {
+                if (bestCoordinatesForMission(mission).size() == 0)
+                    return bot.playerInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.playerInteraction.contains(ActionType.DRAW_CANAL);
+            }
+        }
+        return false;
     }
 
     /**

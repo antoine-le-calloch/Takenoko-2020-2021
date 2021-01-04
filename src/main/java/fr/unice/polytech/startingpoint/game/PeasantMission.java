@@ -42,7 +42,7 @@ public final class PeasantMission extends Mission {
      */
     boolean checkMission(Inventory inventory) {
         if(improvementType.equals(ImprovementType.WHATEVER))
-            return false;//checkMissionSpecial();
+            return checkMissionSpecial();
         else
             return checkMissionClassic();
     }
