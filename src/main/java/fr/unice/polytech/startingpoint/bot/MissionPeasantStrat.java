@@ -10,17 +10,20 @@ import fr.unice.polytech.startingpoint.type.ResourceType;
 
 public class MissionPeasantStrat extends Strategie{
 
-    /**@param bot
+    /**
+     * @param bot
      */
     public MissionPeasantStrat(Bot bot) {
         super(bot);
     }
 
-    /**<p>The actions of the bot during his turn.</p>
+    /**
+     * <p>The actions of the bot during his turn.</p>
      */
     public void stratOneTurn(){
-        if (isJudiciousDrawMission())
+        if (isJudiciousDrawMission()) {
             bot.drawMission(MissionType.PEASANT);
+        }
         else if (isJudiciousMovePeasant()) {
             bot.movePeasant(strategyMovePeasant());
         }

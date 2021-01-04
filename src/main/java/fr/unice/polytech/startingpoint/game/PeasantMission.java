@@ -37,7 +37,8 @@ public final class PeasantMission extends Mission {
         this.improvementType=improvementType;
     }
 
-    /**<p>check peasant if a mission is done</p>
+    /**
+     * <p>check if a peasant mission is done</p>
      */
     boolean checkMission(Inventory inventory) {
         if(improvementType.equals(ImprovementType.WHATEVER))
@@ -82,5 +83,4 @@ public final class PeasantMission extends Mission {
     public ImprovementType getImprovementType(){
         return improvementType;
     }
-
 }
