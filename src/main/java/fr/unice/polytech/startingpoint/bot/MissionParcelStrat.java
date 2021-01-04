@@ -68,7 +68,6 @@ public class MissionParcelStrat extends Strategie{
      * @see FormType
      * @see ColorType
      */
-    //Pose une cases a la meilleur place pour la terminer, ou pose sur une place random
     public void putParcel() {
         try {
             List<ParcelInformation> parcelInformationList = bot.gameInteraction.drawParcels();
@@ -91,7 +90,6 @@ public class MissionParcelStrat extends Strategie{
                         bot.placeParcel(coordinate);
                         break;
                     }
-
                 }
             }
             else {
@@ -222,7 +220,7 @@ public class MissionParcelStrat extends Strategie{
                 coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(4)));
                 coordForm.add(new Coordinate(coordForm.get(2),Coordinate.offSets().get(2)));
                 break;
-            case ARC:
+            default:
                 coordForm.add(new Coordinate(coordForm.get(1),Coordinate.offSets().get(3)));
                 break;
         }

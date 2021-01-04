@@ -39,9 +39,6 @@ public final class PeasantMission{
         this.points = points;
     }
 
-    /**<p>check peasant if a mission is done</p>
-     * @param parcelList
-     */
     public boolean checkMission(List<Parcel> parcelList) {
         if(improvementType.equals(ImprovementType.WHATEVER))
             return checkMissionSpecial(parcelList);

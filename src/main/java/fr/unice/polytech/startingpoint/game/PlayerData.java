@@ -6,6 +6,7 @@ import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,8 @@ public final class PlayerData {
         missionsDone = 0;
     }
 
-    void botPlay() {
-        resetTemporaryInventory();
+    void botPlay(WeatherType weatherType) {
+        resetTemporaryInventory(weatherType);
         bot.botPlay();
         hasPlayedCorrectly();
     }
@@ -99,8 +100,8 @@ public final class PlayerData {
         temporaryInventory.hasPlayedCorrectly();
     }
 
-    void resetTemporaryInventory() {
-        temporaryInventory.reset();
+    void resetTemporaryInventory(WeatherType weatherType) {
+        temporaryInventory.reset(weatherType);
     }
 
     void addCanal(Canal canal) {
