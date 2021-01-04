@@ -28,4 +28,12 @@ public enum ImprovementType {
             return "Nothing";
         }
     }
+    ,
+    WHATEVER {
+        @Override
+        public String toString() {
+            return "Whatever";
+        }
+
+    }
 }

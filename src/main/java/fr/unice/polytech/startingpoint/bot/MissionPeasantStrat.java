@@ -4,6 +4,7 @@ import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.PeasantMission;
 import fr.unice.polytech.startingpoint.game.PlayerInteraction;
 import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
@@ -48,9 +49,11 @@ public class MissionPeasantStrat extends Strategie{
      */
     public Coordinate strategyMovePeasant() {
         for(PeasantMission mission : bot.playerInteraction.getInventoryPeasantMissions()) {
-            for (Coordinate coordinate : possibleCoordinatesPeasant()) {
-                if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColor())) {
-                    return coordinate;
+            if (!mission.getImprovementType().equals(ImprovementType.WHATEVER)) {
+                for (Coordinate coordinate : possibleCoordinatesPeasant()) {
+                    if (bot.playerInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColor())) {
+                        return coordinate;
+                    }
                 }
             }
         }

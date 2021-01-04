@@ -40,14 +40,47 @@ public final class PeasantMission extends Mission {
     /**<p>check peasant if a mission is done</p>
      */
     boolean checkMission(Inventory inventory) {
+        if(improvementType.equals(ImprovementType.WHATEVER))
+            return checkMissionSpecial();
+        else
+            return checkMissionClassic();
+    }
+
+
+    boolean checkMissionClassic() {
+        int NB_BAMBOO = 4;
         for (Parcel parcel : board.getPlacedParcels().values()) {
-            int NB_BAMBOO = 2;
             if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType && parcel.getImprovement().equals(improvementType)){
-                    return true;
+                return true;
             }
         }
         return false;
     }
 
+    boolean checkMissionFewParcel(int nbParcel) {
+        int NB_BAMBOO = 3;
+        int cpt = 0;
+        for (Parcel parcel : board.getPlacedParcels().values()) {
+            if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType)
+                cpt++;
+        }
+        return cpt >= nbParcel;
+    }
+
+    boolean checkMissionSpecial(){
+        switch(colorType){
+            case GREEN:
+                return checkMissionFewParcel(4);
+            case YELLOW:
+                return checkMissionFewParcel(3);
+            case RED:
+                return checkMissionFewParcel(2);
+            default: return false;
+        }
+    }
+
+    public ImprovementType getImprovementType(){
+        return improvementType;
+    }
 
 }
