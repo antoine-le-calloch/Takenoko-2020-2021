@@ -10,8 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 class WeatherDiceTest {
-
-
     WeatherDice weatherDice;
 
     @Test
@@ -46,8 +44,4 @@ class WeatherDiceTest {
         weatherDice=new WeatherDice(new Random());
         assertNotEquals(WeatherType.NO_WEATHER,weatherDice.roll());
     }
-
-
-
-
 }

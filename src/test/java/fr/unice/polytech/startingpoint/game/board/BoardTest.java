@@ -7,15 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Tests unitaires
- * @author Manuel Enzo
- * @author Naud Eric
- * @author Madern Loic
- * @author Le Calloch Antoine
- * @version 2020.12.03
- */
-
 class BoardTest {
     private Board board;
 
@@ -63,9 +54,8 @@ class BoardTest {
     @Test
     void maxGrow() {
         board.placeParcel(new Parcel(), new Coordinate(1, -1, 0));
-        for (int i = 0; i < 10; i++) {
-            board.moveCharacter(CharacterType.PEASANT,new Coordinate(1,-1,0));
-            board.moveCharacter(CharacterType.PEASANT,new Coordinate());
+        for (int i = 0; i < 5; i++) {
+            board.getPlacedParcels().get(new Coordinate(1,-1,0)).addBamboo();
         }
         assertEquals(4,board.getPlacedParcels().get(new Coordinate(1,-1,0)).getNbBamboo());
     }

@@ -14,36 +14,26 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Tests unitaires
- * @author Manuel Enzo
- * @author Naud Eric
- * @author Madern Loic
- * @author Le Calloch Antoine
- * @version 2020.12.03
- */
-
 public class PeasantMissionTest {
     Game game;
     Board board;
     PeasantMission missionRed;
     PeasantMission missionBlue;
-    PeasantMission missionFertiziler;
+    PeasantMission missionFertilizer;
 
-    
     @BeforeEach
     void setUp(){
         game = new Game();
         board = game.getBoard();
         missionRed = new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 2);
         missionBlue = new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 2);
-        missionFertiziler = new PeasantMission(ColorType.GREEN, ImprovementType.FERTILIZER, 2);
+        missionFertilizer = new PeasantMission(ColorType.GREEN, ImprovementType.FERTILIZER, 2);
     }
 
     @Test
     void missionPoints(){
-        assertEquals(missionRed.getPoints(),missionFertiziler.getPoints());
-        assertEquals(missionBlue.getPoints(),missionFertiziler.getPoints());
+        assertEquals(missionRed.getPoints(), missionFertilizer.getPoints());
+        assertEquals(missionBlue.getPoints(), missionFertilizer.getPoints());
     }
 
     @Test

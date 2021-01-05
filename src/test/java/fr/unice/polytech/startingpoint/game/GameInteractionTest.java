@@ -17,16 +17,6 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-/**
- * Tests unitaires
- * @author Manuel Enzo
- * @author Naud Eric
- * @author Madern Loic
- * @author Le Calloch Antoine
- * @version 2020.12.03
- */
-
 class GameInteractionTest {
     Game game;
     GameInteraction gameInteraction;

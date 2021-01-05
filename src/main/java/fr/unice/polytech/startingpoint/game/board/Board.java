@@ -17,7 +17,6 @@ import java.util.SortedSet;
  * @version 2020.12.03
  */
 
-
 public class Board {
     private final Character panda = new Character(CharacterType.PANDA);
     private final Character peasant = new Character(CharacterType.PEASANT);

@@ -57,17 +57,17 @@ public final class Coordinate implements Comparable<Coordinate> {
         return c;
     }
 
-    //Renvoie un clone des coordonnées sous forme d'une liste d'entiers
-    public int[] getCoordinate() {
-        return coordinate.clone();
-    }
-
     //Renvoie une liste des coordonnées autour de la coordonnée actuelle
     public List<Coordinate> coordinatesAround() {
         ArrayList<Coordinate> coordinatesAround = new ArrayList<>();
         for (Coordinate offSet : offSets())
             coordinatesAround.add(new Coordinate(this,offSet));
         return coordinatesAround;
+    }
+
+    //Renvoie un clone des coordonnées sous forme d'une liste d'entiers
+    public int[] getCoordinate() {
+        return coordinate.clone();
     }
 
     //Renvoie les coordonnées entre deux coordonnées si elles sont sur la même ligne
@@ -146,7 +146,7 @@ public final class Coordinate implements Comparable<Coordinate> {
 
     @Override
     public int compareTo(Coordinate c){
-        return  Arrays.compare(this.coordinate,c.coordinate);
+        return Arrays.compare(this.coordinate,c.coordinate);
     }
 
     //Renvoie true si les deux coordonnées sont identiques

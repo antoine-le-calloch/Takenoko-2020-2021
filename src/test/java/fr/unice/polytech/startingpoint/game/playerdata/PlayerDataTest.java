@@ -95,7 +95,7 @@ public class PlayerDataTest {
     void windRolledSo2SameAction(){
         Game game=new Game(new BotType[]{BotType.PANDA_BOT} );
         game.getPlayerData().botPlay(WeatherType.WIND);
-        assertEquals(2, game.getPlayerData().getPandaMissions().size());//le panda va piocher 2 fois la mission panda
+        assertEquals(2, game.getPlayerData().getPandaMissions().size());
     }
 
 }

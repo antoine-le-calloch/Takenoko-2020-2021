@@ -37,8 +37,6 @@ class StrategieTest {
         strategie = new RandomStrat(bot1);
     }
 
-
-
     @Test
     void initializeNextCoordinatesNextToCentral(){
         List<Coordinate> nextTocentral = strategie.possibleCoordinatesParcel();
@@ -63,7 +61,6 @@ class StrategieTest {
         assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomCo)>=0);
         assertEquals(0,sumco);
     }
-
 
     @Test
     void possibleCoordinatesParcelTest(){
@@ -117,8 +114,6 @@ class StrategieTest {
         assertEquals(new Coordinate(-1,0,1),newPlaces.get(5));
     }
 
-
-
     /** <h2><b>Test  posssibleCoordinatesNextToParcelsWithAColor </b></h2>
      */
 
@@ -145,7 +140,4 @@ class StrategieTest {
         assertTrue(allPossibleCoNextToRed.contains(expectedCo2));
         assertTrue(allPossibleCoNextToRed.contains(expectedCo3));
     }
-
-
-
 }

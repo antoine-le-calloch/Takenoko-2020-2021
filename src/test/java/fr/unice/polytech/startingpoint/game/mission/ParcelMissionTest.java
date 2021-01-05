@@ -1,30 +1,21 @@
 package fr.unice.polytech.startingpoint.game.mission;
 
-import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
-import fr.unice.polytech.startingpoint.game.playerdata.Inventory;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Tests unitaires
- * @author Manuel Enzo
- * @author Naud Eric
- * @author Madern Loic
- * @author Le Calloch Antoine
- * @version 2020.12.03
- */
-
 public class ParcelMissionTest {
-    Game game;
-    Board board;
-    Inventory inventory;
+    Board boardMock;
 
     Parcel parcel1;
     Parcel parcel2;
@@ -32,6 +23,9 @@ public class ParcelMissionTest {
     Parcel parcel4;
     Parcel parcel5;
     Parcel parcel6;
+    Parcel parcel7;
+
+    Map<Coordinate,Parcel> coordinateParcelMap;
 
     ParcelMission missionTR;
     ParcelMission missionLR;
@@ -46,16 +40,25 @@ public class ParcelMissionTest {
 
     @BeforeEach
     void setUp(){
-        game = new Game();
-        board = game.getBoard();
-        inventory = game.getPlayerData().getInventory();
+        boardMock = Mockito.mock(Board.class);
 
         parcel1 = new Parcel(ColorType.RED);
         parcel2 = new Parcel(ColorType.RED);
         parcel3 = new Parcel(ColorType.RED);
         parcel4 = new Parcel(ColorType.RED);
-        parcel5 = new Parcel(ColorType.GREEN);
+        parcel5 = new Parcel(ColorType.RED);
         parcel6 = new Parcel(ColorType.GREEN);
+        parcel7 = new Parcel(ColorType.GREEN);
+
+        coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(),new Parcel());
+        coordinateParcelMap.put(new Coordinate(1, 0, -1),parcel1);
+        coordinateParcelMap.put(new Coordinate(2, -1, -1),parcel2);
+        coordinateParcelMap.put(new Coordinate(1, -1, 0),parcel3);
+        coordinateParcelMap.put(new Coordinate(2, -2, 0),parcel4);
+        coordinateParcelMap.put(new Coordinate(1, -2, 1),parcel5);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
 
         missionTR = new ParcelMission(ColorType.RED, FormType.TRIANGLE, 1);
         missionLR = new ParcelMission(ColorType.RED, FormType.LINE, 2);
@@ -103,40 +106,37 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionTriangle(){
-        assertFalse(missionTR.checkMission(board.getPlacedParcels()));
+        assertFalse(missionTR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void triangleOnBoardGoodColor(){ //checkTriangle
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(0,-1,1));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertTrue(missionTR.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel4.setIrrigated();
+        assertTrue(missionTR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void triangleOnBoardBadColor() { //checkTriangle
-        board.placeParcel(parcel1, new Coordinate(1, -1, 0));
-        board.placeParcel(parcel2, new Coordinate(0, -1, 1));
-        board.placeParcel(parcel3, new Coordinate(1, -2, 1));
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionTG.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel4.setIrrigated();
+        assertFalse(missionTG.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void triangleNotIrrigated() { //checkTriangle
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(0,-1,1));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(missionTR.checkMission(board.getPlacedParcels()));
+        assertFalse(missionTR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void wrongTriangle() { //checkTriangle
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(0,-1,1));
-        assertFalse(missionTR.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel4.setIrrigated();
+        coordinateParcelMap.remove(new Coordinate(1,-1,0));
+        assertFalse(missionTR.checkMission(boardMock.getPlacedParcels()));
     }
 
     /**
@@ -145,42 +145,37 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionLine(){
-        assertFalse(missionLR.checkMission(board.getPlacedParcels()));
+        assertFalse(missionLR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void lineOnBoardGoodColor(){ //check Line
-        board.placeParcel(parcel1,new Coordinate(1,0,-1));
-        board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertTrue(missionLR.checkMission(board.getPlacedParcels()));
+        parcel1.setIrrigated();
+        parcel3.setIrrigated();
+        parcel5.setIrrigated();
+        assertTrue(missionLR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void lineOnBoardBadColor() { //check Line
-        board.placeParcel(parcel1,new Coordinate(1,0,-1));
-        board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionLG.checkMission(board.getPlacedParcels()));
+        parcel1.setIrrigated();
+        parcel3.setIrrigated();
+        parcel5.setIrrigated();
+        assertFalse(missionLG.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void lineNotIrrigated() { //checkLine
-        board.placeParcel(parcel1,new Coordinate(1,0,-1));
-        board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        assertFalse(missionLR.checkMission(board.getPlacedParcels()));
+        assertFalse(missionLR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void wrongLine() { //checkLine
-        board.placeParcel(parcel1, new Coordinate(0, -1, 1));
-        board.placeParcel(parcel2, new Coordinate(1, -1, 0));
-        board.placeParcel(parcel3, new Coordinate(2, -2, 0));
-        board.getPlacedParcels().get(new Coordinate(2,-2,0)).setIrrigated();
-        assertFalse(missionLR.checkMission(board.getPlacedParcels()));
+        parcel1.setIrrigated();
+        parcel3.setIrrigated();
+        parcel5.setIrrigated();
+        coordinateParcelMap.remove(new Coordinate(1,-1,0));
+        assertFalse(missionLR.checkMission(boardMock.getPlacedParcels()));
     }
 
     /**
@@ -189,51 +184,40 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionDiamond(){
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
+        assertFalse(missionDR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void diamondOnBoardGoodColor(){ //check Line
-        board.placeParcel(parcel1,new Coordinate(0,-1,1));
-        board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.placeParcel(parcel4,new Coordinate(0,-2,2));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertTrue(missionDR.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel4.setIrrigated();
+        parcel5.setIrrigated();
+        assertTrue(missionDR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void diamondOnBoardBadColor() { //check Line
-        board.placeParcel(parcel1,new Coordinate(0,-1,1));
-        board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.placeParcel(parcel4,new Coordinate(0,-2,2));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionDG.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel4.setIrrigated();
+        parcel5.setIrrigated();
+        assertFalse(missionDG.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void diamondNotIrrigated() { //checkLine
-        board.placeParcel(parcel1,new Coordinate(0,-1,1));
-        board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.placeParcel(parcel4,new Coordinate(0,-2,2));
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
+        assertFalse(missionDR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void wrongDiamond() { //checkLine
-        board.placeParcel(parcel1,new Coordinate(0,1,-1));
-        board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,-2,1));
-        board.placeParcel(parcel4,new Coordinate(0,-2,2));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel4.setIrrigated();
+        parcel5.setIrrigated();
+        coordinateParcelMap.remove(new Coordinate(1,-1,0));
+        assertFalse(missionDR.checkMission(boardMock.getPlacedParcels()));
     }
 
     /**
@@ -242,93 +226,86 @@ public class ParcelMissionTest {
 
     @Test
     void checkNoMissionArc(){
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
+        assertFalse(missionDR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void arcOnBoardGoodColor(){ //check Line
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(0,-1,1));
-        board.placeParcel(parcel3,new Coordinate(0,-2,2));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        assertTrue(missionAR.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel5.setIrrigated();
+        assertTrue(missionAR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void arcOnBoardBadColor() { //check Line
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(0,-1,1));
-        board.placeParcel(parcel3,new Coordinate(0,-2,2));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        assertFalse(missionAG.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel5.setIrrigated();
+        assertFalse(missionAG.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void arcNotIrrigated() { //checkLine
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(0,-1,1));
-        board.placeParcel(parcel3,new Coordinate(0,-2,2));
-        assertFalse(missionAR.checkMission(board.getPlacedParcels()));
+        assertFalse(missionAR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
     void wrongArc() { //checkLine
-        board.placeParcel(parcel1,new Coordinate(0,1,-1));
-        board.placeParcel(parcel2,new Coordinate(1,-1,0));
-        board.placeParcel(parcel3,new Coordinate(1,0,-1));
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
+        parcel2.setIrrigated();
+        parcel3.setIrrigated();
+        parcel5.setIrrigated();
+        coordinateParcelMap.remove(new Coordinate(1,-1,0));
+        assertFalse(missionDR.checkMission(boardMock.getPlacedParcels()));
     }
 
     /**
-     * <h1><u>CAS BICOLORE DIAMOND</u></h1>
+     * <h1><u>CAS BI COLOR DIAMOND</u></h1>
      */
 
     @Test
-    void checkNoMissionDiamondBicolor(){
-        assertFalse(missionDBR.checkMission(board.getPlacedParcels()));
+    void checkNoMissionDiamondBiColor(){
+        assertFalse(missionDBR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
-    void diamondBicolorOnBoardGoodColor(){ //check Line
-        board.placeParcel(parcel1,new Coordinate(0,-1,1));
-        board.placeParcel(parcel2,new Coordinate(0,-2,2));
-        board.placeParcel(parcel5,new Coordinate(1,-1,0));
-        board.placeParcel(parcel6,new Coordinate(1,-2,1));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertTrue(missionDBR.checkMission(board.getPlacedParcels()));
+    void diamondBiColorOnBoardGoodColor(){ //check Line
+        coordinateParcelMap.replace(new Coordinate(2,-1,-1),parcel2,parcel6);
+        coordinateParcelMap.replace(new Coordinate(2,-2,0),parcel4,parcel7);
+        parcel6.setIrrigated();
+        parcel3.setIrrigated();
+        parcel7.setIrrigated();
+        parcel5.setIrrigated();
+        assertTrue(missionDBR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
-    void diamondBicolorOnBoardBadColor() { //check Line
-        board.placeParcel(parcel1,new Coordinate(0,-1,1));
-        board.placeParcel(parcel2,new Coordinate(0,-2,2));
-        board.placeParcel(parcel5,new Coordinate(1,-1,0));
-        board.placeParcel(parcel6,new Coordinate(1,-2,1));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionDBG.checkMission(board.getPlacedParcels()));
+    void diamondBiColorOnBoardBadColor() { //check Line
+        coordinateParcelMap.replace(new Coordinate(2,-1,-1),parcel2,parcel6);
+        coordinateParcelMap.replace(new Coordinate(2,-2,0),parcel4,parcel7);
+        parcel6.setIrrigated();
+        parcel3.setIrrigated();
+        parcel7.setIrrigated();
+        parcel5.setIrrigated();
+        assertFalse(missionDBG.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
-    void diamondBicolorNotIrrigated() { //checkLine
-        board.placeParcel(parcel1,new Coordinate(0,-1,1));
-        board.placeParcel(parcel2,new Coordinate(0,-2,2));
-        board.placeParcel(parcel5,new Coordinate(1,-1,0));
-        board.placeParcel(parcel6,new Coordinate(1,-2,1));
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
-        board.getPlacedParcels().get(new Coordinate(0,-2,2)).setIrrigated();
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
+    void diamondBiColorNotIrrigated() { //checkLine
+        coordinateParcelMap.replace(new Coordinate(2,-1,-1),parcel2,parcel6);
+        coordinateParcelMap.replace(new Coordinate(2,-2,0),parcel4,parcel7);
+        assertFalse(missionDR.checkMission(boardMock.getPlacedParcels()));
     }
 
     @Test
-    void wrongDiamondBicolor() { //checkLine
-        board.placeParcel(parcel1,new Coordinate(0,-1,1));
-        board.placeParcel(parcel2,new Coordinate(0,-3,3));
-        board.placeParcel(parcel5,new Coordinate(1,-1,0));
-        board.placeParcel(parcel6,new Coordinate(1,-2,1));
-        board.getPlacedParcels().get(new Coordinate(0,-3,3)).setIrrigated();
-        board.getPlacedParcels().get(new Coordinate(1,-2,1)).setIrrigated();
-        assertFalse(missionDR.checkMission(board.getPlacedParcels()));
+    void wrongDiamondBiColor() { //checkLine
+        coordinateParcelMap.replace(new Coordinate(2,-1,-1),parcel2,parcel6);
+        coordinateParcelMap.replace(new Coordinate(2,-2,0),parcel4,parcel7);
+        parcel6.setIrrigated();
+        parcel3.setIrrigated();
+        parcel7.setIrrigated();
+        parcel5.setIrrigated();
+        coordinateParcelMap.remove(new Coordinate(1,-1,0));
+        assertFalse(missionDR.checkMission(boardMock.getPlacedParcels()));
     }
 }

@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.bot;
 
-
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
