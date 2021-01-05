@@ -31,9 +31,9 @@ class InventoryTest {
     @Test
     void addBambooInventory() {
         inventory.addBamboo(ColorType.GREEN);
-        assertEquals(0, inventory.getInventoryBamboo()[0]);
-        assertEquals(1, inventory.getInventoryBamboo()[1]);
-        assertEquals(0, inventory.getInventoryBamboo()[2]);
+        assertEquals(1, inventory.getInventoryBamboo()[ColorType.GREEN.ordinal()]);
+        assertEquals(0, inventory.getInventoryBamboo()[ColorType.YELLOW.ordinal()]);
+        assertEquals(0, inventory.getInventoryBamboo()[ColorType.RED.ordinal()]);
     }
 
     @Test
@@ -41,7 +41,7 @@ class InventoryTest {
         inventory.addBamboo(ColorType.GREEN);
         inventory.addBamboo(ColorType.GREEN);
         inventory.subTwoBamboos(ColorType.GREEN);
-        assertEquals(0, inventory.getInventoryBamboo()[1]);
+        assertEquals(0, inventory.getInventoryBamboo()[ColorType.GREEN.ordinal()]);
     }
 
     @Test
@@ -50,9 +50,9 @@ class InventoryTest {
         inventory.addBamboo(ColorType.YELLOW);
         inventory.addBamboo(ColorType.RED);
         inventory.subOneBambooPerColor();
-        assertEquals(0, inventory.getInventoryBamboo()[0]);
-        assertEquals(0, inventory.getInventoryBamboo()[1]);
-        assertEquals(0, inventory.getInventoryBamboo()[2]);
+        assertEquals(0, inventory.getInventoryBamboo()[ColorType.GREEN.ordinal()]);
+        assertEquals(0, inventory.getInventoryBamboo()[ColorType.YELLOW.ordinal()]);
+        assertEquals(0, inventory.getInventoryBamboo()[ColorType.RED.ordinal()]);
     }
 
     @Test
@@ -60,16 +60,15 @@ class InventoryTest {
         inventory.addBamboo(ColorType.GREEN);
         inventory.addBamboo(ColorType.YELLOW);
         inventory.subOneBambooPerColor();
-        assertEquals(0, inventory.getInventoryBamboo()[0]);
-        assertEquals(1, inventory.getInventoryBamboo()[1]);
-        assertEquals(1, inventory.getInventoryBamboo()[2]);
+        assertEquals(1, inventory.getInventoryBamboo()[ColorType.GREEN.ordinal()]);
+        assertEquals(1, inventory.getInventoryBamboo()[ColorType.YELLOW.ordinal()]);
+        assertEquals(0, inventory.getInventoryBamboo()[ColorType.RED.ordinal()]);
     }
 
     @Test
     void deleteTwoBambooInventoryNotEnoughBamboo() {
         inventory.addBamboo(ColorType.GREEN);
         inventory.subTwoBamboos(ColorType.GREEN);
-        assertEquals(0, inventory.getInventoryBamboo()[0]);
-        assertEquals(1, inventory.getInventoryBamboo()[1]);
+        assertEquals(1, inventory.getInventoryBamboo()[ColorType.GREEN.ordinal()]);
     }
 }

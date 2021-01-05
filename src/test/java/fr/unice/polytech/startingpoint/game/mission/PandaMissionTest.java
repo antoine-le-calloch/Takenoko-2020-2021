@@ -1,28 +1,23 @@
 package fr.unice.polytech.startingpoint.game.mission;
 
-import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.playerdata.Inventory;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class PandaMissionTest {
-    Board board;
-
-    Inventory inventory;
-
+    Inventory inventoryMock;
     PandaMission mission1;
     PandaMission mission2;
     PandaMission mission3;
 
     @BeforeEach
     void setUp(){
-        board = new Board();
-
-        inventory = new Inventory();
-
+        inventoryMock = mock(Inventory.class);
         mission1 = new PandaMission(ColorType.RED, 2);
         mission2 = new PandaMission(ColorType.RED, 3);
         mission3 = new PandaMission(ColorType.ALL_COLOR, 3);
@@ -37,36 +32,37 @@ public class PandaMissionTest {
 
     @Test
     void missionCompleteOneColor(){
-        inventory.addBamboo(ColorType.RED);
-        inventory.addBamboo(ColorType.RED);
-        assertTrue(mission1.checkMission(inventory));
+        Mockito.when(inventoryMock.getInventoryBamboo(ColorType.RED)).thenReturn(2);
+        assertTrue(mission1.checkMission(inventoryMock));
+    }
+
+    @Test
+    void missionCompleteOneColorEvenWhenMoreThanTwoBamboos(){
+        Mockito.when(inventoryMock.getInventoryBamboo(ColorType.RED)).thenReturn(3);
+        assertTrue(mission1.checkMission(inventoryMock));
     }
 
     @Test
     void missionCompleteAllColor(){
-        inventory.addBamboo(ColorType.YELLOW);
-        inventory.addBamboo(ColorType.GREEN);
-        inventory.addBamboo(ColorType.RED);
-        assertTrue(mission3.checkMission(inventory));
+        Mockito.when(inventoryMock.getInventoryBamboo()).thenReturn(new int[]{1,1,1});
+        assertTrue(mission3.checkMission(inventoryMock));
     }
 
     @Test
     void missionIncompleteBadColor(){
-        inventory.addBamboo(ColorType.GREEN);
-        inventory.addBamboo(ColorType.GREEN);
-        assertFalse(mission1.checkMission(inventory));
+        Mockito.when(inventoryMock.getInventoryBamboo(ColorType.GREEN)).thenReturn(2);
+        assertFalse(mission1.checkMission(inventoryMock));
     }
 
     @Test
     void missionIncompleteNotAllColor(){
-        inventory.addBamboo(ColorType.YELLOW);
-        inventory.addBamboo(ColorType.GREEN);
-        assertFalse(mission3.checkMission(inventory));
+        Mockito.when(inventoryMock.getInventoryBamboo()).thenReturn(new int[]{1,1,0});
+        assertFalse(mission3.checkMission(inventoryMock));
     }
 
     @Test
     void missionIncompleteNoEnoughBamboo(){
-        inventory.addBamboo(ColorType.RED);
-        assertFalse(mission1.checkMission(inventory));
+        Mockito.when(inventoryMock.getInventoryBamboo(ColorType.RED)).thenReturn(1);
+        assertFalse(mission1.checkMission(inventoryMock));
     }
 }
