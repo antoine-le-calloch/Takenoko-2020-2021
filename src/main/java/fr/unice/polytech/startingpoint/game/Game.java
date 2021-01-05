@@ -26,8 +26,10 @@ class Game{
     private final GameInteraction gameInteraction;
     private final List<PlayerData> botData;
     private final int NB_MISSION;
+    boolean isFirstPlayer;
     private int numBot;
     private int round;
+    private int lastRound;
     private final int FIRST_BOT=0;
     WeatherDice weatherDice;
 
@@ -38,8 +40,10 @@ class Game{
         gameInteraction = new GameInteraction(this);
         botData = new LinkedList<>();
         NB_MISSION = nbMission;
+        isFirstPlayer = true;
         numBot = FIRST_BOT;
         round=0;
+        lastRound = 0;
         initializeBot(botTypes, stamina);
         weatherDice=new WeatherDice(new Random());
     }
@@ -84,6 +88,7 @@ class Game{
     void newRound(){
         round++;
     }
+
     // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
     void play() {
         while( isContinue() ) {
@@ -114,21 +119,34 @@ class Game{
 
     /**Set the next bot to play.
      */
-    private void nextBot() {
+    void nextBot() {
         numBot = (numBot+1) % botData.size();
     }
 
     /**@return <b>True if nobody has done the number of missions required to win.</b>
      */
-    private boolean isContinue(){
+    boolean isSomebodyFinished(){
         for (int missionDoneBy1P : getMissionsDone()) {
-            if (missionDoneBy1P >= NB_MISSION)
-                return false;
+            if (missionDoneBy1P >= NB_MISSION) {
+                if (isFirstPlayer) {
+                    getPlayerData().addScore(2);
+                    isFirstPlayer = false;
+                }
+                return true;
+            }
         }
-        if(resource.isEmpty()) {
+        return false;
+    }
+
+    /**@return <b>True if the game is not done because a player finished his missions and the round is finished, and when resources aren't empty.</b>
+     */
+    boolean isContinue(){
+        if (isSomebodyFinished()){
+            lastRound++;
+        }
+        if (lastRound >= botData.size())
             return false;
-        }
-        return true;
+        return !resource.isEmpty();
     }
 
     Board getBoard() {
