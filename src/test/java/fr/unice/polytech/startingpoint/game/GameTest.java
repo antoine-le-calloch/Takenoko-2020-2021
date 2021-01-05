@@ -24,7 +24,7 @@ class GameTest {
         for (int i = 0; i < 10; i++)
             game.getPlayerData().addMissionDone();
         game.isSomebodyFinished();
-        assertEquals(2,game.getPlayerData().getScore());
+        assertEquals(2,game.getPlayerData().getScore()[0]);
     }
 
     @Test
@@ -38,7 +38,7 @@ class GameTest {
         game.isSomebodyFinished();
         game.nextBot();
         game.isSomebodyFinished();
-        assertEquals(0,game.getPlayerData().getScore());
+        assertEquals(0,game.getPlayerData().getScore()[0]);
     }
 
     @Test
@@ -83,10 +83,10 @@ class GameTest {
 
     @Test
     void gameMissionAndScoreTest(){
-        assertEquals(0,game.getScores().get(0));
+        assertEquals(0,game.getScores().get(0)[0]);
         assertEquals(0, game.getMissionsDone().get(0));
         game.getPlayerData().addMissionDone(2);
-        assertEquals(2,game.getScores().get(0));
+        assertEquals(2,game.getScores().get(0)[0]);
         assertEquals(1,game.getMissionsDone().get(0));
     }
 }

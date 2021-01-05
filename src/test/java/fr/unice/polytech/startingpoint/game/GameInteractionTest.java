@@ -284,8 +284,8 @@ class GameInteractionTest {
     @Test
     void numberMissionsDone(){
         assertEquals(0,gameInteraction.getNumberMissionsDone());
-        game.getPlayerData().addScore(2);
-        game.getPlayerData().addScore(2);
+        game.getPlayerData().addMissionDone(2);
+        game.getPlayerData().addMissionDone(2);
         assertEquals(2,gameInteraction.getNumberMissionsDone());
     }
 
