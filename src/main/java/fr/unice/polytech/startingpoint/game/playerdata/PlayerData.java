@@ -21,6 +21,7 @@ public class PlayerData {
     private final TemporaryInventory temporaryInventory;
     private int score;
     private int missionsDone;
+    private int missionsPandaDone;
 
     public PlayerData(Bot bot){
         this.bot = bot;
@@ -28,6 +29,7 @@ public class PlayerData {
         temporaryInventory = new TemporaryInventory();
         score = 0;
         missionsDone = 0;
+        missionsPandaDone = 0;
     }
 
     public void botPlay(WeatherType weatherType) {
@@ -43,21 +45,22 @@ public class PlayerData {
 
         for(PandaMission pandaMission : inventory.getPandaMissions()){
             if(pandaMission.checkMission(inventory)){
-                addScore(pandaMission.getPoints());
+                addMissionDone(pandaMission.getPoints());
+                missionsPandaDone ++;
                 toRemovePandaMission.add(pandaMission);
             }
         }
 
         for(ParcelMission parcelMission : inventory.getParcelMissions()){
             if(parcelMission.checkMission(coordinateParcelMap)){
-                addScore(parcelMission.getPoints());
+                addMissionDone(parcelMission.getPoints());
                 toRemoveParcelMission.add(parcelMission);
             }
         }
 
         for(PeasantMission peasantMission : inventory.getPeasantMissions()){
             if(peasantMission.checkMission(new ArrayList<>(coordinateParcelMap.values()))){
-                addScore(peasantMission.getPoints());
+                addMissionDone(peasantMission.getPoints());
                 toRemovePeasantMission.add(peasantMission);
             }
         }
@@ -131,17 +134,17 @@ public class PlayerData {
         inventory.addPeasantMission(mission);
     }
 
-    public void addScore(int score){
+    public void addMissionDone(int score){
         this.score += score;
-        addMissionDone();
-    }
-
-    public void addMissionDone(){
         missionsDone++;
     }
 
-    public int getScore() {
-        return score;
+    public void addMissionDone(){
+        addMissionDone(0);
+    }
+
+    public int[] getScore() {
+        return new int[]{score,missionsPandaDone};
     }
 
     public int getMissionsDone() {
@@ -187,5 +190,4 @@ public class PlayerData {
     public int[] getInventoryBamboo() {
         return  inventory.getInventoryBamboo();
     }
-
 }

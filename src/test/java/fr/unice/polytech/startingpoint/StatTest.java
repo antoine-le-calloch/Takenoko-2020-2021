@@ -25,12 +25,12 @@ public class StatTest {
     Stat statGame2P;
     Stat statGame4P;
 
-    List<Integer> p1w;
-    List<Integer> p1w2Player;
-    List<Integer> p2w2Player;
-    List<Integer> equality2Player;
-    List<Integer> p1w4Player;
-    List<Integer> p2w4Player;
+    List<int[]> p1w;
+    List<int[]> p1w2Player;
+    List<int[]> p2w2Player;
+    List<int[]> equality2Player;
+    List<int[]> p1w4Player;
+    List<int[]> p2w4Player;
 
     BotType[] p1 = new BotType[]{BotType.RANDOM};
     BotType[] p2 = new BotType[]{BotType.RANDOM,BotType.PARCEL_BOT};
@@ -41,13 +41,12 @@ public class StatTest {
         statGame1P = new Stat(p1);
         statGame2P = new Stat(p2);
         statGame4P = new Stat(p4);
-
-        p1w = new ArrayList<>(Collections.singletonList(2));
-        p1w2Player = new ArrayList<>(Arrays.asList(2,1));
-        p2w2Player = new ArrayList<>(Arrays.asList(1,2));
-        equality2Player = new ArrayList<>(Arrays.asList(1,1));
-        p1w4Player = new ArrayList<>(Arrays.asList(6,4,2,1));
-        p2w4Player = new ArrayList<>(Arrays.asList(4,6,1,2));
+        p1w = new ArrayList<>(Collections.singletonList(new int[]{2, 0}));
+        p1w2Player = new ArrayList<>(Arrays.asList(new int[]{2,0},new int[]{1,0}));
+        p2w2Player = new ArrayList<>(Arrays.asList(new int[]{1,0},new int[]{2,0}));
+        equality2Player = new ArrayList<>(Arrays.asList(new int[]{2,0},new int[]{2,0}));
+        p1w4Player = new ArrayList<>(Arrays.asList(new int[]{6,1},new int[]{6,0},new int[]{2,2},new int[]{2,0}));
+        p2w4Player = new ArrayList<>(Arrays.asList(new int[]{6,0},new int[]{6,1},new int[]{2,0},new int[]{2,2}));
     }
 
     @Test
@@ -86,8 +85,8 @@ public class StatTest {
         assertEquals(100,statGame2P.getEqualityRate(0));
         assertEquals(100,statGame2P.getEqualityRate(1));
 
-        assertEquals(1,statGame2P.getPointsAverage(0));
-        assertEquals(1,statGame2P.getPointsAverage(1));
+        assertEquals(2,statGame2P.getPointsAverage(0));
+        assertEquals(2,statGame2P.getPointsAverage(1));
     }
 
     @Test
@@ -127,10 +126,10 @@ public class StatTest {
         assertEquals(0,statGame4P.getEqualityRate(2));
         assertEquals(0,statGame4P.getEqualityRate(3));
 
-        assertEquals(5.4,statGame4P.getPointsAverage(0));
-        assertEquals(4.6,statGame4P.getPointsAverage(1));
-        assertEquals(1.7,statGame4P.getPointsAverage(2));
-        assertEquals(1.3,statGame4P.getPointsAverage(3));
+        assertEquals(6.0,statGame4P.getPointsAverage(0));
+        assertEquals(6.0,statGame4P.getPointsAverage(1));
+        assertEquals(2.0,statGame4P.getPointsAverage(2));
+        assertEquals(2.0,statGame4P.getPointsAverage(3));
     }
 
     @Test

@@ -119,7 +119,7 @@ public class Game{
         for (int missionDoneBy1P : getMissionsDone()) {
             if (missionDoneBy1P >= NB_MISSION) {
                 if (isFirstPlayer) {
-                    getPlayerData().addScore(EMPEROR_POINTS);
+                    getPlayerData().addMissionDone(EMPEROR_POINTS);
                     isFirstPlayer = false;
                 }
                 return true;
@@ -176,8 +176,8 @@ public class Game{
     /**
      * @return <b>The score of all bots.</b>
      */
-    public List<Integer> getScores(){
-        List<Integer> Score = new ArrayList<>();
+    public List<int[]> getScores(){
+        List<int[]> Score = new ArrayList<>();
         for (PlayerData playerData : botData) {
             Score.add(playerData.getScore());
         }

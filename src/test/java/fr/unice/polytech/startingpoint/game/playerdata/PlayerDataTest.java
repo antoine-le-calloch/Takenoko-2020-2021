@@ -82,12 +82,12 @@ public class PlayerDataTest {
 
     @Test
     void score(){
-        assertEquals(0,playerData.getScore());
+        assertEquals(0,playerData.getScore()[0]);
         assertEquals(0,playerData.getMissionsDone());
 
-        playerData.addScore(3);
+        playerData.addMissionDone(3);
 
-        assertEquals(3,playerData.getScore());
+        assertEquals(3,playerData.getScore()[0]);
         assertEquals(1,playerData.getMissionsDone());
     }
 

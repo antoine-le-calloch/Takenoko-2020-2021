@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public final class Stat {
-    private final List<List<Integer>> gameData;
+    private final List<List<int[]>> gameData;
     private final BotType[] botList;
     private final int[][] botScores;
 
@@ -37,11 +37,11 @@ public final class Stat {
 
     /**Add the scores of a game to {@link #botScores}.
      */
-    void add(List<Integer> integerList) {
+    void add(List<int[]> integerList) {
         gameData.add(integerList);
         setWinner(getWinner(integerList));
         for (int i = 0; i < integerList.size(); i++){
-            botScores[i][0] += integerList.get(i);
+            botScores[i][0] += integerList.get(i)[0];
         }
     }
 
@@ -58,15 +58,15 @@ public final class Stat {
 
     /**@return <b>A list containing the bot(s) that have the highest score.</b>
      */
-    private List<Integer> getWinner(List<Integer> scores){
-        int bestScore = 0;
+    private List<Integer> getWinner(List<int[]> scores){
+        int[] bestScore = new int[]{0,0};
         List<Integer> winner = new ArrayList<>();
-        for(int score : scores){
-            if (score >= bestScore)
+        for(int[] score : scores){
+            if (score[0] >= bestScore[0] && score[1] >= bestScore[1])
                 bestScore = score;
         }
         for(int i = 0; i < botList.length; i++){
-            if (scores.get(i) == bestScore)
+            if (scores.get(i)[0] == bestScore[0] && scores.get(i)[1] == bestScore[1])
                 winner.add(i);
         }
         return winner;
