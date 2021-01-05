@@ -133,7 +133,11 @@ public class PlayerData {
 
     public void addScore(int score){
         this.score += score;
-        missionsDone ++;
+        addMissionDone();
+    }
+
+    void addMissionDone(){
+        missionsDone++;
     }
 
     public int getScore() {
@@ -183,4 +187,5 @@ public class PlayerData {
     public int[] getInventoryBamboo() {
         return  inventory.getInventoryBamboo();
     }
+
 }

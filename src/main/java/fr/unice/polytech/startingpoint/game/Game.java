@@ -32,8 +32,10 @@ public class Game{
     private final int NB_MISSION;
     private final int FIRST_BOT = 0;
     private final WeatherDice weatherDice;
+    private boolean isFirstPlayer;
     private int numBot;
     private int round;
+    private int lastRound;
 
     public Game(BotType[] botTypes){
         board = new Board();
@@ -42,8 +44,10 @@ public class Game{
         gameInteraction = new GameInteraction(this);
         botData = new LinkedList<>();
         NB_MISSION = 11 - botTypes.length;
+        isFirstPlayer = true;
         numBot = FIRST_BOT;
         round = 0;
+        lastRound = 0;
         weatherDice = new WeatherDice(new Random());
         initializeBot(botTypes);
     }
@@ -104,17 +108,33 @@ public class Game{
 
     /**Set the next bot to play.
      */
-    private void nextBot() {
+    void nextBot() {
         numBot = (numBot+1) % botData.size();
     }
 
     /**@return <b>True if nobody has done the number of missions required to win.</b>
      */
-    public boolean isContinue(){
+    boolean isSomebodyFinished(){
         for (int missionDoneBy1P : getMissionsDone()) {
-            if (missionDoneBy1P >= NB_MISSION)
-                return false;
+            if (missionDoneBy1P >= NB_MISSION) {
+                if (isFirstPlayer) {
+                    getPlayerData().addMissionDone(2);
+                    isFirstPlayer = false;
+                }
+                return true;
+            }
         }
+        return false;
+    }
+
+    /**@return <b>True if the game is not done because a player finished his missions and the round is finished, and when resources aren't empty.</b>
+     */
+    boolean isContinue(){
+        if (isSomebodyFinished()){
+            lastRound++;
+        }
+        if (lastRound >= botData.size())
+            return false;
         return !resource.isEmpty();
     }
 
