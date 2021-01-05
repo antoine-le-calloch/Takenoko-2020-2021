@@ -83,6 +83,26 @@ public class PeasantMissionTest {
     }
 
     @Test
+    void missionIncompleteSpecialGreenTooManyBambooInTheParcels() {
+        Parcel parcel1 = new Parcel(ColorType.GREEN);
+        Parcel parcel2 = new Parcel(ColorType.GREEN);
+        Parcel parcel3 = new Parcel(ColorType.GREEN);
+        Parcel parcel4 = new Parcel(ColorType.GREEN);
+        board.placeParcel(parcel1,new Coordinate(1,-1,0));
+        board.placeParcel(parcel2,new Coordinate(1,0,-1));
+        board.placeParcel(parcel3,new Coordinate(0,1,-1));
+        board.placeParcel(parcel4,new Coordinate(-1,1,0));
+        for (int i = 0; i < 3; i++) {
+            parcel1.addBamboo();
+            parcel2.addBamboo();
+            parcel3.addBamboo();
+            parcel4.addBamboo();
+        }
+        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
+        assertFalse(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
+    }
+
+    @Test
     void missionIncompleteSpecialGreenNotEnoughBamboo() {
         Parcel parcel1 = new Parcel(ColorType.GREEN);
         Parcel parcel2 = new Parcel(ColorType.GREEN);
