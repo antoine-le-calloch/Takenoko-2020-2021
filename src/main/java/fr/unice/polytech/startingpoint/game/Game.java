@@ -50,7 +50,7 @@ public class Game{
         lastRound = 0;
         weatherDice = new WeatherDice(new Random());
         initializeBot(botTypes);
-        initializeMissionsBot();
+        //initializeMissionsBot();
     }
 
     public Game(){

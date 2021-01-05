@@ -47,6 +47,7 @@ class GameTest {
         Game game=new Game(botList);
         for (int i = 0; i < 28; i++) {
             game.getPlayerData().addMissionDone();
+            game.isContinue();
             game.nextBot();
         }
         assertFalse(game.isContinue());
@@ -58,11 +59,13 @@ class GameTest {
         Game game=new Game(botList);
         for (int i = 0; i < 25; i++) {
             game.getPlayerData().addMissionDone();
+            game.isContinue();
             game.nextBot();
         }
         assertTrue(game.isContinue());
     }
 
+    /*
     @Test
     void threeMissionsInInventory(){
         Game game=new Game();
@@ -70,7 +73,7 @@ class GameTest {
         assertEquals(game.getPlayerData().getPeasantMissions().size(),1);
         assertEquals(game.getPlayerData().getParcelMissions().size(),1);
 
-    }
+    }*/
 
 
 
