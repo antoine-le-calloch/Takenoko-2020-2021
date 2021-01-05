@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.game.mission;
 
-import fr.unice.polytech.startingpoint.game.Parcel;
+import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
 

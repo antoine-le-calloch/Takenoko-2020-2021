@@ -10,13 +10,6 @@ package fr.unice.polytech.startingpoint.type;
  */
 
 public enum ColorType {
-    RED {
-        @Override
-        public String toString() {
-            return "Red";
-        }
-    }
-    ,
     GREEN {
         @Override
         public String toString() {
@@ -28,6 +21,13 @@ public enum ColorType {
         @Override
         public String toString() {
             return "Yellow";
+        }
+    }
+    ,
+    RED {
+        @Override
+        public String toString() {
+            return "Red";
         }
     }
     ,

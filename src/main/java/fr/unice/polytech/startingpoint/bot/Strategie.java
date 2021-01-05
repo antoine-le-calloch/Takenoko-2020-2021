@@ -1,7 +1,7 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.Coordinate;
-import fr.unice.polytech.startingpoint.game.Rules;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
+import fr.unice.polytech.startingpoint.game.board.Rules;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;

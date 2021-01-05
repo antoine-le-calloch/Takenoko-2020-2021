@@ -1,8 +1,8 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.game.Coordinate;
-import fr.unice.polytech.startingpoint.game.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
+import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
