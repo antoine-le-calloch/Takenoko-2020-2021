@@ -329,7 +329,7 @@ class MissionParcelStratTest {
     @Test
     void notJudiciousPutCanal_ActionAlreadyPlay() {
         game.getPlayerData().looseStamina();
-        game.getTemporaryInventory().add(ActionType.DRAW_CANAL);
+        game.getPlayerData().add(ActionType.DRAW_CANAL);
         assertFalse(stratMissionParcel.isJudiciousPutCanal());
     }
 ///////////////////////////////

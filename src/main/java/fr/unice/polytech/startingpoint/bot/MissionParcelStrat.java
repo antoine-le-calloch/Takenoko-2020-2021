@@ -8,6 +8,7 @@ import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -76,6 +77,13 @@ public class MissionParcelStrat extends Strategie{
             ParcelInformation bestColor = new ParcelInformation();
             int minTurn = -1;
 
+            List<Coordinate[]> bestCoordsOfEachMission = new ArrayList<>();
+            List<ParcelMission> parcelMissionList;
+
+            for (int i = 0; i < (parcelMissionList = bot.gameInteraction.getInventoryParcelMissions()).size(); i++) {
+                bestCoordsOfEachMission.add(bestCoordinatesForMission(parcelMissionList.get(i)).toArray(Coordinate[]::new));
+            }
+
             for (ParcelInformation parcelInformation : parcelInformationList) {
                 if(bestCoordsInAllMission(parcelInformation.getColorType()) != null && (minTurn == -1 || bestCoordsInAllMission(parcelInformation.getColorType()).size() < minTurn)) {
                     bestCoords = bestCoordsInAllMission(parcelInformation.getColorType());
@@ -84,7 +92,7 @@ public class MissionParcelStrat extends Strategie{
                 }
             }
 
-            if(bestCoords.size() != 0) {
+            if(minTurn != -1) {
                 for (Coordinate coordinate : bestCoords) {
                     if(rules.isPlayableParcel(coordinate)) {
                         bot.selectParcel(bestColor);
@@ -108,12 +116,22 @@ public class MissionParcelStrat extends Strategie{
         int minTurnToEndOneMission = -1;
 
         for (ParcelMission mission : bot.gameInteraction.getInventoryParcelMissions()) {
-            if (colorAvailable.equals(mission.getColorType()) && (minTurnToEndOneMission == -1 || bestCoordinatesForMission(mission).size() < minTurnToEndOneMission)){
+            if (mission.getColorType1().equals(mission.getColorType2()) && colorAvailable.equals(mission.getColorType()) && (minTurnToEndOneMission == -1 || bestCoordinatesForMission(mission).size() < minTurnToEndOneMission)){
                 bestCoords = bestCoordinatesForMission(mission);
                 minTurnToEndOneMission = bestCoords.size();
             }
         }
         return bestCoords;
+    }
+
+    public List<Coordinate[]> bestCoordsOfEdachMission() {
+        List<Coordinate[]> bestCoordsOfEachMission = new ArrayList<>();
+        List<ParcelMission> parcelMissionList;
+
+        for (int i = 0; i < (parcelMissionList = bot.gameInteraction.getInventoryParcelMissions()).size(); i++) {
+            bestCoordsOfEachMission.add(bestCoordinatesForMission(parcelMissionList.get(i)).toArray(Coordinate[]::new));
+        }
+        return bestCoordsOfEachMission;
     }
 
     /**

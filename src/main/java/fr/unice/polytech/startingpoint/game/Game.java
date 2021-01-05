@@ -136,7 +136,11 @@ public class Game{
         }
         if (lastRound >= botData.size())
             return false;
-        return !resource.isEmpty();
+        if(resource.isEmpty()) {
+            System.out.print("Bad end       ");
+            return false;
+        }
+        return true;
     }
 
     public Board getBoard() {
