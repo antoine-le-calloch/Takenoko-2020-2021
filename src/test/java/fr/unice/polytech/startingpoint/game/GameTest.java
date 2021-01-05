@@ -47,8 +47,6 @@ class GameTest {
         Game game=new Game(botList);
         for (int i = 0; i < 28; i++) {
             game.getPlayerData().addMissionDone();
-            System.out.println(game.getMissionsDone());
-            System.out.println(game.isContinue());
             game.nextBot();
         }
         assertFalse(game.isContinue());
@@ -64,6 +62,18 @@ class GameTest {
         }
         assertTrue(game.isContinue());
     }
+
+    @Test
+    void threeMissionsInInventory(){
+        Game game=new Game();
+        assertEquals(game.getPlayerData().getPandaMissions().size(),1);
+        assertEquals(game.getPlayerData().getPeasantMissions().size(),1);
+        assertEquals(game.getPlayerData().getParcelMissions().size(),1);
+
+    }
+
+
+
 
     @Test
     void firstRoundSoNoWeather(){
