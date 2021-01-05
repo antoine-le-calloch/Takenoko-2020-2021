@@ -5,7 +5,7 @@ import fr.unice.polytech.startingpoint.bot.RandomStrat;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
-import fr.unice.polytech.startingpoint.type.MissionType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -45,7 +45,7 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand, mockRand2);//set les Random mock
 
         assertEquals(0, game.getGameInteraction().getInventoryParcelMissions().size());
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertEquals(1, game.getGameInteraction().getInventoryParcelMissions().size());
     }
 
@@ -59,7 +59,7 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand, mockRand2);//set les Random mock
 
         assertEquals(0, game.getGameInteraction().getInventoryPandaMissions().size());
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertEquals(1, game.getGameInteraction().getInventoryPandaMissions().size());
     }
 
@@ -73,7 +73,7 @@ public class RandomStratTest {
 
 
         assertEquals(0, game.getGameInteraction().getInventoryPeasantMissions().size());
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertEquals(1, game.getGameInteraction().getInventoryPeasantMissions().size());
     }
 
@@ -86,7 +86,7 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand, new Random());//set les Random mock
 
         assertEquals(0, board.getPlacedCanals().size());
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertEquals(1, board.getPlacedCanals().size());
     }
 
@@ -97,7 +97,7 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand,new Random());//set les Random mock
 
         assertEquals(1,board.getPlacedParcels().size());//1 parcel (central)
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertEquals(2,board.getPlacedParcels().size());//2 parcels (central + la parcel posée)
     }
 
@@ -110,7 +110,7 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand,new Random());//set les Random mock
 
         assertEquals(central,board.getCharacter(CharacterType.PANDA).getCoordinate());//Le Panda est au centre
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertNotEquals(central,board.getCharacter(CharacterType.PANDA).getCoordinate());//Le Panda n'est plus au centre
     }
 
@@ -123,9 +123,8 @@ public class RandomStratTest {
         parcel1Bamboo.addBamboo();//ajout d'un bamboo
         board.placeParcel(new Parcel(), new Coordinate(1,-1,0));//ajoute une pièce ou mettre le paysan
         randomStrat.setRand(mockRand,new Random());//set les Random mock
-
         assertEquals(central,board.getCharacter(CharacterType.PEASANT).getCoordinate());//Le Paesant est au centre
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertNotEquals(central,board.getCharacter(CharacterType.PEASANT).getCoordinate());//Le Paesant n'est plus au centre
     }
 }

@@ -5,10 +5,12 @@ import fr.unice.polytech.startingpoint.game.ParcelInformation;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class RandomStrat extends Strategie{
     private Random random;
@@ -25,6 +27,8 @@ public class RandomStrat extends Strategie{
         random2 = new Random();
     }
 
+
+
     /**<p>Set the {@link #random} and {@link #random2} to new objects specified in the parameters.</p>
      *
      * @param rand1
@@ -38,8 +42,13 @@ public class RandomStrat extends Strategie{
     }
 
     /**<p>The actions of the bot during his turn.</p>
+     * @param weatherType
      */
-    public void stratOneTurn(){
+    public void stratOneTurn(WeatherType weatherType){
+
+        if(isJudiciousPlayWeather())
+            playWeather(weatherType);
+
         int randAction = random.nextInt(5);
 
         if (randAction == 0 && bot.gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION)) {// pioche mission
@@ -82,5 +91,20 @@ public class RandomStrat extends Strategie{
             Collections.shuffle(list);
             bot.movePeasant(list.get(0));
         }
+    }
+
+
+    public boolean isJudiciousPlayWeather(){
+        if(!bot.gameInteraction.contains(ActionType.WEATHER)){
+            return true;
+        }
+        return false;
+    }
+
+    public void playWeather(WeatherType weatherType){
+        if(weatherType.equals(WeatherType.RAIN))
+            stratRain();
+        else if(weatherType.equals(WeatherType.THUNDERSTORM))
+            stratThunderstorm();
     }
 }

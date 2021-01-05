@@ -7,6 +7,7 @@ import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
@@ -322,7 +323,7 @@ class MissionParcelStratTest {
     void DrawMissionAndPutParcel() {
         assertEquals(0, game.getGameInteraction().getInventoryParcelMissions().size());
         assertEquals(1, board.getPlacedParcels().size());
-        stratMissionParcel.stratOneTurn();
+        stratMissionParcel.stratOneTurn(WeatherType.NO_WEATHER);
         assertEquals(1, game.getGameInteraction().getInventoryParcelMissions().size());
         assertEquals(1, board.getPlacedParcels().size());
     }

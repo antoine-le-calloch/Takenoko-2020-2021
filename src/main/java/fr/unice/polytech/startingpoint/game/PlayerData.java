@@ -29,7 +29,7 @@ public final class PlayerData {
 
     void botPlay(WeatherType weatherType) {
         resetTemporaryInventory(weatherType);
-        bot.botPlay();
+        bot.botPlay(weatherType);
         hasPlayedCorrectly();
     }
 

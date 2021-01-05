@@ -1,9 +1,12 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.bot.ParcelBot;
-import fr.unice.polytech.startingpoint.bot.RandomStrat;
-import fr.unice.polytech.startingpoint.bot.Strategie;
+import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.game.mission.PandaMission;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
+import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -143,6 +146,29 @@ class StrategieTest {
         assertTrue(allPossibleCoNextToRed.contains(expectedCo2));
         assertTrue(allPossibleCoNextToRed.contains(expectedCo3));
     }
+
+    @Test
+    void simpleRainStratPreferFertilizer(){
+        board.placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ImprovementType.FERTILIZER),new Coordinate(-1,1,0));
+        assertEquals(new Coordinate(-1,1,0),strategie.stratRain());
+    }
+    @Test
+    void simpleRainStratWith1Parcel(){
+        board.placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        assertEquals(new Coordinate(1,-1,0),strategie.stratRain());
+    }
+
+
+    @Test
+    void simlpeThunderstormStrat(){
+        Parcel parcel=new Parcel();
+        parcel.addBamboo();
+        board.placeParcel(new Parcel(),new Coordinate(-1,1,0));
+        board.placeParcel(parcel,new Coordinate(1,-1,0));
+        assertEquals(new Coordinate(1,-1,0),strategie.stratThunderstorm());
+    }
+
 
 
 

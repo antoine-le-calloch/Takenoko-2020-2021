@@ -333,4 +333,27 @@ class GameInteractionTest {
         assertNotEquals(new Coordinate(1,-1,0),placedCoordinatesByRedColor.get(0));
         assertNotEquals(new Coordinate(0,-1,1),placedCoordinatesByBlueColor.get(0));
     }
+
+    @Test
+    void weatherCantBePlayedTwice(){
+        game.getPlayerData().add(ActionType.WEATHER);
+        assertThrows(RulesViolationException.class, () ->  gameInteraction.thunderstromAction(new Coordinate(1,-1,0)));
+        assertThrows(RulesViolationException.class, () ->  gameInteraction.rainAction(new Coordinate(1,-1,0)));
+        //météo utilisée 2 fois
+    }
+
+    @Test
+    void thunderstruckCantBeProperlyPLayed(){
+        assertThrows(BadCoordinateException.class, () ->  gameInteraction.thunderstromAction(new Coordinate(1,-1,0)));
+        //La parcelle n'est pas posée donc le panda ne peut pas s'y déplacer
+    }
+
+    @Test
+    void rainCantBeProperlyPLayed(){
+        assertThrows(BadCoordinateException.class, () ->  gameInteraction.rainAction(new Coordinate(1,-1,0)));
+        //La parcelle n'est pas posée
+    }
+
+
+
 }

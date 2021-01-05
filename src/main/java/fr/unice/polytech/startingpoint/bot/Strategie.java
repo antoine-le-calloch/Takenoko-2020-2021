@@ -4,6 +4,8 @@ import fr.unice.polytech.startingpoint.game.Coordinate;
 import fr.unice.polytech.startingpoint.game.Rules;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,8 +23,39 @@ public abstract class Strategie {
     }
 
     /**<p>The actions of the bot during his turn.</p>
+     * @param weatherType
      */
-    public abstract void stratOneTurn();
+    public abstract void stratOneTurn(WeatherType weatherType);
+
+    public Coordinate stratThunderstorm(){
+        List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo= bot.gameInteraction.getAllParcelsIrrigated().stream().
+                filter(coordinate -> bot.gameInteraction.getPlacedParcelsNbBamboo(coordinate)>0
+                        && !bot.gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE))
+                .collect(Collectors.toList());
+
+        if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty()) {
+            bot.gameInteraction.rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
+            return irrigatedParcelsWithMoreThan1Bamboo.get(0);
+        }
+        return null;
+    }
+
+    public Coordinate stratRain(){
+        List<Coordinate> parcelsIrrigated= bot.gameInteraction.getAllParcelsIrrigated();
+        List<Coordinate> parcelsIrrigatedWithFertilizer=parcelsIrrigated.stream().
+                filter(coordinate -> bot.gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType()
+                .equals(ImprovementType.FERTILIZER)).collect(Collectors.toList());
+        if(!parcelsIrrigatedWithFertilizer.isEmpty()){
+            bot.gameInteraction.rainAction(parcelsIrrigatedWithFertilizer.get(0));
+            return parcelsIrrigatedWithFertilizer.get(0);
+
+        }else if(!parcelsIrrigated.isEmpty()){
+            bot.gameInteraction.rainAction(parcelsIrrigated.get(0));
+            return parcelsIrrigated.get(0);
+        }
+        return null;
+
+    }
 
     /**@return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>
      */

@@ -5,6 +5,9 @@ import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.type.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class RushPandaStrat extends Strategie{
 
     /**@param bot
@@ -13,11 +16,53 @@ public class RushPandaStrat extends Strategie{
         super(bot);
     }
 
-    public void stratOneTurn(){
+    public void stratOneTurn(WeatherType weatherType){
+        if(isJudiciousPlayWeather())
+            playWeather(weatherType);
         if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PANDA);
         else if (isJudiciousMovePanda())
             bot.movePanda(strategyMovePanda());
+    }
+
+
+    public boolean isJudiciousPlayWeather(){
+        if(!bot.gameInteraction.contains(ActionType.WEATHER)){
+            return true;
+        }
+        return false;
+    }
+
+    public void playWeather(WeatherType weatherType){
+        if(weatherType.equals(WeatherType.RAIN))
+            stratRain();
+        else if(weatherType.equals(WeatherType.THUNDERSTORM))
+            stratThunderstorm();
+    }
+
+
+
+    @Override
+    public Coordinate stratThunderstorm() {
+
+        for(PandaMission pandaMission:bot.gameInteraction.getInventoryPandaMissions()){
+            ColorType colorMissionPanda=pandaMission.getColorType();
+
+            if(colorMissionPanda.equals(ColorType.ALL_COLOR) && strategyMissionAllColor()!=null){
+                Coordinate coordinate=strategyMissionAllColor();
+                bot.gameInteraction.thunderstromAction(strategyMissionAllColor());
+                return coordinate;
+
+            }
+
+            else if( strategyMissionOneColor(colorMissionPanda)!=null) {
+                Coordinate coordinate=strategyMissionOneColor(colorMissionPanda);
+                bot.gameInteraction.thunderstromAction(coordinate);
+                return coordinate;
+
+            }
+        }
+        return null;
     }
 
     /**
