@@ -3,9 +3,13 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
+import fr.unice.polytech.startingpoint.game.board.Canal;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
+import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.type.*;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +41,13 @@ class GameInteractionTest {
     void botDrawCanalLessStaminaAndAddCanalToInventory() {
         assertEquals(0,game.getPlayerData().getInventory().getInventoryCanal().size());
         assertEquals(27, gameInteraction.getResourceSize(ResourceType.CANAL));
-        assertEquals(2,game.getTemporaryInventory().getStamina());
+        assertEquals(2,game.getPlayerData().getStamina());
 
         gameInteraction.drawCanal();
 
         assertEquals(1,game.getPlayerData().getInventory().getInventoryCanal().size());
         assertEquals(26, gameInteraction.getResourceSize(ResourceType.CANAL));
-        assertEquals(1,game.getTemporaryInventory().getStamina());
+        assertEquals(1,game.getPlayerData().getStamina());
     }
 
     @Test
@@ -64,13 +68,13 @@ class GameInteractionTest {
     void botDrawParcelMissionLessStaminaAndAddMissionToInventory() {
         assertEquals(0, gameInteraction.getInventoryParcelMissions().size());
         assertEquals(15, gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION));
-        assertEquals(2,game.getTemporaryInventory().getStamina());
+        assertEquals(2,game.getPlayerData().getStamina());
 
         gameInteraction.drawMission(MissionType.PARCEL);
 
         assertEquals(1, gameInteraction.getInventoryParcelMissions().size());
         assertEquals(14, gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION));
-        assertEquals(1,game.getTemporaryInventory().getStamina());
+        assertEquals(1,game.getPlayerData().getStamina());
     }
 
     @Test
@@ -91,13 +95,13 @@ class GameInteractionTest {
     void botDrawPandaMissionLessStaminaAndAddMissionToInventory() {
         assertEquals(0, gameInteraction.getInventoryPandaMissions().size());
         assertEquals(15, gameInteraction.getResourceSize(ResourceType.PANDA_MISSION));
-        assertEquals(2,game.getTemporaryInventory().getStamina());
+        assertEquals(2,game.getPlayerData().getStamina());
 
         gameInteraction.drawMission(MissionType.PANDA);
 
         assertEquals(1, gameInteraction.getInventoryPandaMissions().size());
         assertEquals(14, gameInteraction.getResourceSize(ResourceType.PANDA_MISSION));
-        assertEquals(1,game.getTemporaryInventory().getStamina());
+        assertEquals(1,game.getPlayerData().getStamina());
     }
 
     @Test
@@ -118,13 +122,13 @@ class GameInteractionTest {
     void botDrawPeasantMissionLessStaminaAndAddMissionToInventory() {
         assertEquals(0, gameInteraction.getInventoryPeasantMissions().size());
         assertEquals(15, gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION));
-        assertEquals(2,game.getTemporaryInventory().getStamina());
+        assertEquals(2,game.getPlayerData().getStamina());
 
         gameInteraction.drawMission(MissionType.PEASANT);
 
         assertEquals(1, gameInteraction.getInventoryPeasantMissions().size());
         assertEquals(14, gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION));
-        assertEquals(1,game.getTemporaryInventory().getStamina());
+        assertEquals(1,game.getPlayerData().getStamina());
     }
 
     @Test
@@ -143,29 +147,29 @@ class GameInteractionTest {
 
     @Test
     void botDrawAndPlaceParcelLessStaminaAndAddParcelToTemporaryInventoryAndBoard() {
-        assertDoesNotThrow(() -> game.getTemporaryInventory().hasPlayedCorrectly());
+        assertDoesNotThrow(() -> game.getPlayerData().hasPlayedCorrectly());
 
-        assertEquals(0,game.getTemporaryInventory().getParcelsSaved().size());
+        assertEquals(0,game.getPlayerData().getParcelsSaved().size());
         assertEquals(27, gameInteraction.getResourceSize(ResourceType.PARCEL));
-        assertEquals(2,game.getTemporaryInventory().getStamina());
+        assertEquals(2,game.getPlayerData().getStamina());
         assertEquals(1, gameInteraction.getPlacedCoordinates().size());
 
         List<ParcelInformation> parcels = gameInteraction.drawParcels();
 
-        assertThrows(NoSuchElementException.class,() -> game.getTemporaryInventory().hasPlayedCorrectly());
+        assertThrows(NoSuchElementException.class,() -> game.getPlayerData().hasPlayedCorrectly());
 
-        assertEquals(3,game.getTemporaryInventory().getParcelsSaved().size());
+        assertEquals(3,game.getPlayerData().getParcelsSaved().size());
 
         gameInteraction.selectParcel(parcels.get(0));
 
-        assertThrows(NoSuchElementException.class,() -> game.getTemporaryInventory().hasPlayedCorrectly());
+        assertThrows(NoSuchElementException.class,() -> game.getPlayerData().hasPlayedCorrectly());
 
         assertEquals(26, gameInteraction.getResourceSize(ResourceType.PARCEL));
-        assertEquals(1,game.getTemporaryInventory().getStamina());
+        assertEquals(1,game.getPlayerData().getStamina());
 
         gameInteraction.placeParcel(new Coordinate(0,-1,1));
 
-        assertDoesNotThrow(() -> game.getTemporaryInventory().hasPlayedCorrectly());
+        assertDoesNotThrow(() -> game.getPlayerData().hasPlayedCorrectly());
 
         assertEquals(2, gameInteraction.getPlacedCoordinates().size());
     }
@@ -278,6 +282,14 @@ class GameInteractionTest {
     }
 
     @Test
+    void numberMissionsDone(){
+        assertEquals(0,gameInteraction.getNumberMissionsDone());
+        game.getPlayerData().addScore(2);
+        game.getPlayerData().addScore(2);
+        assertEquals(2,gameInteraction.getNumberMissionsDone());
+    }
+
+    @Test
     void placedParcel(){
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
@@ -320,6 +332,15 @@ class GameInteractionTest {
         assertEquals(new ParcelInformation(ImprovementType.WATERSHED), gameInteraction.getPlacedParcelInformation(new Coordinate(1,-1,0)));
         assertEquals(new ParcelInformation(ColorType.RED), gameInteraction.getPlacedParcelInformation(new Coordinate(0,-1,1)));
         assertEquals(new ParcelInformation(ColorType.GREEN,ImprovementType.ENCLOSURE), gameInteraction.getPlacedParcelInformation(new Coordinate(1,-2,1)));
+    }
+
+    @Test
+    void actionTypeList(){
+        assertEquals(gameInteraction.getActionTypeList().size(),0);
+        gameInteraction.drawCanal();
+        assertEquals(gameInteraction.getActionTypeList().size(),1);
+        gameInteraction.drawParcels();
+        assertEquals(gameInteraction.getActionTypeList().size(),2);
     }
 
     @Test

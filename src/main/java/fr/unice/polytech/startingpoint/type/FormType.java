@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.type;
 
-import fr.unice.polytech.startingpoint.game.Coordinate;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
