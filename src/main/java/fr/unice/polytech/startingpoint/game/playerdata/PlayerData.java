@@ -136,7 +136,7 @@ public class PlayerData {
         addMissionDone();
     }
 
-    void addMissionDone(){
+    public void addMissionDone(){
         missionsDone++;
     }
 

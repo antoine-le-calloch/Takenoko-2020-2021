@@ -115,10 +115,11 @@ public class Game{
     /**@return <b>True if nobody has done the number of missions required to win.</b>
      */
     boolean isSomebodyFinished(){
+        final int EMPEROR_POINTS = 2;
         for (int missionDoneBy1P : getMissionsDone()) {
             if (missionDoneBy1P >= NB_MISSION) {
                 if (isFirstPlayer) {
-                    getPlayerData().addMissionDone(2);
+                    getPlayerData().addScore(EMPEROR_POINTS);
                     isFirstPlayer = false;
                 }
                 return true;
