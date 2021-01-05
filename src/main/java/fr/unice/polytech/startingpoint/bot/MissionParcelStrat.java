@@ -40,14 +40,6 @@ public class MissionParcelStrat extends Strategie{
     }
 
     /**
-     * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousPutParcel(){
-        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size()>0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS);
-    }
-
-    /**
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
      * @see GameInteraction
      */
@@ -55,10 +47,19 @@ public class MissionParcelStrat extends Strategie{
         if(bot.gameInteraction.getStamina() < 2) {
             for (ParcelMission mission : bot.gameInteraction.getInventoryParcelMissions()) {
                 if (bestCoordinatesForMission(mission).size() == 0)
-                    return bot.gameInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.gameInteraction.contains(ActionType.DRAW_CANAL);
+                    return bot.gameInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.gameInteraction.contains(ActionType.PLACE_CANAL);
             }
+            return false;
         }
-        return false;
+        return bot.gameInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.gameInteraction.contains(ActionType.PLACE_CANAL);
+    }
+
+    /**
+     * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
+     * @see GameInteraction
+     */
+    public boolean isJudiciousPutParcel(){
+        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size() > 0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS);
     }
 
     /**
@@ -235,22 +236,22 @@ public class MissionParcelStrat extends Strategie{
      */
     public boolean putCanal() {
         try {
-            bot.gameInteraction.drawCanal();
             List<Coordinate> fullForm = coordEndMissionNoIrrigate();
             Coordinate[] bestCoordinatesCanal = null;
 
-            for (Coordinate coordinateForm : fullForm) {
+            for (Coordinate coordinateForm : fullForm)
                 if (!bot.gameInteraction.isIrrigatedParcel(coordinateForm))
                     bestCoordinatesCanal = getBestCanal(coordinateForm);
-            }
 
             if (bestCoordinatesCanal != null && fullForm.size() != 0) {
+                bot.gameInteraction.drawCanal();
                 bot.placeCanal(bestCoordinatesCanal);
                 return true;
             }
-
+            bot.gameInteraction.drawCanal();
             bot.placeCanal(possibleCoordinatesCanal().get(0));
             return false;
+
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
             return false;
