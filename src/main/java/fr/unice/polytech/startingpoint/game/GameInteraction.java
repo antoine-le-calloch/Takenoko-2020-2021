@@ -3,9 +3,14 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
+import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
+import fr.unice.polytech.startingpoint.game.board.Rules;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
+import fr.unice.polytech.startingpoint.game.playerdata.PlayerData;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
@@ -157,7 +162,7 @@ public final class GameInteraction {
     }
 
     public List<ActionType> getActionTypeList() {
-        return game.getPlayerData().getTemporaryInventory().getActionTypeList();
+        return game.getPlayerData().getActionTypeList();
     }
 
     public boolean contains(ActionType action){
@@ -176,10 +181,9 @@ public final class GameInteraction {
         return new ArrayList<>(game.getBoard().getPlacedParcels().keySet());
     }
     public List<Coordinate> getPlacedCoordinatesByColor(ColorType color){
-
         return (getPlacedCoordinates()
                .stream()
-                .filter(coordinate -> getPlacedParcelInformation(coordinate).getColorType().equals(color))
+               .filter(coordinate -> getPlacedParcelInformation(coordinate).getColorType().equals(color))
                .collect(Collectors.toList()));
     }
 
@@ -225,6 +229,5 @@ public final class GameInteraction {
             default:
                 throw new IllegalTypeException("Wrong ResourceType.");
         }
-
     }
 }

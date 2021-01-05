@@ -1,6 +1,6 @@
 package fr.unice.polytech.startingpoint.game.mission;
 
-import fr.unice.polytech.startingpoint.game.Inventory;
+import fr.unice.polytech.startingpoint.game.playerdata.Inventory;
 import fr.unice.polytech.startingpoint.type.ColorType;
 
 /**
@@ -21,6 +21,7 @@ public final class PandaMission{
     private final ColorType colorType;
     private final int points;
     int NB_BAMBOO = 2;
+
     /**
      * <p>Set up a panda mission. Initialize all variables.</p>
      *

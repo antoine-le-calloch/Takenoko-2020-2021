@@ -1,14 +1,14 @@
 package fr.unice.polytech.startingpoint.game;
 
+
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 class GameTest {
+    Game game = new Game();
 
     @Test
     void aPlayerFinished(){
@@ -43,10 +43,12 @@ class GameTest {
 
     @Test
     void gameIsFinish(){
-        BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT};
+        BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
         Game game=new Game(botList);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 28; i++) {
             game.getPlayerData().addMissionDone();
+            System.out.println(game.getMissionsDone());
+            System.out.println(game.isContinue());
             game.nextBot();
         }
         assertFalse(game.isContinue());
@@ -56,7 +58,7 @@ class GameTest {
     void gameIsntFinishBecauseLastTurnIsntFinish(){
         BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
         Game game=new Game(botList);
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 25; i++) {
             game.getPlayerData().addMissionDone();
             game.nextBot();
         }
@@ -65,24 +67,26 @@ class GameTest {
 
     @Test
     void firstRoundSoNoWeather(){
-        Game game=new Game();
         game.botPlay();
-        assertNotEquals(3,game.getTemporaryInventory().getStamina());//No weather so stamina=2
-        assertFalse(game.getTemporaryInventory().isActionCouldBeDoneTwice());//No weather so no same double action
+        assertNotEquals(3,game.getPlayerData().getStamina());//No weather so stamina=2
+        assertFalse(game.getPlayerData().isActionCouldBeDoneTwice());//No weather so no same double action
     }
 
     @Test
     void atLeastTwoRoundsSoWeatherMustBePresent(){
-        Game game=new Game();
         game.newRound();
         game.newRound();//2 round so No Weather dissapear
         game.botPlay();
-        assertNotEquals(WeatherType.NO_WEATHER,game.getTemporaryInventory().getWeatherType());
+        assertNotEquals(WeatherType.NO_WEATHER,game.getPlayerData().getWeatherType());
         //2e le dé météo peut être roll
     }
 
-
-
-
-
+    @Test
+    void gameMissionAndScoreTest(){
+        assertEquals(0,game.getScores().get(0));
+        assertEquals(0, game.getMissionsDone().get(0));
+        game.getPlayerData().addMissionDone(2);
+        assertEquals(2,game.getScores().get(0));
+        assertEquals(1,game.getMissionsDone().get(0));
+    }
 }
