@@ -17,16 +17,6 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-/**
- * Tests unitaires
- * @author Manuel Enzo
- * @author Naud Eric
- * @author Madern Loic
- * @author Le Calloch Antoine
- * @version 2020.12.03
- */
-
 class GameInteractionTest {
     Game game;
     GameInteraction gameInteraction;
@@ -39,12 +29,7 @@ class GameInteractionTest {
 
     @Test
     void botDrawCanalLessStaminaAndAddCanalToInventory() {
-        assertEquals(0,game.getPlayerData().getInventory().getInventoryCanal().size());
-        assertEquals(27, gameInteraction.getResourceSize(ResourceType.CANAL));
-        assertEquals(2,game.getPlayerData().getStamina());
-
         gameInteraction.drawCanal();
-
         assertEquals(1,game.getPlayerData().getInventory().getInventoryCanal().size());
         assertEquals(26, gameInteraction.getResourceSize(ResourceType.CANAL));
         assertEquals(1,game.getPlayerData().getStamina());
@@ -65,21 +50,24 @@ class GameInteractionTest {
     }
 
     @Test
-    void botDrawParcelMissionLessStaminaAndAddMissionToInventory() {
-        assertEquals(0, gameInteraction.getInventoryParcelMissions().size());
-        assertEquals(15, gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION));
-        assertEquals(2,game.getPlayerData().getStamina());
-
-        gameInteraction.drawMission(MissionType.PARCEL);
-
+    void initializeGameInteraction() {
         assertEquals(1, gameInteraction.getInventoryParcelMissions().size());
         assertEquals(14, gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION));
+        assertEquals(2,game.getPlayerData().getStamina());
+    }
+
+
+    @Test
+    void botDrawParcelMissionLessStaminaAndAddMissionToInventory() {
+        gameInteraction.drawMission(MissionType.PARCEL);
+        assertEquals(2, gameInteraction.getInventoryParcelMissions().size());
+        assertEquals(13, gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION));
         assertEquals(1,game.getPlayerData().getStamina());
     }
 
     @Test
     void botDrawTooMuchParcelMission() {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 14; i++) {
             game.getResource().drawParcelMission();
         }
         assertThrows(OutOfResourcesException.class,() -> gameInteraction.drawMission(MissionType.PARCEL));
@@ -93,20 +81,15 @@ class GameInteractionTest {
 
     @Test
     void botDrawPandaMissionLessStaminaAndAddMissionToInventory() {
-        assertEquals(0, gameInteraction.getInventoryPandaMissions().size());
-        assertEquals(15, gameInteraction.getResourceSize(ResourceType.PANDA_MISSION));
-        assertEquals(2,game.getPlayerData().getStamina());
-
         gameInteraction.drawMission(MissionType.PANDA);
-
-        assertEquals(1, gameInteraction.getInventoryPandaMissions().size());
-        assertEquals(14, gameInteraction.getResourceSize(ResourceType.PANDA_MISSION));
+        assertEquals(2, gameInteraction.getInventoryPandaMissions().size());
+        assertEquals(13, gameInteraction.getResourceSize(ResourceType.PANDA_MISSION));
         assertEquals(1,game.getPlayerData().getStamina());
     }
 
     @Test
     void botDrawTooMuchPandaMission() {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 14; i++) {
             game.getResource().drawPandaMission();
         }
         assertThrows(OutOfResourcesException.class,() -> gameInteraction.drawMission(MissionType.PANDA));
@@ -120,20 +103,15 @@ class GameInteractionTest {
 
     @Test
     void botDrawPeasantMissionLessStaminaAndAddMissionToInventory() {
-        assertEquals(0, gameInteraction.getInventoryPeasantMissions().size());
-        assertEquals(15, gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION));
-        assertEquals(2,game.getPlayerData().getStamina());
-
         gameInteraction.drawMission(MissionType.PEASANT);
-
-        assertEquals(1, gameInteraction.getInventoryPeasantMissions().size());
-        assertEquals(14, gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION));
+        assertEquals(2, gameInteraction.getInventoryPeasantMissions().size());
+        assertEquals(13, gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION));
         assertEquals(1,game.getPlayerData().getStamina());
     }
 
     @Test
     void botDrawTooMuchPeasantMission() {
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 14; i++) {
             game.getResource().drawPeasantMission();
         }
         assertThrows(OutOfResourcesException.class,() -> gameInteraction.drawMission(MissionType.PEASANT));
@@ -354,4 +332,27 @@ class GameInteractionTest {
         assertNotEquals(new Coordinate(1,-1,0),placedCoordinatesByRedColor.get(0));
         assertNotEquals(new Coordinate(0,-1,1),placedCoordinatesByBlueColor.get(0));
     }
+
+    @Test
+    void weatherCantBePlayedTwice(){
+        game.getPlayerData().add(ActionType.WEATHER);
+        assertThrows(RulesViolationException.class, () ->  gameInteraction.thunderstromAction(new Coordinate(1,-1,0)));
+        assertThrows(RulesViolationException.class, () ->  gameInteraction.rainAction(new Coordinate(1,-1,0)));
+        //météo utilisée 2 fois
+    }
+
+    @Test
+    void thunderstruckCantBeProperlyPLayed(){
+        assertThrows(BadCoordinateException.class, () ->  gameInteraction.thunderstromAction(new Coordinate(1,-1,0)));
+        //La parcelle n'est pas posée donc le panda ne peut pas s'y déplacer
+    }
+
+    @Test
+    void rainCantBeProperlyPLayed(){
+        assertThrows(BadCoordinateException.class, () ->  gameInteraction.rainAction(new Coordinate(1,-1,0)));
+        //La parcelle n'est pas posée
+    }
+
+
+
 }

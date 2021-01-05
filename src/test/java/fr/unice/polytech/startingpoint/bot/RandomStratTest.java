@@ -2,8 +2,12 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.*;
+import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
+
+import fr.unice.polytech.startingpoint.type.WeatherType;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -42,9 +46,9 @@ public class RandomStratTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(0);//donne une val au random pour choisir la mission
         randomStrat.setRand(mockRand, mockRand2);//set les Random mock
 
-        assertEquals(0, game.getGameInteraction().getInventoryParcelMissions().size());
-        randomStrat.stratOneTurn();
         assertEquals(1, game.getGameInteraction().getInventoryParcelMissions().size());
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
+        assertEquals(2, game.getGameInteraction().getInventoryParcelMissions().size());
     }
 
 
@@ -56,9 +60,10 @@ public class RandomStratTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(1);//donne une val au random pour choisir la mission
         randomStrat.setRand(mockRand, mockRand2);//set les Random mock
 
-        assertEquals(0, game.getGameInteraction().getInventoryPandaMissions().size());
-        randomStrat.stratOneTurn();
         assertEquals(1, game.getGameInteraction().getInventoryPandaMissions().size());
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
+
+        assertEquals(2, game.getGameInteraction().getInventoryPandaMissions().size());
     }
 
     @Test
@@ -69,10 +74,10 @@ public class RandomStratTest {
         Mockito.when(mockRand2.nextInt(3)).thenReturn(2);//donne une val au random pour choisir la mission
         randomStrat.setRand(mockRand, mockRand2);//set les Random mock
 
-
-        assertEquals(0, game.getGameInteraction().getInventoryPeasantMissions().size());
-        randomStrat.stratOneTurn();
         assertEquals(1, game.getGameInteraction().getInventoryPeasantMissions().size());
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
+
+        assertEquals(2, game.getGameInteraction().getInventoryPeasantMissions().size());
     }
 
     @Test
@@ -84,7 +89,7 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand, new Random());//set les Random mock
 
         assertEquals(0, board.getPlacedCanals().size());
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertEquals(1, board.getPlacedCanals().size());
     }
 
@@ -95,7 +100,7 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand,new Random());//set les Random mock
 
         assertEquals(1,board.getPlacedParcels().size());//1 parcel (central)
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertEquals(2,board.getPlacedParcels().size());//2 parcels (central + la parcel posée)
     }
 
@@ -108,8 +113,9 @@ public class RandomStratTest {
         randomStrat.setRand(mockRand,new Random());//set les Random mock
 
         assertEquals(central,board.getPandaCoordinate());//Le Panda est au centre
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertNotEquals(central,board.getPandaCoordinate());//Le Panda n'est plus au centre
+
     }
 
     @Test
@@ -121,9 +127,9 @@ public class RandomStratTest {
         parcel1Bamboo.addBamboo();//ajout d'un bamboo
         board.placeParcel(new Parcel(), new Coordinate(1,-1,0));//ajoute une pièce ou mettre le paysan
         randomStrat.setRand(mockRand,new Random());//set les Random mock
-
         assertEquals(central,board.getPeasantCoordinate());//Le Paesant est au centre
-        randomStrat.stratOneTurn();
+        randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertNotEquals(central,board.getPeasantCoordinate());//Le Paesant n'est plus au centre
+
     }
 }

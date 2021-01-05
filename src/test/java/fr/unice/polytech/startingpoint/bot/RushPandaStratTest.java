@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.bot;
 
-
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
@@ -38,7 +37,7 @@ class RushPandaStratTest {
         bot= (PandaBot) game.getPlayerData().getBot();
         coordinate1 = new Coordinate(1, -1, 0);
         coordinate2 = new Coordinate(0, -1, 1);
-
+        game.getPlayerData().getInventory().subPandaMissions(game.getPlayerData().getPandaMissions()); //supprime la mission donner au debut
     }
 
     /**
@@ -113,7 +112,7 @@ class RushPandaStratTest {
         board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
         assertEquals(1,board.getPlacedParcels().get(coordinate1).getNbBamboo());//1 bamboo sur la parcel
         game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        bot.botPlay();
+        bot.botPlay(WeatherType.NO_WEATHER);
         assertEquals(0,board.getPlacedParcels().get(coordinate1).getNbBamboo());//0 bamboo sur la parcel
     }
 
@@ -131,4 +130,20 @@ class RushPandaStratTest {
         game.getPlayerData().getBot().drawMission(PANDA);//fait jouer le panda(il vas piocher)
         assertEquals(1, game.getGameInteraction().getInventoryPandaMissions().size());//1 mission dans son inventaire
     }
+
+    @Test
+    void stratThunderstormPanda(){
+        Game gamePanda= new Game(new BotType[]{BotType.PANDA_BOT});
+        PandaBot pandaBot= (PandaBot) gamePanda.getPlayerData().getBot();
+        Parcel parcel=new Parcel(ColorType.GREEN);
+        Parcel parcel2=new Parcel(ColorType.GREEN);
+        parcel2.addBamboo();
+        gamePanda.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
+        gamePanda.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        gamePanda.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
+        gamePanda.getPlayerData().addMission(new PandaMission(ColorType.GREEN,2));
+        assertEquals(new Coordinate(1,0,-1),pandaBot.getRushPandaStrat().stratThunderstorm());
+    }
+
+
 }

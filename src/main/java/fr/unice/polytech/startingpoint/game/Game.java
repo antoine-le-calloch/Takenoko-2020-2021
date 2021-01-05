@@ -50,6 +50,7 @@ public class Game{
         lastRound = 0;
         weatherDice = new WeatherDice(new Random());
         initializeBot(botTypes);
+        initializeMissionsBot();
     }
 
     public Game(){
@@ -80,6 +81,14 @@ public class Game{
                     botData.add( new PlayerData( new IntelligentBot(gameInteraction) ) );
                     break;
             }
+        }
+    }
+
+    private void initializeMissionsBot(){
+        for (PlayerData playerData : botData) {
+            playerData.addMission(resource.drawPandaMission());
+            playerData.addMission(resource.drawParcelMission());
+            playerData.addMission(resource.drawPeasantMission());
         }
     }
 

@@ -5,6 +5,7 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.MissionType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ import java.util.List;
 public abstract class Bot {
 
     protected final GameInteraction gameInteraction;
+
     /**
      * <p>Set up the bot. Initialize all variables.</p>
      *
@@ -44,7 +46,7 @@ public abstract class Bot {
 
     /**<p>The actions of the bot during his turn.</p>
      */
-    public abstract void botPlay();
+    public abstract void botPlay(WeatherType weatherType);
 
     /**<p>Draw a mission with the type required in the resources.</p>
      *

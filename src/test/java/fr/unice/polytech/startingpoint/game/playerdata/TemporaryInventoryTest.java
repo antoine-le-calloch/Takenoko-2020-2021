@@ -96,7 +96,6 @@ public class TemporaryInventoryTest {
     }
 
     @Test void noWindSoNoDoubleAction(){
-       //par défaut no_weather
         assertFalse(temporaryInventory.isActionCouldBeDoneTwice());
         temporaryInventory.setWeatherType(WeatherType.SUN);
         assertFalse(temporaryInventory.isActionCouldBeDoneTwice());

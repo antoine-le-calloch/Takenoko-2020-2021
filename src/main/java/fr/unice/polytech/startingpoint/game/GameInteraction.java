@@ -89,6 +89,36 @@ public final class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+    public void thunderstromAction(Coordinate coordinate){
+        if(game.getPlayerData().add(ActionType.WEATHER)){
+
+             if(!getPlacedCoordinates().contains(coordinate))
+                 throw new BadCoordinateException("The character can't move to this coordinate : " + coordinate.toString());
+             else{
+                 game.getBoard().moveCharacter(CharacterType.PANDA,coordinate);
+             }
+        }
+        else {
+            throw new RulesViolationException("Already used this method.");
+        }
+    }
+
+
+    public void rainAction(Coordinate coordinate){
+        if(getPlayerData().add(ActionType.WEATHER)){
+            if(!getPlacedCoordinates().contains(coordinate))
+                throw new BadCoordinateException("The parcel with the coordinate : " + coordinate.toString() + " is not placed");
+            else if (game.getBoard().getPlacedParcels().get(coordinate).getIrrigated()) {
+                game.getBoard().getPlacedParcels().get(coordinate).addBamboo();
+            }
+        }
+        else {
+            throw new RulesViolationException("Already used this method.");
+        }
+
+
+    }
+
     public void placeParcel(Coordinate coordinate){
         if (getPlayerData().add(ActionType.PLACE_PARCEL)){
             if (getPlayerData().contains(ActionType.DRAW_PARCELS) && getPlayerData().contains(ActionType.SELECT_PARCEL)){
@@ -140,6 +170,13 @@ public final class GameInteraction {
     /**
      * <h1><u>BOT GETTERS</u></h1>
      */
+
+    public List<Coordinate> getAllParcelsIrrigated(){
+        return getPlacedCoordinates()
+                .stream()
+                .filter(this::isIrrigatedParcel)
+                .collect(Collectors.toList());
+    }
 
     public int getNumberMissionsDone(){
         return getPlayerData().getMissionsDone();

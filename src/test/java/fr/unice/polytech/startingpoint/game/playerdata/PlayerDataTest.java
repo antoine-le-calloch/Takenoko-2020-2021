@@ -75,9 +75,9 @@ public class PlayerDataTest {
         playerData.addMission(new ParcelMission(ColorType.RED, FormType.TRIANGLE, 3));
         playerData.addMission(new PandaMission(ColorType.RED,2));
         playerData.addMission(new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 4));
-        assertEquals(1,playerData.getParcelMissions().size());
-        assertEquals(1,playerData.getPandaMissions().size());
-        assertEquals(1,playerData.getPeasantMissions().size());
+        assertEquals(2,playerData.getParcelMissions().size());
+        assertEquals(2,playerData.getPandaMissions().size());
+        assertEquals(2,playerData.getPeasantMissions().size());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class PlayerDataTest {
     void windRolledSo2SameAction(){
         Game game=new Game(new BotType[]{BotType.PANDA_BOT} );
         game.getPlayerData().botPlay(WeatherType.WIND);
-        assertEquals(2, game.getPlayerData().getPandaMissions().size());//le panda va piocher 2 fois la mission panda
+        assertEquals(3, game.getPlayerData().getPandaMissions().size());//le panda va piocher 2 fois la mission panda
     }
 
 }

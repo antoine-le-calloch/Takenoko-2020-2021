@@ -1,183 +1,226 @@
 package fr.unice.polytech.startingpoint.game.mission;
 
-import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
-import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-/**
- * Tests unitaires
- * @author Manuel Enzo
- * @author Naud Eric
- * @author Madern Loic
- * @author Le Calloch Antoine
- * @version 2020.12.03
- */
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class PeasantMissionTest {
-    Game game;
-    Board board;
-    PeasantMission missionRed;
-    PeasantMission missionBlue;
-    PeasantMission missionFertiziler;
+    PeasantMission mission;
+    Board boardMock;
+    Parcel parcelMock;
+    Parcel parcelMock2;
+    Parcel parcelMock3;
+    Parcel parcelMock4;
 
-    
     @BeforeEach
     void setUp(){
-        game = new Game();
-        board = game.getBoard();
-        missionRed = new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 2);
-        missionBlue = new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 2);
-        missionFertiziler = new PeasantMission(ColorType.GREEN, ImprovementType.FERTILIZER, 2);
+        parcelMock = mock(Parcel.class);
+        parcelMock2 = mock(Parcel.class);
+        parcelMock3 = mock(Parcel.class);
+        parcelMock4 = mock(Parcel.class);
+        boardMock = mock(Board.class);
+        mission = new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 2);
     }
 
-    @Test
-    void missionPoints(){
-        assertEquals(missionRed.getPoints(),missionFertiziler.getPoints());
-        assertEquals(missionBlue.getPoints(),missionFertiziler.getPoints());
-    }
+    /**
+     * <h1><u>CAS UNE PARCELLE</u></h1>
+     */
 
     @Test
     void missionComplete() {
-        Parcel parcel1 = new Parcel(ColorType.RED);
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        parcel1.addBamboo();
-        parcel1.addBamboo();
-        parcel1.addBamboo();
-        assertEquals(4, parcel1.getNbBamboo());
-        assertTrue(missionRed.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
-    }
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
 
-    @Test
-    void missionCompleteSpecialGreen() {
-        Parcel parcel1 = new Parcel(ColorType.GREEN);
-        Parcel parcel2 = new Parcel(ColorType.GREEN);
-        Parcel parcel3 = new Parcel(ColorType.GREEN);
-        Parcel parcel4 = new Parcel(ColorType.GREEN);
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
-        board.placeParcel(parcel3,new Coordinate(0,1,-1));
-        board.placeParcel(parcel4,new Coordinate(-1,1,0));
-        for (int i = 0; i < 2; i++) {
-            parcel1.addBamboo();
-            parcel2.addBamboo();
-            parcel3.addBamboo();
-            parcel4.addBamboo();
-        }
-        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
-        assertTrue(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
-    }
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(4);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
+        Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.NOTHING);
 
-    @Test
-    void missionIncompleteSpecialGreenNotEnoughParcelWithBamboo() {
-        Parcel parcel1 = new Parcel(ColorType.GREEN);
-        Parcel parcel2 = new Parcel(ColorType.GREEN);
-        Parcel parcel3 = new Parcel(ColorType.GREEN);
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
-        board.placeParcel(parcel3,new Coordinate(0,1,-1));
-        for (int i = 0; i < 2; i++) {
-            parcel1.addBamboo();
-            parcel2.addBamboo();
-            parcel3.addBamboo();
-        }
-        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
-        assertFalse(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
-    }
-
-    @Test
-    void missionIncompleteSpecialGreenTooManyBambooInTheParcels() {
-        Parcel parcel1 = new Parcel(ColorType.GREEN);
-        Parcel parcel2 = new Parcel(ColorType.GREEN);
-        Parcel parcel3 = new Parcel(ColorType.GREEN);
-        Parcel parcel4 = new Parcel(ColorType.GREEN);
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
-        board.placeParcel(parcel3,new Coordinate(0,1,-1));
-        board.placeParcel(parcel4,new Coordinate(-1,1,0));
-        for (int i = 0; i < 3; i++) {
-            parcel1.addBamboo();
-            parcel2.addBamboo();
-            parcel3.addBamboo();
-            parcel4.addBamboo();
-        }
-        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
-        assertFalse(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
-    }
-
-    @Test
-    void missionIncompleteSpecialGreenNotEnoughBamboo() {
-        Parcel parcel1 = new Parcel(ColorType.GREEN);
-        Parcel parcel2 = new Parcel(ColorType.GREEN);
-        Parcel parcel3 = new Parcel(ColorType.GREEN);
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
-        board.placeParcel(parcel3,new Coordinate(0,1,-1));
-        parcel1.addBamboo();
-        parcel2.addBamboo();
-        parcel3.addBamboo();
-        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
-        assertFalse(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
-    }
-
-    @Test
-    void missionCompleteSpecialYellow() {
-        Parcel parcel1 = new Parcel(ColorType.YELLOW);
-        Parcel parcel2 = new Parcel(ColorType.YELLOW);
-        Parcel parcel3 = new Parcel(ColorType.YELLOW);
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
-        board.placeParcel(parcel3,new Coordinate(0,1,-1));
-        for (int i = 0; i < 2; i++) {
-            parcel1.addBamboo();
-            parcel2.addBamboo();
-            parcel3.addBamboo();
-        }
-        PeasantMission specialMissionGreen = new PeasantMission(ColorType.YELLOW, ImprovementType.WHATEVER, 2);
-        assertTrue(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
-    }
-
-    @Test
-    void missionCompleteSpecialRed() {
-        Parcel parcel1 = new Parcel(ColorType.RED);
-        Parcel parcel2 = new Parcel(ColorType.RED);
-        board.placeParcel(parcel1,new Coordinate(1,-1,0));
-        board.placeParcel(parcel2,new Coordinate(1,0,-1));
-        for (int i = 0; i < 2; i++) {
-            parcel1.addBamboo();
-            parcel2.addBamboo();
-        }
-        PeasantMission specialMissionGreen = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
-        assertTrue(specialMissionGreen.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+        assertTrue(mission.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
     }
 
     @Test
     void wrongColor() {
-        board.placeParcel(new Parcel(ColorType.RED),new Coordinate(1,-1,0));
-        game.getGameInteraction().moveCharacter(CharacterType.PEASANT, new Coordinate(1,-1,0));
-        assertFalse(missionBlue.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(4);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.GREEN);
+        Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.NOTHING);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+        assertFalse(mission.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
     }
 
     @Test
     void notEnoughBamboo(){
-        assertFalse(missionRed.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
+        Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.NOTHING);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+        assertFalse(mission.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
     }
 
     @Test
     void wrongImprovement(){
-        PeasantMission missionWaterShed = new PeasantMission(ColorType.GREEN, ImprovementType.WATERSHED, 2);
-        PeasantMission missionEnclosure = new PeasantMission(ColorType.GREEN, ImprovementType.ENCLOSURE, 2);
-        board.placeParcel(new Parcel(ColorType.GREEN,ImprovementType.FERTILIZER),new Coordinate(1,-1,0));
-        assertFalse(missionEnclosure.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
-        assertFalse(missionWaterShed.checkMission(new ArrayList<>(board.getPlacedParcels().values())));
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(4);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
+        Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.WATERSHED);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+        assertFalse(mission.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
+    }
+
+    /**
+     * <h1><u>CAS PLUSIEURS PARCELLES</u></h1>
+     */
+
+    @Test
+    void missionCompleteSpecialGreen() {
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+        coordinateParcelMap.put(new Coordinate(1,0,-1), parcelMock2);
+        coordinateParcelMap.put(new Coordinate(0,1,-1), parcelMock3);
+        coordinateParcelMap.put(new Coordinate(-1,1,0), parcelMock4);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock2.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock3.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock4.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.GREEN);
+        Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.GREEN);
+        Mockito.when(parcelMock3.getColor()).thenReturn(ColorType.GREEN);
+        Mockito.when(parcelMock4.getColor()).thenReturn(ColorType.GREEN);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+
+        PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
+        assertTrue(specialMissionGreen.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
+
+    }
+
+    @Test
+    void missionCompleteSpecialYellow() {
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+        coordinateParcelMap.put(new Coordinate(1,0,-1), parcelMock2);
+        coordinateParcelMap.put(new Coordinate(0,1,-1), parcelMock3);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock2.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock3.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.YELLOW);
+        Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.YELLOW);
+        Mockito.when(parcelMock3.getColor()).thenReturn(ColorType.YELLOW);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+
+        PeasantMission specialMissionYellow = new PeasantMission(ColorType.YELLOW, ImprovementType.WHATEVER, 2);
+        assertTrue(specialMissionYellow.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
+    }
+
+    @Test
+    void missionCompleteSpecialRed() {
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+        coordinateParcelMap.put(new Coordinate(1,0,-1), parcelMock2);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock2.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
+        Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.RED);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+
+        PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
+        assertTrue(specialMissionRed.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
+    }
+
+    @Test
+    void missionCompleteSpecialRedTooManyParcelWithBamboo() {
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+        coordinateParcelMap.put(new Coordinate(1,0,-1), parcelMock2);
+        coordinateParcelMap.put(new Coordinate(0,1,-1), parcelMock2);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock2.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock3.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
+        Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.RED);
+        Mockito.when(parcelMock3.getColor()).thenReturn(ColorType.RED);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+
+        PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
+        assertTrue(specialMissionRed.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
+    }
+
+    @Test
+    void missionIncompleteSpecialRedNotEnoughParcelWithBamboo() {
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+
+        PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
+        assertFalse(specialMissionRed.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
+    }
+
+    @Test
+    void missionIncompleteSpecialGreenTooManyBambooInTheParcels() {
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+        coordinateParcelMap.put(new Coordinate(1,0,-1), parcelMock2);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(4);
+        Mockito.when(parcelMock2.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
+        Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.RED);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+
+        PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
+        assertFalse(specialMissionRed.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
+    }
+
+    @Test
+    void missionIncompleteSpecialGreenNotEnoughBamboo() {
+        Map<Coordinate,Parcel> coordinateParcelMap = new HashMap<>();
+        coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
+        coordinateParcelMap.put(new Coordinate(1,0,-1), parcelMock2);
+
+        Mockito.when(parcelMock.getNbBamboo()).thenReturn(2);
+        Mockito.when(parcelMock2.getNbBamboo()).thenReturn(3);
+        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
+        Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.RED);
+
+        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
+
+        PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
+        assertFalse(specialMissionRed.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
     }
 }

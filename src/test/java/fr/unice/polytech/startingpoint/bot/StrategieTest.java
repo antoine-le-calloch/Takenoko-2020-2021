@@ -1,11 +1,14 @@
 package fr.unice.polytech.startingpoint.bot;
 
+
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.board.Rules;
+
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,8 +40,6 @@ class StrategieTest {
         strategie = new RandomStrat(bot1);
     }
 
-
-
     @Test
     void initializeNextCoordinatesNextToCentral(){
         List<Coordinate> nextTocentral = strategie.possibleCoordinatesParcel();
@@ -63,7 +64,6 @@ class StrategieTest {
         assertTrue(Coordinate.getNorm(new Coordinate(1,-1,0),randomCo)>=0);
         assertEquals(0,sumco);
     }
-
 
     @Test
     void possibleCoordinatesParcelTest(){
@@ -117,8 +117,6 @@ class StrategieTest {
         assertEquals(new Coordinate(-1,0,1),newPlaces.get(5));
     }
 
-
-
     /** <h2><b>Test  posssibleCoordinatesNextToParcelsWithAColor </b></h2>
      */
 
@@ -147,5 +145,30 @@ class StrategieTest {
     }
 
 
+    @Test
+    void simpleRainStratPreferFertilizer(){
+        board.placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        board.placeParcel(new Parcel(ImprovementType.FERTILIZER),new Coordinate(-1,1,0));
+        assertEquals(new Coordinate(-1,1,0),strategie.stratRain());
+    }
+    @Test
+    void simpleRainStratWith1Parcel(){
+        board.placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        assertEquals(new Coordinate(1,-1,0),strategie.stratRain());
+    }
+
+
+    @Test
+    void simlpeThunderstormStrat(){
+        Parcel parcel=new Parcel();
+        parcel.addBamboo();
+        board.placeParcel(new Parcel(),new Coordinate(-1,1,0));
+        board.placeParcel(parcel,new Coordinate(1,-1,0));
+        assertEquals(new Coordinate(1,-1,0),strategie.stratThunderstorm());
+    }
+
+
+
 
 }
+

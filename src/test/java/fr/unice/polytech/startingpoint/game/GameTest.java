@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.game;
 
-
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.Test;
@@ -47,22 +46,32 @@ class GameTest {
         Game game=new Game(botList);
         for (int i = 0; i < 28; i++) {
             game.getPlayerData().addMissionDone();
-            System.out.println(game.getMissionsDone());
-            System.out.println(game.isContinue());
+            game.isContinue();
             game.nextBot();
         }
         assertFalse(game.isContinue());
     }
 
     @Test
-    void gameIsntFinishBecauseLastTurnIsntFinish(){
+    void gameIsnTFinishBecauseLastTurnIsnTFinish(){
         BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
         Game game=new Game(botList);
         for (int i = 0; i < 25; i++) {
             game.getPlayerData().addMissionDone();
+            game.isContinue();
             game.nextBot();
         }
         assertTrue(game.isContinue());
+    }
+
+
+    @Test
+    void threeMissionsInInventory(){
+        Game game=new Game();
+        assertEquals(game.getPlayerData().getPandaMissions().size(),1);
+        assertEquals(game.getPlayerData().getPeasantMissions().size(),1);
+        assertEquals(game.getPlayerData().getParcelMissions().size(),1);
+
     }
 
     @Test
@@ -75,7 +84,7 @@ class GameTest {
     @Test
     void atLeastTwoRoundsSoWeatherMustBePresent(){
         game.newRound();
-        game.newRound();//2 round so No Weather dissapear
+        game.newRound();//2 round so No Weather disappear
         game.botPlay();
         assertNotEquals(WeatherType.NO_WEATHER,game.getPlayerData().getWeatherType());
         //2e le dé météo peut être roll
