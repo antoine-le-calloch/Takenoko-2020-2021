@@ -85,7 +85,9 @@ class GameTest {
     void gameMissionAndScoreTest(){
         assertEquals(0,game.getScores().get(0)[0]);
         assertEquals(0, game.getMissionsDone().get(0));
+
         game.getPlayerData().addMissionDone(2);
+
         assertEquals(2,game.getScores().get(0)[0]);
         assertEquals(1,game.getMissionsDone().get(0));
     }
