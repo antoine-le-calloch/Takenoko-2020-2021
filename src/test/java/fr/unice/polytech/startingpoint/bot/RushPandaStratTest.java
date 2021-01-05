@@ -38,7 +38,7 @@ class RushPandaStratTest {
         bot= (PandaBot) game.getPlayerData().getBot();
         coordinate1 = new Coordinate(1, -1, 0);
         coordinate2 = new Coordinate(0, -1, 1);
-
+        game.getPlayerData().getInventory().subPandaMissions(game.getPlayerData().getPandaMissions()); //supprime la mission donner au debut
     }
 
     /**

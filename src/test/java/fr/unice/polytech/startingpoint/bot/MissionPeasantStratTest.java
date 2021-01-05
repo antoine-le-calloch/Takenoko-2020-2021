@@ -30,6 +30,7 @@ public class MissionPeasantStratTest {
         bot = new PeasantBot(game.getGameInteraction());
         coordinate1 = new Coordinate(1, -1, 0);
         stratMissionPeasant = new MissionPeasantStrat(bot);
+        game.getPlayerData().getInventory().subPeasantMissions(game.getPlayerData().getPeasantMissions()); //supprime la mission donner au debut
     }
     /**
      <h2><u>Strategy Move Peasant</u></h2>
@@ -46,6 +47,7 @@ public class MissionPeasantStratTest {
         board.placeParcel(parcel1, coordinate1);//place la parcel (un bamboo pousse)
         assertNull(stratMissionPeasant.strategyMovePeasant());
     }
+
     @Test
     void possibleParcelColorDifferentFromTheActualMission() {
         board.placeParcel(parcel1, coordinate1);

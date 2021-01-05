@@ -65,7 +65,7 @@ class GameTest {
         assertTrue(game.isContinue());
     }
 
-    /*
+
     @Test
     void threeMissionsInInventory(){
         Game game=new Game();
@@ -73,10 +73,7 @@ class GameTest {
         assertEquals(game.getPlayerData().getPeasantMissions().size(),1);
         assertEquals(game.getPlayerData().getParcelMissions().size(),1);
 
-    }*/
-
-
-
+    }
 
     @Test
     void firstRoundSoNoWeather(){
