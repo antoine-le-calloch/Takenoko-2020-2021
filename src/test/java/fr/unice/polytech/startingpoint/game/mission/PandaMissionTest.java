@@ -9,15 +9,6 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-/**
- * Tests unitaires
- * @author Manuel Enzo
- * @author Naud Eric
- * @author Madern Loic
- * @author Le Calloch Antoine
- * @version 2020.12.03
- */
-
 public class PandaMissionTest {
     Inventory inventoryMock;
     PandaMission mission1;

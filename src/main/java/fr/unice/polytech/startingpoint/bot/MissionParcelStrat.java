@@ -22,7 +22,10 @@ public class MissionParcelStrat extends Strategie{
         super(bot);
     }
 
-    public void stratOneTurn(){
+    public void stratOneTurn(WeatherType weatherType){
+
+        if(isJudiciousPlayWeather())
+            playWeather(weatherType);
         if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PARCEL);
         else if (isJudiciousPutCanal())
@@ -30,6 +33,23 @@ public class MissionParcelStrat extends Strategie{
         else if(isJudiciousPutParcel())
             putParcel();
     }
+
+    public boolean isJudiciousPlayWeather(){
+        if(!bot.gameInteraction.contains(ActionType.WEATHER)){
+            return true;
+        }
+        return false;
+    }
+
+    public void playWeather(WeatherType weatherType){
+        if(weatherType.equals(WeatherType.RAIN))
+            stratRain();
+        else if(weatherType.equals(WeatherType.THUNDERSTORM))
+            stratThunderstorm();
+    }
+
+
+
 
     /**
      * @return <b>True if the bot can draw a mission.</b>

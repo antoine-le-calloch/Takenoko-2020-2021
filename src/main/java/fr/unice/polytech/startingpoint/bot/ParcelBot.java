@@ -1,14 +1,15 @@
 package fr.unice.polytech.startingpoint.bot;
 
+
 import fr.unice.polytech.startingpoint.game.GameInteraction;
-import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
 /**
  * <h1>{@link ParcelBot} :</h1>
  *
  * <p>This class provides a bot specialized in {@link ParcelMission} missions.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link #botPlay()} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -23,6 +24,10 @@ import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
  */
 
 public class ParcelBot extends Bot {
+    public MissionParcelStrat getStratMissionParcel() {
+        return stratMissionParcel;
+    }
+
     MissionParcelStrat stratMissionParcel = new MissionParcelStrat(this);
 
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
@@ -35,10 +40,13 @@ public class ParcelBot extends Bot {
     }
 
     /**<p>The actions of the bot during his turn.</p>
+     * @param weatherType
      */
-    public void botPlay() {
+
+    @Override
+    public void botPlay(WeatherType weatherType) {
         for (int i = gameInteraction.getStamina(); i > 0; i--){
-            stratMissionParcel.stratOneTurn();
+            stratMissionParcel.stratOneTurn(weatherType);
         }
     }
 }

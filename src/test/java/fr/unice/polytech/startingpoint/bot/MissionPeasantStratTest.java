@@ -5,9 +5,7 @@ import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
-import fr.unice.polytech.startingpoint.type.ActionType;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -69,7 +67,7 @@ public class MissionPeasantStratTest {
         board.placeParcel(parcel1, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
         game.getPlayerData().addMission(new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 1));
         assertEquals(1,board.getPlacedParcels().get(coordinate1).getNbBamboo());
-        stratMissionPeasant.stratOneTurn();//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
+        stratMissionPeasant.stratOneTurn(WeatherType.NO_WEATHER);//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
         assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
     }
 
@@ -78,7 +76,21 @@ public class MissionPeasantStratTest {
     @Test
     void drawMission() {
         assertEquals(0, game.getGameInteraction().getInventoryPeasantMissions().size());//0 mission dans son inventaire
-        stratMissionPeasant.stratOneTurn();//fait jouer le paysan(il vas piocher)
+        stratMissionPeasant.stratOneTurn(WeatherType.NO_WEATHER);//fait jouer le paysan(il vas piocher)
         //assertEquals(1, game.getGameInteraction().getInventoryPeasantMissions().size());//1 mission dans son inventaire
+    }
+
+
+    @Test
+    void stratRainPeasent(){
+        Game gamePeasent= new Game(new BotType[]{BotType.PEASANT_BOT});
+        PeasantBot peasentBot= (PeasantBot) gamePeasent.getPlayerData().getBot();
+        Parcel parcel=new Parcel(ColorType.GREEN);
+        Parcel parcel2=new Parcel(ColorType.RED);
+        gamePeasent.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
+        gamePeasent.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
+        gamePeasent.getPlayerData().addMission(new PeasantMission(ColorType.RED,ImprovementType.NOTHING,2));
+        assertEquals(new Coordinate(1,0,-1),peasentBot.getStratMissionPeasant().stratRain());
+
     }
 }

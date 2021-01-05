@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.Random;
 
@@ -9,7 +10,7 @@ import java.util.Random;
  *
  * <p>This class provides a bot playing randomly.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link #botPlay()} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -36,10 +37,13 @@ public class RandomBot extends Bot {
     }
 
     /**<p>The actions of the bot during his turn.</p>
+     * @param weatherType
      */
-    public void botPlay() {
+
+    @Override
+    public void botPlay(WeatherType weatherType) {
         for (int i = gameInteraction.getStamina(); i > 0; i--) {
-            randomStrat.stratOneTurn();
+            randomStrat.stratOneTurn(weatherType);
         }
     }
 }

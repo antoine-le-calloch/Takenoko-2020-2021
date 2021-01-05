@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
 public class IntelligentBot extends Bot {
     RushPandaStrat rushPandaStrat = new RushPandaStrat(this);
@@ -11,12 +12,14 @@ public class IntelligentBot extends Bot {
         super(gameInteraction);
     }
 
-    public void botPlay() {
+    @Override
+    public void botPlay(WeatherType weatherType) {
+
         for (int i = gameInteraction.getStamina(); i > 0; i--){
             if (gameInteraction.getNumberMissionsDone() < NB_CHANGE_STRAT)
-                stratMissionParcel.stratOneTurn();
+                stratMissionParcel.stratOneTurn(weatherType);
             else
-                rushPandaStrat.stratOneTurn();
+                rushPandaStrat.stratOneTurn(weatherType);
         }
     }
 }

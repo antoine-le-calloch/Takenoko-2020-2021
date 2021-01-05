@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.game;
 
-
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.Test;
@@ -54,7 +53,7 @@ class GameTest {
     }
 
     @Test
-    void gameIsntFinishBecauseLastTurnIsntFinish(){
+    void gameIsnTFinishBecauseLastTurnIsnTFinish(){
         BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
         Game game=new Game(botList);
         for (int i = 0; i < 25; i++) {
@@ -85,7 +84,7 @@ class GameTest {
     @Test
     void atLeastTwoRoundsSoWeatherMustBePresent(){
         game.newRound();
-        game.newRound();//2 round so No Weather dissapear
+        game.newRound();//2 round so No Weather disappear
         game.botPlay();
         assertNotEquals(WeatherType.NO_WEATHER,game.getPlayerData().getWeatherType());
         //2e le dé météo peut être roll
