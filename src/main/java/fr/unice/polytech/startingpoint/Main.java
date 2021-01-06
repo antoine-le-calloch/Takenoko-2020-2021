@@ -3,6 +3,8 @@ package fr.unice.polytech.startingpoint;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.type.BotType;
 
+import java.util.Arrays;
+
 /**
  * Main, lance 1000 parties, des statistiques sont affichées
  * @author Manuel Enzo
@@ -16,13 +18,15 @@ class Main{
     public static void main(String... args){
         final int NUMBER_OF_GAMES = 1;
 
-        BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PEASANT_BOT,BotType.INTELLIGENT_BOT};
+        BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PEASANT_BOT};
         Stat statGame = new Stat(botList);
 
         for (int i = 0; i < NUMBER_OF_GAMES; i++) {
+            System.out.print(i + ". ");
             Game game = new Game(botList);
             game.play();
             statGame.add(game.getScores());
+            System.out.println();
         }
 
         System.out.println(statGame);

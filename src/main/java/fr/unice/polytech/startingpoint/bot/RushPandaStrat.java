@@ -30,6 +30,35 @@ public class RushPandaStrat extends Strategie{
         return false;
     }
 
+    /**
+     * @return <b>True if the bot can draw a mission.</b>
+     * @see GameInteraction
+     */
+    public boolean isJudiciousDrawMission(){
+        int NB_MISSION_MAX = 5;
+        return bot.gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION) && bot.gameInteraction.getInventoryParcelMissions().size() <= NB_MISSION_MAX;
+    }
+
+    /**
+     * @return <b>True if the bot can move the panda.</b>
+     * @see GameInteraction
+     */
+    public boolean isJudiciousMovePanda(){
+        return strategyMovePanda() != null && !bot.gameInteraction.contains(ActionType.MOVE_PANDA);
+    }
+
+
+    public Coordinate strategyMovePanda() {
+        for (PandaMission pandaMission : bot.gameInteraction.getInventoryPandaMissions() ) {
+            if (pandaMission.getColorType().equals(ColorType.ALL_COLOR))
+                return strategyMissionAllColor();
+            else
+                return strategyMissionOneColor(pandaMission.getColorType());
+        }
+        return null;
+    }
+
+
     public void playWeather(WeatherType weatherType){
         if(weatherType.equals(WeatherType.RAIN))
             stratRain();
@@ -40,8 +69,6 @@ public class RushPandaStrat extends Strategie{
         else if(weatherType.equals(WeatherType.CLOUD))
             stratCloud();
     }
-
-
 
     @Override
     public Coordinate stratThunderstorm() {
@@ -62,33 +89,6 @@ public class RushPandaStrat extends Strategie{
                 return coordinate;
 
             }
-        }
-        return null;
-    }
-
-    /**
-     * @return <b>True if the bot can draw a mission.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousDrawMission(){
-        return bot.gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION);
-    }
-
-    /**
-     * @return <b>True if the bot can move the panda.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousMovePanda(){
-        return strategyMovePanda() != null && !bot.gameInteraction.contains(ActionType.MOVE_PANDA);
-    }
-
-
-    public Coordinate strategyMovePanda() {
-        for (PandaMission pandaMission : bot.gameInteraction.getInventoryPandaMissions() ) {
-            if (pandaMission.getColorType().equals(ColorType.ALL_COLOR))
-                return strategyMissionAllColor();
-            else
-                return strategyMissionOneColor(pandaMission.getColorType());
         }
         return null;
     }

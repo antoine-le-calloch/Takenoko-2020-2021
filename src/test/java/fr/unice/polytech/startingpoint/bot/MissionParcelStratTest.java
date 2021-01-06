@@ -20,7 +20,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MissionParcelStratTest {
-    ParcelMission missionBlueTriangle;
+
+    ParcelMission missionGreenTriangle;
     ParcelMission missionRedLine;
 
     Coordinate coordinate1;
@@ -51,14 +52,14 @@ class MissionParcelStratTest {
 
         stratMissionParcel = new MissionParcelStrat(parcelBot);
 
-        missionBlueTriangle = new ParcelMission(ColorType.GREEN, FormType.TRIANGLE, 1);
+        missionGreenTriangle = new ParcelMission(ColorType.GREEN, FormType.TRIANGLE, 1);
         missionRedLine = new ParcelMission(ColorType.RED, FormType.LINE, 1);
 
         game.getPlayerData().getInventory().subParcelMissions(game.getPlayerData().getParcelMissions()); //supprime la mission donner au debut
     }
 
 
-    @Test
+    /*@Test
     void LineForm() {
         List<Coordinate> triangleForm = stratMissionParcel.setForm(coordinate1, FormType.LINE);
 
@@ -125,9 +126,9 @@ class MissionParcelStratTest {
 ///////////////////////////////
 
     @Test
-    void coordNeedToDoBlueTriangle_1BlueParcelPut() {
+    void coordNeedToDoGreenTriangle_1GreenParcelPut() {
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
-        List<Coordinate> coordNeedToDoBlueTriangle = stratMissionParcel.coordNeedToDoMission(coordinate2, missionBlueTriangle);
+        List<Coordinate> coordNeedToDoGreenTriangle = stratMissionParcel.coordNeedToDoMission(coordinate2, missionGreenTriangle);
 
         assertEquals(2, coordNeedToDoBlueTriangle.size());
         assertEquals(coordinate3, coordNeedToDoBlueTriangle.get(0));
@@ -135,11 +136,11 @@ class MissionParcelStratTest {
     }
 
     @Test
-    void coordNeedToDoBlueTriangle_1RedParcelPut() {
+    void coordNeedToDoGreenTriangle_1RedParcelPut() {
         board.placeParcel(new Parcel(ColorType.RED), coordinate2);
-        List<Coordinate> coordNeedToDoBlueTriangle = stratMissionParcel.coordNeedToDoMission(coordinate2, missionBlueTriangle);
+        List<Coordinate> coordNeedToDoGreenTriangle = stratMissionParcel.coordNeedToDoMission(coordinate2, missionGreenTriangle);
 
-        assertNull(coordNeedToDoBlueTriangle);
+        assertNull(coordNeedToDoGreenTriangle);
     }
 
     @Test
@@ -164,7 +165,7 @@ class MissionParcelStratTest {
     }
 
     @Test
-    void coordNeedToDoRedLine_1BlueParcelPut() {
+    void coordNeedToDoRedLine_1GreenParcelPut() {
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate1);
         List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.coordNeedToDoMission(coordinate1, missionRedLine);
 
@@ -209,11 +210,11 @@ class MissionParcelStratTest {
         assertEquals(1, board.getPlacedParcels().size());
         stratMissionParcel.putParcel();
         assertEquals(2, board.getPlacedParcels().size());
-    }
+    }*/
 
    /* @Test
-    void putParcel_1MissionBlueTriangle() {
-        game.getGameInteraction().getPlayerData().getInventory().addMission(missionBlueTriangle);
+    void putParcel_1MissionGreenTriangle() {
+        game.getGameInteraction().getPlayerData().getInventory().addMission(missionGreenTriangle);
         assertEquals(1, board.getPlacedParcels().size());
         stratMissionParcel.putParcel();
         assertEquals(2, board.getPlacedParcels().size());
@@ -286,24 +287,39 @@ class MissionParcelStratTest {
     }
 ///////////////////////////////
 
-    /*@Test
+    @Test
     void judiciousPutCanal() {
+        game.getPlayerData().addMission(missionGreenTriangle);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate4);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        assertTrue(stratMissionParcel.isJudiciousPutCanal());
+    }
+
+    @Test
+    void judiciousPutCanal_StaminaFull() {
         board.placeParcel(new Parcel(), coordinate1);
-        board.placeParcel(new Parcel(), coordinate2);
         board.placeParcel(new Parcel(), coordinate2);
         assertTrue(stratMissionParcel.isJudiciousPutCanal());
     }
 
     @Test
+    void notJudiciousPutCanal_StaminaFull_0PlaceToPut() {
+        assertFalse(stratMissionParcel.isJudiciousPutCanal());
+    }
+
+    @Test
     void notJudiciousPutCanal_0PossiblePlace() {
+        game.getPlayerData().looseStamina();
         assertFalse(stratMissionParcel.isJudiciousPutCanal());
     }
 
     @Test
     void notJudiciousPutCanal_ActionAlreadyPlay() {
-        game.getTemporaryInventory().add(ActionType.DRAW_CANAL);
+        game.getPlayerData().looseStamina();
+        game.getPlayerData().add(ActionType.DRAW_CANAL);
         assertFalse(stratMissionParcel.isJudiciousPutCanal());
-    }*/
+    }
 ///////////////////////////////
 
     /*
