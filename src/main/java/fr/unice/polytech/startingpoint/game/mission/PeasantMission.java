@@ -85,15 +85,7 @@ public final class PeasantMission extends Mission{
         return cpt >= nbParcel;
     }
 
-    public ColorType getColorType() {
-        return colorType;
-    }
-
     public ImprovementType getImprovementType(){
         return improvementType;
-    }
-
-    public int getPoints() {
-        return points;
     }
 }

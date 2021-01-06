@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
+import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.WeatherType;
@@ -41,8 +42,7 @@ public class PeasantBot extends Bot {
 
     @Override
     public void botPlay(WeatherType weatherType) {
-        for (int i = gameInteraction.getStamina();i > 0; i--){
-            stratMissionPeasant.stratOneTurn(weatherType);
-        }
+        for (int i = gameInteraction.getStamina();i > 0; i--)
+            stratMissionPeasant.stratOneTurn(weatherType, );
     }
 }

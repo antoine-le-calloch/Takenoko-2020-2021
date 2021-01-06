@@ -1,18 +1,15 @@
-package fr.unice.polytech.startingpoint.bot;
+package fr.unice.polytech.startingpoint.bot.strategie;
 
+import fr.unice.polytech.startingpoint.bot.Bot;
+import fr.unice.polytech.startingpoint.bot.PeasantBot;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
-import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -34,6 +31,7 @@ public class MissionPeasantStratTest {
         coordinate1 = new Coordinate(1, -1, 0);
         stratMissionPeasant = new MissionPeasantStrat(bot);
         game.getPlayerData().getInventory().subMissions(game.getPlayerData().getPeasantMissions()); //supprime la mission donner au debut
+
     }
     /**
      <h2><u>Strategy Move Peasant</u></h2>
@@ -72,14 +70,14 @@ public class MissionPeasantStratTest {
         board.placeParcel(parcel1, coordinate1);//pose la parcel (cela ajoute un autre bamboo)
         game.getPlayerData().addMission(new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 1));
         assertEquals(1,board.getPlacedParcels().get(coordinate1).getNbBamboo());
-        stratMissionPeasant.stratOneTurn(WeatherType.NO_WEATHER);//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
+        stratMissionPeasant.stratOneTurn(WeatherType.NO_WEATHER, );//deplace le paysan sur une parcel avec plus de 1 bamboo (parcel1Bamboo), cela ajoute un bamboo
         assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
     }
 
     @Test
     void drawMission() {
         assertEquals(0, game.getGameInteraction().getInventoryPeasantMissions().size());//0 mission dans son inventaire
-        stratMissionPeasant.stratOneTurn(WeatherType.NO_WEATHER);//fait jouer le paysan(il vas piocher)
+        stratMissionPeasant.stratOneTurn(WeatherType.NO_WEATHER, );//fait jouer le paysan(il vas piocher)
         //assertEquals(1, game.getGameInteraction().getInventoryPeasantMissions().size());//1 mission dans son inventaire
     }
 

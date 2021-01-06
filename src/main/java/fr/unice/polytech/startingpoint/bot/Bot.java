@@ -109,5 +109,7 @@ public abstract class Bot {
         gameInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
     }
 
-    public GameInteraction getGameInteraction(){return gameInteraction;}
+    public GameInteraction getGameInteraction(){
+        return gameInteraction;
+    }
 }

@@ -1,6 +1,10 @@
-package fr.unice.polytech.startingpoint.bot;
+package fr.unice.polytech.startingpoint.bot.strategie;
 
 
+import fr.unice.polytech.startingpoint.bot.PandaBot;
+import fr.unice.polytech.startingpoint.bot.ParcelBot;
+import fr.unice.polytech.startingpoint.bot.strategie.RandomStrat;
+import fr.unice.polytech.startingpoint.bot.strategie.Strategie;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;

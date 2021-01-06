@@ -170,6 +170,10 @@ public class PlayerData {
         return inventory.getPeasantMissions();
     }
 
+    public List<Mission> getMissions() {
+        return inventory.getMissions();
+    }
+
     public int getMissionsSize() {
         return (getPandaMissions().size() + getParcelMissions().size() + getPeasantMissions().size());
     }

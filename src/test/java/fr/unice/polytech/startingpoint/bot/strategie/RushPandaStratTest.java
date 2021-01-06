@@ -1,6 +1,8 @@
-package fr.unice.polytech.startingpoint.bot;
+package fr.unice.polytech.startingpoint.bot.strategie;
 
+import fr.unice.polytech.startingpoint.bot.PandaBot;
 import fr.unice.polytech.startingpoint.game.Game;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
@@ -12,6 +14,9 @@ import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.util.*;
 
 import static fr.unice.polytech.startingpoint.type.MissionType.PANDA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,9 +37,9 @@ class RushPandaStratTest {
         game = new Game(new BotType[]{BotType.PANDA_BOT});
         board = game.getBoard();
         boardRules = game.getRules();
+        bot= (PandaBot) game.getPlayerData().getBot();
         parcel1 = new Parcel(ColorType.GREEN);
         parcel2 = new Parcel(ColorType.GREEN);
-        bot= (PandaBot) game.getPlayerData().getBot();
         coordinate1 = new Coordinate(1, -1, 0);
         coordinate2 = new Coordinate(0, -1, 1);
         game.getPlayerData().getInventory().subMissions(game.getPlayerData().getPandaMissions()); //supprime la mission donner au debut
@@ -133,16 +138,18 @@ class RushPandaStratTest {
 
     @Test
     void stratThunderstormPanda(){
-        Game gamePanda= new Game(new BotType[]{BotType.PANDA_BOT});
-        PandaBot pandaBot= (PandaBot) gamePanda.getPlayerData().getBot();
-        Parcel parcel=new Parcel(ColorType.GREEN);
-        Parcel parcel2=new Parcel(ColorType.GREEN);
-        parcel2.addBamboo();
+        Game gamePanda = new Game(new BotType[]{BotType.PANDA_BOT});
+        PandaBot pandaBot = (PandaBot) gamePanda.getPlayerData().getBot();
+        Parcel parcel = new Parcel(ColorType.RED);
+        Parcel parcel2 = new Parcel(ColorType.GREEN);
+
+        gamePanda.getPlayerData().getInventory().subMissions(gamePanda.getPlayerData().getMissions());
+
         gamePanda.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
-        gamePanda.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
         gamePanda.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
+
         gamePanda.getPlayerData().addMission(new PandaMission(ColorType.GREEN,2));
-        gamePanda.getPlayerData().getInventory().subMissions(game.getPlayerData().getPandaMissions());
+
         assertEquals(new Coordinate(1,0,-1),pandaBot.getRushPandaStrat().stratThunderstorm());
     }
 }

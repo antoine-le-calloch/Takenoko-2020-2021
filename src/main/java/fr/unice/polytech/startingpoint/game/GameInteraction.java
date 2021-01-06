@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class GameInteraction {
+public class GameInteraction {
     private final int NB_MAX_MISSION = 5;
     private final Game game;
 
@@ -247,11 +247,19 @@ public final class GameInteraction {
     public List<Coordinate> getPlacedCoordinates(){
         return new ArrayList<>(game.getBoard().getPlacedParcels().keySet());
     }
+
     public List<Coordinate> getPlacedCoordinatesByColor(ColorType color){
         return (getPlacedCoordinates()
                .stream()
                .filter(coordinate -> getPlacedParcelInformation(coordinate).getColorType().equals(color))
                .collect(Collectors.toList()));
+    }
+
+    public List<Coordinate> getPlacedCoordinatesByParcelInformation(ParcelInformation parcelInformation){
+        return (getPlacedCoordinates()
+                .stream()
+                .filter(coordinate -> getPlacedParcelInformation(coordinate).equals(parcelInformation))
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -273,6 +281,13 @@ public final class GameInteraction {
      */
     public List<PeasantMission> getInventoryPeasantMissions(){
         return getPlayerData().getPeasantMissions().stream().map(peasantMission -> (PeasantMission) peasantMission).collect(Collectors.toList());
+    }
+
+    /**
+     * @return <b>The {@link Mission} list of the current bot.</b>
+     */
+    public List<Mission> getInventoryMissions(){
+        return getPlayerData().getMissions();
     }
 
     public int getMissionsSize(){

@@ -1,5 +1,8 @@
-package fr.unice.polytech.startingpoint.bot;
+package fr.unice.polytech.startingpoint.bot.strategie;
 
+import fr.unice.polytech.startingpoint.bot.Bot;
+import fr.unice.polytech.startingpoint.bot.ParcelBot;
+import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Canal;
@@ -198,9 +201,8 @@ class MissionParcelStratTest {
 
     @Test
     void bestCoordinatesIn0Mission_RedParcelAvailable() {
-        board.placeParcel(new Parcel(ColorType.RED), coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate1);
         List<Coordinate> bestCoordinatesForAllMission = stratMissionParcel.bestCoordsInAllMission(new ArrayList<>(Collections.singletonList(ColorType.RED)));
-
         assertNull(bestCoordinatesForAllMission);
     }
 ///////////////////////////////

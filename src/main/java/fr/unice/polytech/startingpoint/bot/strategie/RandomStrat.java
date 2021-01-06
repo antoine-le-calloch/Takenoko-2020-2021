@@ -1,7 +1,9 @@
-package fr.unice.polytech.startingpoint.bot;
+package fr.unice.polytech.startingpoint.bot.strategie;
 
+import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
+import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
@@ -10,9 +12,8 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-public class RandomStrat extends Strategie{
+public class RandomStrat extends Strategie {
     private Random random;
     private Random random2;
 
@@ -26,8 +27,6 @@ public class RandomStrat extends Strategie{
         random = new Random();
         random2 = new Random();
     }
-
-
 
     /**<p>Set the {@link #random} and {@link #random2} to new objects specified in the parameters.</p>
      *
@@ -43,26 +42,26 @@ public class RandomStrat extends Strategie{
 
     /**<p>The actions of the bot during his turn.</p>
      * @param weatherType
+     * @param mission
      */
-    public void stratOneTurn(WeatherType weatherType){
-
+    public void stratOneTurn(WeatherType weatherType, Mission mission){
         if(isJudiciousPlayWeather())
             playWeather(weatherType);
 
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && bot.gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION)) {// pioche mission
+        if (randAction == 0 && bot.getGameInteraction().getResourceSize(ResourceType.ALL_MISSION) > 0 && !bot.getGameInteraction().contains(ActionType.DRAW_MISSION)) {// pioche mission
             int randMission = random2.nextInt(3);
 
-            if (randMission == 0 && bot.gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
+            if (randMission == 0 && bot.getGameInteraction().getResourceSize(ResourceType.PARCEL_MISSION) > 0)
                 bot.drawMission(MissionType.PARCEL);
-            if (randMission == 1 && bot.gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+            if (randMission == 1 && bot.getGameInteraction().getResourceSize(ResourceType.PANDA_MISSION) > 0)
                 bot.drawMission(MissionType.PANDA);
-            if (randMission == 2 && bot.gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
+            if (randMission == 2 && bot.getGameInteraction().getResourceSize(ResourceType.PEASANT_MISSION) > 0)
                 bot.drawMission(MissionType.PEASANT);
         }
 
-        else if (randAction == 1 && bot.gameInteraction.getResourceSize(ResourceType.CANAL) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_CANAL)) {  // place canal
+        else if (randAction == 1 && bot.getGameInteraction().getResourceSize(ResourceType.CANAL) > 0 && !bot.getGameInteraction().contains(ActionType.DRAW_CANAL)) {  // place canal
             if (possibleCoordinatesCanal().size() > 0) {
                 List<Coordinate[]> list = possibleCoordinatesCanal();
                 Collections.shuffle(list);
@@ -71,7 +70,7 @@ public class RandomStrat extends Strategie{
             }
         }
 
-        else if (randAction == 2 && bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS)){ // place parcel
+        else if (randAction == 2 && bot.getGameInteraction().getResourceSize(ResourceType.PARCEL) > 0 && !bot.getGameInteraction().contains(ActionType.DRAW_PARCELS)){ // place parcel
             List<ParcelInformation> parcelList = bot.drawParcel();
             Collections.shuffle(parcelList);
             bot.selectParcel(parcelList.get(0));
@@ -80,25 +79,25 @@ public class RandomStrat extends Strategie{
             bot.placeParcel(list.get(0));
         }
 
-        else if (randAction == 3 && possibleCoordinatesPanda().size() != 0 && !bot.gameInteraction.contains(ActionType.MOVE_PANDA)) {
+        else if (randAction == 3 && possibleCoordinatesPanda().size() != 0 && !bot.getGameInteraction().contains(ActionType.MOVE_PANDA)) {
             List<Coordinate> list = possibleCoordinatesPanda();
             Collections.shuffle(list);
             bot.movePanda(list.get(0));
         }
 
-        else if (possibleCoordinatesPeasant().size() != 0 && !bot.gameInteraction.contains(ActionType.MOVE_PEASANT)) {
+        else if (possibleCoordinatesPeasant().size() != 0 && !bot.getGameInteraction().contains(ActionType.MOVE_PEASANT)) {
             List<Coordinate> list = possibleCoordinatesPeasant();
             Collections.shuffle(list);
             bot.movePeasant(list.get(0));
         }
     }
 
+    public int howManyMoveToDoMission(Mission mission) {
+        return 0;
+    }
 
     public boolean isJudiciousPlayWeather(){
-        if(!bot.gameInteraction.contains(ActionType.WEATHER)){
-            return true;
-        }
-        return false;
+        return !bot.getGameInteraction().contains(ActionType.WEATHER);
     }
 
     public void playWeather(WeatherType weatherType){
