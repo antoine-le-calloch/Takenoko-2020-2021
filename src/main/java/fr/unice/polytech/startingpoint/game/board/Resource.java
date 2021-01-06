@@ -30,8 +30,13 @@ public class Resource {
     private final List<PandaMission> deckPandaMission = new ArrayList<>();
     private final List<ParcelMission> deckParcelMission = new ArrayList<>();
     private final List<PeasantMission> deckPeasantMission = new ArrayList<>();
+    private final List<ImprovementType> deckImprovementType=new ArrayList<>();
     private final List<Parcel> deckParcel = new ArrayList<>();
     private final List<Canal> deckCanal = new ArrayList<>();
+
+    public List<ImprovementType> getDeckImprovementType() {
+        return deckImprovementType;
+    }
 
     /**Initialize all decks.
      */
@@ -39,8 +44,17 @@ public class Resource {
         initializeDeckParcel();
         initializeDeckMission();
         initializeDeckCanal();
+        initializeDeckImprovement();
     }
 
+    public void initializeDeckImprovement(){
+        for(int i=0;i<3;i++){
+            deckImprovementType.add(ImprovementType.ENCLOSURE);
+            deckImprovementType.add(ImprovementType.WATERSHED);
+            deckImprovementType.add(ImprovementType.FERTILIZER);
+        }
+        Collections.shuffle(deckImprovementType);
+    }
     /**Initialize {@link Parcel} deck.
      */
     private void initializeDeckParcel(){
@@ -124,6 +138,15 @@ public class Resource {
         deckPeasantMission.add(new PeasantMission(ColorType.YELLOW, ImprovementType.WHATEVER, 7));
         deckPeasantMission.add(new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 6));
         Collections.shuffle(deckPeasantMission);
+    }
+
+
+    public ImprovementType drawImprovement(ImprovementType improvementType) throws OutOfResourcesException {
+        if (deckImprovementType.contains(improvementType)) {
+            deckImprovementType.remove(improvementType);
+            return improvementType;
+        }
+        throw new OutOfResourcesException("No more Canal to draw.");
     }
 
     /**Initialize {@link Canal} deck.

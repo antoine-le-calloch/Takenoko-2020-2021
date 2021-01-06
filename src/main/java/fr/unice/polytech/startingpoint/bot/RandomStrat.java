@@ -106,5 +106,9 @@ public class RandomStrat extends Strategie{
             stratRain();
         else if(weatherType.equals(WeatherType.THUNDERSTORM))
             stratThunderstorm();
+        else if(weatherType.equals(WeatherType.QUESTION_MARK))
+            stratQuestionMark();
+        else if(weatherType.equals(WeatherType.CLOUD))
+            stratCloud();
     }
 }

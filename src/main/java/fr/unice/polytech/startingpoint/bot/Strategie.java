@@ -2,10 +2,7 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Rules;
-import fr.unice.polytech.startingpoint.type.CharacterType;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
-import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,7 +51,22 @@ public abstract class Strategie {
             return parcelsIrrigated.get(0);
         }
         return null;
+    }
 
+    public void stratQuestionMark(){
+        bot.getGameInteraction().questionMarkAction(WeatherType.SUN);
+    }
+
+    public void stratCloud(){
+        if(bot.getGameInteraction().getResourceSize(ResourceType.WATHERSHEDMPROVEMENT)>0)
+            bot.getGameInteraction().cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
+        else if(bot.getGameInteraction().getResourceSize(ResourceType.FERTIZILERIMPROVEMENT)>0)
+            bot.getGameInteraction().cloudAction(ImprovementType.FERTILIZER,WeatherType.SUN);
+        else if(bot.getGameInteraction().getResourceSize(ResourceType.ENCLOSUREIMPROVEMENT)>0)
+            bot.getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
+        else {
+            bot.getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
+        }
     }
 
     /**@return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>

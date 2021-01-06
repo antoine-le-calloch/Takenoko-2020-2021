@@ -11,6 +11,7 @@ import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.naming.ServiceUnavailableException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -352,6 +353,45 @@ class GameInteractionTest {
         assertThrows(BadCoordinateException.class, () ->  gameInteraction.rainAction(new Coordinate(1,-1,0)));
         //La parcelle n'est pas posée
     }
+
+    @Test
+    void changeMeteoWithCloud(){
+        for(int i=0;i<3;i++) {
+            gameInteraction.drawImprovement(ImprovementType.ENCLOSURE);
+            gameInteraction.drawImprovement(ImprovementType.FERTILIZER);
+            gameInteraction.drawImprovement(ImprovementType.WATERSHED);
+        }
+        assertFalse(gameInteraction.cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN));
+        assertEquals(WeatherType.SUN,game.getPlayerData().getTemporaryInventory().getWeatherType());
+    }
+
+    @Test
+    void changeMeteoWithQuestionMark(){
+        assertNotEquals(WeatherType.SUN,game.getPlayerData().getWeatherType());
+        gameInteraction.questionMarkAction(WeatherType.SUN);
+        assertEquals(WeatherType.SUN,game.getPlayerData().getWeatherType());
+    }
+
+    @Test
+    void chooseWeatherQuestionMarkForbidden(){
+        assertThrows(RulesViolationException.class, () ->  game.getGameInteraction().chooseWeather(WeatherType.QUESTION_MARK,WeatherType.QUESTION_MARK));
+        assertThrows(RulesViolationException.class, () ->  game.getGameInteraction().chooseWeather(WeatherType.CLOUD,WeatherType.QUESTION_MARK));
+    }
+    @Test
+    void chooseWeatherCloudForbiddenWithCloud(){
+        assertThrows(RulesViolationException.class, () ->  game.getGameInteraction().chooseWeather(WeatherType.CLOUD,WeatherType.CLOUD));
+    }
+  @Test
+    void chooseWeatherWithOtherWeatherThanCloudOrQuestionMark(){
+        assertThrows(RulesViolationException.class, () ->  game.getGameInteraction().chooseWeather(WeatherType.RAIN,WeatherType.THUNDERSTORM));
+        assertThrows(RulesViolationException.class, () ->  game.getGameInteraction().chooseWeather(WeatherType.WIND,WeatherType.SUN));
+        assertThrows(RulesViolationException.class, () ->  game.getGameInteraction().chooseWeather(WeatherType.THUNDERSTORM,WeatherType.CLOUD));
+        assertThrows(RulesViolationException.class, () ->  game.getGameInteraction().chooseWeather(WeatherType.SUN,WeatherType.WIND));
+    }
+
+
+
+
 
 
 

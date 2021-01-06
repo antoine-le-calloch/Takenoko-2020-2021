@@ -42,4 +42,29 @@ public enum ResourceType {
             return "Parcel";
         }
     }
+    ,
+    ALLIMPROVEMENT{
+        @Override
+        public String toString() {
+            return "Improvement";
+        }
+    },
+    WATHERSHEDMPROVEMENT{
+        @Override
+        public String toString() {
+            return "Wathershed Improvement";
+        }
+    },
+    ENCLOSUREIMPROVEMENT{
+        @Override
+        public String toString() {
+            return "Enclosure Improvement";
+        }
+    },
+    FERTIZILERIMPROVEMENT{
+        @Override
+        public String toString() {
+            return "Fertiziler Improvement";
+        }
+    }
 }

@@ -90,6 +90,7 @@ public class MissionPeasantStratTest {
         gamePeasent.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
         gamePeasent.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
         gamePeasent.getPlayerData().addMission(new PeasantMission(ColorType.RED,ImprovementType.NOTHING,2));
+        gamePeasent.getPlayerData().getInventory().subPeasantMissions(game.getPlayerData().getPeasantMissions());
         assertEquals(new Coordinate(1,0,-1),peasentBot.getStratMissionPeasant().stratRain());
 
     }

@@ -37,6 +37,38 @@ public final class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+    public boolean cloudAction(ImprovementType improvementType,WeatherType weatherType){
+        if(game.getPlayerData().add(ActionType.WEATHER) && !(getResourceSize(ResourceType.ALLIMPROVEMENT) == 0) ) {
+            drawImprovement(improvementType);
+            return true;
+        }
+        chooseWeather(WeatherType.CLOUD,weatherType);
+        return false;
+    }
+
+    public void questionMarkAction(WeatherType weatherType){
+        chooseWeather(WeatherType.QUESTION_MARK,weatherType);
+    }
+
+    public boolean chooseWeather(WeatherType weatherType,WeatherType weatherTypeChosen){
+
+        if(weatherType.equals(WeatherType.QUESTION_MARK) && !weatherTypeChosen.equals(WeatherType.QUESTION_MARK)){
+            game.getPlayerData().botPlay(weatherTypeChosen);
+            return true;
+        }
+        else if(weatherType.equals(WeatherType.CLOUD) && !(weatherTypeChosen.equals(WeatherType.CLOUD) || weatherTypeChosen.equals(WeatherType.QUESTION_MARK))) {
+            game.getPlayerData().botPlay(weatherTypeChosen);
+            return true;
+        }
+        else{
+            throw new RulesViolationException("You can't choose" + weatherTypeChosen +" weather" );
+        }
+    }
+
+    public void drawImprovement(ImprovementType improvementType){
+        getPlayerData().addImprovement(game.getResource().drawImprovement(improvementType));
+    }
+
     public void drawMission(MissionType missionType) {
         if (getPlayerData().add(ActionType.DRAW_MISSION)){
             getPlayerData().looseStamina();
@@ -261,6 +293,17 @@ public final class GameInteraction {
                 return game.getResource().getDeckParcel().size();
             case CANAL:
                 return game.getResource().getDeckCanal().size();
+            case ALLIMPROVEMENT:
+                return game.getResource().getDeckImprovementType().size();
+            case ENCLOSUREIMPROVEMENT:
+                return (int) game.getResource().getDeckImprovementType().stream()
+                        .filter(improvementType -> improvementType.equals(ImprovementType.ENCLOSURE)).count();
+            case WATHERSHEDMPROVEMENT:
+                return (int) game.getResource().getDeckImprovementType().stream()
+                        .filter(improvementType -> improvementType.equals(ImprovementType.WATERSHED)).count();
+            case FERTIZILERIMPROVEMENT:
+                return (int) game.getResource().getDeckImprovementType().stream()
+                        .filter(improvementType -> improvementType.equals(ImprovementType.FERTILIZER)).count();
             case ALL_MISSION:
                 return game.getResource().getNbMission();
             default:

@@ -130,6 +130,5 @@ public class RandomStratTest {
         assertEquals(central,board.getPeasantCoordinate());//Le Paesant est au centre
         randomStrat.stratOneTurn(WeatherType.NO_WEATHER);
         assertNotEquals(central,board.getPeasantCoordinate());//Le Paesant n'est plus au centre
-
     }
 }
