@@ -28,14 +28,13 @@ public class MissionParcelStrat extends Strategie{
         if(isJudiciousPlayWeather())
             playWeather(weatherType);
 
-        if(isJudiciousPutParcel())
-            putParcel();
-        /*if (isJudiciousDrawMission())
+        if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PARCEL);
         else if (isJudiciousPutCanal())
             putCanal();
-        else if(isJudiciousPutParcel())
-            putParcel();*/
+        else if(isJudiciousPutParcel()) {
+            putParcel();
+        }
     }
 
     public boolean isJudiciousPlayWeather(){
@@ -71,7 +70,7 @@ public class MissionParcelStrat extends Strategie{
      * @see GameInteraction
      */
     public boolean isJudiciousPutParcel(){
-        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size() > 0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS);
+        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS);
     }
 
     public void playWeather(WeatherType weatherType){

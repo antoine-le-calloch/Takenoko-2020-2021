@@ -223,8 +223,8 @@ public class Resource {
     /**@return <b>True, if the resources are considers empty.</b>
      */
     public boolean isEmpty(){
-        return (((deckCanal.isEmpty() || (deckParcel.isEmpty())) &&
-                deckParcelMission.isEmpty() && deckPandaMission.isEmpty() && deckPeasantMission.isEmpty()));
+        return ((deckCanal.isEmpty() || (deckParcel.isEmpty())) &&
+                deckPandaMission.isEmpty() && deckPeasantMission.isEmpty());
     }
 
     /**@return <b>The list of {@link ParcelMission}.</b>
