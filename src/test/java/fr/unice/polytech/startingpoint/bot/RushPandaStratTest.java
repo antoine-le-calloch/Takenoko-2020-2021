@@ -37,7 +37,7 @@ class RushPandaStratTest {
         bot= (PandaBot) game.getPlayerData().getBot();
         coordinate1 = new Coordinate(1, -1, 0);
         coordinate2 = new Coordinate(0, -1, 1);
-        game.getPlayerData().getInventory().subPandaMissions(game.getPlayerData().getPandaMissions()); //supprime la mission donner au debut
+        game.getPlayerData().getInventory().subMissions(game.getPlayerData().getPandaMissions()); //supprime la mission donner au debut
     }
 
     /**
@@ -142,7 +142,7 @@ class RushPandaStratTest {
         gamePanda.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
         gamePanda.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
         gamePanda.getPlayerData().addMission(new PandaMission(ColorType.GREEN,2));
-        gamePanda.getPlayerData().getInventory().subPandaMissions(game.getPlayerData().getPandaMissions());
+        gamePanda.getPlayerData().getInventory().subMissions(game.getPlayerData().getPandaMissions());
         assertEquals(new Coordinate(1,0,-1),pandaBot.getRushPandaStrat().stratThunderstorm());
     }
 }

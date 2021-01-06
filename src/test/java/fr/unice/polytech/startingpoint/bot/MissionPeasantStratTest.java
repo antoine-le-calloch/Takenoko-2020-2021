@@ -4,10 +4,15 @@ import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -28,7 +33,7 @@ public class MissionPeasantStratTest {
         bot = new PeasantBot(game.getGameInteraction());
         coordinate1 = new Coordinate(1, -1, 0);
         stratMissionPeasant = new MissionPeasantStrat(bot);
-        game.getPlayerData().getInventory().subPeasantMissions(game.getPlayerData().getPeasantMissions()); //supprime la mission donner au debut
+        game.getPlayerData().getInventory().subMissions(game.getPlayerData().getPeasantMissions()); //supprime la mission donner au debut
     }
     /**
      <h2><u>Strategy Move Peasant</u></h2>
@@ -84,7 +89,7 @@ public class MissionPeasantStratTest {
         PeasantBot peasantBot = (PeasantBot) gamePeasant.getPlayerData().getBot();
         Parcel parcel = new Parcel(ColorType.GREEN);
         Parcel parcel2 = new Parcel(ColorType.RED);
-        gamePeasant.getPlayerData().getInventory().subPeasantMissions(gamePeasant.getPlayerData().getPeasantMissions());
+        gamePeasant.getPlayerData().getInventory().subMissions(gamePeasant.getPlayerData().getPeasantMissions());
         gamePeasant.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
         gamePeasant.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
         gamePeasant.getPlayerData().addMission(new PeasantMission(ColorType.RED,ImprovementType.NOTHING,2));

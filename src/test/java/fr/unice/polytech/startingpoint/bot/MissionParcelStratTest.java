@@ -56,7 +56,7 @@ class MissionParcelStratTest {
         missionGreenTriangle = new ParcelMission(ColorType.GREEN, FormType.TRIANGLE, 1);
         missionRedLine = new ParcelMission(ColorType.RED, FormType.LINE, 1);
 
-        game.getPlayerData().getInventory().subParcelMissions(game.getPlayerData().getParcelMissions()); //supprime la mission donner au debut
+        game.getPlayerData().getInventory().subMissions(game.getPlayerData().getParcelMissions()); //supprime la mission donner au debut
     }
 
     @Test

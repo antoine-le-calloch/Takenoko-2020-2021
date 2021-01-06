@@ -107,16 +107,6 @@ public class Inventory {
         inventoryMission.removeAll(missionList);
     }
 
-    public void subPandaMissions(List<PandaMission> pandaMissionList){
-        inventoryMission.removeAll(pandaMissionList);
-    }
-    public void subParcelMissions(List<ParcelMission> parcelMissionList){
-        inventoryMission.removeAll(parcelMissionList);
-    }
-    public void subPeasantMissions(List<PeasantMission> peasantMissionList){
-        inventoryMission.removeAll(peasantMissionList);
-    }
-
     /**@param colorType
      *          <b>The {@link ColorType} of the bamboo we want the number from.</b>
      *
@@ -139,32 +129,29 @@ public class Inventory {
     /**
      * @return <b>The list of {@link PandaMission} missions.</b>
      */
-    public List<PandaMission> getPandaMissions(){
+    public List<Mission> getPandaMissions(){
         return inventoryMission
                 .stream()
                 .filter(mission -> mission.getMissionType().equals(MissionType.PANDA))
-                .map(mission -> (PandaMission) mission)
                 .collect(Collectors.toList());
     }
 
     /**@return <b>The list of {@link ParcelMission} missions.</b>
      */
-    public List<ParcelMission> getParcelMissions(){
+    public List<Mission> getParcelMissions(){
         return inventoryMission
                 .stream()
                 .filter(mission -> mission.getMissionType().equals(MissionType.PARCEL))
-                .map(mission -> (ParcelMission) mission)
                 .collect(Collectors.toList());
     }
 
     /**
      * @return <b>The list of {@link PeasantMission} missions.</b>
      */
-    public List<PeasantMission> getPeasantMissions(){
+    public List<Mission> getPeasantMissions(){
         return inventoryMission
                 .stream()
                 .filter(mission -> mission.getMissionType().equals(MissionType.PEASANT))
-                .map(mission -> (PeasantMission) mission)
                 .collect(Collectors.toList());
     }
 

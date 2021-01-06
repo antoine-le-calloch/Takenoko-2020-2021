@@ -8,10 +8,7 @@ import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
-import fr.unice.polytech.startingpoint.type.ActionType;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
-import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,9 @@ public class PlayerData {
         for(Mission mission : inventory.getMissions()){
             if(mission.checkMission(coordinateParcelMap,inventory)){
                 addMissionDone(mission.getPoints());
-                missionsPandaDone ++;
+                if (mission.getMissionType().equals(MissionType.PANDA)){
+                    missionsPandaDone ++;
+                }
                 toRemoveMissions.add(mission);
             }
         }
@@ -159,15 +158,15 @@ public class PlayerData {
         return inventory;
     }
 
-    public List<ParcelMission> getParcelMissions() {
+    public List<Mission> getParcelMissions() {
         return inventory.getParcelMissions();
     }
 
-    public List<PandaMission> getPandaMissions() {
+    public List<Mission> getPandaMissions() {
         return inventory.getPandaMissions();
     }
 
-    public List<PeasantMission> getPeasantMissions() {
+    public List<Mission> getPeasantMissions() {
         return inventory.getPeasantMissions();
     }
 

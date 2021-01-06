@@ -7,6 +7,7 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
+import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
@@ -257,21 +258,21 @@ public final class GameInteraction {
      * @return <b>The {@link ParcelMission} list of the current bot.</b>
      */
     public List<ParcelMission> getInventoryParcelMissions(){
-        return getPlayerData().getParcelMissions();
+        return getPlayerData().getParcelMissions().stream().map(parcelMission -> (ParcelMission) parcelMission).collect(Collectors.toList());
     }
 
     /**
      * @return <b>The {@link PandaMission} list of the current bot.</b>
      */
     public List<PandaMission> getInventoryPandaMissions(){
-        return getPlayerData().getPandaMissions();
+        return getPlayerData().getPandaMissions().stream().map(pandaMission -> (PandaMission) pandaMission).collect(Collectors.toList());
     }
 
     /**
      * @return <b>The {@link PeasantMission} list of the current bot.</b>
      */
     public List<PeasantMission> getInventoryPeasantMissions(){
-        return getPlayerData().getPeasantMissions();
+        return getPlayerData().getPeasantMissions().stream().map(peasantMission -> (PeasantMission) peasantMission).collect(Collectors.toList());
     }
 
     public int getMissionsSize(){

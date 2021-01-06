@@ -58,17 +58,20 @@ public final class Stat {
 
     /**@return <b>A list containing the bot(s) that have the highest score.</b>
      */
-    private List<Integer> getWinner(List<int[]> scores){
+    private List<Integer> getWinner(List<int[]> scoreList){
         int[] bestScore = new int[]{0,0};
         List<Integer> winner = new ArrayList<>();
-        for(int[] score : scores){
-            if (score[0] > bestScore[0])
-                bestScore = score;
-            if (score[0] == bestScore[0] && score[1] > bestScore[1])
-                bestScore = score;
+        for(int[] score : scoreList){
+            if (score[0] > bestScore[0]){
+                bestScore[0] = score[0];
+                bestScore[1] = score[1];
+            }
+            else if (score[0] == bestScore[0] && score[1] > bestScore[1]){
+                bestScore[1] = score[1];
+            }
         }
-        for(int i = 0; i < botList.length; i++){
-            if (scores.get(i)[0] == bestScore[0] && scores.get(i)[1] == bestScore[1])
+        for(int i = 0; i < scoreList.size(); i++){
+            if (scoreList.get(i)[0] == bestScore[0] && scoreList.get(i)[1] == bestScore[1])
                 winner.add(i);
         }
         return winner;
