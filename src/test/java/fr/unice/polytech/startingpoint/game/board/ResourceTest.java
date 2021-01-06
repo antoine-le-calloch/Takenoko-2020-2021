@@ -72,7 +72,7 @@ public class ResourceTest {
         for (int i = 0; i < 27; i++) {
             resource.drawCanal();
         }
-        assertFalse(resource.isEmpty());
+        assertTrue(resource.isEmpty());
         assertThrows(OutOfResourcesException.class, () -> resource.drawCanal());
     }
 
@@ -81,7 +81,7 @@ public class ResourceTest {
         for (int i = 0; i < 27; i++) {
             resource.selectParcel(resource.drawParcels().get(0));
         }
-        assertFalse(resource.isEmpty());
+        assertTrue(resource.isEmpty());
         assertThrows(OutOfResourcesException.class, () -> resource.drawParcels());
     }
 

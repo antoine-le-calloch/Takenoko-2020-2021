@@ -3,11 +3,13 @@ package fr.unice.polytech.startingpoint.game.playerdata;
 import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.game.board.Canal;
+import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +34,7 @@ import java.util.stream.Collectors;
  */
 
 public class Inventory {
-    private final List<PandaMission> inventoryPandaMission;
-    private final List<ParcelMission> inventoryParcelMission;
-    private final List<PeasantMission> inventoryPeasantMission;
+    private final List<Mission> inventoryMission;
     private final List<Canal> inventoryCanal;
     private final List<ImprovementType>inventoryImprovement;
     private final int[] inventoryBamboo;
@@ -43,9 +43,7 @@ public class Inventory {
      * <p>Set up the Inventory. Initialize all variables.</p>
      */
     public Inventory(){
-        inventoryPandaMission = new ArrayList<>();
-        inventoryParcelMission = new ArrayList<>();
-        inventoryPeasantMission = new ArrayList<>();
+        inventoryMission = new ArrayList<>();
         inventoryImprovement=new ArrayList<>();
         inventoryCanal = new ArrayList<>();
         inventoryBamboo = new int[]{0,0,0};
@@ -54,8 +52,6 @@ public class Inventory {
     public void addImprovement(ImprovementType improvementType){
         inventoryImprovement.add(improvementType);
     }
-
-
 
     /**<p>Add a {@link Canal} in the inventory.</p>
      */
@@ -103,29 +99,22 @@ public class Inventory {
         }
     }
 
-
-    public void addPandaMission(PandaMission mission){
-        inventoryPandaMission.add(mission);
+    public void addMission(Mission mission) {
+        inventoryMission.add(mission);
     }
 
-    public void addParcelMission(ParcelMission mission){
-        inventoryParcelMission.add(mission);
+    public void subMissions(List<Mission> missionList){
+        inventoryMission.removeAll(missionList);
     }
 
-    public void addPeasantMission(PeasantMission mission){
-        inventoryPeasantMission.add(mission);
+    public void subPandaMissions(List<PandaMission> pandaMissionList){
+        inventoryMission.removeAll(pandaMissionList);
     }
-
-    public void subPandaMissions(List<PandaMission> pandaMissions){
-        inventoryPandaMission.removeAll(pandaMissions);
+    public void subParcelMissions(List<ParcelMission> parcelMissionList){
+        inventoryMission.removeAll(parcelMissionList);
     }
-
-    public void subParcelMissions(List<ParcelMission> parcelMissions){
-        inventoryParcelMission.removeAll(parcelMissions);
-    }
-
-    public void subPeasantMissions(List<PeasantMission> peasantMissions){
-        inventoryPeasantMission.removeAll(peasantMissions);
+    public void subPeasantMissions(List<PeasantMission> peasantMissionList){
+        inventoryMission.removeAll(peasantMissionList);
     }
 
     /**@param colorType
@@ -151,20 +140,39 @@ public class Inventory {
      * @return <b>The list of {@link PandaMission} missions.</b>
      */
     public List<PandaMission> getPandaMissions(){
-        return new ArrayList<>(inventoryPandaMission);
+        return inventoryMission
+                .stream()
+                .filter(mission -> mission.getMissionType().equals(MissionType.PANDA))
+                .map(mission -> (PandaMission) mission)
+                .collect(Collectors.toList());
     }
 
     /**@return <b>The list of {@link ParcelMission} missions.</b>
      */
     public List<ParcelMission> getParcelMissions(){
-        return new ArrayList<>(inventoryParcelMission);
+        return inventoryMission
+                .stream()
+                .filter(mission -> mission.getMissionType().equals(MissionType.PARCEL))
+                .map(mission -> (ParcelMission) mission)
+                .collect(Collectors.toList());
     }
 
     /**
      * @return <b>The list of {@link PeasantMission} missions.</b>
      */
     public List<PeasantMission> getPeasantMissions(){
-        return new ArrayList<>(inventoryPeasantMission);
+        return inventoryMission
+                .stream()
+                .filter(mission -> mission.getMissionType().equals(MissionType.PEASANT))
+                .map(mission -> (PeasantMission) mission)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @return <b>The list of {@link Mission} missions.</b>
+     */
+    public List<Mission> getMissions(){
+        return new ArrayList<>(inventoryMission);
     }
 
     /**
@@ -174,5 +182,4 @@ public class Inventory {
         return inventoryImprovement.stream().filter(improvementType1 -> improvementType1.equals(improvementType))
                 .collect(Collectors.toList());
     }
-
 }

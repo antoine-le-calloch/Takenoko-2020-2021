@@ -1,7 +1,13 @@
 package fr.unice.polytech.startingpoint.game.mission;
 
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
+import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.playerdata.Inventory;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.MissionType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <h1>{@link PandaMission} :</h1>
@@ -17,13 +23,10 @@ import fr.unice.polytech.startingpoint.type.ColorType;
  * @version 0.5
  */
 
-public final class PandaMission{
-    private final ColorType colorType;
-    private final int points;
-    int NB_BAMBOO = 2;
+public final class PandaMission extends Mission{
+    private final int NB_BAMBOO = 2;
 
-    /**
-     * <p>Set up a panda mission. Initialize all variables.</p>
+    /**<p>Set up a panda mission. Initialize all variables.</p>
      *
      * @param colorType
      *            <b>the colorType of the mission</b>
@@ -31,12 +34,15 @@ public final class PandaMission{
      *            <b>the points of the mission</b>
      */
     public PandaMission(ColorType colorType, int points){
-        this.colorType = colorType;
-        this.points = points;
+        super(MissionType.PANDA,colorType,points);
     }
 
     /**<p>check panda if a mission is done</p>
      */
+    public boolean checkMission(Map<Coordinate, Parcel> coordinateParcelMap, Inventory inventory) {
+        return checkMission(inventory);
+    }
+
     public boolean checkMission(Inventory inventory) {
         if (colorType.equals(ColorType.ALL_COLOR))
             return checkMissionAllColor(inventory);
@@ -59,13 +65,5 @@ public final class PandaMission{
             return true;
         }
         return false;
-    }
-
-    public ColorType getColorType() {
-        return colorType;
-    }
-
-    public int getPoints() {
-        return points;
     }
 }

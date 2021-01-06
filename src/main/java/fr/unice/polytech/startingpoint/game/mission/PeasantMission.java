@@ -1,10 +1,15 @@
 package fr.unice.polytech.startingpoint.game.mission;
 
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.playerdata.Inventory;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <h1>{@link PeasantMission} :</h1>
@@ -20,10 +25,8 @@ import java.util.List;
  * @version 0.5
  */
 
-public final class PeasantMission{
-    private final ColorType colorType;
+public final class PeasantMission extends Mission{
     private final ImprovementType improvementType;
-    private final int points;
 
     /**
      * <p>Set up a peasant mission. Initialize all variables.</p>
@@ -34,16 +37,19 @@ public final class PeasantMission{
      *            <b>the points of the mission</b>
      */
     public PeasantMission(ColorType colorType, ImprovementType improvementType, int points){
-        this.colorType = colorType;
+        super(MissionType.PEASANT,colorType,points);
         this.improvementType = improvementType;
-        this.points = points;
     }
 
-    public boolean checkMission(List<Parcel> parcelList) {
+    public boolean checkMission(Map<Coordinate,Parcel> coordinateParcelMap, Inventory inventory) {
+        return checkMission(coordinateParcelMap);
+    }
+
+    public boolean checkMission(Map<Coordinate,Parcel> coordinateParcelMap) {
         if(improvementType.equals(ImprovementType.WHATEVER))
-            return checkMissionSpecial(parcelList);
+            return checkMissionSpecial(new ArrayList<>(coordinateParcelMap.values()));
         else
-            return checkMissionClassic(parcelList);
+            return checkMissionClassic(new ArrayList<>(coordinateParcelMap.values()));
     }
 
     boolean checkMissionClassic(List<Parcel> parcelList) {

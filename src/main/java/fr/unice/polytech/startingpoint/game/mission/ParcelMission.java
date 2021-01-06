@@ -2,8 +2,10 @@ package fr.unice.polytech.startingpoint.game.mission;
 
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.playerdata.Inventory;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
+import fr.unice.polytech.startingpoint.type.MissionType;
 
 import java.util.List;
 import java.util.Map;
@@ -25,11 +27,9 @@ import static fr.unice.polytech.startingpoint.type.FormType.*;
  * @version 0.5
  */
 
-public final class ParcelMission{
-    private final ColorType colorType1;
+public final class ParcelMission extends Mission{
     private final ColorType colorType2;
     private final FormType formType;
-    private final int points;
 
     /**
      * <p>Set up a parcel mission. Initialize all variables.</p>
@@ -54,10 +54,9 @@ public final class ParcelMission{
      *            <b>the points of the mission</b>
      */
     public ParcelMission(ColorType colorType1, ColorType colorType2, FormType formType, int points) {
-        this.colorType1 = colorType1;
+        super(MissionType.PARCEL,colorType1,points);
         this.colorType2 = colorType2;
         this.formType = formType;
-        this.points = points;
     }
 
     /**
@@ -65,6 +64,10 @@ public final class ParcelMission{
      *
      * @return <b>the number of point if the mission is done, if not , return 0</b>
      */
+    public boolean checkMission(Map<Coordinate,Parcel> coordinateParcelMap, Inventory inventory) {
+        return checkMission(coordinateParcelMap);
+    }
+
     public boolean checkMission(Map<Coordinate,Parcel> coordinateParcelMap) {
         switch (formType) {
             case TRIANGLE:
@@ -82,7 +85,7 @@ public final class ParcelMission{
 
     boolean checkTwoColorsForm(Map<Coordinate, Parcel> coordinateParcelMap, List<Coordinate> coordinateList1, List<Coordinate> coordinateList2) {
         for (Coordinate coordinate : coordinateParcelMap.keySet())
-            if (checkBasicForm(coordinateParcelMap, colorType1,Coordinate.coordinatesOfOffsets(coordinate,coordinateList1)))
+            if (checkBasicForm(coordinateParcelMap, colorType,Coordinate.coordinatesOfOffsets(coordinate,coordinateList1)))
                 if (checkBasicForm(coordinateParcelMap, colorType2,Coordinate.coordinatesOfOffsets(coordinate,coordinateList2)))
                     return true;
         return false;
@@ -90,7 +93,7 @@ public final class ParcelMission{
 
     boolean checkOneColorForm(Map<Coordinate, Parcel> coordinateParcelMap, List<Coordinate> coordinateList) {
         for (Coordinate coordinate : coordinateParcelMap.keySet())
-            if (checkBasicForm(coordinateParcelMap, colorType1,Coordinate.coordinatesOfOffsets(coordinate,coordinateList)))
+            if (checkBasicForm(coordinateParcelMap, colorType,Coordinate.coordinatesOfOffsets(coordinate,coordinateList)))
                 return true;
         return false;
     }
@@ -104,12 +107,8 @@ public final class ParcelMission{
         return correctParcels == coordinateList.size();
     }
 
-    public ColorType getColorType() {
-        return colorType1;
-    }
-
     public ColorType getColorType1() {
-        return colorType1;
+        return colorType;
     }
 
     public ColorType getColorType2() {
@@ -118,9 +117,5 @@ public final class ParcelMission{
 
     public FormType getFormType() {
         return formType;
-    }
-
-    public int getPoints() {
-        return points;
     }
 }
