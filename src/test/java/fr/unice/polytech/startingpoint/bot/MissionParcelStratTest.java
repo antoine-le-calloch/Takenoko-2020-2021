@@ -196,13 +196,13 @@ class MissionParcelStratTest {
     }
 ///////////////////////////////
 
-    @Test
+    /*@Test
     void bestCoordinatesIn0Mission_RedParcelAvailable() {
         board.placeParcel(new Parcel(ColorType.RED), coordinate2);
-        List<Coordinate> bestCoordinatesForAllMission = stratMissionParcel.bestCoordsInAllMission(new ArrayList<>(Collections.singletonList(ColorType.RED)));
+        List<Coordinate> bestCoordsInAllMission = stratMissionParcel.bestCoordsInAllMission(new ArrayList<>(Collections.singletonList(ColorType.RED)));
 
-        assertNull(bestCoordinatesForAllMission);
-    }
+        assertNull(bestCoordsInAllMission);
+    }*/
 ///////////////////////////////
 
     @Test
@@ -261,23 +261,18 @@ class MissionParcelStratTest {
         stratMissionParcel.putCanal();
         assertEquals(1, board.getPlacedCanals().size());
     }
-///////////////////////////////
 
-    @Test
-    void judiciousDrawMission(){
-        assertTrue(stratMissionParcel.isJudiciousDrawMission());
-    }
-
-    @Test
-    void notJudiciousDrawMission_ActionAlreadyPlay() {
-        game.getPlayerData().add(ActionType.DRAW_MISSION);
-        assertFalse(stratMissionParcel.isJudiciousDrawMission());
-    }
 ///////////////////////////////
 
     @Test
     void judiciousPutParcel() {
+        game.getPlayerData().addMission(missionGreenTriangle);
         assertTrue(stratMissionParcel.isJudiciousPutParcel());
+    }
+
+    @Test
+    void notJudiciousPutParcel_0Mission() {
+        assertFalse(stratMissionParcel.isJudiciousPutParcel());
     }
 
     @Test
@@ -288,18 +283,19 @@ class MissionParcelStratTest {
 ///////////////////////////////
 
     @Test
-    void judiciousPutCanal() {
+    void judiciousPutCanal_PlaceToPut_MissionEnd() {
+        game.getPlayerData().looseStamina();
         game.getPlayerData().addMission(missionGreenTriangle);
-        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
-        board.placeParcel(new Parcel(ColorType.GREEN), coordinate4);
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate5);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate6);
         assertTrue(stratMissionParcel.isJudiciousPutCanal());
     }
 
     @Test
     void judiciousPutCanal_StaminaFull() {
         board.placeParcel(new Parcel(), coordinate1);
-        board.placeParcel(new Parcel(), coordinate2);
+        board.placeParcel(new Parcel(), coordinate3);
         assertTrue(stratMissionParcel.isJudiciousPutCanal());
     }
 

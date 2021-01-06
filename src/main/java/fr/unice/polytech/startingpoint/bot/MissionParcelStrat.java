@@ -22,6 +22,10 @@ public class MissionParcelStrat extends Strategie{
         super(bot);
     }
 
+    /**
+     * <p>The actions of the bot during his turn.</p>
+     * @param weatherType
+     */
     public void stratOneTurn(WeatherType weatherType){
 
         if(isJudiciousPlayWeather())
@@ -41,15 +45,6 @@ public class MissionParcelStrat extends Strategie{
     }
 
     /**
-     * @return <b>True if the bot can draw a mission.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousDrawMission(){
-        int NB_MISSION_MAX = 5;
-        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.gameInteraction.contains(ActionType.DRAW_MISSION) && bot.gameInteraction.getMissionsSize() < NB_MISSION_MAX;
-    }
-
-    /**
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
      * @see GameInteraction
      */
@@ -61,7 +56,7 @@ public class MissionParcelStrat extends Strategie{
             }
             return false;
         }
-        return bot.gameInteraction.getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.gameInteraction.contains(ActionType.PLACE_CANAL);
+        return bot.gameInteraction.getResourceSize(ResourceType.CANAL) > 0 && possibleCoordinatesCanal().size() > 0 && !bot.gameInteraction.contains(ActionType.PLACE_CANAL);
     }
 
     /**
@@ -69,7 +64,7 @@ public class MissionParcelStrat extends Strategie{
      * @see GameInteraction
      */
     public boolean isJudiciousPutParcel(){
-        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS);
+        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS) && bot.gameInteraction.getInventoryParcelMissions().size() > 0;
     }
 
     public void playWeather(WeatherType weatherType){
@@ -89,17 +84,20 @@ public class MissionParcelStrat extends Strategie{
     public void putParcel() {
         try {
             List<ParcelInformation> parcelInformationList = bot.gameInteraction.drawParcels();
-            /*List<ColorType> colorAvailable = new ArrayList<>();
+            List<ColorType> colorAvailable = new ArrayList<>();
             parcelInformationList.forEach(parcel -> colorAvailable.add(parcel.getColorType()));
-            List<Coordinate> bestCoords = bestCoordsInAllMission(colorAvailable);*/
+            List<Coordinate> bestCoords = bestCoordsInAllMission(colorAvailable);
 
-            bot.selectParcel(parcelInformationList.get(0));
-            bot.placeParcel(possibleCoordinatesParcel().get(0));
-            /*if(bestCoords != null) {
+
+            if(bestCoords.size() != 0) {
+                parcelInformationList.removeIf(parcelInfo -> !parcelInfo.getColorType().equals(colorAvailable.get(0)));
+                bot.selectParcel(parcelInformationList.get(0));
                 bot.placeParcel(bestCoords.get(0));
             }
-            else{*/
-            //}
+            else{
+                bot.selectParcel(parcelInformationList.get(0));
+                bot.placeParcel(possibleCoordinatesParcel().get(0));
+            }
 
 
         } catch (OutOfResourcesException | RulesViolationException e) {
@@ -109,7 +107,7 @@ public class MissionParcelStrat extends Strategie{
 
     public List<Coordinate> bestCoordsInAllMission(List<ColorType> colorAvailable) {
         ParcelMission bestMission = null;
-        List<Coordinate> bestCoords = null;
+        List<Coordinate> bestCoords = new ArrayList<>();
         int minTurnToEndOneMission = -1;
         ColorType NeededColor;
 
@@ -121,7 +119,7 @@ public class MissionParcelStrat extends Strategie{
             }
         }
 
-        if(colorAvailable.contains(NeededColor = bestMission.getColorType())) {
+        if(bestMission != null && colorAvailable.contains(NeededColor = bestMission.getColorType())) {
             colorAvailable.removeIf(color -> !color.equals(NeededColor));
             bestCoords.removeIf(coord -> !boardRules.isPlayableParcel(coord));
             return bestCoords;
@@ -130,16 +128,6 @@ public class MissionParcelStrat extends Strategie{
         List<Coordinate> OtherCoords = possibleCoordinatesParcel();
         OtherCoords.removeAll(bestCoords);
         return OtherCoords;
-    }
-
-    public List<Coordinate[]> bestCoordsOfEachMission() {
-        List<Coordinate[]> bestCoordsOfEachMission = new ArrayList<>();
-        List<ParcelMission> parcelMissionList;
-
-        for (int i = 0; i < (parcelMissionList = bot.gameInteraction.getInventoryParcelMissions()).size(); i++) {
-            bestCoordsOfEachMission.add(bestCoordinatesForMission(parcelMissionList.get(i)).toArray(Coordinate[]::new));
-        }
-        return bestCoordsOfEachMission;
     }
 
     /**
