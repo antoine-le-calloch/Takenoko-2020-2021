@@ -42,6 +42,24 @@ public class MissionPeasantStrat extends Strategie{
         return false;
     }
 
+    /**
+     * @return <b>True if the bot can draw a mission.</b>
+     * @see GameInteraction
+     */
+    public boolean isJudiciousDrawMission(){
+        int NB_MISSION_MAX = 5;
+        return bot.gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION) && bot.gameInteraction.getInventoryParcelMissions().size() <= NB_MISSION_MAX;
+    }
+
+    /**
+     * @return <b>True if the bot can move the paesant.</b>
+     * @see GameInteraction
+     */
+    public boolean isJudiciousMovePeasant(){
+        return strategyMovePeasant() != null && !bot.gameInteraction.contains(ActionType.MOVE_PEASANT);
+    }
+
+
     public void playWeather(WeatherType weatherType){
         if(weatherType.equals(WeatherType.RAIN))
             stratRain();
@@ -69,22 +87,6 @@ public class MissionPeasantStrat extends Strategie{
         return null;
 
 
-    }
-
-    /**
-     * @return <b>True if the bot can draw a mission.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousDrawMission(){
-        return bot.gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION);
-    }
-
-    /**
-     * @return <b>True if the bot can move the paesant.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousMovePeasant(){
-        return strategyMovePeasant() != null && !bot.gameInteraction.contains(ActionType.MOVE_PEASANT);
     }
 
     /**

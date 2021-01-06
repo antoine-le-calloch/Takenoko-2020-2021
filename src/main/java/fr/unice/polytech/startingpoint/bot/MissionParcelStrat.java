@@ -27,37 +27,28 @@ public class MissionParcelStrat extends Strategie{
 
         if(isJudiciousPlayWeather())
             playWeather(weatherType);
-        if (isJudiciousDrawMission())
+
+        if(isJudiciousPutParcel())
+            putParcel();
+        /*if (isJudiciousDrawMission())
             bot.drawMission(MissionType.PARCEL);
         else if (isJudiciousPutCanal())
             putCanal();
         else if(isJudiciousPutParcel())
-            putParcel();
+            putParcel();*/
     }
 
     public boolean isJudiciousPlayWeather(){
-        if(!bot.gameInteraction.contains(ActionType.WEATHER)){
-            return true;
-        }
-        return false;
+        return !bot.gameInteraction.contains(ActionType.WEATHER);
     }
-
-    public void playWeather(WeatherType weatherType){
-        if(weatherType.equals(WeatherType.RAIN))
-            stratRain();
-        else if(weatherType.equals(WeatherType.THUNDERSTORM))
-            stratThunderstorm();
-    }
-
-
-
 
     /**
      * @return <b>True if the bot can draw a mission.</b>
      * @see GameInteraction
      */
     public boolean isJudiciousDrawMission(){
-        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.gameInteraction.contains(ActionType.DRAW_MISSION);
+        int NB_MISSION_MAX = 5;
+        return bot.gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.gameInteraction.contains(ActionType.DRAW_MISSION) && bot.gameInteraction.getInventoryParcelMissions().size() <= NB_MISSION_MAX;
     }
 
     /**
@@ -83,6 +74,13 @@ public class MissionParcelStrat extends Strategie{
         return bot.gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && possibleCoordinatesParcel().size() > 0 && !bot.gameInteraction.contains(ActionType.DRAW_PARCELS);
     }
 
+    public void playWeather(WeatherType weatherType){
+        if(weatherType.equals(WeatherType.RAIN))
+            stratRain();
+        else if(weatherType.equals(WeatherType.THUNDERSTORM))
+            stratThunderstorm();
+    }
+
     /**
      * <p>For each mission, put a parcel to best place to finish it or place a random one.</p>
      *
@@ -93,55 +91,47 @@ public class MissionParcelStrat extends Strategie{
     public void putParcel() {
         try {
             List<ParcelInformation> parcelInformationList = bot.gameInteraction.drawParcels();
-            List<Coordinate> bestCoords = new ArrayList<>();
-            ParcelInformation bestColor = new ParcelInformation();
-            int minTurn = -1;
+            /*List<ColorType> colorAvailable = new ArrayList<>();
+            parcelInformationList.forEach(parcel -> colorAvailable.add(parcel.getColorType()));
+            List<Coordinate> bestCoords = bestCoordsInAllMission(colorAvailable);*/
 
-            List<Coordinate[]> bestCoordsOfEachMission = new ArrayList<>();
-            List<ParcelMission> parcelMissionList;
+            bot.selectParcel(parcelInformationList.get(0));
+            bot.placeParcel(possibleCoordinatesParcel().get(0));
+            /*if(bestCoords != null) {
+                bot.placeParcel(bestCoords.get(0));
+            }
+            else{*/
+            //}
 
-            for (int i = 0; i < (parcelMissionList = bot.gameInteraction.getInventoryParcelMissions()).size(); i++) {
-                bestCoordsOfEachMission.add(bestCoordinatesForMission(parcelMissionList.get(i)).toArray(Coordinate[]::new));
-            }
-
-            for (ParcelInformation parcelInformation : parcelInformationList) {
-                if(bestCoordsInAllMission(parcelInformation.getColorType()) != null && (minTurn == -1 || bestCoordsInAllMission(parcelInformation.getColorType()).size() < minTurn)) {
-                    bestCoords = bestCoordsInAllMission(parcelInformation.getColorType());
-                    bestColor = parcelInformation;
-                    minTurn = bestCoords.size();
-                }
-            }
-
-            if(minTurn != -1) {
-                for (Coordinate coordinate : bestCoords) {
-                    if(rules.isPlayableParcel(coordinate)) {
-                        bot.selectParcel(bestColor);
-                        bot.placeParcel(coordinate);
-                        break;
-                    }
-                }
-            }
-            else {
-                bot.selectParcel(parcelInformationList.get(0));
-                bot.placeParcel(possibleCoordinatesParcel().get(0));
-            }
 
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Coordinate> bestCoordsInAllMission(ColorType colorAvailable) {
+    public List<Coordinate> bestCoordsInAllMission(List<ColorType> colorAvailable) {
+        ParcelMission bestMission = null;
         List<Coordinate> bestCoords = null;
         int minTurnToEndOneMission = -1;
+        ColorType NeededColor;
 
         for (ParcelMission mission : bot.gameInteraction.getInventoryParcelMissions()) {
-            if (mission.getColorType1().equals(mission.getColorType2()) && colorAvailable.equals(mission.getColorType()) && (minTurnToEndOneMission == -1 || bestCoordinatesForMission(mission).size() < minTurnToEndOneMission)){
-                bestCoords = bestCoordinatesForMission(mission);
+            if (minTurnToEndOneMission == -1 || bestCoordinatesForMission(mission).size() < minTurnToEndOneMission){
+                bestMission = mission;
+                bestCoords = bestCoordinatesForMission(bestMission);
                 minTurnToEndOneMission = bestCoords.size();
             }
         }
-        return bestCoords;
+
+        if(colorAvailable.contains(NeededColor = bestMission.getColorType())) {
+            colorAvailable.removeIf(color -> !color.equals(NeededColor));
+            bestCoords.removeIf(coord -> !rules.isPlayableParcel(coord));
+            return bestCoords;
+        }
+
+        List<Coordinate> OtherCoords = possibleCoordinatesParcel();
+        OtherCoords.removeAll(bestCoords);
+        return OtherCoords;
     }
 
     public List<Coordinate[]> bestCoordsOfEdachMission() {

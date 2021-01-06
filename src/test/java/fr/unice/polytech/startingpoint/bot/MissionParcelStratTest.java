@@ -66,7 +66,7 @@ class MissionParcelStratTest {
     }
 
 
-    @Test
+    /*@Test
     void LineForm() {
         List<Coordinate> triangleForm = stratMissionParcel.setForm(coordinate1, FormType.LINE);
 
@@ -217,7 +217,7 @@ class MissionParcelStratTest {
         assertEquals(1, board.getPlacedParcels().size());
         stratMissionParcel.putParcel();
         assertEquals(2, board.getPlacedParcels().size());
-    }
+    }*/
 
    /* @Test
     void putParcel_1MissionGreenTriangle() {
