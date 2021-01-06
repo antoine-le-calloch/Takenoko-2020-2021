@@ -9,6 +9,7 @@ import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.ArrayList;
@@ -18,6 +19,11 @@ import java.util.Map;
 public class PlayerData {
     private final Bot bot;
     private final Inventory inventory;
+
+    public TemporaryInventory getTemporaryInventory() {
+        return temporaryInventory;
+    }
+
     private final TemporaryInventory temporaryInventory;
     private int score;
     private int missionsDone;
@@ -68,6 +74,11 @@ public class PlayerData {
         inventory.subPandaMissions(toRemovePandaMission);
         inventory.subParcelMissions(toRemoveParcelMission);
         inventory.subPeasantMissions(toRemovePeasantMission);
+    }
+
+
+    public void addImprovement(ImprovementType improvementType){
+        inventory.addImprovement(improvementType);
     }
 
     public boolean add(ActionType actionType) {

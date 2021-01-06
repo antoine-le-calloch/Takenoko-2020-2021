@@ -142,6 +142,7 @@ class RushPandaStratTest {
         gamePanda.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
         gamePanda.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
         gamePanda.getPlayerData().addMission(new PandaMission(ColorType.GREEN,2));
+        gamePanda.getPlayerData().getInventory().subPandaMissions(game.getPlayerData().getPandaMissions());
         assertEquals(new Coordinate(1,0,-1),pandaBot.getRushPandaStrat().stratThunderstorm());
     }
 

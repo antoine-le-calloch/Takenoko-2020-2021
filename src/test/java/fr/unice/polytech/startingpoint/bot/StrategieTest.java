@@ -7,16 +7,17 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
 
+import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class StrategieTest {
     private Game game;
@@ -165,6 +166,42 @@ class StrategieTest {
         board.placeParcel(new Parcel(),new Coordinate(-1,1,0));
         board.placeParcel(parcel,new Coordinate(1,-1,0));
         assertEquals(new Coordinate(1,-1,0),strategie.stratThunderstorm());
+    }
+
+    @Test
+    void stratCloudNoMoreWathershedSoFertizilerChosen(){
+        Game gamePanda= new Game(new BotType[]{BotType.PANDA_BOT});
+        for(int i=0;i<3;i++) {
+            gamePanda.getGameInteraction().drawImprovement(ImprovementType.WATERSHED);
+        }
+        PandaBot pandaBot= (PandaBot) gamePanda.getPlayerData().getBot();
+        pandaBot.getRushPandaStrat().stratCloud();
+        assertFalse(gamePanda.getPlayerData().getInventory().getInventoryImprovement(ImprovementType.FERTILIZER).isEmpty());
+        assertTrue(gamePanda.getPlayerData().getInventory().getInventoryImprovement(ImprovementType.ENCLOSURE).isEmpty());
+    }
+
+    @Test
+    void stratCloudNoMoreImprovementSoWeatherChanged(){
+        Game gamePanda= new Game(new BotType[]{BotType.PANDA_BOT});
+        assertEquals(WeatherType.NO_WEATHER,gamePanda.getPlayerData().getTemporaryInventory().getWeatherType());
+        for(int i=0;i<3;i++) {
+            gamePanda.getGameInteraction().drawImprovement(ImprovementType.WATERSHED);
+            gamePanda.getGameInteraction().drawImprovement(ImprovementType.FERTILIZER);
+            gamePanda.getGameInteraction().drawImprovement(ImprovementType.ENCLOSURE);
+        }
+        PandaBot pandaBot= (PandaBot) gamePanda.getPlayerData().getBot();
+        pandaBot.getRushPandaStrat().stratCloud();
+        assertEquals(WeatherType.SUN,gamePanda.getPlayerData().getTemporaryInventory().getWeatherType());
+    }
+
+
+    @Test
+    void stratQuestionMark(){
+        Game gamePanda= new Game(new BotType[]{BotType.PANDA_BOT});
+        assertEquals(WeatherType.NO_WEATHER,gamePanda.getPlayerData().getTemporaryInventory().getWeatherType());
+        PandaBot pandaBot= (PandaBot) gamePanda.getPlayerData().getBot();
+        pandaBot.getRushPandaStrat().stratQuestionMark();
+        assertEquals(WeatherType.SUN,gamePanda.getPlayerData().getTemporaryInventory().getWeatherType());
     }
 
 

@@ -7,9 +7,11 @@ import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>{@link Inventory} :</h1>
@@ -34,6 +36,7 @@ public class Inventory {
     private final List<ParcelMission> inventoryParcelMission;
     private final List<PeasantMission> inventoryPeasantMission;
     private final List<Canal> inventoryCanal;
+    private final List<ImprovementType>inventoryImprovement;
     private final int[] inventoryBamboo;
 
     /**
@@ -43,9 +46,16 @@ public class Inventory {
         inventoryPandaMission = new ArrayList<>();
         inventoryParcelMission = new ArrayList<>();
         inventoryPeasantMission = new ArrayList<>();
+        inventoryImprovement=new ArrayList<>();
         inventoryCanal = new ArrayList<>();
         inventoryBamboo = new int[]{0,0,0};
     }
+
+    public void addImprovement(ImprovementType improvementType){
+        inventoryImprovement.add(improvementType);
+    }
+
+
 
     /**<p>Add a {@link Canal} in the inventory.</p>
      */
@@ -92,6 +102,7 @@ public class Inventory {
             inventoryBamboo[ColorType.RED.ordinal()]--;
         }
     }
+
 
     public void addPandaMission(PandaMission mission){
         inventoryPandaMission.add(mission);
@@ -155,4 +166,13 @@ public class Inventory {
     public List<PeasantMission> getPeasantMissions(){
         return new ArrayList<>(inventoryPeasantMission);
     }
+
+    /**
+     * @return <b>The list of {@link ImprovementType} missions.</b>
+     */
+    public List<ImprovementType> getInventoryImprovement(ImprovementType improvementType){
+        return inventoryImprovement.stream().filter(improvementType1 -> improvementType1.equals(improvementType))
+                .collect(Collectors.toList());
+    }
+
 }
