@@ -99,9 +99,9 @@ public class Resource {
         deckParcelMission.add(new ParcelMission(ColorType.RED, FormType.TRIANGLE, 4));
         deckParcelMission.add(new ParcelMission(ColorType.RED, FormType.ARC, 4));
         deckParcelMission.add(new ParcelMission(ColorType.RED, FormType.DIAMOND, 5));
-        deckParcelMission.add(new ParcelMission(ColorType.YELLOW, ColorType.GREEN, FormType.DIAMOND, 3));
-        deckParcelMission.add(new ParcelMission(ColorType.YELLOW, ColorType.RED, FormType.DIAMOND, 5));
-        deckParcelMission.add(new ParcelMission(ColorType.RED, ColorType.GREEN, FormType.DIAMOND, 4));
+        deckParcelMission.add(new ParcelMission(ColorType.GREEN, ColorType.YELLOW, FormType.DIAMOND, 3));
+        deckParcelMission.add(new ParcelMission(ColorType.GREEN, ColorType.RED, FormType.DIAMOND, 4));
+        deckParcelMission.add(new ParcelMission(ColorType.RED, ColorType.YELLOW, FormType.DIAMOND, 5));
         Collections.shuffle(deckParcelMission);
     }
 

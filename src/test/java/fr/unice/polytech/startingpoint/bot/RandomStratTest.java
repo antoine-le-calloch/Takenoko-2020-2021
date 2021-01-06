@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.*;
-import fr.unice.polytech.startingpoint.type.CharacterType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
 
@@ -23,7 +22,7 @@ public class RandomStratTest {
     RandomBot rdmBot1;
     Board board;
     Resource resource;
-    Rules rules;
+    BoardRules boardRules;
     RandomStrat randomStrat;
 
 
@@ -31,7 +30,7 @@ public class RandomStratTest {
     public void setUp() {
 
         game = new Game();
-        rules = game.getRules();
+        boardRules = game.getRules();
         board = game.getBoard();
         rdmBot1 = (RandomBot) game.getPlayerData().getBot();
         resource = game.getResource();

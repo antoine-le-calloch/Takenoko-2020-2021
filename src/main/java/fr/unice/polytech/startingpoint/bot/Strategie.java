@@ -1,7 +1,7 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
-import fr.unice.polytech.startingpoint.game.board.Rules;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 public abstract class Strategie {
     protected final Bot bot;
-    protected final Rules rules;
+    protected final BoardRules boardRules;
 
     public Strategie(Bot bot) {
         this.bot = bot;
-        this.rules = bot.gameInteraction.getRules();
+        this.boardRules = bot.gameInteraction.getRules();
     }
 
     /**<p>The actions of the bot during his turn.</p>
@@ -88,7 +88,7 @@ public abstract class Strategie {
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : bot.gameInteraction.getPlacedCoordinates()) {
             for (Coordinate offSet : Coordinate.offSets()){
-                if(rules.isPlayableParcel(new Coordinate(c,offSet))){
+                if(boardRules.isPlayableParcel(new Coordinate(c,offSet))){
                     possibleCoordinates.add(new Coordinate(c,offSet));
                 }
             }
@@ -102,7 +102,7 @@ public abstract class Strategie {
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
         for(Coordinate coordinate1 : bot.gameInteraction.getPlacedCoordinates()){
             for(Coordinate coordinate2 : bot.gameInteraction.getPlacedCoordinates()){
-                if (rules.isPlayableCanal(coordinate1, coordinate2))
+                if (boardRules.isPlayableCanal(coordinate1, coordinate2))
                     possibleCoordinates.add(new Coordinate[]{coordinate1, coordinate2});
             }
         }
@@ -114,7 +114,7 @@ public abstract class Strategie {
     public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate coordinate : bot.gameInteraction.getPlacedCoordinates()) {
-            if (rules.isMovableCharacter(CharacterType.PANDA,coordinate)){
+            if (boardRules.isMovableCharacter(CharacterType.PANDA,coordinate)){
                 possibleCoordinates.add(coordinate);
             }
         }
@@ -126,7 +126,7 @@ public abstract class Strategie {
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : bot.gameInteraction.getPlacedCoordinates()) {
-            if (rules.isMovableCharacter(CharacterType.PEASANT,c)){
+            if (boardRules.isMovableCharacter(CharacterType.PEASANT,c)){
                 possibleCoordinates.add(c);
             }
         }
@@ -141,7 +141,7 @@ public abstract class Strategie {
 
     public List<Coordinate> playableCoordinatesAroundACoordinateGivenCo(Coordinate coordinate){
         return coordinate.coordinatesAround().stream()
-                .filter(c->rules.isPlayableParcel(c) && !bot.gameInteraction.isPlacedParcel(c))
+                .filter(c-> boardRules.isPlayableParcel(c) && !bot.gameInteraction.isPlacedParcel(c))
                 .collect(Collectors.toList());
     }
 

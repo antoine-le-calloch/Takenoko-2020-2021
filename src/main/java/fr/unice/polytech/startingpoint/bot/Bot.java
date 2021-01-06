@@ -16,7 +16,7 @@ import java.util.List;
  * {@link ParcelBot}, {@link PeasantBot} and {@link RandomBot} classes.</p>
  *
  * <p>The programmer needs only to extend this class and provide
- * implementations for the {@link #botPlay()} method.</p>
+ * implementations for the {@link #botPlay(WeatherType)} method.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric

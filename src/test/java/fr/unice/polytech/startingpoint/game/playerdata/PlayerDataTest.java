@@ -28,14 +28,17 @@ public class PlayerDataTest {
     }
 
     @Test
-    void temporaryInventory() {
+    void looseStamina() {
         playerData.looseStamina();
         playerData.looseStamina();
-        assertThrows(OutOfResourcesException.class,() -> playerData.looseStamina());
+        assertThrows(OutOfResourcesException.class, () -> playerData.looseStamina());
+    }
 
+    @Test
+    void actionList() {
         playerData.add(ActionType.DRAW_PARCELS);
         playerData.add(ActionType.SELECT_PARCEL);
-        assertThrows(NoSuchElementException.class,() -> playerData.hasPlayedCorrectly());
+        assertThrows(NoSuchElementException.class, () -> playerData.hasPlayedCorrectly());
 
         playerData.add(ActionType.PLACE_PARCEL);
         assertTrue(playerData.contains(ActionType.PLACE_PARCEL));
@@ -43,8 +46,11 @@ public class PlayerDataTest {
 
         playerData.remove(ActionType.PLACE_PARCEL);
         assertFalse(playerData.contains(ActionType.PLACE_PARCEL));
-        assertThrows(NoSuchElementException.class,() -> playerData.hasPlayedCorrectly());
+        assertThrows(NoSuchElementException.class, () -> playerData.hasPlayedCorrectly());
+    }
 
+    @Test
+    void saveParcel() {
         playerData.saveParcels(new ArrayList<>(Arrays.asList(new Parcel(),new Parcel(),new Parcel())));
         assertEquals(3,playerData.getParcelsSaved().size());
 
@@ -97,5 +103,4 @@ public class PlayerDataTest {
         game.getPlayerData().botPlay(WeatherType.WIND);
         assertEquals(3, game.getPlayerData().getPandaMissions().size());//le panda va piocher 2 fois la mission panda
     }
-
 }

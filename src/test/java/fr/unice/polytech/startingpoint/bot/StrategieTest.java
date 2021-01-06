@@ -5,7 +5,7 @@ import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
-import fr.unice.polytech.startingpoint.game.board.Rules;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
@@ -26,7 +26,7 @@ class StrategieTest {
     private Parcel parcel3;
     private ParcelBot bot1;
     private Board board;
-    private Rules rules;
+    private BoardRules boardRules;
     private Strategie strategie;
 
     @BeforeEach
@@ -37,7 +37,7 @@ class StrategieTest {
         parcel3 = new Parcel(ColorType.GREEN);
         bot1 = new ParcelBot(game.getGameInteraction());
         board = game.getBoard();
-        rules = game.getRules();
+        boardRules = game.getRules();
         strategie = new RandomStrat(bot1);
     }
 
@@ -70,7 +70,7 @@ class StrategieTest {
     void possibleCoordinatesParcelTest(){
         List<Coordinate> possibleCo = strategie.possibleCoordinatesParcel();
         Collections.shuffle(possibleCo);
-        assertTrue(rules.isPlayableParcel(possibleCo.get(0)));
+        assertTrue(boardRules.isPlayableParcel(possibleCo.get(0)));
     }
 
     @Test
@@ -92,7 +92,7 @@ class StrategieTest {
         List<Coordinate[]> possibleCanals = strategie.possibleCoordinatesCanal();
         Collections.shuffle(possibleCanals);
         Coordinate[] tabco = possibleCanals.get(0);
-        assertTrue(rules.isPlayableCanal(tabco[0],tabco[1]));
+        assertTrue(boardRules.isPlayableCanal(tabco[0],tabco[1]));
     }
 
     @Test

@@ -71,8 +71,6 @@ public class MissionPeasantStratTest {
         assertEquals(2,board.getPlacedParcels().get(coordinate1).getNbBamboo());//3 bamboo sur la parcel
     }
 
-
-
     @Test
     void drawMission() {
         assertEquals(0, game.getGameInteraction().getInventoryPeasantMissions().size());//0 mission dans son inventaire
@@ -80,18 +78,16 @@ public class MissionPeasantStratTest {
         //assertEquals(1, game.getGameInteraction().getInventoryPeasantMissions().size());//1 mission dans son inventaire
     }
 
-
     @Test
     void stratRainPeasent(){
-        Game gamePeasent= new Game(new BotType[]{BotType.PEASANT_BOT});
-        PeasantBot peasentBot= (PeasantBot) gamePeasent.getPlayerData().getBot();
-        Parcel parcel=new Parcel(ColorType.GREEN);
-        Parcel parcel2=new Parcel(ColorType.RED);
-        gamePeasent.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
-        gamePeasent.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
-        gamePeasent.getPlayerData().addMission(new PeasantMission(ColorType.RED,ImprovementType.NOTHING,2));
-        gamePeasent.getPlayerData().getInventory().subPeasantMissions(game.getPlayerData().getPeasantMissions());
-        assertEquals(new Coordinate(1,0,-1),peasentBot.getStratMissionPeasant().stratRain());
-
+        Game gamePeasant = new Game(new BotType[]{BotType.PEASANT_BOT});
+        PeasantBot peasantBot = (PeasantBot) gamePeasant.getPlayerData().getBot();
+        Parcel parcel = new Parcel(ColorType.GREEN);
+        Parcel parcel2 = new Parcel(ColorType.RED);
+        gamePeasant.getPlayerData().getInventory().subPeasantMissions(gamePeasant.getPlayerData().getPeasantMissions());
+        gamePeasant.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
+        gamePeasant.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
+        gamePeasant.getPlayerData().addMission(new PeasantMission(ColorType.RED,ImprovementType.NOTHING,2));
+        assertEquals(new Coordinate(1,0,-1),peasantBot.getStratMissionPeasant().stratRain());
     }
 }

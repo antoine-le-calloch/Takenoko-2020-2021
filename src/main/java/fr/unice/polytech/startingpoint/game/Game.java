@@ -3,7 +3,7 @@ package fr.unice.polytech.startingpoint.game;
 import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Resource;
-import fr.unice.polytech.startingpoint.game.board.Rules;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.WeatherDice;
 import fr.unice.polytech.startingpoint.game.playerdata.PlayerData;
 import fr.unice.polytech.startingpoint.type.BotType;
@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class Game{
     private final Board board;
-    private final Rules rules;
+    private final BoardRules boardRules;
     private final Resource resource;
     private final GameInteraction gameInteraction;
     private final List<PlayerData> botData;
@@ -39,7 +39,7 @@ public class Game{
 
     public Game(BotType[] botTypes){
         board = new Board();
-        rules = new Rules(board);
+        boardRules = new BoardRules(board);
         resource = new Resource();
         gameInteraction = new GameInteraction(this);
         botData = new LinkedList<>();
@@ -160,8 +160,8 @@ public class Game{
         return resource;
     }
 
-    public Rules getRules() {
-        return rules;
+    public BoardRules getRules() {
+        return boardRules;
     }
 
     public GameInteraction getGameInteraction() {

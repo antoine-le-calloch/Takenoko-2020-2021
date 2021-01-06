@@ -62,7 +62,9 @@ public final class Stat {
         int[] bestScore = new int[]{0,0};
         List<Integer> winner = new ArrayList<>();
         for(int[] score : scores){
-            if (score[0] >= bestScore[0] && score[1] >= bestScore[1])
+            if (score[0] > bestScore[0])
+                bestScore = score;
+            if (score[0] == bestScore[0] && score[1] > bestScore[1])
                 bestScore = score;
         }
         for(int i = 0; i < botList.length; i++){
