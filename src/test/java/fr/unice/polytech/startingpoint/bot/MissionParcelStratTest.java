@@ -10,8 +10,6 @@ import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
 
-import fr.unice.polytech.startingpoint.type.WeatherType;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +28,7 @@ class MissionParcelStratTest {
     Coordinate coordinate3;
     Coordinate coordinate4;
     Coordinate coordinate5;
-    Coordinate coordinate7;
-    Coordinate coordinate8;
-    Coordinate coordinate9;
+    Coordinate coordinate6;
 
     Game game;
     Board board;
@@ -42,15 +38,12 @@ class MissionParcelStratTest {
 
     @BeforeEach
     public void setUp() {
-        coordinate1 = new Coordinate(1, 0, -1); //0-2h
-        coordinate2 = new Coordinate(1, -1, 0); //2-4h
-        coordinate3 = new Coordinate(0, -1, 1); //4-6h
-        coordinate4 = new Coordinate(-1, 0, 1); //6-8h
-        coordinate5 = new Coordinate(-1, 1, 0); //8-10h
-
-        coordinate7 = new Coordinate(1, -2, 1); //4h éloigné de un
-        coordinate8 = new Coordinate(0, -2, 2); //4-6h éloigné de un
-        coordinate9 = new Coordinate(-1, -1, 2); //6h éloigné de un
+        coordinate1 = new Coordinate(1, 0, -1);
+        coordinate2 = new Coordinate(2, -1, -1);
+        coordinate3 = new Coordinate(1, -1, 0);
+        coordinate4 = new Coordinate(2, -2, 0);
+        coordinate5 = new Coordinate(1, -2, 1);
+        coordinate6 = new Coordinate(0, -1, 1);
 
         game = new Game();
         board = game.getBoard();
@@ -70,8 +63,8 @@ class MissionParcelStratTest {
         List<Coordinate> triangleForm = stratMissionParcel.setForm(coordinate1, FormType.LINE);
 
         assertEquals(coordinate1, triangleForm.get(0));
-        assertEquals(coordinate2, triangleForm.get(1));
-        assertEquals(coordinate7, triangleForm.get(2));
+        assertEquals(coordinate3, triangleForm.get(1));
+        assertEquals(coordinate5, triangleForm.get(2));
         assertEquals(3,triangleForm.size());
     }
 
@@ -80,7 +73,7 @@ class MissionParcelStratTest {
         List<Coordinate> triangleForm = stratMissionParcel.setForm(coordinate2, FormType.TRIANGLE);
 
         assertEquals(coordinate2, triangleForm.get(0));
-        assertEquals(coordinate7, triangleForm.get(1));
+        assertEquals(coordinate4, triangleForm.get(1));
         assertEquals(coordinate3, triangleForm.get(2));
         assertEquals(3,triangleForm.size());
     }
@@ -90,19 +83,19 @@ class MissionParcelStratTest {
         List<Coordinate> triangleForm = stratMissionParcel.setForm(coordinate2, FormType.DIAMOND);
 
         assertEquals(coordinate2, triangleForm.get(0));
-        assertEquals(coordinate7, triangleForm.get(1));
-        assertEquals(coordinate3, triangleForm.get(2));
-        assertEquals(coordinate8, triangleForm.get(3));
+        assertEquals(coordinate4, triangleForm.get(1));
+        assertEquals(coordinate5, triangleForm.get(2));
+        assertEquals(coordinate3, triangleForm.get(3));
         assertEquals(4,triangleForm.size());
     }
 
     @Test
     void arcForm() {
-        List<Coordinate> triangleForm = stratMissionParcel.setForm(coordinate1, FormType.ARC);
+        List<Coordinate> triangleForm = stratMissionParcel.setForm(coordinate2, FormType.ARC);
 
-        assertEquals(coordinate1, triangleForm.get(0));
-        assertEquals(coordinate2, triangleForm.get(1));
-        assertEquals(coordinate3, triangleForm.get(2));
+        assertEquals(coordinate2, triangleForm.get(0));
+        assertEquals(coordinate3, triangleForm.get(1));
+        assertEquals(coordinate5, triangleForm.get(2));
         assertEquals(3,triangleForm.size());
     }
 ///////////////////////////////
@@ -118,14 +111,14 @@ class MissionParcelStratTest {
     void coordAroundUse_Coordinate3() {
         board.placeParcel(new Parcel(), coordinate3);
         assertTrue(board.isPlacedParcel(coordinate3));
-        Coordinate coordAroundUse = stratMissionParcel.coordAroundUse(coordinate7);
+        Coordinate coordAroundUse = stratMissionParcel.coordAroundUse(coordinate4);
 
         assertEquals(coordinate3, coordAroundUse);
     }
 
     @Test
     void coordAroundUse_None() {
-        Coordinate coordAroundUse = stratMissionParcel.coordAroundUse(coordinate7);
+        Coordinate coordAroundUse = stratMissionParcel.coordAroundUse(coordinate4);
 
         assertNull(coordAroundUse);
     }
@@ -138,7 +131,7 @@ class MissionParcelStratTest {
 
         assertEquals(2, coordNeedToDoBlueTriangle.size());
         assertEquals(coordinate3, coordNeedToDoBlueTriangle.get(0));
-        assertEquals(coordinate7, coordNeedToDoBlueTriangle.get(1));
+        assertEquals(coordinate4, coordNeedToDoBlueTriangle.get(1));
     }
 
     @Test
@@ -151,12 +144,12 @@ class MissionParcelStratTest {
 
     @Test
     void coordNeedToDoBlueTriangle_0ParcelPut() {
-        List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.coordNeedToDoMission(coordinate2, missionBlueTriangle);
+        List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.coordNeedToDoMission(coordinate3, missionBlueTriangle);
 
         assertEquals(3, coordNeedToDoRedLine.size());
-        assertEquals(coordinate2, coordNeedToDoRedLine.get(0));
-        assertEquals(coordinate3, coordNeedToDoRedLine.get(1));
-        assertEquals(coordinate7, coordNeedToDoRedLine.get(2));
+        assertEquals(coordinate3, coordNeedToDoRedLine.get(0));
+        assertEquals(coordinate6, coordNeedToDoRedLine.get(1));
+        assertEquals(coordinate5, coordNeedToDoRedLine.get(2));
     }
 
     @Test
@@ -165,9 +158,9 @@ class MissionParcelStratTest {
         List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.coordNeedToDoMission(coordinate1, missionRedLine);
 
         assertEquals(3, coordNeedToDoRedLine.size());
-        assertEquals(coordinate2, coordNeedToDoRedLine.get(0));
-        assertEquals(coordinate3, coordNeedToDoRedLine.get(1));
-        assertEquals(coordinate7, coordNeedToDoRedLine.get(2));
+        assertEquals(coordinate3, coordNeedToDoRedLine.get(0));
+        assertEquals(coordinate6, coordNeedToDoRedLine.get(1));
+        assertEquals(coordinate5, coordNeedToDoRedLine.get(2));
     }
 
     @Test
@@ -183,21 +176,21 @@ class MissionParcelStratTest {
         List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.coordNeedToDoMission(coordinate1, missionRedLine);
 
         assertEquals(4, coordNeedToDoRedLine.size());
-        assertEquals(coordinate2, coordNeedToDoRedLine.get(0));
-        assertEquals(coordinate3, coordNeedToDoRedLine.get(1));
-        assertEquals(coordinate7, coordNeedToDoRedLine.get(2));
+        assertEquals(coordinate3, coordNeedToDoRedLine.get(0));
+        assertEquals(coordinate6, coordNeedToDoRedLine.get(1));
+        assertEquals(coordinate5, coordNeedToDoRedLine.get(2));
         assertEquals(coordinate1, coordNeedToDoRedLine.get(3));
     }
 ///////////////////////////////
 
     @Test
     void bestCoordinatesForMissionRedLine_1RedParcelPut() {
-        board.placeParcel(new Parcel(ColorType.RED), coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate3);
         List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.bestCoordinatesForMission(missionRedLine);
 
         assertEquals(3, coordNeedToDoRedLine.size());
-        assertEquals(coordinate3, coordNeedToDoRedLine.get(0));
-        assertEquals(coordinate7, coordNeedToDoRedLine.get(1));
+        assertEquals(coordinate6, coordNeedToDoRedLine.get(0));
+        assertEquals(coordinate5, coordNeedToDoRedLine.get(1));
         assertEquals(coordinate1, coordNeedToDoRedLine.get(2));
     }
 ///////////////////////////////
@@ -228,29 +221,27 @@ class MissionParcelStratTest {
 ///////////////////////////////
 
     @Test
-    void BestCanalToIrrigateCoordinate4_0CanalPut() {
+    void BestCanalToIrrigateCoordinate3_0CanalPut() {
         board.placeParcel(new Parcel(ColorType.RED), coordinate1);
         board.placeParcel(new Parcel(ColorType.RED), coordinate2);
         board.placeParcel(new Parcel(ColorType.RED), coordinate3);
-        board.placeParcel(new Parcel(ColorType.RED), coordinate7);
-        Coordinate[] bestCanal = stratMissionParcel.getBestCanal(coordinate7);
+        Coordinate[] bestCanal = stratMissionParcel.getBestCanal(coordinate2);
 
         System.out.println(bestCanal[0]);
         System.out.println(bestCanal[1]);
-        assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate2)));
+        assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate1)));
         assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate3)));
     }
 
     @Test
-    void BestCanalToIrrigateCoordinate4_1CanalPut() {
+    void BestCanalToIrrigateCoordinate3_1CanalPut() {
         board.placeParcel(new Parcel(ColorType.RED), coordinate1);
         board.placeParcel(new Parcel(ColorType.RED), coordinate2);
         board.placeParcel(new Parcel(ColorType.RED), coordinate3);
-        board.placeParcel(new Parcel(ColorType.RED), coordinate7);
-        board.placeCanal(new Canal(), coordinate2, coordinate3);
-        Coordinate[] bestCanal = stratMissionParcel.getBestCanal(coordinate7);
+        board.placeCanal(new Canal(), coordinate1, coordinate3);
+        Coordinate[] bestCanal = stratMissionParcel.getBestCanal(coordinate2);
 
-        assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate7)));
+        assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate2)));
     }
 ///////////////////////////////
 
@@ -263,7 +254,7 @@ class MissionParcelStratTest {
     @Test
     void putCanal_0Mission() {
         board.placeParcel(new Parcel(ColorType.RED), coordinate1);
-        board.placeParcel(new Parcel(ColorType.RED), coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate3);
 
         assertEquals(0, board.getPlacedCanals().size());
         stratMissionParcel.putCanal();

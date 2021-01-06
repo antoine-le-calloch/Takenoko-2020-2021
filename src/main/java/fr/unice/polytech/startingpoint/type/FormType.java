@@ -17,28 +17,28 @@ import java.util.List;
 
 
 public enum FormType {
-    TRIANGLE (new ArrayList<>(Arrays.asList( new Coordinate() , new Coordinate(1, 0, -1) , new Coordinate(1, -1, 0) ))) {
+    TRIANGLE (new ArrayList<>(Arrays.asList( new Coordinate() , new Coordinate(0, -1, 1) , new Coordinate(-1, 0, 1) ))) {
         @Override
         public String toString() {
             return "Triangle";
         }
     }
     ,
-    LINE (new ArrayList<>(Arrays.asList( new Coordinate() , new Coordinate(0, -1, 1) , new Coordinate(0, 1, -1) ))) {
+    LINE (new ArrayList<>(Arrays.asList( new Coordinate() , new Coordinate(0, -1, 1) , new Coordinate(0, -2, 2) ))) {
         @Override
         public String toString() {
             return "Line";
         }
     }
     ,
-    ARC (new ArrayList<>(Arrays.asList( new Coordinate() , new Coordinate(1, 0, -1) , new Coordinate(0, -1, 1) ))) {
+    ARC (new ArrayList<>(Arrays.asList( new Coordinate() , new Coordinate(-1, 0, 1) , new Coordinate(-1, -1, 2) ))) {
         @Override
         public String toString() {
             return "Arc";
         }
     }
     ,
-    DIAMOND (new ArrayList<>(Arrays.asList( new Coordinate() , new Coordinate(0, -1, 1) )), new ArrayList<>(Arrays.asList(new Coordinate(1, -1, 0), new Coordinate(1, 0, -1)))) {
+    DIAMOND (new ArrayList<>(Arrays.asList( new Coordinate() , new Coordinate(0, -1, 1) )), new ArrayList<>(Arrays.asList(new Coordinate(-1, -1, 2),new Coordinate(-1, 0, 1)))) {
         @Override
         public String toString() {
             return "Diamond";

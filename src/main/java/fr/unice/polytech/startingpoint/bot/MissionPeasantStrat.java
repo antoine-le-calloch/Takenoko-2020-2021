@@ -54,7 +54,7 @@ public class MissionPeasantStrat extends Strategie{
     @Override
     public Coordinate stratRain() {
         for(PeasantMission peasantMission:bot.gameInteraction.getInventoryPeasantMissions()){
-            ColorType peasantMissionColor=peasantMission.getColorType();
+            ColorType peasantMissionColor = peasantMission.getColorType();
 
             List<Coordinate> parcelsIrrigatedSameColorAsMission=bot.gameInteraction.
                     getPlacedCoordinatesByColor(peasantMissionColor).stream()

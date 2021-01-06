@@ -6,7 +6,7 @@ import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
-import fr.unice.polytech.startingpoint.game.board.Rules;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class GameInteraction {
+    private final int NB_MAX_MISSION = 5;
     private final Game game;
 
     GameInteraction(Game game){
@@ -39,17 +40,23 @@ public final class GameInteraction {
 
     public void drawMission(MissionType missionType) {
         if (getPlayerData().add(ActionType.DRAW_MISSION)){
-            getPlayerData().looseStamina();
-            switch (missionType){
-                case PANDA:
-                    getPlayerData().addMission(game.getResource().drawPandaMission());
-                    break;
-                case PARCEL:
-                    getPlayerData().addMission(game.getResource().drawParcelMission());
-                    break;
-                case PEASANT:
-                    getPlayerData().addMission(game.getResource().drawPeasantMission());
-                    break;
+            if (getPlayerData().getMissionsSize() <= NB_MAX_MISSION){
+                getPlayerData().looseStamina();
+                switch (missionType){
+                    case PANDA:
+                        getPlayerData().addMission(game.getResource().drawPandaMission());
+                        break;
+                    case PARCEL:
+                        getPlayerData().addMission(game.getResource().drawParcelMission());
+                        break;
+                    case PEASANT:
+                        getPlayerData().addMission(game.getResource().drawPeasantMission());
+                        break;
+                }
+            }
+            else{
+                getPlayerData().remove(ActionType.DRAW_MISSION);
+                throw new RulesViolationException("You already have five missions in your inventory.");
             }
         }
         else
@@ -61,9 +68,8 @@ public final class GameInteraction {
             getPlayerData().looseStamina();
             getPlayerData().saveParcels(game.getResource().drawParcels());
             List<ParcelInformation> parcelInformationList = new ArrayList<>();
-            for(Parcel parcel : getPlayerData().getParcelsSaved()){
+            for(Parcel parcel : getPlayerData().getParcelsSaved())
                 parcelInformationList.add(parcel.getParcelInformation());
-            }
             return parcelInformationList;
         }
         else
@@ -72,14 +78,13 @@ public final class GameInteraction {
 
     public void selectParcel(ParcelInformation parcelInformation){
         if (getPlayerData().add(ActionType.SELECT_PARCEL)){
-            if (getPlayerData().contains(ActionType.DRAW_PARCELS)){
-                for (Parcel parcel : getPlayerData().getParcelsSaved()){
-                    if (parcel.getParcelInformation() == parcelInformation){
+            if (getPlayerData().contains(ActionType.DRAW_PARCELS)) {
+                for (Parcel parcel : getPlayerData().getParcelsSaved())
+                    if (parcel.getParcelInformation() == parcelInformation) {
                         game.getResource().selectParcel(parcel);
                         getPlayerData().saveParcel(parcel);
                         return;
                     }
-                }
                 throw new RulesViolationException("Wrong Parcel asked.");
             }
             else
@@ -89,34 +94,26 @@ public final class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-    public void thunderstromAction(Coordinate coordinate){
-        if(game.getPlayerData().add(ActionType.WEATHER)){
-
-             if(!getPlacedCoordinates().contains(coordinate))
-                 throw new BadCoordinateException("The character can't move to this coordinate : " + coordinate.toString());
-             else{
+    public void thunderstormAction(Coordinate coordinate){
+        if(getPlayerData().add(ActionType.WEATHER)){
+             if(getPlacedCoordinates().contains(coordinate))
                  game.getBoard().moveCharacter(CharacterType.PANDA,coordinate);
-             }
+             else
+                 throw new BadCoordinateException("The character can't move to this coordinate : " + coordinate.toString());
         }
-        else {
+        else
             throw new RulesViolationException("Already used this method.");
-        }
     }
-
 
     public void rainAction(Coordinate coordinate){
         if(getPlayerData().add(ActionType.WEATHER)){
-            if(!getPlacedCoordinates().contains(coordinate))
+            if (game.getBoard().isPlacedAndIrrigatedParcel(coordinate))
+                    game.getBoard().getPlacedParcels().get(coordinate).addBamboo();
+            else
                 throw new BadCoordinateException("The parcel with the coordinate : " + coordinate.toString() + " is not placed");
-            else if (game.getBoard().getPlacedParcels().get(coordinate).getIrrigated()) {
-                game.getBoard().getPlacedParcels().get(coordinate).addBamboo();
-            }
         }
-        else {
+        else
             throw new RulesViolationException("Already used this method.");
-        }
-
-
     }
 
     public void placeParcel(Coordinate coordinate){
@@ -210,7 +207,7 @@ public final class GameInteraction {
         return game.getPlayerData().getStamina();
     }
 
-    public Rules getRules(){
+    public BoardRules getRules(){
         return  game.getRules();
     }
 

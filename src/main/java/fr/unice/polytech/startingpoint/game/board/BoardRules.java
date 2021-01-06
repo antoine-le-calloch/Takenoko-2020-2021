@@ -4,7 +4,7 @@ import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.type.CharacterType;
 
 /**
- * <h1>{@link Rules} :</h1>
+ * <h1>{@link BoardRules} :</h1>
  *
  * <p>This class provides a class that check the actions asked by the bot.</p>
  *
@@ -16,7 +16,7 @@ import fr.unice.polytech.startingpoint.type.CharacterType;
  * @version 0.5
  */
 
-public final class Rules {
+public final class BoardRules {
     private final Board board;
 
     /**
@@ -25,7 +25,7 @@ public final class Rules {
      * @param board
      *            <b>Board object.</b>
      */
-    public Rules(Board board){
+    public BoardRules(Board board){
         this.board = board;
     }
 

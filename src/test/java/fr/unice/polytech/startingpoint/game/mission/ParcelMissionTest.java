@@ -64,12 +64,12 @@ public class ParcelMissionTest {
         missionLR = new ParcelMission(ColorType.RED, FormType.LINE, 2);
         missionDR = new ParcelMission(ColorType.RED, FormType.DIAMOND, 3);
         missionAR = new ParcelMission(ColorType.RED, FormType.ARC, 4);
-        missionDBR = new ParcelMission(ColorType.RED,ColorType.GREEN, FormType.DIAMOND, 5);
+        missionDBR = new ParcelMission(ColorType.GREEN,ColorType.RED, FormType.DIAMOND, 5);
         missionTG = new ParcelMission(ColorType.GREEN, FormType.TRIANGLE, 1);
         missionLG = new ParcelMission(ColorType.GREEN, FormType.LINE, 2);
         missionDG = new ParcelMission(ColorType.GREEN, FormType.DIAMOND, 3);
         missionAG = new ParcelMission(ColorType.GREEN, FormType.ARC, 4);
-        missionDBG = new ParcelMission(ColorType.YELLOW,ColorType.GREEN, FormType.DIAMOND, 5);
+        missionDBG = new ParcelMission(ColorType.GREEN,ColorType.YELLOW, FormType.DIAMOND, 5);
     }
 
     @Test

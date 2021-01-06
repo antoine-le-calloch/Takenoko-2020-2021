@@ -4,7 +4,7 @@ import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
-import fr.unice.polytech.startingpoint.game.board.Rules;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.ColorType;
@@ -25,13 +25,13 @@ class RushPandaStratTest {
     Coordinate coordinate1;
     Coordinate coordinate2;
     Game game;
-    Rules rules;
+    BoardRules boardRules;
 
 
     @BeforeEach void setUp()  {
         game = new Game(new BotType[]{BotType.PANDA_BOT});
         board = game.getBoard();
-        rules = game.getRules();
+        boardRules = game.getRules();
         parcel1 = new Parcel(ColorType.GREEN);
         parcel2 = new Parcel(ColorType.GREEN);
         bot= (PandaBot) game.getPlayerData().getBot();

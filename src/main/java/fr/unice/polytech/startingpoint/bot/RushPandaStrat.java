@@ -5,9 +5,6 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.type.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class RushPandaStrat extends Strategie{
 
     /**@param bot
@@ -50,14 +47,14 @@ public class RushPandaStrat extends Strategie{
 
             if(colorMissionPanda.equals(ColorType.ALL_COLOR) && strategyMissionAllColor()!=null){
                 Coordinate coordinate=strategyMissionAllColor();
-                bot.gameInteraction.thunderstromAction(strategyMissionAllColor());
+                bot.gameInteraction.thunderstormAction(strategyMissionAllColor());
                 return coordinate;
 
             }
 
             else if( strategyMissionOneColor(colorMissionPanda)!=null) {
                 Coordinate coordinate=strategyMissionOneColor(colorMissionPanda);
-                bot.gameInteraction.thunderstromAction(coordinate);
+                bot.gameInteraction.thunderstormAction(coordinate);
                 return coordinate;
 
             }

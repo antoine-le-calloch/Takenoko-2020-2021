@@ -13,12 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InventoryTest {
     private Inventory inventory;
-    private ParcelMission mission;
 
     @BeforeEach
     void setUp(){
         inventory = new Inventory();
-        mission = new ParcelMission(ColorType.GREEN, FormType.LINE, 0);
     }
 
     @Test
