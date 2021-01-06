@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 class Main{
     public static void main(String... args){
-        final int NUMBER_OF_GAMES = 1;
+        final int NUMBER_OF_GAMES = 100;
 
         BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PEASANT_BOT};
         Stat statGame = new Stat(botList);

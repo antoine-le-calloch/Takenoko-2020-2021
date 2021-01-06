@@ -274,6 +274,10 @@ public final class GameInteraction {
         return getPlayerData().getPeasantMissions();
     }
 
+    public int getMissionsSize(){
+        return getPlayerData().getMissionsSize();
+    }
+
     public int[] getInventoryBamboo() {
         return getPlayerData().getInventoryBamboo();
     }

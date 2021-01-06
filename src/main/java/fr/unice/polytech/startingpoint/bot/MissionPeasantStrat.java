@@ -48,7 +48,7 @@ public class MissionPeasantStrat extends Strategie{
      */
     public boolean isJudiciousDrawMission(){
         int NB_MISSION_MAX = 5;
-        return bot.gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION) && bot.gameInteraction.getInventoryParcelMissions().size() <= NB_MISSION_MAX;
+        return bot.gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0 && !bot.gameInteraction.contains(ActionType.DRAW_MISSION) && bot.gameInteraction.getMissionsSize() < NB_MISSION_MAX;
     }
 
     /**
