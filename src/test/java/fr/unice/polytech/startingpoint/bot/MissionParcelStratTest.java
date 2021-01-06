@@ -13,8 +13,9 @@ import fr.unice.polytech.startingpoint.type.FormType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,8 +59,7 @@ class MissionParcelStratTest {
         game.getPlayerData().getInventory().subParcelMissions(game.getPlayerData().getParcelMissions()); //supprime la mission donner au debut
     }
 
-
-    /*@Test
+    @Test
     void LineForm() {
         List<Coordinate> triangleForm = stratMissionParcel.setForm(coordinate1, FormType.LINE);
 
@@ -130,9 +130,9 @@ class MissionParcelStratTest {
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
         List<Coordinate> coordNeedToDoGreenTriangle = stratMissionParcel.coordNeedToDoMission(coordinate2, missionGreenTriangle);
 
-        assertEquals(2, coordNeedToDoBlueTriangle.size());
-        assertEquals(coordinate3, coordNeedToDoBlueTriangle.get(0));
-        assertEquals(coordinate4, coordNeedToDoBlueTriangle.get(1));
+        assertEquals(2, coordNeedToDoGreenTriangle.size());
+        assertEquals(coordinate3, coordNeedToDoGreenTriangle.get(0));
+        assertEquals(coordinate4, coordNeedToDoGreenTriangle.get(1));
     }
 
     @Test
@@ -145,7 +145,7 @@ class MissionParcelStratTest {
 
     @Test
     void coordNeedToDoBlueTriangle_0ParcelPut() {
-        List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.coordNeedToDoMission(coordinate3, missionBlueTriangle);
+        List<Coordinate> coordNeedToDoRedLine = stratMissionParcel.coordNeedToDoMission(coordinate3, missionGreenTriangle);
 
         assertEquals(3, coordNeedToDoRedLine.size());
         assertEquals(coordinate3, coordNeedToDoRedLine.get(0));
@@ -199,7 +199,7 @@ class MissionParcelStratTest {
     @Test
     void bestCoordinatesIn0Mission_RedParcelAvailable() {
         board.placeParcel(new Parcel(ColorType.RED), coordinate2);
-        List<Coordinate> bestCoordinatesForAllMission = stratMissionParcel.bestCoordsInAllMission(ColorType.RED);
+        List<Coordinate> bestCoordinatesForAllMission = stratMissionParcel.bestCoordsInAllMission(new ArrayList<>(Collections.singletonList(ColorType.RED)));
 
         assertNull(bestCoordinatesForAllMission);
     }
@@ -210,15 +210,15 @@ class MissionParcelStratTest {
         assertEquals(1, board.getPlacedParcels().size());
         stratMissionParcel.putParcel();
         assertEquals(2, board.getPlacedParcels().size());
-    }*/
+    }
 
-   /* @Test
+   @Test
     void putParcel_1MissionGreenTriangle() {
-        game.getGameInteraction().getPlayerData().getInventory().addMission(missionGreenTriangle);
+        game.getGameInteraction().getPlayerData().addMission(missionGreenTriangle);
         assertEquals(1, board.getPlacedParcels().size());
         stratMissionParcel.putParcel();
         assertEquals(2, board.getPlacedParcels().size());
-    }*/
+    }
 ///////////////////////////////
 
     @Test

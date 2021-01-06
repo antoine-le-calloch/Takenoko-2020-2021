@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.game.board;
 
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.game.Game;
+import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
@@ -199,21 +200,21 @@ public class Resource {
         throw new OutOfResourcesException("No more Canal to draw.");
     }
 
-    public PandaMission drawPandaMission() throws OutOfResourcesException {
+    public Mission drawPandaMission() throws OutOfResourcesException {
         if (!deckPandaMission.isEmpty()) {
             return deckPandaMission.remove(0);
         }
         throw new OutOfResourcesException("No more PandaMission to draw.");
     }
 
-    public ParcelMission drawParcelMission() throws OutOfResourcesException {
+    public Mission drawParcelMission() throws OutOfResourcesException {
         if (!deckParcelMission.isEmpty()) {
             return deckParcelMission.remove(0);
         }
         throw new OutOfResourcesException("No more ParcelMission to draw.");
     }
 
-    public PeasantMission drawPeasantMission() throws OutOfResourcesException {
+    public Mission drawPeasantMission() throws OutOfResourcesException {
         if (!deckPeasantMission.isEmpty()) {
             return deckPeasantMission.remove(0);
         }

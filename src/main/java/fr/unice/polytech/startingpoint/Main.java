@@ -3,8 +3,6 @@ package fr.unice.polytech.startingpoint;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.type.BotType;
 
-import java.util.Arrays;
-
 /**
  * Main, lance 1000 parties, des statistiques sont affichées
  * @author Manuel Enzo

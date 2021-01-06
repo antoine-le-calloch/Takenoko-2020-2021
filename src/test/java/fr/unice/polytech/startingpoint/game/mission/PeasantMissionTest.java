@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.game.mission;
 
-import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.type.ColorType;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +17,12 @@ import static org.mockito.Mockito.mock;
 
 public class PeasantMissionTest {
     PeasantMission mission;
-    Board boardMock;
+
     Parcel parcelMock;
     Parcel parcelMock2;
     Parcel parcelMock3;
     Parcel parcelMock4;
+
     Map<Coordinate,Parcel> coordinateParcelMap;
 
     @BeforeEach
@@ -32,7 +31,6 @@ public class PeasantMissionTest {
         parcelMock2 = mock(Parcel.class);
         parcelMock3 = mock(Parcel.class);
         parcelMock4 = mock(Parcel.class);
-        boardMock = mock(Board.class);
 
         coordinateParcelMap = new HashMap<>();
         coordinateParcelMap.put(new Coordinate(1,-1,0), parcelMock);
@@ -50,7 +48,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
         Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.NOTHING);
 
-        assertTrue(mission.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertTrue(mission.checkMission(coordinateParcelMap));
     }
 
     @Test
@@ -59,7 +57,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock.getColor()).thenReturn(ColorType.GREEN);
         Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.NOTHING);
 
-        assertFalse(mission.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertFalse(mission.checkMission(coordinateParcelMap));
     }
 
     @Test
@@ -68,7 +66,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
         Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.NOTHING);
 
-        assertFalse(mission.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertFalse(mission.checkMission(coordinateParcelMap));
     }
 
     @Test
@@ -76,7 +74,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
         Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.WATERSHED);
 
-        assertFalse(mission.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertFalse(mission.checkMission(coordinateParcelMap));
     }
 
     /**
@@ -99,7 +97,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock4.getColor()).thenReturn(ColorType.GREEN);
 
         PeasantMission specialMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 2);
-        assertTrue(specialMissionGreen.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertTrue(specialMissionGreen.checkMission(coordinateParcelMap));
 
     }
 
@@ -116,7 +114,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock3.getColor()).thenReturn(ColorType.YELLOW);
 
         PeasantMission specialMissionYellow = new PeasantMission(ColorType.YELLOW, ImprovementType.WHATEVER, 2);
-        assertTrue(specialMissionYellow.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertTrue(specialMissionYellow.checkMission(coordinateParcelMap));
     }
 
     @Test
@@ -128,10 +126,8 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
         Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.RED);
 
-        Mockito.when(boardMock.getPlacedParcels()).thenReturn(coordinateParcelMap);
-
         PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
-        assertTrue(specialMissionRed.checkMission(new ArrayList<>(boardMock.getPlacedParcels().values())));
+        assertTrue(specialMissionRed.checkMission(coordinateParcelMap));
     }
 
     @Test
@@ -147,7 +143,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock3.getColor()).thenReturn(ColorType.RED);
 
         PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
-        assertTrue(specialMissionRed.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertTrue(specialMissionRed.checkMission(coordinateParcelMap));
     }
 
     @Test
@@ -156,7 +152,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock.getColor()).thenReturn(ColorType.RED);
 
         PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
-        assertFalse(specialMissionRed.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertFalse(specialMissionRed.checkMission(coordinateParcelMap));
     }
 
     @Test
@@ -169,7 +165,7 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.RED);
 
         PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
-        assertFalse(specialMissionRed.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertFalse(specialMissionRed.checkMission(coordinateParcelMap));
     }
 
     @Test
@@ -182,6 +178,6 @@ public class PeasantMissionTest {
         Mockito.when(parcelMock2.getColor()).thenReturn(ColorType.RED);
 
         PeasantMission specialMissionRed = new PeasantMission(ColorType.RED, ImprovementType.WHATEVER, 2);
-        assertFalse(specialMissionRed.checkMission(new ArrayList<>(coordinateParcelMap.values())));
+        assertFalse(specialMissionRed.checkMission(coordinateParcelMap));
     }
 }
