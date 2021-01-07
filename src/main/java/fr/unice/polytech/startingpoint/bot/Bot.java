@@ -2,7 +2,7 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
-import fr.unice.polytech.startingpoint.bot.strategie.RushPandaStrat;
+import fr.unice.polytech.startingpoint.bot.strategie.MissionPandaStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
@@ -11,6 +11,7 @@ import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
  */
 
 public abstract class Bot {
-    protected final RushPandaStrat rushPandaStrat ;
+    protected final MissionPandaStrat missionPandaStrat;
     protected final MissionParcelStrat stratMissionParcel ;
     protected final MissionPeasantStrat stratMissionPeasant ;
 
@@ -49,7 +50,7 @@ public abstract class Bot {
      */
     public Bot(GameInteraction gameInteraction) {
         this.gameInteraction = gameInteraction;
-        this.rushPandaStrat = new RushPandaStrat(this);
+        this.missionPandaStrat = new MissionPandaStrat(this);
         this.stratMissionParcel = new MissionParcelStrat(this);
         this.stratMissionPeasant = new MissionPeasantStrat(this);
     }
@@ -130,13 +131,14 @@ public abstract class Bot {
     }
 
     public Mission determineBestMissionToDo() {
+        Random randInt = new Random();
         List<Mission> missionList = new LinkedList<>();
         List<int[]> intsList = new LinkedList<>();
         for (Mission mission : gameInteraction.getInventoryMissions()){
             int nbMove = -1;
             switch (mission.getMissionType()){
                 case PANDA:
-                    nbMove = rushPandaStrat.howManyMoveToDoMission(mission);
+                    nbMove = missionPandaStrat.howManyMoveToDoMission(mission);
                     break;
                 case PARCEL:
                     nbMove = stratMissionParcel.howManyMoveToDoMission(mission);
@@ -153,7 +155,7 @@ public abstract class Bot {
         if (!missionList.isEmpty())
             return missionList.get(determineBestMission(intsList));
         else
-            return gameInteraction.getInventoryMissions().get(0);
+            return gameInteraction.getInventoryMissions().get((randInt.nextInt(gameInteraction.getInventoryMissions().size())));
     }
 
     public int determineBestMission(List<int[]> intsList){
@@ -173,10 +175,10 @@ public abstract class Bot {
         return bestMissionOrdinal;
     }
 
-    void playBestMission(Mission mission){
+    void playMission(Mission mission){
         switch (mission.getMissionType()){
             case PANDA:
-                rushPandaStrat.stratOneTurn(mission);
+                missionPandaStrat.stratOneTurn(mission);
                 return;
             case PARCEL:
                 stratMissionParcel.stratOneTurn(mission);
@@ -226,15 +228,18 @@ public abstract class Bot {
     }
 
     public void stratCloud(){
-        if(getGameInteraction().getResourceSize(ResourceType.WATHERSHEDMPROVEMENT)>0)
+        if(getGameInteraction().getResourceSize(ResourceType.WATHERSHEDMPROVEMENT) > 0)
             getGameInteraction().cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
-        else if(getGameInteraction().getResourceSize(ResourceType.FERTIZILERIMPROVEMENT)>0)
+        else if(getGameInteraction().getResourceSize(ResourceType.FERTIZILERIMPROVEMENT) > 0)
             getGameInteraction().cloudAction(ImprovementType.FERTILIZER,WeatherType.SUN);
-        else if(getGameInteraction().getResourceSize(ResourceType.ENCLOSUREIMPROVEMENT)>0)
+        else
             getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
-        else {
-            getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
-        }
+        ImprovementType improvementType = (gameInteraction.getInventoryImprovementTypes().isEmpty()) ? null : gameInteraction.getInventoryImprovementTypes().get(0);
+        List<Coordinate> coordinateList = gameInteraction.getPlacedCoordinates().stream()
+                .filter(coordinate -> gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.NOTHING))
+                .collect(Collectors.toList());
+        if (improvementType != null && !coordinateList.isEmpty())
+            gameInteraction.placeImprovement(improvementType,coordinateList.get(0));
     }
 
     public GameInteraction getGameInteraction(){

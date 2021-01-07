@@ -102,7 +102,6 @@ public class Game{
             if(numBot==FIRST_BOT)
                 newRound();
             botPlay();
-            System.out.println(getPlayerData().getMissionsDone());
             nextBot();
         }
     }
@@ -141,16 +140,11 @@ public class Game{
     /**@return <b>True if the game is not done because a player finished his missions and the round is finished, and when resources aren't empty.</b>
      */
     boolean isContinue(){
-        if (isSomebodyFinished()){
+        if (isSomebodyFinished())
             lastRound++;
-        }
         if (lastRound >= botData.size())
             return false;
-        if(resource.isEmpty()) {
-            System.out.print("Bad end");
-            return false;
-        }
-        return true;
+        return !resource.isEmpty();
     }
 
     public Board getBoard() {

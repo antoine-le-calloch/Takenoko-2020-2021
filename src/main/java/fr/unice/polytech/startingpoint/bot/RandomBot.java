@@ -71,7 +71,7 @@ public class RandomBot extends Bot {
     public void botPlay(WeatherType weatherType){
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && getGameInteraction().getResourceSize(ResourceType.ALL_MISSION) > 0 && !getGameInteraction().contains(ActionType.DRAW_MISSION)) {// pioche mission
+        if (randAction == 0 && getGameInteraction().getResourceSize(ResourceType.ALL_MISSION) > 0 && !getGameInteraction().contains(ActionType.DRAW_MISSION) && gameInteraction.getInventoryMissions().size() < 5) {// pioche mission
             int randMission = random2.nextInt(3);
 
             if (randMission == 0 && getGameInteraction().getResourceSize(ResourceType.PARCEL_MISSION) > 0)

@@ -38,6 +38,13 @@ public enum ActionType {
         }
     }
     ,
+    PLACE_IMPROVEMENT {
+        @Override
+        public String toString() {
+            return "PlaceImprovement";
+        }
+    }
+    ,
     PLACE_CANAL {
         @Override
         public String toString() {

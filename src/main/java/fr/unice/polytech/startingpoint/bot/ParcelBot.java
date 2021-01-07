@@ -1,10 +1,8 @@
 package fr.unice.polytech.startingpoint.bot;
 
 
-import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
-import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.ColorType;
@@ -52,7 +50,7 @@ public class ParcelBot extends Bot {
             if( isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
             else
-                playBestMission(determineBestMissionToDo());
+                playMission(determineBestMissionToDo());
         }
     }
 

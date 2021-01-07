@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
-import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.MissionType;
@@ -49,7 +48,7 @@ public class PandaBot extends Bot {
             if( isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
             else
-                playBestMission(determineBestMissionToDo());
+                playMission(determineBestMissionToDo());
         }
     }
 
@@ -77,8 +76,8 @@ public class PandaBot extends Bot {
     @Override
     public void stratThunderstorm() {
         for (PandaMission pandaMission : getGameInteraction().getInventoryPandaMissions()) {
-            Coordinate coordinateAllColor = rushPandaStrat.strategyMissionAllColor();
-            Coordinate coordinateOneColor = rushPandaStrat.strategyMissionOneColor(pandaMission.getColorType());
+            Coordinate coordinateAllColor = missionPandaStrat.strategyMissionAllColor();
+            Coordinate coordinateOneColor = missionPandaStrat.strategyMissionOneColor(pandaMission.getColorType());
             if (coordinateAllColor != null && pandaMission.getColorType().equals(ColorType.ALL_COLOR)){
                 getGameInteraction().thunderstormAction(coordinateAllColor);
                 return;

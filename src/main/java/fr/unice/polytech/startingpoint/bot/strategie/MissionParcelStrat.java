@@ -22,12 +22,15 @@ public class MissionParcelStrat extends Strategie {
     }
 
     public void stratOneTurn(Mission mission){
-        System.out.println("Parcel Strat");
         ParcelMission parcelMission = (ParcelMission) mission;
         if (isJudiciousPutCanal(parcelMission))
             putCanal(parcelMission);
         else if(isJudiciousPutParcel())
             putParcel(parcelMission);
+        else if (!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
+            bot.movePanda(possibleCoordinatesPanda().get(0));
+        else if (!bot.getGameInteraction().contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPeasant().isEmpty())
+            bot.movePeasant(possibleCoordinatesPeasant().get(0));
     }
 
     /**
@@ -36,7 +39,9 @@ public class MissionParcelStrat extends Strategie {
      */
     public boolean isJudiciousPutCanal(ParcelMission parcelMission){
         if (bestCoordinatesForMission(parcelMission).size() == 0)
-            return bot.getGameInteraction().getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.getGameInteraction().contains(ActionType.PLACE_CANAL);
+            return bot.getGameInteraction().getResourceSize(ResourceType.CANAL) > 0 &&
+                    possibleCoordinatesCanal().size() > 0 &&
+                    !bot.getGameInteraction().contains(ActionType.PLACE_CANAL);
         return false;
     }
 
@@ -50,9 +55,9 @@ public class MissionParcelStrat extends Strategie {
 
     public int howManyMoveToDoMission(Mission mission) {
         ParcelMission parcelMission = (ParcelMission) mission;
-        if(!isAlreadyFinished(parcelMission) ||
-                (!isJudiciousPutParcel() &&
-                        !isJudiciousPutCanal((ParcelMission) mission))){
+        if(!isAlreadyFinished(parcelMission) &&
+                isJudiciousPutParcel() &&
+                        isJudiciousPutCanal((ParcelMission) mission)){
             if (coordEndMissionNoIrrigate(parcelMission).size() > bot.getGameInteraction().getResourceSize(ResourceType.PARCEL))
                 return -1;
             else if (isFinishedInOneTurn(parcelMission))
@@ -103,7 +108,7 @@ public class MissionParcelStrat extends Strategie {
         int nbMove = 0;
         for (Coordinate coordinate1 : bestCoordinatesForMission.keySet()){
             if (coordinate1.isNextTo(new Coordinate(0,0,0)))
-                nbMove ++ ;
+                nbMove ++;
             else
                 nbMove += 2;
         }
@@ -279,11 +284,11 @@ public class MissionParcelStrat extends Strategie {
                     bestCoordinatesCanal = getBestCanal(coordinateForm);
 
             if (bestCoordinatesCanal != null && fullForm.size() != 0) {
-                bot.getGameInteraction().drawCanal();
+                bot.drawCanal();
                 bot.placeCanal(bestCoordinatesCanal);
                 return;
             }
-            bot.getGameInteraction().drawCanal();
+            bot.drawCanal();
             bot.placeCanal(possibleCoordinatesCanal().get(0));
 
         } catch (OutOfResourcesException | RulesViolationException e) {
@@ -298,18 +303,5 @@ public class MissionParcelStrat extends Strategie {
             }
         }
         return new ArrayList<>();
-    }
-
-    public Coordinate[] getBestCanal(Coordinate coordinateToIrrigate){
-        int normMin = -1;
-        Coordinate[] bestCanal = null;
-
-        for (Coordinate[] coordinatesCanal : possibleCoordinatesCanal()) {
-            if(normMin == -1 || (Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[0])+Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[1])) < normMin) {
-                normMin = Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[0]) + Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[1]);
-                bestCanal = coordinatesCanal;
-            }
-        }
-        return bestCanal;
     }
 }

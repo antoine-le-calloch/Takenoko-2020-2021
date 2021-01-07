@@ -205,4 +205,12 @@ public class PlayerData {
     public int getMissionsPeasantDone() {
         return missionsPeasantDone;
     }
+
+    public List<ImprovementType> getImprovementTypes() {
+        return inventory.getImprovementTypes();
+    }
+
+    public boolean subImprovementType(ImprovementType improvementType) {
+        return inventory.subImprovementType(improvementType);
+    }
 }

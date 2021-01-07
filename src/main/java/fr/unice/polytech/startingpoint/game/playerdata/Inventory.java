@@ -170,4 +170,12 @@ public class Inventory {
         return inventoryImprovement.stream().filter(improvementType1 -> improvementType1.equals(improvementType))
                 .collect(Collectors.toList());
     }
+
+    public List<ImprovementType> getImprovementTypes() {
+        return inventoryImprovement;
+    }
+
+    public boolean subImprovementType(ImprovementType improvementType) {
+        return inventoryImprovement.remove(improvementType);
+    }
 }

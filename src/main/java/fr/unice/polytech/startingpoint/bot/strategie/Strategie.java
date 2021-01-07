@@ -29,6 +29,18 @@ public abstract class Strategie {
 
     public abstract int howManyMoveToDoMission(Mission mission);
 
+    public Coordinate[] getBestCanal(Coordinate coordinateToIrrigate){
+        int normMin = -1;
+        Coordinate[] bestCanal = null;
+
+        for (Coordinate[] coordinatesCanal : possibleCoordinatesCanal()) {
+            if(normMin == -1 || (Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[0])+Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[1])) < normMin) {
+                normMin = Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[0]) + Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[1]);
+                bestCanal = coordinatesCanal;
+            }
+        }
+        return bestCanal;
+    }
 
     /**@return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>
      */

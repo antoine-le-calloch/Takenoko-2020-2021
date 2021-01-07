@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
@@ -31,7 +32,6 @@ public class GameInteraction {
     }
 
     public void drawCanal() {
-        System.out.println("Draw Canal");
         if (getPlayerData().add(ActionType.DRAW_CANAL)){
             getPlayerData().looseStamina();
             getPlayerData().addCanal(game.getResource().drawCanal());
@@ -47,6 +47,26 @@ public class GameInteraction {
         }
         chooseWeather(WeatherType.CLOUD,weatherType);
         return false;
+    }
+
+    public void placeImprovement(ImprovementType improvementType, Coordinate coordinate){
+        if (getPlayerData().add(ActionType.PLACE_IMPROVEMENT)){
+            if (game.getBoard().isPlacedParcel(coordinate) &&
+                    game.getBoard().getPlacedParcels().get(coordinate).getParcelInformation().getImprovementType().equals(ImprovementType.NOTHING)) {
+                if (getPlayerData().subImprovementType(improvementType))
+                    game.getBoard().getPlacedParcels().get(coordinate).setImprovementType(improvementType);
+                else{
+                    getPlayerData().remove(ActionType.PLACE_PARCEL);
+                    throw new OutOfResourcesException("No improvement " + improvementType.toString() + " was found in the inventory.");
+                }
+            }
+            else{
+                getPlayerData().remove(ActionType.PLACE_PARCEL);
+                throw new RulesViolationException("The parcel with the coordinate : " + coordinate.toString() + " is not placed.");
+            }
+        }
+        else
+            throw new RulesViolationException("Already used this method.");
     }
 
     public void questionMarkAction(WeatherType weatherType){
@@ -70,7 +90,6 @@ public class GameInteraction {
     }
 
     public void drawMission(MissionType missionType) {
-        System.out.println("Draw mission");
         if (getPlayerData().add(ActionType.DRAW_MISSION)){
             if (getPlayerData().getMissionsSize() <= NB_MAX_MISSION){
                 getPlayerData().looseStamina();
@@ -96,7 +115,6 @@ public class GameInteraction {
     }
 
     public List<ParcelInformation> drawParcels() {
-        System.out.println("Draw parcels");
         if (getPlayerData().add(ActionType.DRAW_PARCELS)){
             getPlayerData().looseStamina();
             getPlayerData().saveParcels(game.getResource().drawParcels());
@@ -143,7 +161,7 @@ public class GameInteraction {
             if (game.getBoard().isPlacedAndIrrigatedParcel(coordinate))
                     game.getBoard().getPlacedParcels().get(coordinate).addBamboo();
             else
-                throw new BadCoordinateException("The parcel with the coordinate : " + coordinate.toString() + " is not placed");
+                throw new BadCoordinateException("The parcel with the coordinate : " + coordinate.toString() + " is not placed.");
         }
         else
             throw new RulesViolationException("Already used this method.");
@@ -181,7 +199,6 @@ public class GameInteraction {
     }
 
     public void moveCharacter(CharacterType characterType, Coordinate coordinate){
-        System.out.println("Move character");
         ColorType ColorBambooEat;
         if (getPlayerData().add(ActionType.get(characterType))) {
             if (game.getRules().isMovableCharacter(characterType, coordinate)) {
@@ -201,6 +218,10 @@ public class GameInteraction {
     /**
      * <h1><u>BOT GETTERS</u></h1>
      */
+
+    public List<ImprovementType> getInventoryImprovementTypes(){
+        return getPlayerData().getImprovementTypes();
+    }
 
     public List<Coordinate> getAllParcelsIrrigated(){
         return getPlacedCoordinates()

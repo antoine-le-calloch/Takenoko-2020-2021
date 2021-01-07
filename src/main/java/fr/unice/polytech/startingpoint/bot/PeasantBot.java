@@ -1,8 +1,6 @@
 package fr.unice.polytech.startingpoint.bot;
 
-import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
-import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
@@ -45,7 +43,7 @@ public class PeasantBot extends Bot {
             if( isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
             else
-                playBestMission(determineBestMissionToDo());
+                playMission(determineBestMissionToDo());
         }
     }
 
