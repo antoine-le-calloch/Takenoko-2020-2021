@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint.type;
 
+import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
+
 public enum ResourceType {
     PARCEL_MISSION {
         @Override
@@ -43,28 +45,44 @@ public enum ResourceType {
         }
     }
     ,
-    ALLIMPROVEMENT{
+    ALL_IMPROVEMENT {
         @Override
         public String toString() {
             return "Improvement";
         }
-    },
-    WATHERSHEDMPROVEMENT{
+    }
+    ,
+    WATERSHED_IMPROVEMENT {
         @Override
         public String toString() {
-            return "Wathershed Improvement";
+            return "Watershed Improvement";
         }
-    },
-    ENCLOSUREIMPROVEMENT{
+    }
+    ,
+    ENCLOSURE_IMPROVEMENT {
         @Override
         public String toString() {
             return "Enclosure Improvement";
         }
-    },
-    FERTIZILERIMPROVEMENT{
+    }
+    ,
+    FERTILIZER_IMPROVEMENT {
         @Override
         public String toString() {
-            return "Fertiziler Improvement";
+            return "Fertilizer Improvement";
+        }
+    };
+
+    public static ResourceType get(MissionType missionType){
+        switch (missionType){
+            case PANDA:
+                return PANDA_MISSION;
+            case PEASANT:
+                return PEASANT_MISSION;
+            case PARCEL:
+                return PARCEL_MISSION;
+            default:
+                throw new IllegalTypeException("Wrong CharacterType to move.");
         }
     }
 }

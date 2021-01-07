@@ -28,28 +28,9 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  */
 
 public class PandaBot extends Bot {
-    /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
-     *
-     * @param gameInteraction
-     *            <b>Game object.</b>
-     */
+
     public PandaBot(GameInteraction gameInteraction) {
         super(gameInteraction);
-    }
-
-    /**<p>The actions of the bot during his turn.</p>
-     * @param weatherType
-     */
-    @Override
-    public void botPlay(WeatherType weatherType) {
-        if (isJudiciousPlayWeather())
-            playWeather(weatherType);
-        for (int i = gameInteraction.getStamina(); i > 0; i--) {
-            if( isJudiciousDrawMission())
-                drawMission(bestMissionTypeToDraw());
-            else
-                playMission(determineBestMissionToDo());
-        }
     }
 
     @Override
@@ -61,16 +42,7 @@ public class PandaBot extends Bot {
         else if (gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
             return MissionType.PANDA;
         else
-            return chooseMissionTypeDrawable();
-    }
-
-    MissionType chooseMissionTypeDrawable() {
-        if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
-            return MissionType.PARCEL;
-        else if (gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
-            return MissionType.PEASANT;
-        else
-            return MissionType.PANDA;
+            return chooseMissionTypeDrawable(MissionType.PARCEL,MissionType.PEASANT,MissionType.PANDA);
     }
 
     @Override

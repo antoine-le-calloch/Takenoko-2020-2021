@@ -41,11 +41,6 @@ public class RandomBot extends Bot {
         random2 = new Random();
     }
 
-    @Override
-    public MissionType bestMissionTypeToDraw() {
-        return null;
-    }
-
     public void setRand(Random rand1, Random rand2){
         random = rand1;
         random2 = rand2;
@@ -67,8 +62,8 @@ public class RandomBot extends Bot {
         }
 
         else if (randAction == 1 && getGameInteraction().getResourceSize(ResourceType.CANAL) > 0 && !getGameInteraction().contains(ActionType.DRAW_CANAL)) {  // place canal
-            if (stratMissionParcel.possibleCoordinatesCanal().size() > 0) {
-                List<Coordinate[]> list = stratMissionParcel.possibleCoordinatesCanal();
+            if (missionParcelStrat.possibleCoordinatesCanal().size() > 0) {
+                List<Coordinate[]> list = missionParcelStrat.possibleCoordinatesCanal();
                 Collections.shuffle(list);
                 drawCanal();
                 placeCanal(list.get(0));
@@ -79,21 +74,26 @@ public class RandomBot extends Bot {
             List<ParcelInformation> parcelList = drawParcel();
             Collections.shuffle(parcelList);
             selectParcel(parcelList.get(0));
-            List<Coordinate> list = stratMissionParcel.possibleCoordinatesParcel();
+            List<Coordinate> list = missionParcelStrat.possibleCoordinatesParcel();
             Collections.shuffle(list);
             placeParcel(list.get(0));
         }
 
-        else if (randAction == 3 && stratMissionParcel.possibleCoordinatesPanda().size() != 0 && !getGameInteraction().contains(ActionType.MOVE_PANDA)) {
-            List<Coordinate> list = stratMissionParcel.possibleCoordinatesPanda();
+        else if (randAction == 3 && missionParcelStrat.possibleCoordinatesPanda().size() != 0 && !getGameInteraction().contains(ActionType.MOVE_PANDA)) {
+            List<Coordinate> list = missionParcelStrat.possibleCoordinatesPanda();
             Collections.shuffle(list);
             movePanda(list.get(0));
         }
 
-        else if (stratMissionParcel.possibleCoordinatesPeasant().size() != 0 && !getGameInteraction().contains(ActionType.MOVE_PEASANT)) {
-            List<Coordinate> list = stratMissionParcel.possibleCoordinatesPeasant();
+        else if (missionParcelStrat.possibleCoordinatesPeasant().size() != 0 && !getGameInteraction().contains(ActionType.MOVE_PEASANT)) {
+            List<Coordinate> list = missionParcelStrat.possibleCoordinatesPeasant();
             Collections.shuffle(list);
             movePeasant(list.get(0));
         }
+    }
+
+    @Override
+    public MissionType bestMissionTypeToDraw() {
+        return null;
     }
 }

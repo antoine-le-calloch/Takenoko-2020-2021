@@ -57,7 +57,8 @@ public enum ActionType {
         public String toString() {
             return "Utilise la météo";
         }
-    },
+    }
+    ,
     MOVE_PEASANT {
         @Override
         public String toString() {

@@ -53,7 +53,7 @@ public class GameInteraction {
      * @return <p>if the weather has been changed return true</p>
      */
     public boolean cloudAction(ImprovementType improvementType,WeatherType weatherType){
-        if(game.getPlayerData().add(ActionType.WEATHER) && !(getResourceSize(ResourceType.ALLIMPROVEMENT) == 0) ) {
+        if(game.getPlayerData().add(ActionType.WEATHER) && !(getResourceSize(ResourceType.ALL_IMPROVEMENT) == 0) ) {
             drawImprovement(improvementType);
             return true;
         }
@@ -425,15 +425,15 @@ public class GameInteraction {
                 return game.getResource().getDeckParcel().size();
             case CANAL:
                 return game.getResource().getDeckCanal().size();
-            case ALLIMPROVEMENT:
+            case ALL_IMPROVEMENT:
                 return game.getResource().getDeckImprovementType().size();
-            case ENCLOSUREIMPROVEMENT:
+            case ENCLOSURE_IMPROVEMENT:
                 return (int) game.getResource().getDeckImprovementType().stream()
                         .filter(improvementType -> improvementType.equals(ImprovementType.ENCLOSURE)).count();
-            case WATHERSHEDMPROVEMENT:
+            case WATERSHED_IMPROVEMENT:
                 return (int) game.getResource().getDeckImprovementType().stream()
                         .filter(improvementType -> improvementType.equals(ImprovementType.WATERSHED)).count();
-            case FERTIZILERIMPROVEMENT:
+            case FERTILIZER_IMPROVEMENT:
                 return (int) game.getResource().getDeckImprovementType().stream()
                         .filter(improvementType -> improvementType.equals(ImprovementType.FERTILIZER)).count();
             case ALL_MISSION:

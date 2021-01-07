@@ -31,18 +31,6 @@ public class IntelligentBot extends Bot {
     }
 
     @Override
-    public void botPlay(WeatherType weatherType) {
-        if (isJudiciousPlayWeather())
-            playWeather(weatherType);
-        for (int i = gameInteraction.getStamina(); i > 0; i--) {
-            if(isJudiciousDrawMission())
-                drawMission(bestMissionTypeToDraw());
-            else
-                playMission(determineBestMissionToDo());
-        }
-    }
-
-    @Override
     public MissionType bestMissionTypeToDraw() {
         int NB_MAX_MISSION_PARCEL = 2;
         int NB_MISSION_DONE = 9 - gameInteraction.getNumberPlayers();
@@ -55,15 +43,6 @@ public class IntelligentBot extends Bot {
         else if (gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
             return MissionType.PEASANT;
         else
-            return chooseMissionTypeDrawable();
-    }
-
-    MissionType chooseMissionTypeDrawable() {
-        if (gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
-            return MissionType.PEASANT;
-        else if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
-            return MissionType.PARCEL;
-        else
-            return MissionType.PANDA;
+            return chooseMissionTypeDrawable(MissionType.PARCEL,MissionType.PEASANT,MissionType.PANDA);
     }
 }
