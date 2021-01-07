@@ -58,15 +58,15 @@ public class ParcelBot extends Bot {
 
     @Override
     public void stratRain() {
-        for(PeasantMission peasantMission:getGameInteraction().getInventoryPeasantMissions()) {
+        for(PeasantMission peasantMission:gameInteraction.getInventoryPeasantMissions()) {
             ColorType peasantMissionColor = peasantMission.getColorType();
 
-            List<Coordinate> parcelsIrrigatedSameColorAsMission = getGameInteraction().
+            List<Coordinate> parcelsIrrigatedSameColorAsMission = gameInteraction.
                     getPlacedCoordinatesByColor(peasantMissionColor).stream()
-                    .filter(getGameInteraction()::isIrrigatedParcel)
+                    .filter(gameInteraction::isIrrigatedParcel)
                     .collect(Collectors.toList());
             if (!parcelsIrrigatedSameColorAsMission.isEmpty())
-                getGameInteraction().rainAction(parcelsIrrigatedSameColorAsMission.get(0));
+                gameInteraction.rainAction(parcelsIrrigatedSameColorAsMission.get(0));
         }
     }
 }

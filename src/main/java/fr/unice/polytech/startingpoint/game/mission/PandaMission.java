@@ -22,7 +22,7 @@ import java.util.Map;
  * @version 0.5
  */
 
-public final class PandaMission extends Mission{
+public class PandaMission extends Mission{
     private final int NB_BAMBOO = 2;
 
     /**<p>Set up a panda mission. Initialize all variables.</p>

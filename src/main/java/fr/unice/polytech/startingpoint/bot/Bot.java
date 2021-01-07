@@ -44,9 +44,9 @@ public abstract class Bot {
 
     public Bot(GameInteraction gameInteraction) {
         this.gameInteraction = gameInteraction;
-        this.missionPandaStrat = new MissionPandaStrat(this);
-        this.missionParcelStrat = new MissionParcelStrat(this);
-        this.missionPeasantStrat = new MissionPeasantStrat(this);
+        this.missionPandaStrat = new MissionPandaStrat(gameInteraction);
+        this.missionParcelStrat = new MissionParcelStrat(gameInteraction);
+        this.missionPeasantStrat = new MissionPeasantStrat(gameInteraction);
     }
 
     public void botPlay(WeatherType weatherType) {
@@ -79,36 +79,36 @@ public abstract class Bot {
     }
 
     public void stratThunderstorm(){
-        List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = getGameInteraction().getAllParcelsIrrigated()
+        List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = gameInteraction.getAllParcelsIrrigated()
                 .stream()
-                .filter( coordinate -> getGameInteraction().getPlacedParcelsNbBamboo(coordinate) > 0 && !getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
+                .filter( coordinate -> gameInteraction.getPlacedParcelsNbBamboo(coordinate) > 0 && !gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
                 .collect(Collectors.toList());
         if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty())
-            getGameInteraction().rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
+            gameInteraction.rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
     }
 
     public void stratRain(){
-        List<Coordinate> parcelsIrrigated= getGameInteraction().getAllParcelsIrrigated();
+        List<Coordinate> parcelsIrrigated= gameInteraction.getAllParcelsIrrigated();
         List<Coordinate> parcelsIrrigatedWithFertilizer=parcelsIrrigated.stream().
-                filter(coordinate -> getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType()
+                filter(coordinate -> gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType()
                         .equals(ImprovementType.FERTILIZER)).collect(Collectors.toList());
         if(!parcelsIrrigatedWithFertilizer.isEmpty())
-            getGameInteraction().rainAction(parcelsIrrigatedWithFertilizer.get(0));
+            gameInteraction.rainAction(parcelsIrrigatedWithFertilizer.get(0));
         else if(!parcelsIrrigated.isEmpty())
-            getGameInteraction().rainAction(parcelsIrrigated.get(0));
+            gameInteraction.rainAction(parcelsIrrigated.get(0));
     }
 
     public void stratQuestionMark(){
-        getGameInteraction().questionMarkAction(WeatherType.SUN);
+        gameInteraction.questionMarkAction(WeatherType.SUN);
     }
 
     public void stratCloud(){
-        if(getGameInteraction().getResourceSize(ResourceType.WATERSHED_IMPROVEMENT) > 0)
-            getGameInteraction().cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
-        else if(getGameInteraction().getResourceSize(ResourceType.FERTILIZER_IMPROVEMENT) > 0)
-            getGameInteraction().cloudAction(ImprovementType.FERTILIZER,WeatherType.SUN);
+        if(gameInteraction.getResourceSize(ResourceType.WATERSHED_IMPROVEMENT) > 0)
+            gameInteraction.cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
+        else if(gameInteraction.getResourceSize(ResourceType.FERTILIZER_IMPROVEMENT) > 0)
+            gameInteraction.cloudAction(ImprovementType.FERTILIZER,WeatherType.SUN);
         else
-            getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
+            gameInteraction.cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
         ImprovementType improvementType = (gameInteraction.getInventoryImprovementTypes().isEmpty()) ? null : gameInteraction.getInventoryImprovementTypes().get(0);
         List<Coordinate> coordinateList = gameInteraction.getPlacedCoordinates().stream()
                 .filter(coordinate -> gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.NOTHING))
@@ -203,67 +203,5 @@ public abstract class Bot {
             case PEASANT:
                 missionPeasantStrat.stratOneTurn(mission);
         }
-    }
-
-    /**<b><u>THE REST OF THE ACTIONS
-     *
-     * @return Preview a list of 3 ColorTypes from the resources.
-     */
-    public List<ParcelInformation> drawParcel() {
-        return gameInteraction.drawParcels();
-    }
-
-    /**<p>Put the selected parcel in the inventory.</p>
-     */
-    public void selectParcel(ParcelInformation parcelInformation){
-        gameInteraction.selectParcel(parcelInformation);
-    }
-
-    /**<p>Draw a canal in the resources and place it in the inventory.</p>
-     */
-    public void drawCanal() {
-        gameInteraction.drawCanal();
-    }
-
-    /**<p>Place a parcel at the coordinates specified in the following parameters.</p>
-     *
-     * @param coordinate
-     *            <b>The coordinates where the bot want to place the parcel on the board.</b>
-     */
-    public void placeParcel(Coordinate coordinate){
-        gameInteraction.placeParcel(coordinate);
-    }
-
-    /**<p>Place a canal at the coordinates specified in the following parameter.</p>
-     *
-     * @param coordinates
-     *            <b>The coordinates where the bot want to place the canal on the board.</b>
-     */
-    public void placeCanal(Coordinate[] coordinates) {
-        gameInteraction.placeCanal(coordinates[0],coordinates[1]);
-    }
-
-    /**<p>Move the Panda to coordinates specified in the following parameter.</p>
-     *
-     * @param coordinate
-     *            <b>The coordinates where the bot want to move the Panda on the board.</b>
-     */
-    public void movePanda(Coordinate coordinate) {
-        gameInteraction.moveCharacter(CharacterType.PANDA,coordinate);
-    }
-
-    /**<p>Move the Peasant to coordinates specified in the following parameter.</p>
-     *
-     * @param coordinate
-     *            <b>The coordinates where the bot want to move the Peasant on the board.</b>
-     */
-    public void movePeasant(Coordinate coordinate){
-        gameInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
-    }
-
-    /**@return GameInteraction object.
-     */
-    public GameInteraction getGameInteraction(){
-        return gameInteraction;
     }
 }

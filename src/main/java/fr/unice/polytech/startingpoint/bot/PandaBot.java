@@ -47,15 +47,15 @@ public class PandaBot extends Bot {
 
     @Override
     public void stratThunderstorm() {
-        for (PandaMission pandaMission : getGameInteraction().getInventoryPandaMissions()) {
+        for (PandaMission pandaMission : gameInteraction.getInventoryPandaMissions()) {
             Coordinate coordinateAllColor = missionPandaStrat.strategyMissionAllColor();
             Coordinate coordinateOneColor = missionPandaStrat.strategyMissionOneColor(pandaMission.getColorType());
             if (coordinateAllColor != null && pandaMission.getColorType().equals(ColorType.ALL_COLOR)){
-                getGameInteraction().thunderstormAction(coordinateAllColor);
+                gameInteraction.thunderstormAction(coordinateAllColor);
                 return;
             }
             else if (coordinateOneColor != null){
-                getGameInteraction().thunderstormAction(coordinateOneColor);
+                gameInteraction.thunderstormAction(coordinateOneColor);
             return;
             }
         }

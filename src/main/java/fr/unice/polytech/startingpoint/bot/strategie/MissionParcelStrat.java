@@ -1,16 +1,13 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
-import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
-import fr.unice.polytech.startingpoint.type.ActionType;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.FormType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +17,8 @@ import java.util.stream.Collectors;
 
 public class MissionParcelStrat extends Strategie {
 
-    public MissionParcelStrat(Bot bot) {
-        super(bot);
+    public MissionParcelStrat(GameInteraction gameInteraction) {
+        super(gameInteraction);
     }
 
     public void stratOneTurn(Mission mission){
@@ -30,10 +27,10 @@ public class MissionParcelStrat extends Strategie {
             putCanal(parcelMission);
         else if(isJudiciousPutParcel())
             putParcel(parcelMission);
-        else if (!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
-            bot.movePanda(possibleCoordinatesPanda().get(0));
-        else if (!bot.getGameInteraction().contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPeasant().isEmpty())
-            bot.movePeasant(possibleCoordinatesPeasant().get(0));
+        else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
+            gameInteraction.moveCharacter(CharacterType.PANDA,possibleCoordinatesPanda().get(0));
+        else if (!gameInteraction.contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPeasant().isEmpty())
+            gameInteraction.moveCharacter(CharacterType.PEASANT,possibleCoordinatesPeasant().get(0));
     }
 
     /**<b><u>IS JUDICIOUS METHODS</b>
@@ -41,14 +38,14 @@ public class MissionParcelStrat extends Strategie {
 
     boolean isJudiciousPutCanal(ParcelMission parcelMission){
         if (bestCoordinatesForMission(parcelMission).size() == 0)
-            return bot.getGameInteraction().getResourceSize(ResourceType.CANAL) > 0 &&
+            return gameInteraction.getResourceSize(ResourceType.CANAL) > 0 &&
                     possibleCoordinatesCanal().size() > 0 &&
-                    !bot.getGameInteraction().contains(ActionType.PLACE_CANAL);
+                    !gameInteraction.contains(ActionType.PLACE_CANAL);
         return false;
     }
 
     boolean isJudiciousPutParcel(){
-        return bot.getGameInteraction().getResourceSize(ResourceType.PARCEL) > 0 && !bot.getGameInteraction().contains(ActionType.DRAW_PARCELS);
+        return gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !gameInteraction.contains(ActionType.DRAW_PARCELS);
     }
 
     /**<b><u>STRATEGIES METHODS</b>
@@ -56,11 +53,11 @@ public class MissionParcelStrat extends Strategie {
 
     public void putParcel(ParcelMission parcelmission) {
         try {
-            List<ParcelInformation> parcelInformationList = bot.getGameInteraction().drawParcels();
+            List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
             List<Coordinate> bestCoords = coordsToPut(parcelInformationList, parcelmission);
 
-            bot.selectParcel(parcelInformationList.get(0));
-            bot.placeParcel(bestCoords.get(0));
+            gameInteraction.selectParcel(parcelInformationList.get(0));
+            gameInteraction.placeParcel(bestCoords.get(0));
 
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
@@ -125,10 +122,11 @@ public class MissionParcelStrat extends Strategie {
         Map<Coordinate, Boolean> coordToDoMission = new HashMap<>();
         List<Coordinate> form = setForm(coordinate, mission.getFormType());
 
-        if(form.contains(new Coordinate(0,0,0)) || form.stream().anyMatch(coord -> bot.getGameInteraction().isPlacedParcel(coord) && !bot.getGameInteraction().getPlacedParcelInformation(coord).getColorType().equals(mission.getColorType())))
+        if(form.contains(new Coordinate(0,0,0)) || form.stream().anyMatch(coord -> gameInteraction.isPlacedParcel(coord) &&
+                !gameInteraction.getPlacedParcelInformation(coord).getColorType().equals(mission.getColorType())))
             return null;
 
-        form.removeIf(bot.getGameInteraction()::isPlacedParcel);
+        form.removeIf(gameInteraction::isPlacedParcel);
 
         for (Coordinate coord : form) {
             coordToDoMission.put(coord,true);
@@ -171,7 +169,7 @@ public class MissionParcelStrat extends Strategie {
 
     public Coordinate coordAroundUse(Coordinate coordinate){
         for (Coordinate coordAround : coordinate.coordinatesAround()) {
-            if(bot.getGameInteraction().isPlacedParcel(coordAround))
+            if(gameInteraction.isPlacedParcel(coordAround))
                 return coordAround;
         }
         return null;
@@ -189,16 +187,16 @@ public class MissionParcelStrat extends Strategie {
             Coordinate[] bestCoordinatesCanal = null;
 
             for (Coordinate coordinateForm : fullForm)
-                if (!bot.getGameInteraction().isIrrigatedParcel(coordinateForm))
+                if (!gameInteraction.isIrrigatedParcel(coordinateForm))
                     bestCoordinatesCanal = getBestCanal(coordinateForm);
 
             if (bestCoordinatesCanal != null && fullForm.size() != 0) {
-                bot.drawCanal();
-                bot.placeCanal(bestCoordinatesCanal);
+                gameInteraction.drawCanal();
+                gameInteraction.placeCanal(bestCoordinatesCanal[0],bestCoordinatesCanal[1]);
                 return;
             }
-            bot.drawCanal();
-            bot.placeCanal(possibleCoordinatesCanal().get(0));
+            gameInteraction.drawCanal();
+            gameInteraction.placeCanal(possibleCoordinatesCanal().get(0)[0], possibleCoordinatesCanal().get(0)[1]);
 
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
@@ -222,7 +220,7 @@ public class MissionParcelStrat extends Strategie {
         if(!isAlreadyFinished(parcelMission) &&
                 isJudiciousPutParcel() &&
                 isJudiciousPutCanal((ParcelMission) mission)){
-            if (coordEndMissionNoIrrigate(parcelMission).size() > bot.getGameInteraction().getResourceSize(ResourceType.PARCEL))
+            if (coordEndMissionNoIrrigate(parcelMission).size() > gameInteraction.getResourceSize(ResourceType.PARCEL))
                 return -1;
             else if (isFinishedInOneTurn(parcelMission))
                 return 1;
@@ -232,14 +230,14 @@ public class MissionParcelStrat extends Strategie {
     }
 
     boolean isFinishedInOneTurn(ParcelMission parcelMission) {
-        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
+        for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()){
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
             List<Coordinate> coordinateNotPlaced = new ArrayList<>();
             List<Coordinate> coordinateNotIrrigated = new ArrayList<>();
             for (Coordinate coordinate1 : parcelForm){
-                if (!bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                if (!gameInteraction.isIrrigatedParcel(coordinate1))
                     coordinateNotPlaced.add(coordinate1);
-                if (bot.getGameInteraction().isPlacedParcel(coordinate1) && !bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                if (gameInteraction.isPlacedParcel(coordinate1) && !gameInteraction.isIrrigatedParcel(coordinate1))
                     coordinateNotIrrigated.add(coordinate1);
             }
             if (coordinateNotPlaced.size() == 1 && coordinateNotPlaced.get(0).isNextTo(new Coordinate(0,0,0)))
@@ -254,11 +252,11 @@ public class MissionParcelStrat extends Strategie {
     }
 
     boolean isAlreadyFinished(ParcelMission parcelMission) {
-        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
+        for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()){
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
             int cpt = 0;
             for (Coordinate coordinate1 : parcelForm){
-                if (bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                if (gameInteraction.isIrrigatedParcel(coordinate1))
                     cpt++;
             }
             if (cpt == parcelForm.size())

@@ -1,8 +1,8 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
-import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
@@ -14,34 +14,35 @@ import java.util.stream.Collectors;
 
 public class MissionPeasantStrat extends Strategie {
 
-    public MissionPeasantStrat(Bot bot) {
-        super(bot);
+    public MissionPeasantStrat(GameInteraction gameInteraction) {
+        super(gameInteraction);
     }
 
     public void stratOneTurn(Mission mission){
         if (isJudiciousMovePeasant((PeasantMission) mission))
-            bot.movePeasant(strategyMovePeasant((PeasantMission) mission));
+            gameInteraction.moveCharacter(CharacterType.PEASANT,strategyMovePeasant((PeasantMission) mission));
         else if (isJudiciousPlaceParcel())
             strategyPlaceParcel(mission.getColorType());
         else if (isJudiciousPlaceCanal())
             strategyPlaceCanal();
-        else if (!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
-            bot.movePanda(possibleCoordinatesPanda().get(0));
+        else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
+            gameInteraction.moveCharacter(CharacterType.PANDA,possibleCoordinatesPanda().get(0));
     }
 
     /**<b><u>IS JUDICIOUS METHODS</b>
      */
 
     boolean isJudiciousMovePeasant(PeasantMission peasantMission){
-        return strategyMovePeasant(peasantMission) != null && !bot.getGameInteraction().contains(ActionType.MOVE_PEASANT);
+        return strategyMovePeasant(peasantMission) != null && !gameInteraction.contains(ActionType.MOVE_PEASANT);
     }
 
     boolean isJudiciousPlaceCanal() {
-        return !bot.getGameInteraction().contains(ActionType.DRAW_CANAL) && !bot.getGameInteraction().contains(ActionType.PLACE_CANAL) && (bot.getGameInteraction().getResourceSize(ResourceType.CANAL) > 0) ;
+        return !gameInteraction.contains(ActionType.DRAW_CANAL) && !gameInteraction.contains(ActionType.PLACE_CANAL)
+                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0) ;
     }
 
     boolean isJudiciousPlaceParcel() {
-        return !bot.getGameInteraction().contains(ActionType.DRAW_PARCELS) && (bot.getGameInteraction().getResourceSize(ResourceType.PARCEL) > 0) ;
+        return !gameInteraction.contains(ActionType.DRAW_PARCELS) && (gameInteraction.getResourceSize(ResourceType.PARCEL) > 0) ;
     }
 
     /**<b><u>STRATEGIES METHODS</b>
@@ -50,28 +51,28 @@ public class MissionPeasantStrat extends Strategie {
     public Coordinate strategyMovePeasant(PeasantMission mission) {
         if (!mission.getImprovementType().equals(ImprovementType.WHATEVER))
             for (Coordinate coordinate : possibleCoordinatesPeasant())
-                if (bot.getGameInteraction().getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColorType()))
+                if (gameInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColorType()))
                     return coordinate;
         return null;
     }
 
     public void strategyPlaceParcel(ColorType colorType) {
         try {
-            List<ParcelInformation> parcelInformationList = bot.getGameInteraction().drawParcels();
+            List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
             if (parcelInformationList.stream().map(ParcelInformation::getColorType).collect(Collectors.toList()).contains(colorType)){
                 Coordinate coordinate = null;
                 for (Coordinate c : possibleCoordinatesParcel()){
-                    if (bot.getGameInteraction().getRules().isMovableCharacter(CharacterType.PANDA,c))
+                    if (gameInteraction.getRules().isMovableCharacter(CharacterType.PANDA,c))
                         coordinate = c;
                 }
                 if (coordinate == null)
                     coordinate = possibleCoordinatesParcel().get(0);
-                bot.selectParcel(parcelInformationList.stream().filter(parcelInformation -> parcelInformation.getColorType().equals(colorType)).collect(Collectors.toList()).get(0));
-                bot.placeParcel(coordinate);
+                gameInteraction.selectParcel(parcelInformationList.stream().filter(parcelInformation -> parcelInformation.getColorType().equals(colorType)).collect(Collectors.toList()).get(0));
+                gameInteraction.placeParcel(coordinate);
             }
             else {
-                bot.selectParcel(parcelInformationList.get(0));
-                bot.placeParcel(possibleCoordinatesParcel().get(0));
+                gameInteraction.selectParcel(parcelInformationList.get(0));
+                gameInteraction.placeParcel(possibleCoordinatesParcel().get(0));
             }
 
         } catch (OutOfResourcesException | RulesViolationException e) {
@@ -80,10 +81,10 @@ public class MissionPeasantStrat extends Strategie {
     }
 
     public void strategyPlaceCanal() {
-        bot.getGameInteraction().drawCanal();
+        gameInteraction.drawCanal();
         if(!possibleCoordinatesCanal().isEmpty()){
             Coordinate[] coordinates = possibleCoordinatesCanal().get(0);
-            bot.getGameInteraction().placeCanal(coordinates[0],coordinates[1]);
+            gameInteraction.placeCanal(coordinates[0],coordinates[1]);
         }
     }
 
@@ -94,7 +95,7 @@ public class MissionPeasantStrat extends Strategie {
         PeasantMission peasantMission = (PeasantMission) mission;
         if(!isAlreadyFinished(peasantMission) &&
                 isJudiciousMovePeasant((PeasantMission) mission) &&
-                        (!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty()) ){
+                        (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty()) ){
             if (peasantMission.getImprovementType().equals(ImprovementType.WHATEVER) || notExistGoodMovableParcel(peasantMission))
                 return -1;
             else if (isFinishedInOneTurn(peasantMission))
@@ -105,8 +106,8 @@ public class MissionPeasantStrat extends Strategie {
     }
 
     boolean isAlreadyFinished(PeasantMission peasantMission) {
-        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinatesByParcelInformation(new ParcelInformation(peasantMission.getColorType(),peasantMission.getImprovementType()))){
-            if (bot.getGameInteraction().getPlacedParcelsNbBamboo(coordinate) == 4)
+        for (Coordinate coordinate : gameInteraction.getPlacedCoordinatesByParcelInformation(new ParcelInformation(peasantMission.getColorType(),peasantMission.getImprovementType()))){
+            if (gameInteraction.getPlacedParcelsNbBamboo(coordinate) == 4)
                 return true;
         }
         return false;
@@ -114,19 +115,19 @@ public class MissionPeasantStrat extends Strategie {
 
     boolean isFinishedInOneTurn(PeasantMission peasantMission) {
         if (strategyMovePeasant(peasantMission) != null)
-            if (bot.getGameInteraction().getPlacedParcelsNbBamboo(strategyMovePeasant(peasantMission)) == 2 &&
+            if (gameInteraction.getPlacedParcelsNbBamboo(strategyMovePeasant(peasantMission)) == 2 &&
                     peasantMission.getImprovementType().equals(ImprovementType.WATERSHED))
                 return true;
             else
-                return bot.getGameInteraction().getPlacedParcelsNbBamboo(strategyMovePeasant(peasantMission)) == 3;
+                return gameInteraction.getPlacedParcelsNbBamboo(strategyMovePeasant(peasantMission)) == 3;
         return false;
     }
 
     boolean notExistGoodMovableParcel(PeasantMission mission){
         int nbGoodParcelPlaced = 0;
-        List<Coordinate> coordinates = bot.getGameInteraction().getPlacedCoordinatesByColor(mission.getColorType());
+        List<Coordinate> coordinates = gameInteraction.getPlacedCoordinatesByColor(mission.getColorType());
         for (Coordinate coordinate : coordinates){
-            if (bot.getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType().equals(mission.getImprovementType()))
+            if (gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(mission.getImprovementType()))
                 nbGoodParcelPlaced++;
         }
         return nbGoodParcelPlaced == 0;
@@ -134,9 +135,9 @@ public class MissionPeasantStrat extends Strategie {
 
     int nbMovePeasant(PeasantMission peasantMission){
         int maxNbBamboo = 0;
-        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinatesByParcelInformation(new ParcelInformation(peasantMission.getColorType(),peasantMission.getImprovementType()))){
-            if (bot.getGameInteraction().getPlacedParcelsNbBamboo(coordinate) > maxNbBamboo)
-                maxNbBamboo = bot.getGameInteraction().getPlacedParcelsNbBamboo(coordinate);
+        for (Coordinate coordinate : gameInteraction.getPlacedCoordinatesByParcelInformation(new ParcelInformation(peasantMission.getColorType(),peasantMission.getImprovementType()))){
+            if (gameInteraction.getPlacedParcelsNbBamboo(coordinate) > maxNbBamboo)
+                maxNbBamboo = gameInteraction.getPlacedParcelsNbBamboo(coordinate);
         }
         return 5 - maxNbBamboo;
     }

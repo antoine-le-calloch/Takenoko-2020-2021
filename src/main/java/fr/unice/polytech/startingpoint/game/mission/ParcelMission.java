@@ -27,7 +27,7 @@ import static fr.unice.polytech.startingpoint.type.FormType.*;
  * @version 0.5
  */
 
-public final class ParcelMission extends Mission{
+public class ParcelMission extends Mission{
     private final ColorType colorType2;
     private final FormType formType;
 
