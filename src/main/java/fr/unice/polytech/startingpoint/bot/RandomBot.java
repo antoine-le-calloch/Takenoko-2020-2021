@@ -39,6 +39,7 @@ public class RandomBot extends Bot {
 
     public RandomBot(GameInteraction gameInteraction) {
         super(gameInteraction);
+        botType = BotType.RANDOM;
         random = new Random();
         random2 = new Random();
     }

@@ -6,13 +6,11 @@ import fr.unice.polytech.startingpoint.game.board.Resource;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.WeatherDice;
 import fr.unice.polytech.startingpoint.game.playerdata.PlayerData;
+import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Moteur de jeu, creation d'une partie, fait jouer les bots, verifie les missions faites et termine la partie
@@ -33,11 +31,12 @@ public class Game{
     private final int FIRST_BOT = 0;
     private final WeatherDice weatherDice;
     private boolean isFirstPlayer;
+    private final boolean isInformationsPrinted;
     private int numBot;
     private int round;
     private int lastRound;
 
-    public Game(BotType[] botTypes){
+    public Game(boolean isInformationsPrinted, BotType[] botTypes){
         board = new Board();
         boardRules = new BoardRules(board);
         resource = new Resource();
@@ -45,6 +44,7 @@ public class Game{
         botData = new LinkedList<>();
         NB_MISSION = 11 - botTypes.length;
         isFirstPlayer = true;
+        this.isInformationsPrinted = isInformationsPrinted;
         numBot = FIRST_BOT;
         round = 0;
         lastRound = 0;
@@ -54,7 +54,7 @@ public class Game{
     }
 
     public Game(){
-        this(new BotType[]{BotType.RANDOM});
+        this(false, new BotType[]{BotType.RANDOM});
     }
 
     /**Initialize all bots.
@@ -110,11 +110,37 @@ public class Game{
      */
 
     public void play() {
+        int cpt = 0;
         while( isContinue() ) {
             if(numBot==FIRST_BOT)
                 newRound();
+                if (isInformationsPrinted) {
+                    System.out.println("=========== TOUR N°" + cpt + " ===========\n");
+                    printTurnInformations();
+                    System.out.println("\n");
+                    cpt++;
+                }
             botPlay();
             nextBot();
+        }
+    }
+
+    /**
+     * <p>print the informations of the game after each round</p>
+     */
+    private void printTurnInformations() {
+        for (int i = 0; i < botData.size(); i++) {
+            System.out.println("Le bot " + botData.get(i).getBotType() + " a complété " + botData.get(i).getMissionsDone()
+                    + " missions (" + botData.get(i).getMissionsPandaDone() + " missions panda, " + botData.get(i).getMissionsPeasantDone()
+                    + " missions jardinier, " + botData.get(i).getMissionsParcelDone() + " missions parcelles) pour un total de "
+                    + botData.get(i).getScore()[0] + " points.");
+            System.out.println("Il a joué les actions suivantes : " + botData.get(i).getActionTypeList() + "\n");
+        }
+        System.out.println("\nLe panda est sur la parcelle de coordonnées : " + board.getPandaCoordinate());
+        System.out.println("Le jardinier est sur la parcelle de coordonnées : " + board.getPeasantCoordinate());
+        System.out.println("\nLes parcelles posées sont :");
+        for(Map.Entry placedParcel : board.getPlacedParcels().entrySet()){
+            System.out.println(placedParcel.getValue() + " | Coordonnées " + placedParcel.getKey());
         }
     }
 

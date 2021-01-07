@@ -11,7 +11,7 @@ import fr.unice.polytech.startingpoint.type.CharacterType;
  * @version 2020.12.03
  */
 
-public class Character {
+class Character {
     private final CharacterType characterType;
     private Coordinate coordinate;
 

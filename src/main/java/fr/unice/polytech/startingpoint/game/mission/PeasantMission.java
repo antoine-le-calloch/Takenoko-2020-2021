@@ -52,7 +52,7 @@ public class PeasantMission extends Mission{
             return checkMissionClassic(new ArrayList<>(coordinateParcelMap.values()));
     }
 
-    boolean checkMissionClassic(List<Parcel> parcelList) {
+    private boolean checkMissionClassic(List<Parcel> parcelList) {
         int NB_BAMBOO = 4;
         for (Parcel parcel : parcelList) {
             if (parcel.getNbBamboo() == NB_BAMBOO && parcel.getColor() == colorType && parcel.getImprovement().equals(improvementType)){
@@ -62,7 +62,7 @@ public class PeasantMission extends Mission{
         return false;
     }
 
-    boolean checkMissionSpecial(List<Parcel> parcelList){
+    private boolean checkMissionSpecial(List<Parcel> parcelList){
         switch(colorType){
             case GREEN:
                 return checkMissionFewParcel(parcelList,4);
@@ -75,7 +75,7 @@ public class PeasantMission extends Mission{
         }
     }
 
-    boolean checkMissionFewParcel(List<Parcel> parcelList, int nbParcel) {
+    private boolean checkMissionFewParcel(List<Parcel> parcelList, int nbParcel) {
         int NB_BAMBOO = 3;
         int cpt = 0;
         for (Parcel parcel : parcelList) {

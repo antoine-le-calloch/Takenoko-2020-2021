@@ -18,8 +18,8 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameInteractionTest {
-    Game game;
-    GameInteraction gameInteraction;
+    private Game game;
+    private GameInteraction gameInteraction;
 
     @BeforeEach
     void Setup() {

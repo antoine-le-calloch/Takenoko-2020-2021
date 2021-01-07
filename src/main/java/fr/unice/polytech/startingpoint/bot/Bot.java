@@ -36,13 +36,14 @@ import java.util.stream.Collectors;
  */
 
 public abstract class Bot {
-    protected final MissionPandaStrat missionPandaStrat;
-    protected final MissionParcelStrat missionParcelStrat;
-    protected final MissionPeasantStrat missionPeasantStrat;
+    BotType botType;
+    final MissionPandaStrat missionPandaStrat;
+    final MissionParcelStrat missionParcelStrat;
+    private final MissionPeasantStrat missionPeasantStrat;
 
-    protected final GameInteraction gameInteraction;
+    final GameInteraction gameInteraction;
 
-    public Bot(GameInteraction gameInteraction) {
+    Bot(GameInteraction gameInteraction) {
         this.gameInteraction = gameInteraction;
         this.missionPandaStrat = new MissionPandaStrat(gameInteraction);
         this.missionParcelStrat = new MissionParcelStrat(gameInteraction);
@@ -51,8 +52,8 @@ public abstract class Bot {
 
     public void botPlay(WeatherType weatherType) {
         playWeather(weatherType);
-
-        for (int i = gameInteraction.getStamina(); i > 0; i--) {
+        int stamina = gameInteraction.getStamina();
+        for (int i = stamina; i > 0; i--) {
             if(isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
             else
@@ -60,7 +61,7 @@ public abstract class Bot {
         }
     }
 
-    public void playWeather(WeatherType weatherType){
+    void playWeather(WeatherType weatherType){
         switch (weatherType){
             case RAIN:
                 stratRain();
@@ -74,19 +75,27 @@ public abstract class Bot {
             case CLOUD:
                 stratCloud();
                 break;
+            case SUN:
+                gameInteraction.useSun();
+                break;
+            case WIND:
+                gameInteraction.useWind();
+                break;
         }
     }
 
-    public void stratThunderstorm(){
+    void stratThunderstorm(){
         List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = gameInteraction.getAllParcelsIrrigated()
                 .stream()
                 .filter( coordinate -> gameInteraction.getPlacedParcelsNbBamboo(coordinate) > 0 && !gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
                 .collect(Collectors.toList());
         if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty())
             gameInteraction.rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
+        else
+            gameInteraction.rainAction(null);
     }
 
-    public void stratRain(){
+    void stratRain(){
         List<Coordinate> parcelsIrrigated= gameInteraction.getAllParcelsIrrigated();
         List<Coordinate> parcelsIrrigatedWithFertilizer=parcelsIrrigated.stream().
                 filter(coordinate -> gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType()
@@ -95,13 +104,15 @@ public abstract class Bot {
             gameInteraction.rainAction(parcelsIrrigatedWithFertilizer.get(0));
         else if(!parcelsIrrigated.isEmpty())
             gameInteraction.rainAction(parcelsIrrigated.get(0));
+        else
+            gameInteraction.rainAction(null);
     }
 
-    public void stratQuestionMark(){
+    private void stratQuestionMark(){
         gameInteraction.questionMarkAction(WeatherType.SUN);
     }
 
-    public void stratCloud(){
+    private void stratCloud(){
         if(gameInteraction.getResourceSize(ResourceType.WATERSHED_IMPROVEMENT) > 0)
             gameInteraction.cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
         else if(gameInteraction.getResourceSize(ResourceType.FERTILIZER_IMPROVEMENT) > 0)
@@ -119,7 +130,7 @@ public abstract class Bot {
     /**<b><u>MISSION HANDLING
      */
 
-    public MissionType chooseMissionTypeDrawable(MissionType missionType1,MissionType missionType2,MissionType missionType3) {
+    MissionType chooseMissionTypeDrawable(MissionType missionType1, MissionType missionType2, MissionType missionType3) {
         if (gameInteraction.getResourceSize(ResourceType.get(missionType1)) > 0)
             return missionType1;
         else if (gameInteraction.getResourceSize(ResourceType.get(missionType2)) > 0)
@@ -128,7 +139,7 @@ public abstract class Bot {
             return missionType3;
     }
 
-    boolean isJudiciousDrawMission() {
+    private boolean isJudiciousDrawMission() {
         int NB_MAX_MISSION = 5;
         return gameInteraction.getMissionsSize() < NB_MAX_MISSION &&
                 gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 &&
@@ -140,13 +151,13 @@ public abstract class Bot {
      * @param missionType
      *            <b>The type of the mission the bot want to draw.</b>
      */
-    public void drawMission(MissionType missionType){
+    void drawMission(MissionType missionType){
         gameInteraction.drawMission(missionType);
     }
 
     protected abstract MissionType bestMissionTypeToDraw();
 
-    Mission determineBestMissionToDo() {
+    private Mission determineBestMissionToDo() {
         Mission bestMission = null;
         int minNbMove = -1;
         int nbMove = 0;
@@ -174,7 +185,7 @@ public abstract class Bot {
             return gameInteraction.getInventoryMissions().get(0);
     }
 
-    void playMission(Mission mission){
+    private void playMission(Mission mission){
         switch (mission.getMissionType()){
             case PANDA:
                 missionPandaStrat.stratOneTurn(mission);
@@ -185,5 +196,9 @@ public abstract class Bot {
             case PEASANT:
                 missionPeasantStrat.stratOneTurn(mission);
         }
+    }
+
+    public BotType getBotType(){
+        return botType;
     }
 }

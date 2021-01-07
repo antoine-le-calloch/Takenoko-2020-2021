@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class CharacterTest {
-    fr.unice.polytech.startingpoint.game.board.Character panda;
-    fr.unice.polytech.startingpoint.game.board.Character peasant;
+class CharacterTest {
+    private fr.unice.polytech.startingpoint.game.board.Character panda;
+    private fr.unice.polytech.startingpoint.game.board.Character peasant;
 
     @BeforeEach
     void setUp(){

@@ -83,7 +83,7 @@ public class ParcelMission extends Mission{
         }
     }
 
-    boolean checkTwoColorsForm(Map<Coordinate, Parcel> coordinateParcelMap, List<Coordinate> coordinateList1, List<Coordinate> coordinateList2) {
+    private boolean checkTwoColorsForm(Map<Coordinate, Parcel> coordinateParcelMap, List<Coordinate> coordinateList1, List<Coordinate> coordinateList2) {
         for (Coordinate coordinate : coordinateParcelMap.keySet())
             if (checkBasicForm(coordinateParcelMap, colorType,Coordinate.coordinatesOfOffsets(coordinate,coordinateList1)))
                 if (checkBasicForm(coordinateParcelMap, colorType2,Coordinate.coordinatesOfOffsets(coordinate,coordinateList2)))
@@ -91,14 +91,14 @@ public class ParcelMission extends Mission{
         return false;
     }
 
-    boolean checkOneColorForm(Map<Coordinate, Parcel> coordinateParcelMap, List<Coordinate> coordinateList) {
+    private boolean checkOneColorForm(Map<Coordinate, Parcel> coordinateParcelMap, List<Coordinate> coordinateList) {
         for (Coordinate coordinate : coordinateParcelMap.keySet())
             if (checkBasicForm(coordinateParcelMap, colorType,Coordinate.coordinatesOfOffsets(coordinate,coordinateList)))
                 return true;
         return false;
     }
 
-    boolean checkBasicForm(Map<Coordinate, Parcel> coordinateParcelMap, ColorType colorType, List<Coordinate> coordinateList){
+    private boolean checkBasicForm(Map<Coordinate, Parcel> coordinateParcelMap, ColorType colorType, List<Coordinate> coordinateList){
         int correctParcels = 0;
         for (Coordinate coordinate : coordinateList)
             if (coordinateParcelMap.containsKey(coordinate))

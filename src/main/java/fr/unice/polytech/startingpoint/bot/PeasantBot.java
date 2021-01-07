@@ -2,6 +2,7 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
+import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
@@ -29,6 +30,7 @@ public class PeasantBot extends Bot {
 
     public PeasantBot(GameInteraction gameInteraction) {
         super(gameInteraction);
+        botType = BotType.PEASANT_BOT;
     }
 
     @Override

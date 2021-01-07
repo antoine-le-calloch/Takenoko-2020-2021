@@ -9,11 +9,11 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-public class PandaMissionTest {
-    Inventory inventoryMock;
-    PandaMission mission1;
-    PandaMission mission2;
-    PandaMission mission3;
+class PandaMissionTest {
+    private Inventory inventoryMock;
+    private PandaMission mission1;
+    private PandaMission mission2;
+    private PandaMission mission3;
 
     @BeforeEach
     void setUp(){

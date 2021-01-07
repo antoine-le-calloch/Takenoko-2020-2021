@@ -3,10 +3,7 @@ package fr.unice.polytech.startingpoint.bot;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
-import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.type.*;
 
 /**
  * <h1>{@link PandaBot} :</h1>
@@ -31,6 +28,7 @@ public class PandaBot extends Bot {
 
     public PandaBot(GameInteraction gameInteraction) {
         super(gameInteraction);
+        botType = BotType.PANDA_BOT;
     }
 
     @Override

@@ -14,10 +14,10 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MissionPandaStratTest {
-    Game game;
-    MissionPandaStrat missionPandaStrat;
-    Mission missionGreenOneColor;
-    Mission missionAllColor;
+    private Game game;
+    private MissionPandaStrat missionPandaStrat;
+    private Mission missionGreenOneColor;
+    private Mission missionAllColor;
 
     @BeforeEach
     void setUp() {

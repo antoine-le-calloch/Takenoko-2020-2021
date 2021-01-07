@@ -13,10 +13,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Strategie {
-    protected final GameInteraction gameInteraction;
-    protected final BoardRules boardRules;
+    final GameInteraction gameInteraction;
+    final BoardRules boardRules;
 
-    public Strategie(GameInteraction gameInteraction) {
+    Strategie(GameInteraction gameInteraction) {
         this.gameInteraction = gameInteraction;
         this.boardRules = gameInteraction.getRules();
     }
@@ -102,7 +102,7 @@ public abstract class Strategie {
     /**
      * @return <b>A list of playable coordinates around a coordinate given </b>
      **/
-    public List<Coordinate> playableCoordinatesAroundACoordinateGivenCo(Coordinate coordinate) {
+    private List<Coordinate> playableCoordinatesAroundACoordinateGivenCo(Coordinate coordinate) {
         return coordinate.coordinatesAround().stream()
                 .filter(c -> boardRules.isPlayableParcel(c) && !gameInteraction.isPlacedParcel(c))
                 .collect(Collectors.toList());

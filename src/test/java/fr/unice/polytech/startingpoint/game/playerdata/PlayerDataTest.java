@@ -17,9 +17,9 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PlayerDataTest {
-    Game game;
-    PlayerData playerData;
+class PlayerDataTest {
+    private Game game;
+    private PlayerData playerData;
 
     @BeforeEach
     void Setup() {

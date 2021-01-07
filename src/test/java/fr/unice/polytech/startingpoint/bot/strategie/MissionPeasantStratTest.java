@@ -15,17 +15,17 @@ import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MissionPeasantStratTest {
+class MissionPeasantStratTest {
 
-    Parcel parcelGreen;
-    Parcel parcelRed;
-    Parcel parcelFertiziled;
-    Coordinate coordinate1;
-    Game game;
-    MissionPeasantStrat stratMissionPeasant;
-    GameInteraction gameInteraction;
-    PeasantMission peasantMissionGreen;
-    PeasantMission peasantMissionGreenFerti;
+    private Parcel parcelGreen;
+    private Parcel parcelRed;
+    private Parcel parcelFertiziled;
+    private Coordinate coordinate1;
+    private Game game;
+    private MissionPeasantStrat stratMissionPeasant;
+    private GameInteraction gameInteraction;
+    private PeasantMission peasantMissionGreen;
+    private PeasantMission peasantMissionGreenFerti;
 
 
 

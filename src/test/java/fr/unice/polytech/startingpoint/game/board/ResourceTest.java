@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ResourceTest {
-    Board board;
-    Resource resource;
+class ResourceTest {
+    private Board board;
+    private Resource resource;
 
     @BeforeEach
     void initialize(){

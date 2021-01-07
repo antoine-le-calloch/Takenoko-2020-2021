@@ -4,10 +4,7 @@ import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
-import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +36,7 @@ public class ParcelBot extends Bot {
      */
     public ParcelBot(GameInteraction gameInteraction) {
         super(gameInteraction);
+        botType = BotType.PARCEL_BOT;;
     }
 
     @Override

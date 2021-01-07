@@ -50,7 +50,7 @@ public class PandaMission extends Mission{
             return checkMissionOneColor(inventory, colorType);
     }
 
-    boolean checkMissionAllColor(Inventory inventory){
+    private boolean checkMissionAllColor(Inventory inventory){
         int[] inventoryBamboo = inventory.getInventoryBamboo();
         if (inventoryBamboo[0] > 0 && inventoryBamboo[1] > 0 && inventoryBamboo[2] > 0){
             inventory.subOneBambooPerColor();
@@ -59,7 +59,7 @@ public class PandaMission extends Mission{
         return false;
     }
 
-    boolean checkMissionOneColor(Inventory inventory, ColorType colorType){
+    private boolean checkMissionOneColor(Inventory inventory, ColorType colorType){
         if (inventory.getInventoryBamboo(colorType) >= NB_BAMBOO) {
             inventory.subTwoBamboos(colorType);
             return true;

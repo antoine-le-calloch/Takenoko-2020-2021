@@ -26,6 +26,7 @@ public class IntelligentBot extends Bot {
     
     public IntelligentBot(GameInteraction gameInteraction) {
         super(gameInteraction);
+        botType = BotType.INTELLIGENT_BOT;
     }
 
     @Override

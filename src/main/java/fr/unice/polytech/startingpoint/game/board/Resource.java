@@ -48,7 +48,7 @@ public class Resource {
         initializeDeckImprovement();
     }
 
-    public void initializeDeckImprovement(){
+    private void initializeDeckImprovement(){
         for(int i=0;i<3;i++){
             deckImprovementType.add(ImprovementType.ENCLOSURE);
             deckImprovementType.add(ImprovementType.WATERSHED);

@@ -56,7 +56,7 @@ public class MissionPeasantStrat extends Strategie {
         return null;
     }
 
-    public void strategyPlaceParcel(ColorType colorType) {
+    private void strategyPlaceParcel(ColorType colorType) {
         try {
             List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
             if (parcelInformationList.stream().map(ParcelInformation::getColorType).collect(Collectors.toList()).contains(colorType)){
@@ -133,7 +133,7 @@ public class MissionPeasantStrat extends Strategie {
         return nbGoodParcelPlaced == 0;
     }
 
-    int nbMovePeasant(PeasantMission peasantMission){
+    private int nbMovePeasant(PeasantMission peasantMission){
         int maxNbBamboo = 0;
         for (Coordinate coordinate : gameInteraction.getPlacedCoordinatesByParcelInformation(new ParcelInformation(peasantMission.getColorType(),peasantMission.getImprovementType()))){
             if (gameInteraction.getPlacedParcelsNbBamboo(coordinate) > maxNbBamboo)

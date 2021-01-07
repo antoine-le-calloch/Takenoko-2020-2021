@@ -17,16 +17,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
-public class RandomBotTest {
-    Game game;
-    RandomBot rdmBot1;
-    Board board;
-    Resource resource;
-    BoardRules boardRules;
+class RandomBotTest {
+    private Game game;
+    private RandomBot rdmBot1;
+    private Board board;
+    private Resource resource;
+    private BoardRules boardRules;
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
         game = new Game();
         boardRules = game.getRules();
@@ -36,7 +36,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void drawMissionParcel() {
+    void drawMissionParcel() {
         Random mockRand = mock(Random.class);
         Random mockRand2 = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(0);//donne une val au random pour piocher une mission
@@ -50,7 +50,7 @@ public class RandomBotTest {
 
 
     @Test
-    public void drawMissionPanda() {
+    void drawMissionPanda() {
         Random mockRand = mock(Random.class);
         Random mockRand2 = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(0);//donne une val au random pour piocher une mission
@@ -64,7 +64,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void drawMissionPeasant() {
+    void drawMissionPeasant() {
         Random mockRand = mock(Random.class);
         Random mockRand2 = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(0);//donne une val au random pour piocher une mission
@@ -78,7 +78,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void putCanal(){
+    void putCanal(){
         Random mockRand = mock(Random.class);
         board.placeParcel(new Parcel(ColorType.NO_COLOR, ImprovementType.NOTHING), new Coordinate(1, -1, 0));//ajoute une pièce ou mettre le canal
         board.placeParcel(new Parcel(ColorType.NO_COLOR,ImprovementType.NOTHING), new Coordinate(0, -1, 1));//ajoute une pièce ou mettre le canal
@@ -91,7 +91,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void putParcel(){
+    void putParcel(){
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(2);//donne une val au random pour piocher une mission
         rdmBot1.setRand(mockRand,new Random());//set les Random mock
@@ -102,7 +102,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void movePanda(){
+    void movePanda(){
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(3);//donne une val au random pour piocher une mission
         Coordinate central = new Coordinate(0,0,0);
@@ -116,7 +116,7 @@ public class RandomBotTest {
     }
 
     @Test
-    public void movePeasant(){
+    void movePeasant(){
         Random mockRand = mock(Random.class);
         Mockito.when(mockRand.nextInt(5)).thenReturn(4);//donne une val au random pour piocher une mission
         Coordinate central = new Coordinate(0,0,0);

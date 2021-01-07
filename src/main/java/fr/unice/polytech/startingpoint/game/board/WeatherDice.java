@@ -20,7 +20,7 @@ public class WeatherDice {
 
     public WeatherType roll(){
         int result=random.nextInt(FACES-1);
-        if(result<0 || result>FACES)
+        if(result>FACES)
             throw new RuntimeException("Dice return an incompatible value");
         return WeatherType.values()[result];
     }

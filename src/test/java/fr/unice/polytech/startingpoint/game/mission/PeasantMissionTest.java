@@ -15,15 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class PeasantMissionTest {
-    PeasantMission mission;
+class PeasantMissionTest {
+    private PeasantMission mission;
 
-    Parcel parcelMock;
-    Parcel parcelMock2;
-    Parcel parcelMock3;
-    Parcel parcelMock4;
+    private Parcel parcelMock;
+    private Parcel parcelMock2;
+    private Parcel parcelMock3;
+    private Parcel parcelMock4;
 
-    Map<Coordinate,Parcel> coordinateParcelMap;
+    private Map<Coordinate,Parcel> coordinateParcelMap;
 
     @BeforeEach
     void setUp(){

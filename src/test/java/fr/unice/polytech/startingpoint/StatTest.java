@@ -11,21 +11,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StatTest {
-    Stat statGame1P;
-    Stat statGame2P;
-    Stat statGame4P;
+class StatTest {
+    private Stat statGame1P;
+    private Stat statGame2P;
+    private Stat statGame4P;
 
-    List<int[]> p1w;
-    List<int[]> p1w2Player;
-    List<int[]> p2w2Player;
-    List<int[]> equality2Player;
-    List<int[]> p1w4Player;
-    List<int[]> p2w4Player;
+    private List<int[]> p1w;
+    private List<int[]> p1w2Player;
+    private List<int[]> p2w2Player;
+    private List<int[]> equality2Player;
+    private List<int[]> p1w4Player;
+    private List<int[]> p2w4Player;
 
-    BotType[] p1 = new BotType[]{BotType.RANDOM};
-    BotType[] p2 = new BotType[]{BotType.RANDOM,BotType.PARCEL_BOT};
-    BotType[] p4 = new BotType[]{BotType.RANDOM,BotType.PARCEL_BOT,BotType.PEASANT_BOT,BotType.PANDA_BOT};
+    private BotType[] p1 = new BotType[]{BotType.RANDOM};
+    private BotType[] p2 = new BotType[]{BotType.RANDOM,BotType.PARCEL_BOT};
+    private BotType[] p4 = new BotType[]{BotType.RANDOM,BotType.PARCEL_BOT,BotType.PEASANT_BOT,BotType.PANDA_BOT};
 
     @BeforeEach
     void initialize(){
