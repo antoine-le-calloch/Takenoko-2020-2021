@@ -8,30 +8,35 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
-import fr.unice.polytech.startingpoint.type.ActionType;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.FormType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
+import fr.unice.polytech.startingpoint.type.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MissionParcelStrat extends Strategie {
-    /**@param bot
+
+    /**
+     * <p>Set up the MissionParcelStrat. Call the constructor from {@link Strategie} superclass.</p>
+     * @param bot
+     *          <b>The Bot object used by MissionParcelStrat to access information.</b>
      */
     public MissionParcelStrat(Bot bot) {
         super(bot);
     }
 
+    /**
+     * <p>Choose the strat to do for each turn. Put one canal or put one parcel</p>
+     * @param mission
+     *          <b>The Mission object which is need to be done at this time.</b>
+     */
     public void stratOneTurn(Mission mission){
         ParcelMission parcelMission = (ParcelMission) mission;
-        if (isJudiciousPutCanal(parcelMission))
+        if (isJudiciousPutCanal(parcelMission)) {
             putCanal(parcelMission);
-        else if(isJudiciousPutParcel())
+        }
+        else if(isJudiciousPutParcel()) {
             putParcel(parcelMission);
+        }
         else if (!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
             bot.movePanda(possibleCoordinatesPanda().get(0));
         else if (!bot.getGameInteraction().contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPeasant().isEmpty())
@@ -39,7 +44,10 @@ public class MissionParcelStrat extends Strategie {
     }
 
     /**
-     * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
+     * <p>Check if it's possible to draw and place a canal and if a end form need to be irrigate</p>
+     * @param parcelMission
+     *          <b>ParcelMission object which is need to be done at this time.</b>
+     * @return <b>True if it is judicious to put a canal.</b>
      * @see GameInteraction
      */
     public boolean isJudiciousPutCanal(ParcelMission parcelMission){
@@ -51,18 +59,24 @@ public class MissionParcelStrat extends Strategie {
     }
 
     /**
-     * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
+     * <p>Check if it's possible to draw and place a parcel</p>
+     * @return <b>True if it is judicious to put a parcel.</b>
      * @see GameInteraction
      */
     public boolean isJudiciousPutParcel(){
         return bot.getGameInteraction().getResourceSize(ResourceType.PARCEL) > 0 && !bot.getGameInteraction().contains(ActionType.DRAW_PARCELS);
     }
 
+    /**
+     * <p>Count the number of move needed to end one mission</p>
+     * @param mission
+     *          <b>Mission object whose number of movements we are looking for.</b>
+     * @return <b>The number of move or -1 if something wrong</b>
+     * @see GameInteraction
+     */
     public int howManyMoveToDoMission(Mission mission) {
         ParcelMission parcelMission = (ParcelMission) mission;
-        if(!isAlreadyFinished(parcelMission) &&
-                isJudiciousPutParcel() &&
-                        isJudiciousPutCanal((ParcelMission) mission)){
+        if(!isAlreadyFinished(parcelMission) && isJudiciousPutParcel() && isJudiciousPutCanal((ParcelMission) mission)){
             if (coordEndMissionNoIrrigate(parcelMission).size() > bot.getGameInteraction().getResourceSize(ResourceType.PARCEL))
                 return -1;
             else if (isFinishedInOneTurn(parcelMission))
@@ -72,6 +86,13 @@ public class MissionParcelStrat extends Strategie {
         return -1;
     }
 
+    /**
+     * <p>check if the mission can be done in only one turn</p>
+     * @param parcelMission
+     *          <b>ParcelMission object we want to test.</b>
+     * @return <b>True if the mission can be done in one turn</b>
+     * @see GameInteraction
+     */
     private boolean isFinishedInOneTurn(ParcelMission parcelMission) {
         for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
@@ -94,6 +115,13 @@ public class MissionParcelStrat extends Strategie {
         return false;
     }
 
+    /**
+     * <p>check if the mission is already done or not</p>
+     * @param parcelMission
+     *          <b>ParcelMission object we want to test.</b>
+     * @return <b>True if the mission is done</b>
+     * @see GameInteraction
+     */
     public boolean isAlreadyFinished(ParcelMission parcelMission) {
         for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
@@ -108,6 +136,13 @@ public class MissionParcelStrat extends Strategie {
         return false;
     }
 
+    /**
+     * <p>Count the number of move (putCanal or putParcel) needed to end one mission</p>
+     * @param parcelMission
+     *          <b>ParcelMission object whose number of movements we are looking for.</b>
+     * @return <b>The number of move or -1 if something wrong</b>
+     * @see GameInteraction
+     */
     private int nbMoveParcel(ParcelMission parcelMission) {
         Map<Coordinate,Boolean> bestCoordinatesForMission = bestCoordinatesForMission(parcelMission);
         int nbMove = 0;
@@ -188,7 +223,7 @@ public class MissionParcelStrat extends Strategie {
         for (Coordinate coordinate : allPlaces()) {
             Map<Coordinate, Boolean> parcelsToPlaceToDoForm = coordNeedToDoMission(coordinate, mission);
 
-            if(parcelsToPlaceToDoForm != null && parcelsToPlaceToDoForm.size() > 0 && (minTurnToEndForm == -1 || parcelsToPlaceToDoForm.size() < minTurnToEndForm)){
+            if(parcelsToPlaceToDoForm != null && (minTurnToEndForm == -1 || parcelsToPlaceToDoForm.size() < minTurnToEndForm)){
                 minTurnToEndForm = parcelsToPlaceToDoForm.size();
                 bestCoordinates = parcelsToPlaceToDoForm;
             }

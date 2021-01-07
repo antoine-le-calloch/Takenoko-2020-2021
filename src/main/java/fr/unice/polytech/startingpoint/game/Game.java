@@ -2,8 +2,8 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.game.board.Board;
-import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.Resource;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.WeatherDice;
 import fr.unice.polytech.startingpoint.game.playerdata.PlayerData;
 import fr.unice.polytech.startingpoint.type.BotType;
