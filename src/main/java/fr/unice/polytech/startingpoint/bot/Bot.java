@@ -61,14 +61,20 @@ public abstract class Bot {
     }
 
     public void playWeather(WeatherType weatherType){
-        if(weatherType.equals(WeatherType.RAIN))
-            stratRain();
-        else if(weatherType.equals(WeatherType.THUNDERSTORM))
-            stratThunderstorm();
-        else if(weatherType.equals(WeatherType.QUESTION_MARK))
-            stratQuestionMark();
-        else if(weatherType.equals(WeatherType.CLOUD))
-            stratCloud();
+        switch (weatherType){
+            case RAIN:
+                stratRain();
+                break;
+            case THUNDERSTORM:
+                stratThunderstorm();
+                break;
+            case QUESTION_MARK:
+                stratQuestionMark();
+                break;
+            case CLOUD:
+                stratCloud();
+                break;
+        }
     }
 
     public void stratThunderstorm(){

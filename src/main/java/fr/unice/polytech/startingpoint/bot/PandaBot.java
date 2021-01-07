@@ -56,7 +56,7 @@ public class PandaBot extends Bot {
             }
             else if (coordinateOneColor != null){
                 gameInteraction.thunderstormAction(coordinateOneColor);
-            return;
+                break;
             }
         }
     }
