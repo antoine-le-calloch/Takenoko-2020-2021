@@ -65,8 +65,10 @@ public class ParcelBot extends Bot {
                     getPlacedCoordinatesByColor(peasantMissionColor).stream()
                     .filter(gameInteraction::isPlacedAndIrrigatedParcel)
                     .collect(Collectors.toList());
-            if (!parcelsIrrigatedSameColorAsMission.isEmpty())
+            if (!parcelsIrrigatedSameColorAsMission.isEmpty()) {
                 gameInteraction.rainAction(parcelsIrrigatedSameColorAsMission.get(0));
+                break;
+            }
         }
     }
 }

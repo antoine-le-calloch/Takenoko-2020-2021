@@ -9,10 +9,7 @@ import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MissionParcelStrat extends Strategie {
@@ -149,7 +146,7 @@ public class MissionParcelStrat extends Strategie {
         form.removeIf(gameInteraction::isPlacedParcel);
 
         for (Coordinate coord : form) {
-            coordToDoMission.put(coord,true);
+            coordToDoMission.put(coord, true);
             if (!boardRules.isPlayableParcel(coord) && coordAroundUse(coord) != null) {
                 List<Coordinate> laidCoord = Coordinate.getInCommonAroundCoordinates(coord, coordAroundUse(coord));
                 if (boardRules.isPlayableParcel(laidCoord.get(0)))
@@ -166,10 +163,10 @@ public class MissionParcelStrat extends Strategie {
         for (Coordinate coord : distantCoord)
             treatDistantCoord(coord,coordToDoMission);
 
-        return new HashMap<>(coordToDoMission);
+        return coordToDoMission;
     }
 
-    public Map<Coordinate, Boolean> treatDistantCoord (Coordinate distantCoord, Map<Coordinate, Boolean> coordToDoMission){
+    public void treatDistantCoord (Coordinate distantCoord, Map<Coordinate, Boolean> coordToDoMission){
         if(distantCoord.coordinatesAround().stream().filter(coordToDoMission.keySet()::contains).count() < 2){
             List<Coordinate>  coordsNeed =  Coordinate.getInCommonAroundCoordinates(distantCoord,distantCoord.coordinatesAround().stream().filter(coordToDoMission.keySet()::contains).collect(Collectors.toList()).get(0));
             if(boardRules.isPlayableParcel(coordsNeed.get(0)))
@@ -185,7 +182,6 @@ public class MissionParcelStrat extends Strategie {
                 coordToDoMission.put(coordsNeed.get(1), false);
             }
         }
-        return coordToDoMission;
     }
 
     public Coordinate coordAroundUse(Coordinate coordinate){
@@ -212,14 +208,12 @@ public class MissionParcelStrat extends Strategie {
 
             if (bestCoordinatesCanal != null && fullForm.size() != 0) {
                 gameInteraction.drawCanal();
-                gameInteraction.placeCanal(bestCoordinatesCanal[0],bestCoordinatesCanal[1]);
-            }
-            else if (!possibleCoordinatesCanal().isEmpty()){
-                List<Coordinate[]> coordinates = possibleCoordinatesCanal();
+                gameInteraction.placeCanal(bestCoordinatesCanal[0], bestCoordinatesCanal[1]);
+            } else {
+                Coordinate []coordCanal = possibleCoordinatesCanal().get(0);
                 gameInteraction.drawCanal();
-                gameInteraction.placeCanal(coordinates.get(0)[0], coordinates.get(0)[1]);
+                gameInteraction.placeCanal(coordCanal[0], coordCanal[1]);
             }
-
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
