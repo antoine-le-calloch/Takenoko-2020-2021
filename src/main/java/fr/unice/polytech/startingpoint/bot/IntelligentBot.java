@@ -4,14 +4,9 @@ import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.RushPandaStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
-import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
-import fr.unice.polytech.startingpoint.game.mission.PandaMission;
-import fr.unice.polytech.startingpoint.type.ActionType;
-import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
