@@ -19,6 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Classe permettant au bot d'interagir avec le jeu
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 0.10
+ */
+
 public class GameInteraction {
     private final int NB_MAX_MISSION = 5;
     private final Game game;
@@ -61,6 +70,16 @@ public class GameInteraction {
         return false;
     }
 
+
+
+    /**
+     * <p>Allow the bot to place an imrpovement on a parcel</p>
+     *
+     * @param improvementType, coordinate
+     *                         <p> The improvement is the one that the player has selected</p>
+     *                         <p> The coordinate is where the player to place the improvement </p>
+
+     */
     public void placeImprovement(ImprovementType improvementType, Coordinate coordinate){
         if (getPlayerData().add(ActionType.PLACE_IMPROVEMENT)){
             if (game.getBoard().isPlacedParcel(coordinate) &&
