@@ -60,8 +60,7 @@ public class ParcelBot extends Bot {
     public MissionType bestMissionTypeToDraw() {
         if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
             return MissionType.PARCEL;
-        else
-            return chooseMissionTypeDrawable();
+        return chooseMissionTypeDrawable();
     }
 
     MissionType chooseMissionTypeDrawable() {
