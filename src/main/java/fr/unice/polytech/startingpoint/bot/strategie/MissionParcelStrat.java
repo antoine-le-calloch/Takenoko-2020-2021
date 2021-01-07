@@ -30,12 +30,10 @@ public class MissionParcelStrat extends Strategie {
      */
     public void stratOneTurn(Mission mission){
         ParcelMission parcelMission = (ParcelMission) mission;
-        if (isJudiciousPutCanal(parcelMission)) {
+        if (isJudiciousPutCanal(parcelMission))
             putCanal(parcelMission);
-        }
-        else if(isJudiciousPutParcel()) {
+        else if(isJudiciousPutParcel())
             putParcel(parcelMission);
-        }
         else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
             gameInteraction.moveCharacter(CharacterType.PANDA,possibleCoordinatesPanda().get(0));
         else if (!gameInteraction.contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPeasant().isEmpty())
@@ -77,7 +75,8 @@ public class MissionParcelStrat extends Strategie {
             gameInteraction.selectParcel(parcelInformationList.get(0));
             gameInteraction.placeParcel(bestCoords.get(0));
 
-        } catch (OutOfResourcesException | RulesViolationException e) {
+        }
+        catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
@@ -156,7 +155,8 @@ public class MissionParcelStrat extends Strategie {
                     coordToDoMission.put(laidCoord.get(1), false);
                 else
                     return null;
-            } else if (!boardRules.isPlayableParcel(coord))
+            }
+            else if (!boardRules.isPlayableParcel(coord))
                 distantCoord.add(coord);
         }
 
@@ -185,10 +185,9 @@ public class MissionParcelStrat extends Strategie {
     }
 
     public Coordinate coordAroundUse(Coordinate coordinate){
-        for (Coordinate coordAround : coordinate.coordinatesAround()) {
+        for (Coordinate coordAround : coordinate.coordinatesAround())
             if(gameInteraction.isPlacedParcel(coordAround))
                 return coordAround;
-        }
         return null;
     }
 
@@ -203,10 +202,9 @@ public class MissionParcelStrat extends Strategie {
             List<Coordinate> fullForm = coordEndMissionNoIrrigate(mission);
             Coordinate[] bestCoordinatesCanal = null;
 
-            for (Coordinate coordinateForm : fullForm) {
-                if (!gameInteraction.isIrrigatedParcel(coordinateForm))
+            for (Coordinate coordinateForm : fullForm)
+                if (!gameInteraction.isPlacedAndIrrigatedParcel(coordinateForm))
                     bestCoordinatesCanal = getBestCanal(coordinateForm);
-            }
 
             if (bestCoordinatesCanal != null && fullForm.size() != 0) {
                 gameInteraction.drawCanal();
@@ -267,9 +265,9 @@ public class MissionParcelStrat extends Strategie {
             List<Coordinate> coordinateNotPlaced = new ArrayList<>();
             List<Coordinate> coordinateNotIrrigated = new ArrayList<>();
             for (Coordinate coordinate1 : parcelForm){
-                if (!gameInteraction.isIrrigatedParcel(coordinate1))
+                if (!gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
                     coordinateNotPlaced.add(coordinate1);
-                if (gameInteraction.isPlacedParcel(coordinate1) && !gameInteraction.isIrrigatedParcel(coordinate1))
+                if (gameInteraction.isPlacedParcel(coordinate1) && !gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
                     coordinateNotIrrigated.add(coordinate1);
             }
             if (coordinateNotPlaced.size() == 1 && coordinateNotPlaced.get(0).isNextTo(new Coordinate(0,0,0)))
@@ -295,7 +293,7 @@ public class MissionParcelStrat extends Strategie {
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
             int cpt = 0;
             for (Coordinate coordinate1 : parcelForm){
-                if (gameInteraction.isIrrigatedParcel(coordinate1))
+                if (gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
                     cpt++;
             }
             if (cpt == parcelForm.size())

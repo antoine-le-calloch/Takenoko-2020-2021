@@ -47,7 +47,8 @@ public class MissionPandaStrat extends Strategie {
 
     boolean isJudiciousPlaceCanal() {
         return !gameInteraction.contains(ActionType.DRAW_CANAL) && !gameInteraction.contains(ActionType.PLACE_CANAL)
-                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0) ;
+                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0
+                && !possibleCoordinatesCanal().isEmpty()) ;
     }
 
     /**<b><u>STRATEGIES METHODS</b>
@@ -194,9 +195,7 @@ public class MissionPandaStrat extends Strategie {
                 return 1;
             return 3;
         }
-        else if(gameInteraction.getInventoryBamboo()[colorTypeMission.ordinal()] == 1)
-            return 2;
-        return 4;
+        return -1;
     }
 
     int nbMoveAllColor(){

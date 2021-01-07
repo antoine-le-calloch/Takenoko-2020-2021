@@ -50,21 +50,14 @@ public abstract class Bot {
     }
 
     public void botPlay(WeatherType weatherType) {
-        if (isJudiciousPlayWeather())
-            playWeather(weatherType);
+        playWeather(weatherType);
+
         for (int i = gameInteraction.getStamina(); i > 0; i--) {
             if(isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
             else
                 playMission(determineBestMissionToDo());
         }
-    }
-
-    /**<b><u>WEATHER HANDLING
-     */
-
-    public boolean isJudiciousPlayWeather(){
-        return !gameInteraction.contains(ActionType.WEATHER);
     }
 
     public void playWeather(WeatherType weatherType){

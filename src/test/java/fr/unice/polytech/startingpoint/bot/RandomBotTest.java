@@ -1,4 +1,4 @@
-package fr.unice.polytech.startingpoint.bot.strategie;
+package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.bot.RandomBot;
 import fr.unice.polytech.startingpoint.game.Game;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
-public class RandomStratTest {/*
+public class RandomBotTest {/*
     Game game;
     RandomBot rdmBot1;
     Board board;
