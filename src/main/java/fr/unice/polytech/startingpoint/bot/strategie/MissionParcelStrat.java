@@ -33,12 +33,10 @@ public class MissionParcelStrat extends Strategie {
      */
     public void stratOneTurn(Mission mission){
         ParcelMission parcelMission = (ParcelMission) mission;
-        if (isJudiciousPutCanal(parcelMission)) {
+        if (isJudiciousPutCanal(parcelMission))
             putCanal(parcelMission);
-        }
-        else if(isJudiciousPutParcel()) {
+        else if(isJudiciousPutParcel())
             putParcel(parcelMission);
-        }
         else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
             gameInteraction.moveCharacter(CharacterType.PANDA,possibleCoordinatesPanda().get(0));
         else if (!gameInteraction.contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPeasant().isEmpty())
@@ -80,7 +78,8 @@ public class MissionParcelStrat extends Strategie {
             gameInteraction.selectParcel(parcelInformationList.get(0));
             gameInteraction.placeParcel(bestCoords.get(0));
 
-        } catch (OutOfResourcesException | RulesViolationException e) {
+        }
+        catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
@@ -159,7 +158,8 @@ public class MissionParcelStrat extends Strategie {
                     coordToDoMission.put(laidCoord.get(1), false);
                 else
                     return null;
-            } else if (!boardRules.isPlayableParcel(coord))
+            }
+            else if (!boardRules.isPlayableParcel(coord))
                 distantCoord.add(coord);
         }
 
@@ -189,10 +189,9 @@ public class MissionParcelStrat extends Strategie {
     }
 
     public Coordinate coordAroundUse(Coordinate coordinate){
-        for (Coordinate coordAround : coordinate.coordinatesAround()) {
+        for (Coordinate coordAround : coordinate.coordinatesAround())
             if(gameInteraction.isPlacedParcel(coordAround))
                 return coordAround;
-        }
         return null;
     }
 
@@ -214,7 +213,6 @@ public class MissionParcelStrat extends Strategie {
             if (bestCoordinatesCanal != null && fullForm.size() != 0) {
                 gameInteraction.drawCanal();
                 gameInteraction.placeCanal(bestCoordinatesCanal[0],bestCoordinatesCanal[1]);
-                return;
             }
             //gameInteraction.drawCanal();
             //gameInteraction.placeCanal(possibleCoordinatesCanal().get(0)[0], possibleCoordinatesCanal().get(0)[1]);
