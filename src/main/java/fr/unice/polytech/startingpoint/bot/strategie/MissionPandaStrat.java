@@ -25,7 +25,7 @@ public class MissionPandaStrat extends Strategie {
         else if (isJudiciousPlaceParcel())
             strategyPlaceParcel(mission.getColorType());
         else if (isJudiciousPlaceCanal())
-            gameInteraction.placeCanal(strategyPlaceCanal()[0],strategyPlaceCanal()[1]);
+            strategyPlaceCanal();
         else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
             gameInteraction.moveCharacter(CharacterType.PANDA,possibleCoordinatesPanda().get(0));
     }
@@ -91,9 +91,12 @@ public class MissionPandaStrat extends Strategie {
         return possibleCoordinatesPeasant().get(0);
     }
 
-    public Coordinate[] strategyPlaceCanal() {
+    public void strategyPlaceCanal() {
         gameInteraction.drawCanal();
-        return possibleCoordinatesCanal().get(0);
+        if(!possibleCoordinatesCanal().isEmpty()){
+            Coordinate[] coordinates = possibleCoordinatesCanal().get(0);
+            gameInteraction.placeCanal(coordinates[0],coordinates[1]);
+        }
     }
 
     public void strategyPlaceParcel(ColorType colorType) {

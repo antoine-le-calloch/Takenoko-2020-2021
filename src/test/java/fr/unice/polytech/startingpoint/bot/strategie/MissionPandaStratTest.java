@@ -361,13 +361,12 @@ class MissionPandaStratTest {
 
     }
 
+
+
 /*
-    public void strategyPlaceCanal() {
+    public Coordinate[] strategyPlaceCanal() {
         gameInteraction.drawCanal();
-        if(!possibleCoordinatesCanal().isEmpty()){
-            Coordinate[] coordinates = possibleCoordinatesCanal().get(0);
-            gameInteraction.placeCanal(coordinates[0],coordinates[1]);
-        }
+        return possibleCoordinatesCanal().get(0);
     }
 */
 
