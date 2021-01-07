@@ -79,10 +79,14 @@ public class PandaBot extends Bot {
         for (PandaMission pandaMission : getGameInteraction().getInventoryPandaMissions()) {
             Coordinate coordinateAllColor = rushPandaStrat.strategyMissionAllColor();
             Coordinate coordinateOneColor = rushPandaStrat.strategyMissionOneColor(pandaMission.getColorType());
-            if (coordinateAllColor != null && pandaMission.getColorType().equals(ColorType.ALL_COLOR))
+            if (coordinateAllColor != null && pandaMission.getColorType().equals(ColorType.ALL_COLOR)){
                 getGameInteraction().thunderstormAction(coordinateAllColor);
-            else if (coordinateOneColor != null)
+                return;
+            }
+            else if (coordinateOneColor != null){
                 getGameInteraction().thunderstormAction(coordinateOneColor);
+            return;
+            }
         }
     }
 }

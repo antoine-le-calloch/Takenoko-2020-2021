@@ -27,7 +27,10 @@ public class RushPandaStrat extends Strategie {
     }
 
     public int howManyMoveToDoMission(Mission mission) {
-        if (!isAlreadyFinished(mission)){
+        if (!isAlreadyFinished(mission) ||
+                (!isJudiciousMovePanda(mission.getColorType())) &&
+                        isJudiciousMovePeasant() &&
+                        !(!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())){
             if (!isFinishedInOneTurn(mission)){
                 if (mission.getColorType().equals(ColorType.ALL_COLOR)){
                     if (notExistGoodMovableParcel(ColorType.GREEN) && notExistGoodMovableParcel(ColorType.YELLOW) && notExistGoodMovableParcel(ColorType.RED))
@@ -90,11 +93,11 @@ public class RushPandaStrat extends Strategie {
         if (strategyMovePanda(colorTypeMission) != null){
             if (bot.getGameInteraction().getInventoryBamboo()[colorTypeMission.ordinal()] == 1)
                 return 1;
-            return 3;
+            return 4;
         }
         else if(bot.getGameInteraction().getInventoryBamboo()[colorTypeMission.ordinal()] == 1)
-            return 2;
-        return 4;
+            return 3;
+        return 5;
     }
 
     public int nbMoveAllColor(){

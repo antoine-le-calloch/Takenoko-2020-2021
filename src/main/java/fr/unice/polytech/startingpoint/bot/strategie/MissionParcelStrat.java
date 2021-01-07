@@ -50,7 +50,9 @@ public class MissionParcelStrat extends Strategie {
 
     public int howManyMoveToDoMission(Mission mission) {
         ParcelMission parcelMission = (ParcelMission) mission;
-        if(!isAlreadyFinished(parcelMission)){
+        if(!isAlreadyFinished(parcelMission) ||
+                (!isJudiciousPutParcel() &&
+                        !isJudiciousPutCanal((ParcelMission) mission))){
             if (coordEndMissionNoIrrigate(parcelMission).size() > bot.getGameInteraction().getResourceSize(ResourceType.PARCEL))
                 return -1;
             else if (isFinishedInOneTurn(parcelMission))

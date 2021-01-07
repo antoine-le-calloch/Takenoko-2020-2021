@@ -102,6 +102,7 @@ public class Game{
             if(numBot==FIRST_BOT)
                 newRound();
             botPlay();
+            System.out.println(getPlayerData().getMissionsDone());
             nextBot();
         }
     }

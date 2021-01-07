@@ -32,7 +32,9 @@ public class MissionPeasantStrat extends Strategie {
 
     public int howManyMoveToDoMission(Mission mission) {
         PeasantMission peasantMission = (PeasantMission) mission;
-        if(!isAlreadyFinished(peasantMission)){
+        if(!isAlreadyFinished(peasantMission) ||
+                (!isJudiciousMovePeasant((PeasantMission) mission) &&
+                        !(!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty()))){
             if (peasantMission.getImprovementType().equals(ImprovementType.WHATEVER) || notExistGoodMovableParcel(peasantMission))
                 return -1;
             else if (isFinishedInOneTurn(peasantMission))
@@ -80,7 +82,7 @@ public class MissionPeasantStrat extends Strategie {
     }
 
     public boolean isJudiciousMovePeasant(PeasantMission peasantMission){
-        return strategyMovePeasant(peasantMission) != null && !bot.getGameInteraction().contains(ActionType.MOVE_PANDA);
+        return strategyMovePeasant(peasantMission) != null && !bot.getGameInteraction().contains(ActionType.MOVE_PEASANT);
     }
 
     /**

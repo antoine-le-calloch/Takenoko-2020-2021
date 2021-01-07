@@ -160,8 +160,6 @@ public abstract class Bot {
         int[] bestInts = new int[]{0,0};
         int bestMissionOrdinal = 0;
         for (int[] ints : intsList){
-            System.out.println(ints[0]);
-            System.out.println(ints[1]);
             if (ints[0] < bestInts[0]){
                 ints[1] = bestInts[1];
             }
