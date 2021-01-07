@@ -1,5 +1,6 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
@@ -16,6 +17,7 @@ import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GameInteraction {
@@ -30,6 +32,10 @@ public class GameInteraction {
         return game.getPlayerData();
     }
 
+
+    /**
+     * <p>Allow the bot to draw a canal, when it's the deck canal is not empty</p>
+     */
     public void drawCanal() {
         System.out.println("Draw Canal");
         if (getPlayerData().add(ActionType.DRAW_CANAL)){
@@ -40,6 +46,16 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+
+    /**
+     * <p>Allow the bot to use the cloud Action</p>
+     *
+     * @param improvementType, weatherType
+     *                         <p> The improvement is the one that's the player wants</p>
+     *                         <p> The weather is the one that's the player wants if there is no more improvement in the deck </p>
+     *
+     * @return <p>if the weather has been changed return true</p>
+     */
     public boolean cloudAction(ImprovementType improvementType,WeatherType weatherType){
         if(game.getPlayerData().add(ActionType.WEATHER) && !(getResourceSize(ResourceType.ALLIMPROVEMENT) == 0) ) {
             drawImprovement(improvementType);
@@ -49,25 +65,64 @@ public class GameInteraction {
         return false;
     }
 
+
+
+    /**
+     * <p>Allow the bot to use the question mark Action</p>
+     *
+     * @param weatherType
+     *                         <p> The weather is the one that will be change</p>
+     *
+     */
     public void questionMarkAction(WeatherType weatherType){
         chooseWeather(WeatherType.QUESTION_MARK,weatherType);
     }
 
+
+    /**
+     * <p>Allow the bot to change the weather</p>
+     *
+     * @param weatherType,weatherTypeChosen
+     *                         <p> The weatherType is the ones which allow to change the weather</p>
+     *                         <p> The weatherTypeChosen will be the weather for the game</p>
+     *
+     */
     public void chooseWeather(WeatherType weatherType, WeatherType weatherTypeChosen){
         if(weatherType.equals(WeatherType.QUESTION_MARK) && !weatherTypeChosen.equals(WeatherType.QUESTION_MARK)){
-            game.getPlayerData().botPlay(weatherTypeChosen);
+            game.getPlayerData().botPlay(weatherTypeChosen);//question mark can't obtain question mark weather
         }
         else if(weatherType.equals(WeatherType.CLOUD) && !(weatherTypeChosen.equals(WeatherType.CLOUD) || weatherTypeChosen.equals(WeatherType.QUESTION_MARK))) {
-            game.getPlayerData().botPlay(weatherTypeChosen);
+            game.getPlayerData().botPlay(weatherTypeChosen);//cloud weather can't obtain weather question mark or cloud
         }
         else{
             throw new RulesViolationException("You can't choose" + weatherTypeChosen +" weather" );
         }
     }
 
+
+    /**
+     * <p>Allow the bot to draw an Improvement</p>
+     *
+     * @param improvementType
+     *                         <p> The improvementType is the one that the bot wants to draw</p>
+     *
+     *
+     */
     public void drawImprovement(ImprovementType improvementType){
         getPlayerData().addImprovement(game.getResource().drawImprovement(improvementType));
     }
+
+
+
+
+    /**
+     * <p>Allow the bot to draw a Mission</p>
+     *
+     * @param missionType
+     *                         <p> The missionType is the one that the bot wants to draw</p>
+     *
+     *
+     */
 
     public void drawMission(MissionType missionType) {
         System.out.println("Draw mission");
@@ -95,6 +150,13 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+
+    /**
+     * <p>Allow the bot to draw a Parcel</p>
+     *
+     * @return <p>return the information of each parcel in the selection </p>
+     */
+
     public List<ParcelInformation> drawParcels() {
         System.out.println("Draw parcels");
         if (getPlayerData().add(ActionType.DRAW_PARCELS)){
@@ -109,6 +171,16 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+
+
+
+    /**
+     * <p>Allow the bot to select parcel among 3 parcels proposed</p>
+     *
+     * @param parcelInformation
+     *          <p>parcelInformation allows to distinguish</p>
+     *
+     */
     public void selectParcel(ParcelInformation parcelInformation){
         if (getPlayerData().add(ActionType.SELECT_PARCEL)){
             if (getPlayerData().contains(ActionType.DRAW_PARCELS)) {
@@ -127,6 +199,17 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+
+
+
+    /**
+     * <p>Allow the bot to do the action thunderstorm from the weather</p>
+     *
+     * @param coordinate
+     *          <p>Move the panda at the coordinate passed</p>
+     *
+     */
+
     public void thunderstormAction(Coordinate coordinate){
         if(getPlayerData().add(ActionType.WEATHER)){
              if(getPlacedCoordinates().contains(coordinate))
@@ -138,6 +221,15 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+
+    /**
+     * <p>Allow the bot to do the action rain from the weather</p>
+     *
+     * @param coordinate
+     *          <p>Add a bamboo at a parcel chosen</p>
+     *
+     */
+
     public void rainAction(Coordinate coordinate){
         if(getPlayerData().add(ActionType.WEATHER)){
             if (game.getBoard().isPlacedAndIrrigatedParcel(coordinate))
@@ -148,6 +240,16 @@ public class GameInteraction {
         else
             throw new RulesViolationException("Already used this method.");
     }
+
+
+
+    /**
+     * <p>Allow the bot to place a parcel </p>
+     *
+     * @param coordinate
+     *          <p>Place at the coordinate given if it's possible</p>
+     *
+     */
 
     public void placeParcel(Coordinate coordinate){
         if (getPlayerData().add(ActionType.PLACE_PARCEL)){
@@ -167,6 +269,16 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+
+
+
+    /**
+     * <p>Allow the bot to place a canal </p>
+     *
+     * @param coordinate1,coordinate2
+     *          <p>Place a canal at the coordinates given</p>
+     *
+     */
     public void placeCanal(Coordinate coordinate1, Coordinate coordinate2){
         if (getPlayerData().add(ActionType.PLACE_CANAL)) {
             if (game.getRules().isPlayableCanal(coordinate1, coordinate2))
@@ -180,6 +292,14 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
+
+    /**
+     * <p>Allow the bot to move a character when it's possible </p>
+     *
+     * @param characterType,coordinate
+     *          <p>Move a characterType given at the coordinates given</p>
+     *
+     */
     public void moveCharacter(CharacterType characterType, Coordinate coordinate){
         System.out.println("Move character");
         ColorType ColorBambooEat;
