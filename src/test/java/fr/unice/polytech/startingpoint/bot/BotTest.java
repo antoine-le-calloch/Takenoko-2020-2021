@@ -6,11 +6,12 @@ import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BotTest {
     private Game game;

@@ -47,15 +47,6 @@ public class MissionParcelStrat extends Strategie {
     }
 
     /**
-     * @return <b>True if the bot can draw a mission.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousDrawMission(){
-        int NB_MISSION_MAX = 5;
-        return bot.getGameInteraction().getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.getGameInteraction().contains(ActionType.DRAW_MISSION) && bot.getGameInteraction().getMissionsSize() < NB_MISSION_MAX;
-    }
-
-    /**
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
      * @see GameInteraction
      */
@@ -95,17 +86,20 @@ public class MissionParcelStrat extends Strategie {
     public void putParcel() {
         try {
             List<ParcelInformation> parcelInformationList = bot.getGameInteraction().drawParcels();
-            /*List<ColorType> colorAvailable = new ArrayList<>();
+            List<ColorType> colorAvailable = new ArrayList<>();
             parcelInformationList.forEach(parcel -> colorAvailable.add(parcel.getColorType()));
-            List<Coordinate> bestCoords = bestCoordsInAllMission(colorAvailable);*/
+            List<Coordinate> bestCoords = bestCoordsInAllMission(colorAvailable);
 
-            bot.selectParcel(parcelInformationList.get(0));
-            bot.placeParcel(possibleCoordinatesParcel().get(0));
-            /*if(bestCoords != null) {
+
+            if(bestCoords.size() != 0) {
+                parcelInformationList.removeIf(parcelInfo -> !parcelInfo.getColorType().equals(colorAvailable.get(0)));
+                bot.selectParcel(parcelInformationList.get(0));
                 bot.placeParcel(bestCoords.get(0));
             }
-            else{*/
-            //}
+            else{
+                bot.selectParcel(parcelInformationList.get(0));
+                bot.placeParcel(possibleCoordinatesParcel().get(0));
+            }
 
 
         } catch (OutOfResourcesException | RulesViolationException e) {
@@ -133,18 +127,9 @@ public class MissionParcelStrat extends Strategie {
         }
 
         List<Coordinate> OtherCoords = possibleCoordinatesParcel();
-        OtherCoords.removeAll(bestCoords);
+        if (bestCoords != null)
+            OtherCoords.removeAll(bestCoords);
         return OtherCoords;
-    }
-
-    public List<Coordinate[]> bestCoordsOfEachMission() {
-        List<Coordinate[]> bestCoordsOfEachMission = new ArrayList<>();
-        List<ParcelMission> parcelMissionList;
-
-        for (int i = 0; i < (parcelMissionList = bot.getGameInteraction().getInventoryParcelMissions()).size(); i++) {
-            bestCoordsOfEachMission.add(bestCoordinatesForMission(parcelMissionList.get(i)).toArray(Coordinate[]::new));
-        }
-        return bestCoordsOfEachMission;
     }
 
     /**

@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
 import fr.unice.polytech.startingpoint.bot.Bot;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
@@ -28,6 +29,15 @@ public abstract class Strategie {
     public abstract void stratOneTurn(WeatherType weatherType, Mission mission);
 
     public abstract int howManyMoveToDoMission(Mission mission);
+
+    /**
+     * @return <b>True if the bot can draw a mission.</b>
+     * @see GameInteraction
+     */
+    public boolean isJudiciousDrawMission(){
+        int NB_MISSION_MAX = 5;
+        return bot.getGameInteraction().getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.getGameInteraction().contains(ActionType.DRAW_MISSION) && bot.getGameInteraction().getMissionsSize() < NB_MISSION_MAX;
+    }
 
     public Coordinate stratThunderstorm(){
         List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = bot.getGameInteraction().getAllParcelsIrrigated().stream().

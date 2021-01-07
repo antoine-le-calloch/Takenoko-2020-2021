@@ -11,10 +11,7 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
 
-import fr.unice.polytech.startingpoint.type.BotType;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
-import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +40,17 @@ class StrategieTest {
         board = game.getBoard();
         boardRules = game.getRules();
         strategie = new RandomStrat(bot1);
+    }
+
+    @Test
+    void judiciousDrawMission(){
+        assertTrue(strategie.isJudiciousDrawMission());
+    }
+
+    @Test
+    void notJudiciousDrawMission_ActionAlreadyPlay() {
+        game.getPlayerData().add(ActionType.DRAW_MISSION);
+        assertFalse(strategie.isJudiciousDrawMission());
     }
 
     @Test
