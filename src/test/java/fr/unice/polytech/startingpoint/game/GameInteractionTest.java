@@ -11,7 +11,6 @@ import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.naming.ServiceUnavailableException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -286,16 +285,16 @@ class GameInteractionTest {
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
         game.getBoard().placeCanal(new Canal(),new Coordinate(1,-1,0),new Coordinate(0,-1,1));
         game.getBoard().placeCanal(new Canal(),new Coordinate(1,-2,1),new Coordinate(0,-1,1));
-        assertTrue(gameInteraction.isIrrigatedParcel(new Coordinate(1,-1,0)));
-        assertTrue(gameInteraction.isIrrigatedParcel(new Coordinate(0,-1,1)));
-        assertTrue(gameInteraction.isIrrigatedParcel(new Coordinate(1,-2,1)));
+        assertTrue(gameInteraction.isPlacedAndIrrigatedParcel(new Coordinate(1,-1,0)));
+        assertTrue(gameInteraction.isPlacedAndIrrigatedParcel(new Coordinate(0,-1,1)));
+        assertTrue(gameInteraction.isPlacedAndIrrigatedParcel(new Coordinate(1,-2,1)));
     }
 
     @Test
     void notIrrigatedAndPlacedParcel(){
         game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-2,1));
-        assertFalse(gameInteraction.isIrrigatedParcel(new Coordinate(1,-1,0)));
-        assertFalse(gameInteraction.isIrrigatedParcel(new Coordinate(1,-2,1)));
+        assertFalse(gameInteraction.isPlacedAndIrrigatedParcel(new Coordinate(1,-1,0)));
+        assertFalse(gameInteraction.isPlacedAndIrrigatedParcel(new Coordinate(1,-2,1)));
     }
 
     @Test

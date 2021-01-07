@@ -207,15 +207,18 @@ public class MissionParcelStrat extends Strategie {
             Coordinate[] bestCoordinatesCanal = null;
 
             for (Coordinate coordinateForm : fullForm)
-                if (!gameInteraction.isIrrigatedParcel(coordinateForm))
+                if (!gameInteraction.isPlacedAndIrrigatedParcel(coordinateForm))
                     bestCoordinatesCanal = getBestCanal(coordinateForm);
 
             if (bestCoordinatesCanal != null && fullForm.size() != 0) {
                 gameInteraction.drawCanal();
                 gameInteraction.placeCanal(bestCoordinatesCanal[0],bestCoordinatesCanal[1]);
             }
-            //gameInteraction.drawCanal();
-            //gameInteraction.placeCanal(possibleCoordinatesCanal().get(0)[0], possibleCoordinatesCanal().get(0)[1]);
+            else if (!possibleCoordinatesCanal().isEmpty()){
+                List<Coordinate[]> coordinates = possibleCoordinatesCanal();
+                gameInteraction.drawCanal();
+                gameInteraction.placeCanal(coordinates.get(0)[0], coordinates.get(0)[1]);
+            }
 
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
@@ -268,9 +271,9 @@ public class MissionParcelStrat extends Strategie {
             List<Coordinate> coordinateNotPlaced = new ArrayList<>();
             List<Coordinate> coordinateNotIrrigated = new ArrayList<>();
             for (Coordinate coordinate1 : parcelForm){
-                if (!gameInteraction.isIrrigatedParcel(coordinate1))
+                if (!gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
                     coordinateNotPlaced.add(coordinate1);
-                if (gameInteraction.isPlacedParcel(coordinate1) && !gameInteraction.isIrrigatedParcel(coordinate1))
+                if (gameInteraction.isPlacedParcel(coordinate1) && !gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
                     coordinateNotIrrigated.add(coordinate1);
             }
             if (coordinateNotPlaced.size() == 1 && coordinateNotPlaced.get(0).isNextTo(new Coordinate(0,0,0)))
@@ -296,7 +299,7 @@ public class MissionParcelStrat extends Strategie {
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
             int cpt = 0;
             for (Coordinate coordinate1 : parcelForm){
-                if (gameInteraction.isIrrigatedParcel(coordinate1))
+                if (gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
                     cpt++;
             }
             if (cpt == parcelForm.size())

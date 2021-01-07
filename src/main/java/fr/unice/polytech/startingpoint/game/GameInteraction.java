@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.game;
 
-import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
@@ -18,7 +17,6 @@ import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -71,8 +69,6 @@ public class GameInteraction {
         chooseWeather(WeatherType.CLOUD,weatherType);
         return false;
     }
-
-
 
     /**
      * <p>Allow the bot to place an imrpovement on a parcel</p>
@@ -328,7 +324,7 @@ public class GameInteraction {
     public List<Coordinate> getAllParcelsIrrigated(){
         return getPlacedCoordinates()
                 .stream()
-                .filter(this::isIrrigatedParcel)
+                .filter(this::isPlacedAndIrrigatedParcel)
                 .collect(Collectors.toList());
     }
 
@@ -340,7 +336,7 @@ public class GameInteraction {
         return game.getBoard().isPlacedParcel(coordinate);
     }
 
-    public boolean isIrrigatedParcel(Coordinate coordinate) {
+    public boolean isPlacedAndIrrigatedParcel(Coordinate coordinate) {
         return game.getBoard().isPlacedAndIrrigatedParcel(coordinate);
     }
 
