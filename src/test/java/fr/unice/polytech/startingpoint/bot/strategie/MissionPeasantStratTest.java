@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MissionPeasantStratTest {
+    /*
     Board board;
     Parcel parcel1;
     Coordinate coordinate1;
@@ -32,11 +33,11 @@ public class MissionPeasantStratTest {
         stratMissionPeasant = new MissionPeasantStrat(bot);
         game.getPlayerData().getInventory().subMissions(game.getPlayerData().getPeasantMissions()); //supprime la mission donner au debut
 
-    }
+    }*/
     /**
      <h2><u>Strategy Move Peasant</u></h2>
 
-     */
+     *//*
 
     @Test
     void coordWhereMovePeasant_0parcel() {
@@ -92,5 +93,5 @@ public class MissionPeasantStratTest {
         gamePeasant.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
         gamePeasant.getPlayerData().addMission(new PeasantMission(ColorType.RED,ImprovementType.NOTHING,2));
         assertEquals(new Coordinate(1,0,-1),peasantBot.getStratMissionPeasant().stratRain());
-    }
+    }*/
 }

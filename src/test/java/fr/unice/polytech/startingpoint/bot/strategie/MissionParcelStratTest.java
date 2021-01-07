@@ -21,7 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MissionParcelStratTest {
-
+/*
     ParcelMission missionGreenTriangle;
     ParcelMission missionRedLine;
 
@@ -208,7 +208,7 @@ class MissionParcelStratTest {
     }*/
 
 ///////////////////////////////
-
+/*
     @Test
     void putParcel_0Mission() {
         assertEquals(1, board.getPlacedParcels().size());
@@ -248,17 +248,17 @@ class MissionParcelStratTest {
         Coordinate[] bestCanal = stratMissionParcel.getBestCanal(coordinate2);
 
         assertTrue(Arrays.stream(bestCanal).anyMatch(coord -> coord.equals(coordinate2)));
-    }
+    }*/
 
 ///////////////////////////////
-
+/*
     @Test
     void findEndMissionWithoutCanal_0Mission() {
         assertEquals(0, stratMissionParcel.coordEndMissionNoIrrigate().size());
     }
-
+*/
 ///////////////////////////////
-
+/*
     @Test
     void putCanal_0Mission() {
         board.placeParcel(new Parcel(ColorType.RED), coordinate1);
@@ -268,9 +268,9 @@ class MissionParcelStratTest {
         stratMissionParcel.putCanal();
         assertEquals(1, board.getPlacedCanals().size());
     }
-
+*/
 ///////////////////////////////
-
+/*
     @Test
     void judiciousPutParcel() {
         game.getPlayerData().addMission(missionGreenTriangle);
@@ -287,9 +287,9 @@ class MissionParcelStratTest {
         game.getPlayerData().add(ActionType.DRAW_PARCELS);
         assertFalse(stratMissionParcel.isJudiciousPutParcel());
     }
-
+*/
 ///////////////////////////////
-
+/*
     @Test
     void judiciousPutCanal_PlaceToPut_MissionEnd() {
         game.getPlayerData().looseStamina();

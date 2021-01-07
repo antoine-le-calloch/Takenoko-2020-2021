@@ -1,13 +1,17 @@
 package fr.unice.polytech.startingpoint.bot;
 
+import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
+import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
+import fr.unice.polytech.startingpoint.bot.strategie.RushPandaStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
-import fr.unice.polytech.startingpoint.type.CharacterType;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.game.mission.Mission;
+import fr.unice.polytech.startingpoint.type.*;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>{@link Bot} :</h1>
@@ -31,6 +35,9 @@ import java.util.List;
  */
 
 public abstract class Bot {
+    protected final RushPandaStrat rushPandaStrat ;
+    protected final MissionParcelStrat stratMissionParcel ;
+    protected final MissionPeasantStrat stratMissionPeasant ;
 
     protected final GameInteraction gameInteraction;
 
@@ -42,11 +49,16 @@ public abstract class Bot {
      */
     public Bot(GameInteraction gameInteraction) {
         this.gameInteraction = gameInteraction;
+        this.rushPandaStrat = new RushPandaStrat(this);
+        this.stratMissionParcel = new MissionParcelStrat(this);
+        this.stratMissionPeasant = new MissionPeasantStrat(this);
     }
 
     /**<p>The actions of the bot during his turn.</p>
      */
     public abstract void botPlay(WeatherType weatherType);
+
+    public abstract MissionType bestMissionTypeToDraw();
 
     /**<p>Draw a mission with the type required in the resources.</p>
      *
@@ -56,6 +68,7 @@ public abstract class Bot {
     public void drawMission(MissionType missionType){
         gameInteraction.drawMission(missionType);
     }
+
 
     /**@return Preview a list of 3 ColorTypes from the resources.
      */
@@ -107,6 +120,142 @@ public abstract class Bot {
      */
     public void movePeasant(Coordinate coordinate){
         gameInteraction.moveCharacter(CharacterType.PEASANT,coordinate);
+    }
+
+    boolean isJudiciousDrawMission() {
+        int NB_MAX_MISSION = 5;
+        return gameInteraction.getMissionsSize() < NB_MAX_MISSION &&
+                gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 &&
+                !gameInteraction.contains(ActionType.DRAW_MISSION);
+    }
+
+    public Mission determineBestMissionToDo() {
+        List<Mission> missionList = new LinkedList<>();
+        List<int[]> intsList = new LinkedList<>();
+        for (Mission mission : gameInteraction.getInventoryMissions()){
+            int nbMove;
+            switch (mission.getMissionType()){
+                case PANDA:
+                    nbMove = rushPandaStrat.howManyMoveToDoMission(mission);
+                    if ( nbMove == -1){
+                        missionList.add(mission);
+                        intsList.add(new int[]{rushPandaStrat.howManyMoveToDoMission(mission),mission.getPoints()});
+                    }
+                    break;
+                case PARCEL:
+                    nbMove = stratMissionParcel.howManyMoveToDoMission(mission);
+                    if ( nbMove == -1){
+                        missionList.add(mission);
+                        intsList.add(new int[]{nbMove,mission.getPoints()});
+                    }
+                    break;
+                case PEASANT:
+                    nbMove = stratMissionPeasant.howManyMoveToDoMission(mission);
+                    if ( nbMove == -1){
+                        missionList.add(mission);
+                        intsList.add(new int[]{nbMove,mission.getPoints()});
+                    }
+                    break;
+            }
+        }
+        return missionList.get(determineBestMission(intsList));
+    }
+
+    public int determineBestMission(List<int[]> intsList){
+        int[] bestInts = new int[]{0,0};
+        int bestMissionOrdinal = 0;
+        for (int[] ints : intsList){
+            if (ints[0] < bestInts[0]){
+                ints[1] = bestInts[1];
+            }
+            else if (ints[0] == bestInts[0] && ints[1] > bestInts[1])
+                ints[1] = bestInts[1];
+        }
+        for (int i = 0; i < intsList.size(); i++) {
+            if (intsList.get(i)[0] == bestInts[0] && intsList.get(i)[1] == bestInts[1])
+                bestMissionOrdinal = i;
+        }
+        return bestMissionOrdinal;
+    }
+
+
+    void playBestMission(Mission mission){
+        switch (mission.getMissionType()){
+            case PANDA:
+                rushPandaStrat.stratOneTurn(mission);
+                break;
+            case PARCEL:
+                stratMissionParcel.stratOneTurn(mission);
+                break;
+            case PEASANT:
+                stratMissionPeasant.stratOneTurn(mission);
+                break;
+        }
+    }
+
+
+
+    public boolean isJudiciousPlayWeather(){
+        return !gameInteraction.contains(ActionType.WEATHER);
+    }
+
+
+
+    public void playWeather(WeatherType weatherType){
+        if(weatherType.equals(WeatherType.RAIN))
+            stratRain();
+        else if(weatherType.equals(WeatherType.THUNDERSTORM))
+            stratThunderstorm();
+        else if(weatherType.equals(WeatherType.QUESTION_MARK))
+            stratQuestionMark();
+        else if(weatherType.equals(WeatherType.CLOUD))
+            stratCloud();
+    }
+
+
+    public Coordinate stratThunderstorm(){
+        List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = getGameInteraction().getAllParcelsIrrigated().stream().
+                filter( coordinate -> getGameInteraction().getPlacedParcelsNbBamboo(coordinate) > 0 &&
+                        !getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
+                .collect(Collectors.toList());
+
+        if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty()) {
+            getGameInteraction().rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
+            return irrigatedParcelsWithMoreThan1Bamboo.get(0);
+        }
+        return null;
+    }
+
+    public Coordinate stratRain(){
+        List<Coordinate> parcelsIrrigated= getGameInteraction().getAllParcelsIrrigated();
+        List<Coordinate> parcelsIrrigatedWithFertilizer=parcelsIrrigated.stream().
+                filter(coordinate -> getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType()
+                        .equals(ImprovementType.FERTILIZER)).collect(Collectors.toList());
+        if(!parcelsIrrigatedWithFertilizer.isEmpty()){
+            getGameInteraction().rainAction(parcelsIrrigatedWithFertilizer.get(0));
+            return parcelsIrrigatedWithFertilizer.get(0);
+
+        }else if(!parcelsIrrigated.isEmpty()){
+            getGameInteraction().rainAction(parcelsIrrigated.get(0));
+            return parcelsIrrigated.get(0);
+        }
+        return null;
+    }
+
+    public void stratQuestionMark(){
+        getGameInteraction().questionMarkAction(WeatherType.SUN);
+    }
+
+    public void stratCloud(){
+        if(getGameInteraction().getResourceSize(ResourceType.WATHERSHEDMPROVEMENT)>0)
+            getGameInteraction().cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
+        else if(getGameInteraction().getResourceSize(ResourceType.FERTIZILERIMPROVEMENT)>0)
+            getGameInteraction().cloudAction(ImprovementType.FERTILIZER,WeatherType.SUN);
+        else if(getGameInteraction().getResourceSize(ResourceType.ENCLOSUREIMPROVEMENT)>0)
+            getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
+        else {
+            getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
+        }
     }
 
     public GameInteraction getGameInteraction(){

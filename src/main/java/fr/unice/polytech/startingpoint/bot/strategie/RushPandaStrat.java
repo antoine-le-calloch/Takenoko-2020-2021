@@ -16,7 +16,7 @@ public class RushPandaStrat extends Strategie {
         super(bot);
     }
 
-    public void stratOneTurn(WeatherType weatherType, Mission mission){
+    public void stratOneTurn(Mission mission){
         if (isJudiciousMovePanda(mission.getColorType()))
             bot.movePanda(strategyMovePanda(mission.getColorType()));
         else if (isJudiciousMovePeasant())
@@ -114,7 +114,7 @@ public class RushPandaStrat extends Strategie {
     }
 
     public boolean isJudiciousMovePeasant(){
-        return !bot.getGameInteraction().contains(ActionType.MOVE_PEASANT);
+        return !bot.getGameInteraction().contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPeasant().isEmpty();
     }
 
     public Coordinate strategyMovePanda(ColorType colorTypeMission) {

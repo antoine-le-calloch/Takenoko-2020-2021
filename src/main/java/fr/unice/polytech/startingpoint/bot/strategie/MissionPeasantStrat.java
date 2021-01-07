@@ -20,10 +20,9 @@ public class MissionPeasantStrat extends Strategie {
 
     /**
      * <p>The actions of the bot during his turn.</p>
-     * @param weatherType
      * @param mission
      */
-    public void stratOneTurn(WeatherType weatherType, Mission mission){
+    public void stratOneTurn(Mission mission){
         if (isJudiciousMovePeasant((PeasantMission) mission))
             bot.movePeasant(strategyMovePeasant((PeasantMission) mission));
     }

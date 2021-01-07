@@ -22,7 +22,7 @@ import static fr.unice.polytech.startingpoint.type.MissionType.PANDA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class RushPandaStratTest {
+class RushPandaStratTest {/*
     Board board;
     Parcel parcel1;
     Parcel parcel2;
@@ -44,11 +44,11 @@ class RushPandaStratTest {
         coordinate2 = new Coordinate(0, -1, 1);
         game.getPlayerData().getInventory().subMissions(game.getPlayerData().getPandaMissions()); //supprime la mission donner au debut
     }
-
+*/
     /**
      <h2><u>Strategy Move Panda</u></h2>
 
-     */
+     *//*
 
     @Test
     void coordWhereMovePanda_0parcel() {
@@ -88,8 +88,8 @@ class RushPandaStratTest {
         bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
         game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
         bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus*/
-    }
+        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
+    }/*
 
     @Test
     void colorMissionDifferentFromColorParcelSoNoGoodDeplacement() {
@@ -119,8 +119,8 @@ class RushPandaStratTest {
         game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
         bot.botPlay(WeatherType.NO_WEATHER);
         assertEquals(0,board.getPlacedParcels().get(coordinate1).getNbBamboo());//0 bamboo sur la parcel
-    }
-
+    }*/
+/*
     @Test
     void movePanda_WhereNoImprovement(){
         board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
@@ -151,5 +151,5 @@ class RushPandaStratTest {
         gamePanda.getPlayerData().addMission(new PandaMission(ColorType.GREEN,2));
 
         assertEquals(new Coordinate(1,0,-1),pandaBot.getRushPandaStrat().stratThunderstorm());
-    }
+    }*/
 }

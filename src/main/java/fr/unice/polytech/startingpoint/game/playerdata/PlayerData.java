@@ -26,6 +26,8 @@ public class PlayerData {
     private int score;
     private int missionsDone;
     private int missionsPandaDone;
+    private int missionsParcelDone;
+    private int missionsPeasantDone;
 
     public PlayerData(Bot bot){
         this.bot = bot;
@@ -34,6 +36,9 @@ public class PlayerData {
         score = 0;
         missionsDone = 0;
         missionsPandaDone = 0;
+        missionsParcelDone = 0;
+        missionsPeasantDone = 0;
+
     }
 
     public void botPlay(WeatherType weatherType) {
@@ -49,6 +54,12 @@ public class PlayerData {
                 addMissionDone(mission.getPoints());
                 if (mission.getMissionType().equals(MissionType.PANDA)){
                     missionsPandaDone ++;
+                }
+                if (mission.getMissionType().equals(MissionType.PARCEL)){
+                    missionsParcelDone ++;
+                }
+                if (mission.getMissionType().equals(MissionType.PEASANT)){
+                    missionsPeasantDone ++;
                 }
                 toRemoveMissions.add(mission);
             }
@@ -180,5 +191,17 @@ public class PlayerData {
 
     public int[] getInventoryBamboo() {
         return  inventory.getInventoryBamboo();
+    }
+
+    public int getMissionsPandaDone(){
+        return missionsPandaDone;
+    }
+
+    public int getMissionsParcelDone() {
+        return missionsParcelDone;
+    }
+
+    public int getMissionsPeasantDone() {
+        return missionsPeasantDone;
     }
 }

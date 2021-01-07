@@ -298,6 +298,18 @@ public class GameInteraction {
         return getPlayerData().getInventoryBamboo();
     }
 
+    public int getMissionsPandaDone(){
+        return getPlayerData().getMissionsPandaDone();
+    }
+
+    public int getMissionsParcelDone() {
+        return getPlayerData().getMissionsParcelDone();
+    }
+
+    public int getMissionsPeasantDone() {
+        return getPlayerData().getMissionsPeasantDone();
+    }
+
     public int getResourceSize(ResourceType resourceType){
         switch (resourceType){
             case PEASANT_MISSION:

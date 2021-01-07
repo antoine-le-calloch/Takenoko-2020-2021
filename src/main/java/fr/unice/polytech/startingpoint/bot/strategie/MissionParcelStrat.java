@@ -8,6 +8,7 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
@@ -24,26 +25,12 @@ public class MissionParcelStrat extends Strategie {
         super(bot);
     }
 
-    public void stratOneTurn(WeatherType weatherType, Mission mission){
-
-        if(isJudiciousPlayWeather())
-            playWeather(weatherType);
-
-        if (isJudiciousDrawMission())
-            bot.drawMission(MissionType.PARCEL);
-        else if (isJudiciousPutCanal())
-            putCanal();
+    public void stratOneTurn(Mission mission){
+        if (isJudiciousPutCanal())
+            putCanal((ParcelMission) mission);
         else if(isJudiciousPutParcel()) {
-            putParcel();
+            putParcel((ParcelMission) mission);
         }
-    }
-
-    public int howManyMoveToDoMission(Mission mission) {
-        return 0;
-    }
-
-    public boolean isJudiciousPlayWeather(){
-        return !bot.getGameInteraction().contains(ActionType.WEATHER);
     }
 
     /**
@@ -69,11 +56,65 @@ public class MissionParcelStrat extends Strategie {
         return bot.getGameInteraction().getResourceSize(ResourceType.PARCEL) > 0 && !bot.getGameInteraction().contains(ActionType.DRAW_PARCELS);
     }
 
-    public void playWeather(WeatherType weatherType){
-        if(weatherType.equals(WeatherType.RAIN))
-            stratRain();
-        else if(weatherType.equals(WeatherType.THUNDERSTORM))
-            stratThunderstorm();
+
+    public int howManyMoveToDoMission(Mission mission) {
+        ParcelMission parcelMission = (ParcelMission) mission;
+        if(!isAlreadyFinished(parcelMission)){
+            if (coordEndMissionNoIrrigate(parcelMission).size() > bot.getGameInteraction().getResourceSize(ResourceType.PARCEL))
+                return -1;
+            else if (isFinishedInOneTurn(parcelMission))
+                return 1;
+            return nbMoveParcel(parcelMission);
+        }
+        return -1;
+    }
+
+    private boolean isFinishedInOneTurn(ParcelMission parcelMission) {
+        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
+            List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
+            List<Coordinate> coordinateNotPlaced = new ArrayList<>();
+            List<Coordinate> coordinateNotIrrigated = new ArrayList<>();
+            for (Coordinate coordinate1 : parcelForm){
+                if (!bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                    coordinateNotPlaced.add(coordinate1);
+                if (bot.getGameInteraction().isPlacedParcel(coordinate1) && !bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                    coordinateNotIrrigated.add(coordinate1);
+            }
+            if (coordinateNotPlaced.size() == 1 && coordinateNotPlaced.get(0).isNextTo(new Coordinate(0,0,0)))
+                return true;
+            if (coordinateNotPlaced.size() == 0 && coordinateNotIrrigated.size() == 1
+                    && getBestCanal(coordinateNotIrrigated.get(0)) != null
+                    && (getBestCanal(coordinateNotIrrigated.get(0))[0] == coordinateNotIrrigated.get(0)
+                        ||  getBestCanal(coordinateNotIrrigated.get(0))[1] == coordinateNotIrrigated.get(0)))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isAlreadyFinished(ParcelMission parcelMission) {
+        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
+            List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
+            int cpt = 0;
+            for (Coordinate coordinate1 : parcelForm){
+                if (bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                    cpt++;
+            }
+            if (cpt == parcelForm.size())
+                return true;
+        }
+        return false;
+    }
+
+    private int nbMoveParcel(ParcelMission parcelMission) {
+        List<Coordinate> bestCoordinatesForMission = bestCoordinatesForMission(parcelMission);
+        int nbMove = 0;
+        for (Coordinate coordinate1 : bestCoordinatesForMission){
+            if (coordinate1.isNextTo(new Coordinate(0,0,0)))
+                nbMove++;
+            else
+                nbMove += 3;
+        }
+        return nbMove;
     }
 
     /**
@@ -83,13 +124,12 @@ public class MissionParcelStrat extends Strategie {
      * @see FormType
      * @see ColorType
      */
-    public void putParcel() {
+    public void putParcel(ParcelMission parcelmission) {
         try {
             List<ParcelInformation> parcelInformationList = bot.getGameInteraction().drawParcels();
             List<ColorType> colorAvailable = new ArrayList<>();
             parcelInformationList.forEach(parcel -> colorAvailable.add(parcel.getColorType()));
-            List<Coordinate> bestCoords = bestCoordsInAllMission(colorAvailable);
-
+            List<Coordinate> bestCoords = bestCoordinatesForMission(parcelmission);
 
             if(bestCoords.size() != 0) {
                 parcelInformationList.removeIf(parcelInfo -> !parcelInfo.getColorType().equals(colorAvailable.get(0)));
@@ -101,36 +141,11 @@ public class MissionParcelStrat extends Strategie {
                 bot.placeParcel(possibleCoordinatesParcel().get(0));
             }
 
-
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Coordinate> bestCoordsInAllMission(List<ColorType> colorAvailable) {
-        ParcelMission bestMission = null;
-        List<Coordinate> bestCoords = null;
-
-        for (ParcelMission mission : bot.getGameInteraction().getInventoryParcelMissions()) {
-            List<Coordinate> coordsForMission = bestCoordinatesForMission(mission);
-            if ( bestCoords == null || bestCoords.size() > coordsForMission.size() ){
-                bestMission = mission;
-                bestCoords = coordsForMission;
-            }
-        }
-
-        if( bestMission!= null && colorAvailable.contains(bestMission.getColorType()) ) {
-            ParcelMission finalBestMission = bestMission;
-            colorAvailable.removeIf(color -> !color.equals(finalBestMission.getColorType()));
-            bestCoords.removeIf(coord -> !boardRules.isPlayableParcel(coord));
-            return bestCoords;
-        }
-
-        List<Coordinate> OtherCoords = possibleCoordinatesParcel();
-        if (bestCoords != null)
-            OtherCoords.removeAll(bestCoords);
-        return OtherCoords;
-    }
 
     /**
      * <h2>{@link #bestCoordinatesForMission(ParcelMission mission)} :</h2>
@@ -179,7 +194,8 @@ public class MissionParcelStrat extends Strategie {
         List<Coordinate> form = setForm(coordinate, mission.getFormType());
 
         for (Coordinate coord : form) {
-            if(coord.isCentral() || (bot.getGameInteraction().isPlacedParcel(coord) && !bot.getGameInteraction().getPlacedParcelInformation(coord).getColorType().equals(mission.getColorType())))
+            if(coord.isCentral() || (bot.getGameInteraction().isPlacedParcel(coord) &&
+                    !bot.getGameInteraction().getPlacedParcelInformation(coord).getColorType().equals(mission.getColorType())))
                 return null;
 
             if(!bot.getGameInteraction().isPlacedParcel(coord))
@@ -233,9 +249,9 @@ public class MissionParcelStrat extends Strategie {
      * @see Coordinate
      * @see GameInteraction
      */
-    public void putCanal() {
+    public void putCanal(ParcelMission mission) {
         try {
-            List<Coordinate> fullForm = coordEndMissionNoIrrigate();
+            List<Coordinate> fullForm = coordEndMissionNoIrrigate(mission);
             Coordinate[] bestCoordinatesCanal = null;
 
             for (Coordinate coordinateForm : fullForm)
@@ -255,13 +271,11 @@ public class MissionParcelStrat extends Strategie {
         }
     }
 
-    public List<Coordinate> coordEndMissionNoIrrigate() {
-        for (ParcelMission mission : bot.getGameInteraction().getInventoryParcelMissions()) {
-            for (Coordinate coordinate : allPlaces()) {
-                if(coordNeedToDoMission(coordinate,mission) != null && coordNeedToDoMission(coordinate,mission).size() == 0) {
-                    return setForm(coordinate, mission.getFormType());
+    public List<Coordinate> coordEndMissionNoIrrigate(ParcelMission mission) {
+        for (Coordinate coordinate : allPlaces()) {
+            if(coordNeedToDoMission(coordinate,mission) != null && coordNeedToDoMission(coordinate,mission).size() == 0) {
+                return setForm(coordinate, mission.getFormType());
                 }
-            }
         }
         return new ArrayList<>();
     }

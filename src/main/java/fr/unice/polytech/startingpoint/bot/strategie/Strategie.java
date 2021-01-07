@@ -23,66 +23,12 @@ public abstract class Strategie {
     }
 
     /**<p>The actions of the bot during his turn.</p>
-     * @param weatherType
      * @param mission
      */
-    public abstract void stratOneTurn(WeatherType weatherType, Mission mission);
+    public abstract void stratOneTurn(Mission mission);
 
     public abstract int howManyMoveToDoMission(Mission mission);
 
-    /**
-     * @return <b>True if the bot can draw a mission.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousDrawMission(){
-        int NB_MISSION_MAX = 5;
-        return bot.getGameInteraction().getResourceSize(ResourceType.PARCEL_MISSION) > 0  && !bot.getGameInteraction().contains(ActionType.DRAW_MISSION) && bot.getGameInteraction().getMissionsSize() < NB_MISSION_MAX;
-    }
-
-    public Coordinate stratThunderstorm(){
-        List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = bot.getGameInteraction().getAllParcelsIrrigated().stream().
-                filter( coordinate -> bot.getGameInteraction().getPlacedParcelsNbBamboo(coordinate) > 0 &&
-                                     !bot.getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
-                .collect(Collectors.toList());
-
-        if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty()) {
-            bot.getGameInteraction().rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
-            return irrigatedParcelsWithMoreThan1Bamboo.get(0);
-        }
-        return null;
-    }
-
-    public Coordinate stratRain(){
-        List<Coordinate> parcelsIrrigated= bot.getGameInteraction().getAllParcelsIrrigated();
-        List<Coordinate> parcelsIrrigatedWithFertilizer=parcelsIrrigated.stream().
-                filter(coordinate -> bot.getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType()
-                .equals(ImprovementType.FERTILIZER)).collect(Collectors.toList());
-        if(!parcelsIrrigatedWithFertilizer.isEmpty()){
-            bot.getGameInteraction().rainAction(parcelsIrrigatedWithFertilizer.get(0));
-            return parcelsIrrigatedWithFertilizer.get(0);
-
-        }else if(!parcelsIrrigated.isEmpty()){
-            bot.getGameInteraction().rainAction(parcelsIrrigated.get(0));
-            return parcelsIrrigated.get(0);
-        }
-        return null;
-    }
-
-    public void stratQuestionMark(){
-        bot.getGameInteraction().questionMarkAction(WeatherType.SUN);
-    }
-
-    public void stratCloud(){
-        if(bot.getGameInteraction().getResourceSize(ResourceType.WATHERSHEDMPROVEMENT)>0)
-            bot.getGameInteraction().cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
-        else if(bot.getGameInteraction().getResourceSize(ResourceType.FERTIZILERIMPROVEMENT)>0)
-            bot.getGameInteraction().cloudAction(ImprovementType.FERTILIZER,WeatherType.SUN);
-        else if(bot.getGameInteraction().getResourceSize(ResourceType.ENCLOSUREIMPROVEMENT)>0)
-            bot.getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
-        else {
-            bot.getGameInteraction().cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
-        }
-    }
 
     /**@return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>
      */

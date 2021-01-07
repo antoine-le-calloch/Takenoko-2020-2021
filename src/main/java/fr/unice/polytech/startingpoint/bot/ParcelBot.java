@@ -3,6 +3,10 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.mission.Mission;
+import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.type.MissionType;
+import fr.unice.polytech.startingpoint.type.ResourceType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
 /**
@@ -40,13 +44,34 @@ public class ParcelBot extends Bot {
         super(gameInteraction);
     }
 
-    /**<p>The actions of the bot during his turn.</p>
-     * @param weatherType
-     */
 
     @Override
     public void botPlay(WeatherType weatherType) {
-        for (int i = gameInteraction.getStamina(); i > 0; i--)
-            stratMissionParcel.stratOneTurn(weatherType, );
+        if (isJudiciousPlayWeather())
+            playWeather(weatherType);
+        for (int i = gameInteraction.getStamina(); i > 0; i--) {
+            if( isJudiciousDrawMission()) {
+                drawMission(bestMissionTypeToDraw());
+            }
+            Mission mission = determineBestMissionToDo();
+            playBestMission(mission);
+        }
+    }
+
+    @Override
+    public MissionType bestMissionTypeToDraw() {
+        if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
+            return MissionType.PARCEL;
+        else
+            return chooseMissionTypeDrawable();
+    }
+
+    MissionType chooseMissionTypeDrawable() {
+        if (gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+            return MissionType.PANDA;
+        else if (gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
+            return MissionType.PEASANT;
+        else
+            return MissionType.PARCEL;
     }
 }

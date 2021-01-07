@@ -4,112 +4,64 @@ import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.RushPandaStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
-import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class IntelligentBot extends Bot {
     RushPandaStrat rushPandaStrat = new RushPandaStrat(this);
     MissionParcelStrat stratMissionParcel = new MissionParcelStrat(this);
     MissionPeasantStrat stratMissionPeasant = new MissionPeasantStrat(this);
-
-    int NB_CHANGE_STRAT = 2;
-
+    
     public IntelligentBot(GameInteraction gameInteraction) {
         super(gameInteraction);
     }
 
     @Override
     public void botPlay(WeatherType weatherType) {
+        if (isJudiciousPlayWeather())
+            playWeather(weatherType);
         for (int i = gameInteraction.getStamina(); i > 0; i--) {
-
-
+            if( isJudiciousDrawMission()) {
+                drawMission(bestMissionTypeToDraw());
+            }
             Mission mission = determineBestMissionToDo();
-            switch (mission.getMissionType()){
-                case PANDA:
-                    rushPandaStrat.stratOneTurn(weatherType,mission);
-                    break;
-                case PARCEL:
-                    stratMissionParcel.stratOneTurn(weatherType,mission);
-                    break;
-                case PEASANT:
-                    stratMissionPeasant.stratOneTurn(weatherType,mission);
-                    break;
-            }
+            playBestMission(mission);
         }
     }
 
-    public Mission determineBestMissionToDo() {
-        List<Mission> missionList = new LinkedList<>();
-        List<int[]> intsList = new LinkedList<>();
-        for (Mission mission : gameInteraction.getInventoryMissions()){
-            int nbMove;
-            switch (mission.getMissionType()){
-                case PANDA:
-                    nbMove = rushPandaStrat.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{rushPandaStrat.howManyMoveToDoMission(mission),mission.getPoints()});
-                    }
-                    break;
-                case PARCEL:
-                    nbMove = stratMissionParcel.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{nbMove,mission.getPoints()});
-                    }
-                    break;
-                case PEASANT:
-                    nbMove = stratMissionPeasant.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{nbMove,mission.getPoints()});
-                    }
-                    break;
-            }
-        }
-        return missionList.get(determineBestMission(intsList));
+    @Override
+    public MissionType bestMissionTypeToDraw() {
+        int NB_MAX_MISSION_PARCEL = 3;
+        int NB_MISSION_DONE = 6;
+        if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0
+            && (gameInteraction.getInventoryParcelMissions().size() + gameInteraction.getMissionsParcelDone() < NB_MAX_MISSION_PARCEL))
+            return MissionType.PARCEL;
+        else if (gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0
+                && gameInteraction.getNumberMissionsDone() < NB_MISSION_DONE)
+            return MissionType.PEASANT;
+        else if (gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+            return MissionType.PANDA;
+        else
+            return chooseMissionTypeDrawable();
     }
 
-    public int determineBestMission(List<int[]> intsList){
-        int[] bestInts = new int[]{0,0};
-        int bestMissionOrdinal = 0;
-        for (int[] ints : intsList){
-            if (ints[0] < bestInts[0]){
-                ints[1] = bestInts[1];
-            }
-            else if (ints[0] == bestInts[0] && ints[1] > bestInts[1])
-                ints[1] = bestInts[1];
-        }
-        for (int i = 0; i < intsList.size(); i++) {
-            if (intsList.get(i)[0] == bestInts[0] && intsList.get(i)[1] == bestInts[1])
-                bestMissionOrdinal = i;
-        }
-        return bestMissionOrdinal;
+    MissionType chooseMissionTypeDrawable() {
+        if (gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
+            return MissionType.PEASANT;
+        else if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
+            return MissionType.PARCEL;
+        else
+            return MissionType.PANDA;
     }
+
+}
 
     /*
-
-    Panda
-
-    public boolean isJudiciousPlayWeather(){
-        return !gameInteraction.contains(ActionType.WEATHER);
-    }
-
-
-    public void playWeather(WeatherType weatherType){
-        if(weatherType.equals(WeatherType.RAIN))
-            stratRain();
-        else if(weatherType.equals(WeatherType.THUNDERSTORM))
-            stratThunderstorm();
-        else if(weatherType.equals(WeatherType.QUESTION_MARK))
-            stratQuestionMark();
-        else if(weatherType.equals(WeatherType.CLOUD))
-            stratCloud();
-    }
-
     public Coordinate stratThunderstorm() {
 
         for(PandaMission pandaMission : bot.getGameInteraction().getInventoryPandaMissions()){
@@ -148,5 +100,14 @@ public class IntelligentBot extends Bot {
         return null;
     }
 
+    parcel
+
+
+        public void playWeather(WeatherType weatherType){
+        if(weatherType.equals(WeatherType.RAIN))
+            stratRain();
+        else if(weatherType.equals(WeatherType.THUNDERSTORM))
+            stratThunderstorm();
+    }
+
  */
-}
