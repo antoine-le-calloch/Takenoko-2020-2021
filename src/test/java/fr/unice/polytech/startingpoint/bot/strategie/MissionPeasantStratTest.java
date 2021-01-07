@@ -19,7 +19,7 @@ public class MissionPeasantStratTest {
 
     Parcel parcelGreen;
     Parcel parcelRed;
-    Parcel parcelFertiziler;
+    Parcel parcelFertiziled;
     Coordinate coordinate1;
     Game game;
     MissionPeasantStrat stratMissionPeasant;
@@ -35,7 +35,7 @@ public class MissionPeasantStratTest {
         game = new Game();
         parcelGreen = new Parcel(ColorType.GREEN,ImprovementType.NOTHING);
         parcelRed = new Parcel(ColorType.RED);
-        parcelFertiziler = new Parcel(ColorType.GREEN,ImprovementType.FERTILIZER);
+        parcelFertiziled = new Parcel(ColorType.GREEN,ImprovementType.FERTILIZER);
         coordinate1 = new Coordinate(1, -1, 0);
         peasantMissionGreen=new PeasantMission(ColorType.GREEN,ImprovementType.NOTHING,2);
         peasantMissionGreenFerti=new PeasantMission(ColorType.GREEN,ImprovementType.FERTILIZER,2);
@@ -179,8 +179,7 @@ public class MissionPeasantStratTest {
     }
     @Test
     void oneTurnLeftGreenMissionFertiSameColorParcel(){
-
-        game.getBoard().placeParcel(parcelFertiziler,coordinate1);
+        game.getBoard().placeParcel(parcelFertiziled,coordinate1);
         assertTrue(stratMissionPeasant.isFinishedInOneTurn(peasantMissionGreenFerti));
     }
 
@@ -202,6 +201,27 @@ public class MissionPeasantStratTest {
     void goodMOvableParcel(){
         game.getBoard().placeParcel(parcelGreen,coordinate1);
         assertFalse(stratMissionPeasant.notExistGoodMovableParcel(peasantMissionGreen));
+    }
+
+    @Test
+    void missionNotTakenCauseToolong(){
+        assertEquals(-1,stratMissionPeasant.howManyMoveToDoMission(new PeasantMission(ColorType.GREEN,ImprovementType.WHATEVER,-2)));
+    }
+    @Test
+    void missionTakenCauseCanBeFinishedIn1Turn(){
+        game.getBoard().placeParcel(parcelGreen,coordinate1);
+        parcelGreen.addBamboo();
+        parcelGreen.addBamboo();
+        assertEquals(1,stratMissionPeasant.howManyMoveToDoMission(peasantMissionGreen));
+    }
+    @Test
+    void missionNotTakenCauseCanBeFinishedIn3Turn(){
+        game.getBoard().placeParcel(parcelGreen,coordinate1);
+        assertEquals(4,stratMissionPeasant.howManyMoveToDoMission(peasantMissionGreen));
+    }
+   @Test
+    void cantMoveSoChooseToDontDoMission(){
+        assertEquals(-1,stratMissionPeasant.howManyMoveToDoMission(peasantMissionGreen));
     }
 
 

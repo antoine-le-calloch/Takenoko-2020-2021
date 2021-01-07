@@ -95,7 +95,7 @@ public class MissionPeasantStrat extends Strategie {
         PeasantMission peasantMission = (PeasantMission) mission;
         if(!isAlreadyFinished(peasantMission) &&
                 isJudiciousMovePeasant((PeasantMission) mission) &&
-                        (!gameInteraction.contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPanda().isEmpty()) ){
+                        (!gameInteraction.contains(ActionType.MOVE_PEASANT) ) ){
             if (peasantMission.getImprovementType().equals(ImprovementType.WHATEVER) || notExistGoodMovableParcel(peasantMission))
                 return -1;
             else if (isFinishedInOneTurn(peasantMission))
