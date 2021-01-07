@@ -47,7 +47,7 @@ public class MissionPandaStrat extends Strategie {
 
     boolean isJudiciousPlaceCanal() {
         return !gameInteraction.contains(ActionType.DRAW_CANAL) && !gameInteraction.contains(ActionType.PLACE_CANAL)
-                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0);
+                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0) ;
     }
 
     /**<b><u>STRATEGIES METHODS</b>

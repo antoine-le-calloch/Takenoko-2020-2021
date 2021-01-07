@@ -462,7 +462,10 @@ class MissionPandaStratTest {
      * <h1><u>strategyPlaceParcel</u></h1>
      */
 
-    
+    @Test
+    void strategyPlaceParcel(){
+
+    }
 
     /*      public void strategyPlaceParcel(ColorType colorType) {
         try {
