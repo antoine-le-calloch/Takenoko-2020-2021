@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.bot;
 
-
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
  *
  * <p>This class provides a bot specialized in {@link ParcelMission} missions.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} and {@link Bot#bestMissionTypeToDraw()} methods from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -43,31 +42,10 @@ public class ParcelBot extends Bot {
     }
 
     @Override
-    public void botPlay(WeatherType weatherType) {
-        if (isJudiciousPlayWeather())
-            playWeather(weatherType);
-        for (int i = gameInteraction.getStamina(); i > 0; i--) {
-            if( isJudiciousDrawMission())
-                drawMission(bestMissionTypeToDraw());
-            else
-                playMission(determineBestMissionToDo());
-        }
-    }
-
-    @Override
     public MissionType bestMissionTypeToDraw() {
         if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
             return MissionType.PARCEL;
-        return chooseMissionTypeDrawable();
-    }
-
-    MissionType chooseMissionTypeDrawable() {
-        if (gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
-            return MissionType.PANDA;
-        else if (gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
-            return MissionType.PEASANT;
-        else
-            return MissionType.PARCEL;
+        return chooseMissionTypeDrawable(MissionType.PANDA,MissionType.PEASANT,MissionType.PARCEL);
     }
 
     @Override
@@ -80,15 +58,15 @@ public class ParcelBot extends Bot {
 
     @Override
     public void stratRain() {
-        for(PeasantMission peasantMission:getGameInteraction().getInventoryPeasantMissions()) {
+        for(PeasantMission peasantMission:gameInteraction.getInventoryPeasantMissions()) {
             ColorType peasantMissionColor = peasantMission.getColorType();
 
-            List<Coordinate> parcelsIrrigatedSameColorAsMission = getGameInteraction().
+            List<Coordinate> parcelsIrrigatedSameColorAsMission = gameInteraction.
                     getPlacedCoordinatesByColor(peasantMissionColor).stream()
-                    .filter(getGameInteraction()::isIrrigatedParcel)
+                    .filter(gameInteraction::isIrrigatedParcel)
                     .collect(Collectors.toList());
             if (!parcelsIrrigatedSameColorAsMission.isEmpty())
-                getGameInteraction().rainAction(parcelsIrrigatedSameColorAsMission.get(0));
+                gameInteraction.rainAction(parcelsIrrigatedSameColorAsMission.get(0));
         }
     }
 }

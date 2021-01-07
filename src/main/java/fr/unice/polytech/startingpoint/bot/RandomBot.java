@@ -8,6 +8,7 @@ import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Random;
  *
  * <p>This class provides a bot playing randomly.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} and {@link Bot#bestMissionTypeToDraw()} methods from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -36,80 +37,65 @@ public class RandomBot extends Bot {
     private Random random;
     private Random random2;
 
-    /**<p>Set up the bot. Call the constructor from {@link Bot} superclass and initialize two {@link Random} objects.</p>
-     *
-     * @param gameInteraction
-     *            <b>GameInteraction object.</b>
-     */
     public RandomBot(GameInteraction gameInteraction) {
         super(gameInteraction);
         random = new Random();
         random2 = new Random();
     }
 
-    @Override
-    public MissionType bestMissionTypeToDraw() {
-        return null;
-    }
-
-    /**<p>Set the {@link #random} and {@link #random2} to new objects specified in the parameters.</p>
-     *
-     * @param rand1
-     *            <b>The first {@link Random} object.</b>
-     * @param rand2
-     *            <b>The second {@link Random} object.</b>
-     */
     public void setRand(Random rand1, Random rand2){
         random = rand1;
         random2 = rand2;
     }
 
-    /**<p>The actions of the bot during his turn.</p>
-     * @param weatherType
-     */
     @Override
     public void botPlay(WeatherType weatherType){
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && getGameInteraction().getResourceSize(ResourceType.ALL_MISSION) > 0 && !getGameInteraction().contains(ActionType.DRAW_MISSION) && gameInteraction.getInventoryMissions().size() < 5) {// pioche mission
+        if (randAction == 0 && gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 && !gameInteraction.contains(ActionType.DRAW_MISSION) && gameInteraction.getInventoryMissions().size() < 5) {// pioche mission
             int randMission = random2.nextInt(3);
 
-            if (randMission == 0 && getGameInteraction().getResourceSize(ResourceType.PARCEL_MISSION) > 0)
+            if (randMission == 0 && gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
                 drawMission(MissionType.PARCEL);
-            if (randMission == 1 && getGameInteraction().getResourceSize(ResourceType.PANDA_MISSION) > 0)
+            if (randMission == 1 && gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
                 drawMission(MissionType.PANDA);
-            if (randMission == 2 && getGameInteraction().getResourceSize(ResourceType.PEASANT_MISSION) > 0)
+            if (randMission == 2 && gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
                 drawMission(MissionType.PEASANT);
         }
 
-        else if (randAction == 1 && getGameInteraction().getResourceSize(ResourceType.CANAL) > 0 && !getGameInteraction().contains(ActionType.DRAW_CANAL)) {  // place canal
-            if (stratMissionParcel.possibleCoordinatesCanal().size() > 0) {
-                List<Coordinate[]> list = stratMissionParcel.possibleCoordinatesCanal();
+        else if (randAction == 1 && gameInteraction.getResourceSize(ResourceType.CANAL) > 0 && !gameInteraction.contains(ActionType.DRAW_CANAL)) {  // place canal
+            if (missionParcelStrat.possibleCoordinatesCanal().size() > 0) {
+                List<Coordinate[]> list = missionParcelStrat.possibleCoordinatesCanal();
                 Collections.shuffle(list);
-                drawCanal();
-                placeCanal(list.get(0));
+                gameInteraction.drawCanal();
+                gameInteraction.placeCanal(list.get(0)[0],list.get(0)[1]);
             }
         }
 
-        else if (randAction == 2 && getGameInteraction().getResourceSize(ResourceType.PARCEL) > 0 && !getGameInteraction().contains(ActionType.DRAW_PARCELS)){ // place parcel
-            List<ParcelInformation> parcelList = drawParcel();
+        else if (randAction == 2 && gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !gameInteraction.contains(ActionType.DRAW_PARCELS)){ // place parcel
+            List<ParcelInformation> parcelList = gameInteraction.drawParcels();
             Collections.shuffle(parcelList);
-            selectParcel(parcelList.get(0));
-            List<Coordinate> list = stratMissionParcel.possibleCoordinatesParcel();
+            gameInteraction.selectParcel(parcelList.get(0));
+            List<Coordinate> list = missionParcelStrat.possibleCoordinatesParcel();
             Collections.shuffle(list);
-            placeParcel(list.get(0));
+            gameInteraction.placeParcel(list.get(0));
         }
 
-        else if (randAction == 3 && stratMissionParcel.possibleCoordinatesPanda().size() != 0 && !getGameInteraction().contains(ActionType.MOVE_PANDA)) {
-            List<Coordinate> list = stratMissionParcel.possibleCoordinatesPanda();
+        else if (randAction == 3 && missionParcelStrat.possibleCoordinatesPanda().size() != 0 && !gameInteraction.contains(ActionType.MOVE_PANDA)) {
+            List<Coordinate> list = missionParcelStrat.possibleCoordinatesPanda();
             Collections.shuffle(list);
-            movePanda(list.get(0));
+            gameInteraction.moveCharacter(CharacterType.PANDA,list.get(0));
         }
 
-        else if (stratMissionParcel.possibleCoordinatesPeasant().size() != 0 && !getGameInteraction().contains(ActionType.MOVE_PEASANT)) {
-            List<Coordinate> list = stratMissionParcel.possibleCoordinatesPeasant();
+        else if (missionParcelStrat.possibleCoordinatesPeasant().size() != 0 && !gameInteraction.contains(ActionType.MOVE_PEASANT)) {
+            List<Coordinate> list = missionParcelStrat.possibleCoordinatesPeasant();
             Collections.shuffle(list);
-            movePeasant(list.get(0));
+            gameInteraction.moveCharacter(CharacterType.PEASANT,list.get(0));
         }
+    }
+
+    @Override
+    public MissionType bestMissionTypeToDraw() {
+        return null;
     }
 }

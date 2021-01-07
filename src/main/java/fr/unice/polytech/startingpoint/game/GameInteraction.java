@@ -21,6 +21,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+/**
+ * Classe permettant au bot d'interagir avec le jeu
+ * @author Manuel Enzo
+ * @author Naud Eric
+ * @author Madern Loic
+ * @author Le Calloch Antoine
+ * @version 0.10
+ */
+
 public class GameInteraction {
     private final int NB_MAX_MISSION = 5;
     private final Game game;
@@ -29,10 +38,9 @@ public class GameInteraction {
         this.game = game;
     }
 
-    public PlayerData getPlayerData() {
+    PlayerData getPlayerData() {
         return game.getPlayerData();
     }
-
 
     /**
      * <p>Allow the bot to draw a canal, when it's the deck canal is not empty</p>
@@ -46,7 +54,6 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-
     /**
      * <p>Allow the bot to use the cloud Action</p>
      *
@@ -57,7 +64,7 @@ public class GameInteraction {
      * @return <p>if the weather has been changed return true</p>
      */
     public boolean cloudAction(ImprovementType improvementType,WeatherType weatherType){
-        if(game.getPlayerData().add(ActionType.WEATHER) && !(getResourceSize(ResourceType.ALLIMPROVEMENT) == 0) ) {
+        if(game.getPlayerData().add(ActionType.WEATHER) && !(getResourceSize(ResourceType.ALL_IMPROVEMENT) == 0) ) {
             drawImprovement(improvementType);
             return true;
         }
@@ -65,6 +72,16 @@ public class GameInteraction {
         return false;
     }
 
+
+
+    /**
+     * <p>Allow the bot to place an imrpovement on a parcel</p>
+     *
+     * @param improvementType, coordinate
+     *                         <p> The improvement is the one that the player has selected</p>
+     *                         <p> The coordinate is where the player to place the improvement </p>
+
+     */
     public void placeImprovement(ImprovementType improvementType, Coordinate coordinate){
         if (getPlayerData().add(ActionType.PLACE_IMPROVEMENT)){
             if (game.getBoard().isPlacedParcel(coordinate) &&
@@ -96,7 +113,6 @@ public class GameInteraction {
         chooseWeather(WeatherType.QUESTION_MARK,weatherType);
     }
 
-
     /**
      * <p>Allow the bot to change the weather</p>
      *
@@ -117,7 +133,6 @@ public class GameInteraction {
         }
     }
 
-
     /**
      * <p>Allow the bot to draw an Improvement</p>
      *
@@ -130,9 +145,6 @@ public class GameInteraction {
         getPlayerData().addImprovement(game.getResource().drawImprovement(improvementType));
     }
 
-
-
-
     /**
      * <p>Allow the bot to draw a Mission</p>
      *
@@ -141,9 +153,8 @@ public class GameInteraction {
      *
      *
      */
-
     public void drawMission(MissionType missionType) {
-        if (getPlayerData().add(ActionType.DRAW_MISSION)){
+        if (getPlayerData().add(ActionType.DRAW_MISSION))
             if (getPlayerData().getMissionsSize() <= NB_MAX_MISSION){
                 getPlayerData().looseStamina();
                 switch (missionType){
@@ -158,22 +169,17 @@ public class GameInteraction {
                         break;
                 }
             }
-            else{
-                getPlayerData().remove(ActionType.DRAW_MISSION);
+            else
                 throw new RulesViolationException("You already have five missions in your inventory.");
-            }
-        }
         else
             throw new RulesViolationException("Already used this method.");
     }
-
 
     /**
      * <p>Allow the bot to draw a Parcel</p>
      *
      * @return <p>return the information of each parcel in the selection </p>
      */
-
     public List<ParcelInformation> drawParcels() {
         if (getPlayerData().add(ActionType.DRAW_PARCELS)){
             getPlayerData().looseStamina();
@@ -187,9 +193,6 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-
-
-
     /**
      * <p>Allow the bot to select parcel among 3 parcels proposed</p>
      *
@@ -198,7 +201,7 @@ public class GameInteraction {
      *
      */
     public void selectParcel(ParcelInformation parcelInformation){
-        if (getPlayerData().add(ActionType.SELECT_PARCEL)){
+        if (getPlayerData().add(ActionType.SELECT_PARCEL))
             if (getPlayerData().contains(ActionType.DRAW_PARCELS)) {
                 for (Parcel parcel : getPlayerData().getParcelsSaved())
                     if (parcel.getParcelInformation() == parcelInformation) {
@@ -210,13 +213,9 @@ public class GameInteraction {
             }
             else
                 throw new RulesViolationException("You haven’t drawn.");
-        }
         else
             throw new RulesViolationException("Already used this method.");
     }
-
-
-
 
     /**
      * <p>Allow the bot to do the action thunderstorm from the weather</p>
@@ -225,7 +224,6 @@ public class GameInteraction {
      *          <p>Move the panda at the coordinate passed</p>
      *
      */
-
     public void thunderstormAction(Coordinate coordinate){
         if(getPlayerData().add(ActionType.WEATHER)){
              if(getPlacedCoordinates().contains(coordinate))
@@ -237,7 +235,6 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-
     /**
      * <p>Allow the bot to do the action rain from the weather</p>
      *
@@ -245,7 +242,6 @@ public class GameInteraction {
      *          <p>Add a bamboo at a parcel chosen</p>
      *
      */
-
     public void rainAction(Coordinate coordinate){
         if(getPlayerData().add(ActionType.WEATHER)){
             if (game.getBoard().isPlacedAndIrrigatedParcel(coordinate))
@@ -257,8 +253,6 @@ public class GameInteraction {
             throw new RulesViolationException("Already used this method.");
     }
 
-
-
     /**
      * <p>Allow the bot to place a parcel </p>
      *
@@ -266,26 +260,20 @@ public class GameInteraction {
      *          <p>Place at the coordinate given if it's possible</p>
      *
      */
-
     public void placeParcel(Coordinate coordinate){
         if (getPlayerData().add(ActionType.PLACE_PARCEL)){
-            if (getPlayerData().contains(ActionType.DRAW_PARCELS) && getPlayerData().contains(ActionType.SELECT_PARCEL)){
+            if (getPlayerData().contains(ActionType.DRAW_PARCELS) && getPlayerData().contains(ActionType.SELECT_PARCEL))
                 if(game.getRules().isPlayableParcel(coordinate)){
                     game.getBoard().placeParcel(getPlayerData().getParcel(),coordinate);
                 }
-                else{
+                else
                     throw new BadCoordinateException("The parcel can't be place on this coordinate : " + coordinate.toString());
-                }
-            }
             else
                 throw new RulesViolationException("You haven’t drawn or selected a parcel.");
         }
         else
             throw new RulesViolationException("Already used this method.");
     }
-
-
-
 
     /**
      * <p>Allow the bot to place a canal </p>
@@ -298,15 +286,12 @@ public class GameInteraction {
         if (getPlayerData().add(ActionType.PLACE_CANAL)) {
             if (game.getRules().isPlayableCanal(coordinate1, coordinate2))
                 game.getBoard().placeCanal(getPlayerData().pickCanal(), coordinate1, coordinate2);
-            else{
-                getPlayerData().remove(ActionType.PLACE_CANAL);
+            else
                 throw new BadCoordinateException("The canal can't be place on these coordinates : " + coordinate1.toString() + " " + coordinate2.toString());
-            }
         }
         else
             throw new RulesViolationException("Already used this method.");
     }
-
 
     /**
      * <p>Allow the bot to move a character when it's possible </p>
@@ -461,15 +446,15 @@ public class GameInteraction {
                 return game.getResource().getDeckParcel().size();
             case CANAL:
                 return game.getResource().getDeckCanal().size();
-            case ALLIMPROVEMENT:
+            case ALL_IMPROVEMENT:
                 return game.getResource().getDeckImprovementType().size();
-            case ENCLOSUREIMPROVEMENT:
+            case ENCLOSURE_IMPROVEMENT:
                 return (int) game.getResource().getDeckImprovementType().stream()
                         .filter(improvementType -> improvementType.equals(ImprovementType.ENCLOSURE)).count();
-            case WATHERSHEDMPROVEMENT:
+            case WATERSHED_IMPROVEMENT:
                 return (int) game.getResource().getDeckImprovementType().stream()
                         .filter(improvementType -> improvementType.equals(ImprovementType.WATERSHED)).count();
-            case FERTIZILERIMPROVEMENT:
+            case FERTILIZER_IMPROVEMENT:
                 return (int) game.getResource().getDeckImprovementType().stream()
                         .filter(improvementType -> improvementType.equals(ImprovementType.FERTILIZER)).count();
             case ALL_MISSION:
@@ -477,5 +462,9 @@ public class GameInteraction {
             default:
                 throw new IllegalTypeException("Wrong ResourceType.");
         }
+    }
+
+    public int getNumberPlayers() {
+        return game.getNumberPlayers();
     }
 }

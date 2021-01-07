@@ -208,8 +208,6 @@ class GameInteractionTest {
     void botPlaceWrongParcelAndThenGoodAndRetryToPlace() {
         gameInteraction.selectParcel(gameInteraction.drawParcels().get(0));
         assertThrows(BadCoordinateException.class,() -> gameInteraction.placeParcel(new Coordinate(0,-2,2)));
-        gameInteraction.placeParcel(new Coordinate(0,-1,1));
-        assertThrows(RulesViolationException.class, () -> gameInteraction.placeParcel(new Coordinate(1,-1,0)));
     }
 
     @Test
@@ -228,8 +226,6 @@ class GameInteractionTest {
         gameInteraction.drawCanal();
         game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
         assertThrows(BadCoordinateException.class, () -> gameInteraction.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));
-        gameInteraction.placeCanal(new Coordinate(0,-1,1),new Coordinate(1,-1,0));
-        assertThrows(RulesViolationException.class, () -> gameInteraction.placeCanal(new Coordinate(1,-1,0),new Coordinate(1,-2,1)));
     }
 
     @Test

@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.bot.strategie;
 
 import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
@@ -14,12 +16,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class Strategie {
-    protected final Bot bot;
+    protected final GameInteraction gameInteraction;
     protected final BoardRules boardRules;
 
-    public Strategie(Bot bot) {
-        this.bot = bot;
-        this.boardRules = bot.getGameInteraction().getRules();
+    public Strategie(GameInteraction gameInteraction) {
+        this.gameInteraction = gameInteraction;
+        this.boardRules = gameInteraction.getRules();
     }
 
     /**<p>The actions of the bot during his turn.</p>
@@ -46,7 +48,7 @@ public abstract class Strategie {
      */
     public List<Coordinate> allPlaces(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : bot.getGameInteraction().getPlacedCoordinates()) {
+        for(Coordinate c : gameInteraction.getPlacedCoordinates()) {
             possibleCoordinates.add(c);
             for (Coordinate offSet : Coordinate.offSets()){
                 possibleCoordinates.add(new Coordinate(c,offSet));
@@ -59,7 +61,7 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesParcel(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : bot.getGameInteraction().getPlacedCoordinates()) {
+        for(Coordinate c : gameInteraction.getPlacedCoordinates()) {
             for (Coordinate offSet : Coordinate.offSets()){
                 if(boardRules.isPlayableParcel(new Coordinate(c,offSet))){
                     possibleCoordinates.add(new Coordinate(c,offSet));
@@ -73,8 +75,8 @@ public abstract class Strategie {
      */
     public List<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate1 : bot.getGameInteraction().getPlacedCoordinates()){
-            for(Coordinate coordinate2 : bot.getGameInteraction().getPlacedCoordinates()){
+        for(Coordinate coordinate1 : gameInteraction.getPlacedCoordinates()){
+            for(Coordinate coordinate2 : gameInteraction.getPlacedCoordinates()){
                 if (boardRules.isPlayableCanal(coordinate1, coordinate2))
                     possibleCoordinates.add(new Coordinate[]{coordinate1, coordinate2});
             }
@@ -86,7 +88,7 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()) {
+        for(Coordinate coordinate : gameInteraction.getPlacedCoordinates()) {
             if (boardRules.isMovableCharacter(CharacterType.PANDA,coordinate)){
                 possibleCoordinates.add(coordinate);
             }
@@ -98,7 +100,7 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : bot.getGameInteraction().getPlacedCoordinates()) {
+        for(Coordinate c : gameInteraction.getPlacedCoordinates()) {
             if (boardRules.isMovableCharacter(CharacterType.PEASANT,c)){
                 possibleCoordinates.add(c);
             }
@@ -110,7 +112,7 @@ public abstract class Strategie {
      **/
     public List<Coordinate> playableCoordinatesAroundACoordinateGivenCo(Coordinate coordinate){
         return coordinate.coordinatesAround().stream()
-                .filter(c-> boardRules.isPlayableParcel(c) && !bot.getGameInteraction().isPlacedParcel(c))
+                .filter(c-> boardRules.isPlayableParcel(c) && !gameInteraction.isPlacedParcel(c))
                 .collect(Collectors.toList());
     }
 
@@ -118,7 +120,7 @@ public abstract class Strategie {
      **/
     public List<Coordinate> allPosssibleCoordinatesNextToParcelsWithAColor(ColorType colorGiven){
         Set<Coordinate> posssibleCoNextToParcelsWithAColor=new HashSet<>();
-        List<Coordinate> placedCoordinatesByColor=bot.getGameInteraction().getPlacedCoordinatesByColor(colorGiven);
+        List<Coordinate> placedCoordinatesByColor=gameInteraction.getPlacedCoordinatesByColor(colorGiven);
 
         for (Coordinate  placedCoordinate: placedCoordinatesByColor)
             posssibleCoNextToParcelsWithAColor.addAll(playableCoordinatesAroundACoordinateGivenCo(placedCoordinate));

@@ -25,7 +25,7 @@ import java.util.Map;
  * @version 0.5
  */
 
-public final class PeasantMission extends Mission{
+public class PeasantMission extends Mission{
     private final ImprovementType improvementType;
 
     /**

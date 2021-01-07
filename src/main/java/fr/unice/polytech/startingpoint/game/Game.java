@@ -84,6 +84,11 @@ public class Game{
         }
     }
 
+    /**
+     * <p>Initialize the 3 missions for each bot at the beginning of a game.</p>
+     *
+     */
+
     private void initializeMissionsBot(){
         for (PlayerData playerData : botData) {
             playerData.addMission(resource.drawPandaMission());
@@ -96,7 +101,14 @@ public class Game{
         round++;
     }
 
-    // Chaque bot joue tant que isContinue est true, et on verifie le nombre de mission faite à chaque tour
+
+
+
+    /**
+     * <p>Run the game while the conditions of an end game false</p>
+     *
+     */
+
     public void play() {
         while( isContinue() ) {
             if(numBot==FIRST_BOT)
@@ -106,10 +118,10 @@ public class Game{
         }
     }
 
-    /**<p>à partir du 2e tour le dé peut être roll</p>
-     *
-     *
+    /**
+     * <p>allow a bot to play with a weather which appears at the second round</p>
      */
+
     void botPlay() {
         getPlayerData().botPlay((round < 2) ? WeatherType.NO_WEATHER : weatherDice.roll());
         getPlayerData().checkMissions(board.getPlacedParcels());
@@ -137,8 +149,10 @@ public class Game{
         return false;
     }
 
+
     /**@return <b>True if the game is not done because a player finished his missions and the round is finished, and when resources aren't empty.</b>
      */
+
     boolean isContinue(){
         if (isSomebodyFinished())
             lastRound++;
@@ -190,5 +204,9 @@ public class Game{
             Score.add(playerData.getScore());
         }
         return Score;
+    }
+
+    public int getNumberPlayers() {
+        return botData.size();
     }
 }

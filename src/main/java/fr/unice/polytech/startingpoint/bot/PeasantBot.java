@@ -11,7 +11,7 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  *
  * <p>This class provides a bot specialized in {@link PeasantMission} missions.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} and {@link Bot#bestMissionTypeToDraw()} methods from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -26,25 +26,9 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  */
 
 public class PeasantBot extends Bot {
-    /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
-     */
+
     public PeasantBot(GameInteraction gameInteraction) {
         super(gameInteraction);
-    }
-
-    /**<p>The actions of the bot during his turn.</p>
-     * @param weatherType
-     */
-    @Override
-    public void botPlay(WeatherType weatherType) {
-        if (isJudiciousPlayWeather())
-            playWeather(weatherType);
-        for (int i = gameInteraction.getStamina(); i > 0; i--) {
-            if( isJudiciousDrawMission())
-                drawMission(bestMissionTypeToDraw());
-            else
-                playMission(determineBestMissionToDo());
-        }
     }
 
     @Override
@@ -56,15 +40,6 @@ public class PeasantBot extends Bot {
         else if (gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
             return MissionType.PEASANT;
         else
-            return chooseMissionTypeDrawable();
-    }
-
-    MissionType chooseMissionTypeDrawable() {
-        if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
-            return MissionType.PARCEL;
-        else if (gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
-            return MissionType.PANDA;
-        else
-            return MissionType.PEASANT;
+            return chooseMissionTypeDrawable(MissionType.PARCEL,MissionType.PANDA,MissionType.PEASANT);
     }
 }
