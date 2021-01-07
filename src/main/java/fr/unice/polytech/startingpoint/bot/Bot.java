@@ -148,11 +148,11 @@ public abstract class Bot {
     protected abstract MissionType bestMissionTypeToDraw();
 
     Mission determineBestMissionToDo() {
-        Random randInt = new Random();
-        List<Mission> missionList = new LinkedList<>();
-        List<int[]> intsList = new LinkedList<>();
+        Mission bestMission = null;
+        int minNbMove = -1;
+        int nbMove = 0;
+
         for (Mission mission : gameInteraction.getInventoryMissions()){
-            int nbMove = -1;
             switch (mission.getMissionType()){
                 case PANDA:
                     nbMove = missionPandaStrat.howManyMoveToDoMission(mission);
@@ -164,32 +164,15 @@ public abstract class Bot {
                     nbMove = missionPeasantStrat.howManyMoveToDoMission(mission);
                     break;
             }
-            if ( nbMove > 0){
-                missionList.add(mission);
-                intsList.add(new int[]{nbMove,mission.getPoints()});
+            if((nbMove < minNbMove && nbMove != 0) || minNbMove == -1){
+                minNbMove = nbMove;
+                bestMission = mission;
             }
         }
-        if (!missionList.isEmpty())
-            return missionList.get(determineBestMission(intsList));
+        if (nbMove != 0)
+            return bestMission;
         else
-            return gameInteraction.getInventoryMissions().get((randInt.nextInt(gameInteraction.getInventoryMissions().size())));
-    }
-
-    int determineBestMission(List<int[]> intsList){
-        int[] bestInts = new int[]{0,0};
-        int bestMissionOrdinal = 0;
-        for (int[] ints : intsList){
-            if (ints[0] < bestInts[0]){
-                ints[1] = bestInts[1];
-            }
-            else if (ints[0] == bestInts[0] && ints[1] > bestInts[1])
-                ints[1] = bestInts[1];
-        }
-        for (int i = 0; i < intsList.size(); i++) {
-            if (intsList.get(i)[0] == bestInts[0] && intsList.get(i)[1] == bestInts[1])
-                bestMissionOrdinal = i;
-        }
-        return bestMissionOrdinal;
+            return gameInteraction.getInventoryMissions().get(0);
     }
 
     void playMission(Mission mission){
