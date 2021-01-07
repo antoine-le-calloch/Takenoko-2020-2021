@@ -16,7 +16,7 @@ class Main{
     public static void main(String... args){
         final int NUMBER_OF_GAMES = 1000;
 
-        BotType[] botList = new BotType[]{BotType.INTELLIGENT_BOT,BotType.PANDA_BOT};
+        BotType[] botList = new BotType[]{BotType.INTELLIGENT_BOT,BotType.PANDA_BOT,BotType.PEASANT_BOT,BotType.PARCEL_BOT};
         Stat statGame = new Stat(botList);
 
         for (int i = 0; i < NUMBER_OF_GAMES; i++) {

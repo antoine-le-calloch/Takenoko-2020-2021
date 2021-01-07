@@ -51,13 +51,10 @@ public final class BoardRules {
                 coordinate1.isNextTo(coordinate2) &&
                 !coordinate1.isCentral() && !coordinate2.isCentral() &&
                 board.isPlacedParcel(coordinate1) && board.isPlacedParcel(coordinate2) ) {
-            if (coordinate1.isNextTo(new Coordinate(0, 0, 0)) && coordinate2.isNextTo(new Coordinate(0, 0, 0))) {
+            if (coordinate1.isNextTo(new Coordinate(0, 0, 0)) && coordinate2.isNextTo(new Coordinate(0, 0, 0)))
                 return true;
-            }
             for (Coordinate coordinate : Coordinate.getInCommonAroundCoordinates(coordinate1, coordinate2)) {
-                if (board.isPlacedCanal(coordinate1, coordinate))
-                    return true;
-                if (board.isPlacedCanal(coordinate2, coordinate))
+                if (board.isPlacedCanal(coordinate1, coordinate) || board.isPlacedCanal(coordinate2, coordinate))
                     return true;
             }
         }

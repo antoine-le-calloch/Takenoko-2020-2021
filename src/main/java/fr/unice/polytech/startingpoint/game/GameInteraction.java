@@ -4,10 +4,10 @@ import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
-import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
@@ -69,8 +69,6 @@ public class GameInteraction {
         chooseWeather(WeatherType.CLOUD,weatherType);
         return false;
     }
-
-
 
     /**
      * <p>Allow the bot to place an imrpovement on a parcel</p>
@@ -326,7 +324,7 @@ public class GameInteraction {
     public List<Coordinate> getAllParcelsIrrigated(){
         return getPlacedCoordinates()
                 .stream()
-                .filter(this::isIrrigatedParcel)
+                .filter(this::isPlacedAndIrrigatedParcel)
                 .collect(Collectors.toList());
     }
 
@@ -338,7 +336,7 @@ public class GameInteraction {
         return game.getBoard().isPlacedParcel(coordinate);
     }
 
-    public boolean isIrrigatedParcel(Coordinate coordinate) {
+    public boolean isPlacedAndIrrigatedParcel(Coordinate coordinate) {
         return game.getBoard().isPlacedAndIrrigatedParcel(coordinate);
     }
 

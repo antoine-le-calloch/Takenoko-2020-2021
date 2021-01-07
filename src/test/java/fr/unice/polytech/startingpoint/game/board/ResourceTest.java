@@ -91,42 +91,4 @@ public class ResourceTest {
         assertThrows(OutOfResourcesException.class, () -> resource.drawPeasantMission());
         assertThrows(OutOfResourcesException.class, () -> resource.drawParcelMission());
     }
-
-    @Test
-    void outOfMissionsAndParcel() throws OutOfResourcesException {
-        for (int i = 0; i < 15; i++) {
-            resource.drawPandaMission();
-            resource.drawParcelMission();
-            resource.drawPeasantMission();
-        }
-
-        for (int i = 0; i < 27; i++) {
-            resource.selectParcel(resource.drawParcels().get(0));
-        }
-
-        assertTrue(resource.isEmpty());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawPandaMission());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawPeasantMission());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawParcelMission());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawParcels());
-    }
-
-    @Test
-    void outOfMissionsAndCanal() throws OutOfResourcesException {
-        for (int i = 0; i < 15; i++) {
-            resource.drawPandaMission();
-            resource.drawParcelMission();
-            resource.drawPeasantMission();
-        }
-
-        for (int i = 0; i < 27; i++) {
-            resource.drawCanal();
-        }
-
-        assertTrue(resource.isEmpty());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawPandaMission());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawParcelMission());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawPeasantMission());
-        assertThrows(OutOfResourcesException.class, () -> resource.drawCanal());
-    }
 }

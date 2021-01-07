@@ -1,11 +1,13 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
+import fr.unice.polytech.startingpoint.bot.Bot;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
-import fr.unice.polytech.startingpoint.type.CharacterType;
-import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,15 +32,12 @@ public abstract class Strategie {
     public abstract int howManyMoveToDoMission(Mission mission);
 
     public Coordinate[] getBestCanal(Coordinate coordinateToIrrigate){
-        int normMin = -1;
         Coordinate[] bestCanal = null;
-
-        for (Coordinate[] coordinatesCanal : possibleCoordinatesCanal()) {
-            if(normMin == -1 || (Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[0])+Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[1])) < normMin) {
-                normMin = Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[0]) + Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[1]);
+        for (Coordinate[] coordinatesCanal : possibleCoordinatesCanal())
+            if( bestCanal == null ||
+                    (Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[0]) + Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[1])) <
+                    (Coordinate.getNorm(coordinateToIrrigate,bestCanal[0]) + Coordinate.getNorm(coordinateToIrrigate,bestCanal[1])) )
                 bestCanal = coordinatesCanal;
-            }
-        }
         return bestCanal;
     }
 
@@ -48,9 +47,8 @@ public abstract class Strategie {
         Set<Coordinate> possibleCoordinates = new HashSet<>();
         for(Coordinate c : gameInteraction.getPlacedCoordinates()) {
             possibleCoordinates.add(c);
-            for (Coordinate offSet : Coordinate.offSets()){
+            for (Coordinate offSet : Coordinate.offSets())
                 possibleCoordinates.add(new Coordinate(c,offSet));
-            }
         }
         return new ArrayList<>(possibleCoordinates);
     }
@@ -59,13 +57,10 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesParcel(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : gameInteraction.getPlacedCoordinates()) {
-            for (Coordinate offSet : Coordinate.offSets()){
-                if(boardRules.isPlayableParcel(new Coordinate(c,offSet))){
+        for(Coordinate c : gameInteraction.getPlacedCoordinates())
+            for (Coordinate offSet : Coordinate.offSets())
+                if(boardRules.isPlayableParcel(new Coordinate(c,offSet)))
                     possibleCoordinates.add(new Coordinate(c,offSet));
-                }
-            }
-        }
         return new ArrayList<>(possibleCoordinates);
     }
 
@@ -73,12 +68,10 @@ public abstract class Strategie {
      */
     public List<Coordinate[]> possibleCoordinatesCanal(){
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate1 : gameInteraction.getPlacedCoordinates()){
-            for(Coordinate coordinate2 : gameInteraction.getPlacedCoordinates()){
+        for(Coordinate coordinate1 : gameInteraction.getPlacedCoordinates())
+            for(Coordinate coordinate2 : gameInteraction.getPlacedCoordinates())
                 if (boardRules.isPlayableCanal(coordinate1, coordinate2))
                     possibleCoordinates.add(new Coordinate[]{coordinate1, coordinate2});
-            }
-        }
         return new ArrayList<>(possibleCoordinates);
     }
 
@@ -86,11 +79,9 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesPanda(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate : gameInteraction.getPlacedCoordinates()) {
-            if (boardRules.isMovableCharacter(CharacterType.PANDA,coordinate)){
+        for(Coordinate coordinate : gameInteraction.getPlacedCoordinates())
+            if (boardRules.isMovableCharacter(CharacterType.PANDA,coordinate))
                 possibleCoordinates.add(coordinate);
-            }
-        }
         return new ArrayList<>(possibleCoordinates);
     }
 
@@ -98,11 +89,9 @@ public abstract class Strategie {
      */
     public List<Coordinate> possibleCoordinatesPeasant(){
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : gameInteraction.getPlacedCoordinates()) {
-            if (boardRules.isMovableCharacter(CharacterType.PEASANT,c)){
+        for(Coordinate c : gameInteraction.getPlacedCoordinates())
+            if (boardRules.isMovableCharacter(CharacterType.PEASANT,c))
                 possibleCoordinates.add(c);
-            }
-        }
         return new ArrayList<>(possibleCoordinates);
     }
 
@@ -119,10 +108,8 @@ public abstract class Strategie {
     public List<Coordinate> allPosssibleCoordinatesNextToParcelsWithAColor(ColorType colorGiven){
         Set<Coordinate> posssibleCoNextToParcelsWithAColor=new HashSet<>();
         List<Coordinate> placedCoordinatesByColor=gameInteraction.getPlacedCoordinatesByColor(colorGiven);
-
         for (Coordinate  placedCoordinate: placedCoordinatesByColor)
             posssibleCoNextToParcelsWithAColor.addAll(playableCoordinatesAroundACoordinateGivenCo(placedCoordinate));
-
         return new ArrayList<>(posssibleCoNextToParcelsWithAColor);
     }
 }

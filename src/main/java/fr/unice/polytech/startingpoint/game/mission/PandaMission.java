@@ -6,6 +6,7 @@ import fr.unice.polytech.startingpoint.game.playerdata.Inventory;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
