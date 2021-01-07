@@ -17,25 +17,41 @@ import java.util.stream.Collectors;
 
 public class MissionParcelStrat extends Strategie {
 
+    /**
+     * <p>Set up the MissionParcelStrat. Call the constructor from {@link Strategie} superclass.</p>
+     * @param gameInteraction
+     *          <b>The Bot object used by MissionParcelStrat to access information.</b>
+     */
     public MissionParcelStrat(GameInteraction gameInteraction) {
         super(gameInteraction);
     }
 
+    /**
+     * <p>Choose the strat to do for each turn. Put one canal or put one parcel</p>
+     * @param mission
+     *          <b>The Mission object which is need to be done at this time.</b>
+     */
     public void stratOneTurn(Mission mission){
         ParcelMission parcelMission = (ParcelMission) mission;
-        if (isJudiciousPutCanal(parcelMission))
+        if (isJudiciousPutCanal(parcelMission)) {
             putCanal(parcelMission);
-        else if(isJudiciousPutParcel())
+        }
+        else if(isJudiciousPutParcel()) {
             putParcel(parcelMission);
+        }
         else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
             gameInteraction.moveCharacter(CharacterType.PANDA,possibleCoordinatesPanda().get(0));
         else if (!gameInteraction.contains(ActionType.MOVE_PEASANT) && !possibleCoordinatesPeasant().isEmpty())
             gameInteraction.moveCharacter(CharacterType.PEASANT,possibleCoordinatesPeasant().get(0));
     }
 
-    /**<b><u>IS JUDICIOUS METHODS</b>
+    /**
+     * <p>Check if it's possible to draw and place a canal and if a end form need to be irrigate</p>
+     * @param parcelMission
+     *          <b>ParcelMission object which is need to be done at this time.</b>
+     * @return <b>True if it is judicious to put a canal.</b>
+     * @see GameInteraction
      */
-
     boolean isJudiciousPutCanal(ParcelMission parcelMission){
         if (bestCoordinatesForMission(parcelMission).size() == 0)
             return gameInteraction.getResourceSize(ResourceType.CANAL) > 0 &&
@@ -44,6 +60,11 @@ public class MissionParcelStrat extends Strategie {
         return false;
     }
 
+    /**
+     * <p>Check if it's possible to draw and place a parcel</p>
+     * @return <b>True if it is judicious to put a parcel.</b>
+     * @see GameInteraction
+     */
     boolean isJudiciousPutParcel(){
         return gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !gameInteraction.contains(ActionType.DRAW_PARCELS);
     }
@@ -103,7 +124,7 @@ public class MissionParcelStrat extends Strategie {
         for (Coordinate coordinate : allPlaces()) {
             Map<Coordinate, Boolean> parcelsToPlaceToDoForm = coordNeedToDoMission(coordinate, mission);
 
-            if(parcelsToPlaceToDoForm != null && parcelsToPlaceToDoForm.size() > 0 && (minTurnToEndForm == -1 || parcelsToPlaceToDoForm.size() < minTurnToEndForm)){
+            if(parcelsToPlaceToDoForm != null && (minTurnToEndForm == -1 || parcelsToPlaceToDoForm.size() < minTurnToEndForm)){
                 minTurnToEndForm = parcelsToPlaceToDoForm.size();
                 bestCoordinates = parcelsToPlaceToDoForm;
             }
@@ -195,8 +216,8 @@ public class MissionParcelStrat extends Strategie {
                 gameInteraction.placeCanal(bestCoordinatesCanal[0],bestCoordinatesCanal[1]);
                 return;
             }
-            gameInteraction.drawCanal();
-            gameInteraction.placeCanal(possibleCoordinatesCanal().get(0)[0], possibleCoordinatesCanal().get(0)[1]);
+            //gameInteraction.drawCanal();
+            //gameInteraction.placeCanal(possibleCoordinatesCanal().get(0)[0], possibleCoordinatesCanal().get(0)[1]);
 
         } catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
@@ -215,6 +236,13 @@ public class MissionParcelStrat extends Strategie {
     /**<b><u>NUMBER OF MOVES TO DO THE MISSION METHODS</b>
      */
 
+    /**
+     * <p>Count the number of move needed to end one mission</p>
+     * @param mission
+     *          <b>Mission object whose number of movements we are looking for.</b>
+     * @return <b>The number of move or -1 if something wrong</b>
+     * @see GameInteraction
+     */
     public int howManyMoveToDoMission(Mission mission) {
         ParcelMission parcelMission = (ParcelMission) mission;
         if(!isAlreadyFinished(parcelMission) &&
@@ -229,6 +257,13 @@ public class MissionParcelStrat extends Strategie {
         return -1;
     }
 
+    /**
+     * <p>check if the mission can be done in only one turn</p>
+     * @param parcelMission
+     *          <b>ParcelMission object we want to test.</b>
+     * @return <b>True if the mission can be done in one turn</b>
+     * @see GameInteraction
+     */
     boolean isFinishedInOneTurn(ParcelMission parcelMission) {
         for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()){
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
@@ -251,6 +286,13 @@ public class MissionParcelStrat extends Strategie {
         return false;
     }
 
+    /**
+     * <p>check if the mission is already done or not</p>
+     * @param parcelMission
+     *          <b>ParcelMission object we want to test.</b>
+     * @return <b>True if the mission is done</b>
+     * @see GameInteraction
+     */
     boolean isAlreadyFinished(ParcelMission parcelMission) {
         for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()){
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
@@ -265,6 +307,13 @@ public class MissionParcelStrat extends Strategie {
         return false;
     }
 
+    /**
+     * <p>Count the number of move (putCanal or putParcel) needed to end one mission</p>
+     * @param parcelMission
+     *          <b>ParcelMission object whose number of movements we are looking for.</b>
+     * @return <b>The number of move or -1 if something wrong</b>
+     * @see GameInteraction
+     */
     int nbMoveParcel(ParcelMission parcelMission) {
         Map<Coordinate,Boolean> bestCoordinatesForMission = bestCoordinatesForMission(parcelMission);
         int nbMove = 0;
