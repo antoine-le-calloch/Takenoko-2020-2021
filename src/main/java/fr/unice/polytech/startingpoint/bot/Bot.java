@@ -145,18 +145,23 @@ public abstract class Bot {
                     nbMove = stratMissionPeasant.howManyMoveToDoMission(mission);
                     break;
             }
-            if ( nbMove < 0){
+            if ( nbMove > 0){
                 missionList.add(mission);
                 intsList.add(new int[]{nbMove,mission.getPoints()});
             }
         }
-        return missionList.get(determineBestMission(intsList));
+        if (!missionList.isEmpty())
+            return missionList.get(determineBestMission(intsList));
+        else
+            return gameInteraction.getInventoryMissions().get(0);
     }
 
     public int determineBestMission(List<int[]> intsList){
         int[] bestInts = new int[]{0,0};
         int bestMissionOrdinal = 0;
         for (int[] ints : intsList){
+            System.out.println(ints[0]);
+            System.out.println(ints[1]);
             if (ints[0] < bestInts[0]){
                 ints[1] = bestInts[1];
             }
@@ -167,7 +172,6 @@ public abstract class Bot {
             if (intsList.get(i)[0] == bestInts[0] && intsList.get(i)[1] == bestInts[1])
                 bestMissionOrdinal = i;
         }
-        System.out.println(bestInts[0]);
         return bestMissionOrdinal;
     }
 
