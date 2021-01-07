@@ -133,29 +133,21 @@ public abstract class Bot {
         List<Mission> missionList = new LinkedList<>();
         List<int[]> intsList = new LinkedList<>();
         for (Mission mission : gameInteraction.getInventoryMissions()){
-            int nbMove;
+            int nbMove = -1;
             switch (mission.getMissionType()){
                 case PANDA:
                     nbMove = rushPandaStrat.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{rushPandaStrat.howManyMoveToDoMission(mission),mission.getPoints()});
-                    }
                     break;
                 case PARCEL:
                     nbMove = stratMissionParcel.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{nbMove,mission.getPoints()});
-                    }
                     break;
                 case PEASANT:
                     nbMove = stratMissionPeasant.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{nbMove,mission.getPoints()});
-                    }
                     break;
+            }
+            if ( nbMove != -1){
+                missionList.add(mission);
+                intsList.add(new int[]{nbMove,mission.getPoints()});
             }
         }
         return missionList.get(determineBestMission(intsList));

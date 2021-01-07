@@ -53,8 +53,11 @@ public class ParcelBot extends Bot {
             if( isJudiciousDrawMission()) {
                 drawMission(bestMissionTypeToDraw());
             }
-            Mission mission = determineBestMissionToDo();
-            playBestMission(mission);
+            else {
+                Mission mission = determineBestMissionToDo();
+                System.out.println("mission" + mission.getMissionType());
+                playBestMission(mission);
+            }
         }
     }
 
@@ -62,8 +65,7 @@ public class ParcelBot extends Bot {
     public MissionType bestMissionTypeToDraw() {
         if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
             return MissionType.PARCEL;
-        else
-            return chooseMissionTypeDrawable();
+        return chooseMissionTypeDrawable();
     }
 
     MissionType chooseMissionTypeDrawable() {

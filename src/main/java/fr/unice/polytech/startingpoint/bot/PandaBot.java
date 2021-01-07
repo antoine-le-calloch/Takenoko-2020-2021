@@ -50,8 +50,10 @@ public class PandaBot extends Bot {
             if( isJudiciousDrawMission()) {
                 drawMission(bestMissionTypeToDraw());
             }
-            Mission mission = determineBestMissionToDo();
-            playBestMission(mission);
+            else {
+                Mission mission = determineBestMissionToDo();
+                playBestMission(mission);
+            }
         }
     }
 
