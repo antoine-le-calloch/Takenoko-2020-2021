@@ -8,10 +8,15 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
-import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.FormType;
+import fr.unice.polytech.startingpoint.type.ResourceType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MissionParcelStrat extends Strategie {
