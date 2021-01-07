@@ -6,314 +6,372 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.mock;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 class MissionPandaStratTest {
-    Mission missionMock;
-    Parcel parcelMock;
     Game game;
     MissionPandaStrat missionPandaStrat;
-
-
-
+    Mission missionGreenOneColor;
+    Mission missionAllColor;
 
     @BeforeEach
     void setUp() {
         game = new Game(); // bot random
-        missionMock = mock(PandaMission.class);
-        parcelMock = mock(Parcel.class);
         missionPandaStrat = new MissionPandaStrat(game.getGameInteraction());
+        missionGreenOneColor = new PandaMission(ColorType.GREEN, 0);
+        missionAllColor = new PandaMission(ColorType.ALL_COLOR, 0);
+
+    }
+
+    /**
+     * <h1><u>strategieMissionOneColor</u></h1>
+     */
+
+
+    @Test
+    void strategieMissionOneColor() {
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+        assertEquals(coordinate, missionPandaStrat.strategyMovePanda(ColorType.GREEN));
+    }
+
+    @Test
+    void strategieMissionOneColorNoParcel() {
+        assertNull(missionPandaStrat.strategyMovePanda(ColorType.GREEN));
+    }
+
+    @Test
+    void strategieMissionOneColorNoParcelWithNoBamboo() {
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+        game.getBoard().moveCharacter(CharacterType.PANDA, coordinate);
+        assertNull(missionPandaStrat.strategyMovePanda(ColorType.GREEN));
+    }
+
+    @Test
+    void strategieMissionOneColorNoParcelWithoutImprovementInclosure() {
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.ENCLOSURE);
+        game.getBoard().placeParcel(parcel, coordinate);
+        assertNull(missionPandaStrat.strategyMovePanda(ColorType.GREEN));
+    }
+
+    @Test
+    void strategieMissionOneColorNoParcelWithGoodColor() {
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.RED, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+        assertNull(missionPandaStrat.strategyMovePanda(ColorType.GREEN));
+    }
+
+    /**
+     * <h1><u>strategieMissionAllColor</u></h1>
+     */
+
+    @Test
+    void strategyMissionAllColor() {
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+        assertEquals(coordinate, missionPandaStrat.strategyMovePanda(ColorType.ALL_COLOR));
+    }
+
+    @Test
+    void strategyMissionAllColorNoParcel() {
+        assertNull(missionPandaStrat.strategyMovePanda(ColorType.ALL_COLOR));
+    }
+
+    @Test
+    void strategyMissionAllColorNoParcelWithBamboo() {
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+        game.getBoard().moveCharacter(CharacterType.PANDA, coordinate);
+        assertNull(missionPandaStrat.strategyMovePanda(ColorType.ALL_COLOR));
 
     }
 
     @Test
-    void stategieMissionOneColor() {
-        Mockito.when(parcelMock.getColor()).thenReturn(ColorType.GREEN);
-        Mockito.when(parcelMock.getNbBamboo()).thenReturn(1);
-        Mockito.when(parcelMock.getImprovement()).thenReturn(ImprovementType.NOTHING);
+    void strategyMissionAllColorNoParcelWithoutEnclosure() {
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.ENCLOSURE);
+        game.getBoard().placeParcel(parcel, coordinate);
+        assertNull(missionPandaStrat.strategyMovePanda(ColorType.ALL_COLOR));
 
-        game.getBoard().placeParcel(parcelMock,new Coordinate(1,0,-1));
-
-        assertEquals(new Coordinate(1,0,-1),missionPandaStrat.strategyMissionOneColor(ColorType.GREEN));
     }
 
     @Test
-    void stategieMissionOneColorNoParcel() {
-        Mockito.when(missionMock.getColorType()).thenReturn(ColorType.GREEN);
-
-        assertEquals(null,missionPandaStrat.strategyMissionOneColor(ColorType.GREEN));
+    void strategyMissionAllColorNoParcelWithColorThatBotDontHave() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+        assertNull(missionPandaStrat.strategyMovePanda(ColorType.ALL_COLOR));
     }
 
     @Test
-    void stategieMissionOneColorNoParcelWithNoBamboo() {
-        Mockito.when(missionMock.getColorType()).thenReturn(ColorType.GREEN);
-
-        assertEquals(null,missionPandaStrat.strategyMissionOneColor(ColorType.GREEN));
-    }
-
-    @Test
-    void stategieMissionOneColorNoParcelWithoutImprovementInclosure() {
-        Mockito.when(missionMock.getColorType()).thenReturn(ColorType.GREEN);
-
-        assertEquals(null,missionPandaStrat.strategyMissionOneColor(ColorType.GREEN));
-    }
-
-    @Test
-    void stategieMissionOneColorNoParcelWithGoodColor() {
-        Mockito.when(missionMock.getColorType()).thenReturn(ColorType.GREEN);
-
-        assertEquals(null,missionPandaStrat.strategyMissionOneColor(ColorType.GREEN));
-    }
-
-
-
-
-/*
-
-    @Test
-    void coordWhereMovePanda_1parcelWithBambooMissionGreenColor() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        assertEquals(coordinate1, bot.getRushPandaStrat().strategyMovePanda());//Le panda veut aller dessus
-    }
-
-    @Test
-    void coordWhereMovePanda_1parcelWithBambooMissionAllColor() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.ALL_COLOR,1));
-        assertEquals(coordinate1, bot.getRushPandaStrat().strategyMovePanda());//Le panda veut aller dessus
-    }
-
-    @Test
-    void AlreadyHaveABambooInInventory() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        board.placeParcel(parcel2,coordinate2);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.ALL_COLOR,1));
-
-        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
-    }
-
-    @Test
-    void AlreadyHaveABambooInInventoryMissionOneColor() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        board.placeParcel(parcel2,coordinate2);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
-        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
-    }/*
-
-    @Test
-    void colorMissionDifferentFromColorParcelSoNoGoodDeplacement() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.RED,1));
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
-    }
-
-    @Test
-    void coordWhereMovePanda_FirstParcelWithBamboo(){
+    void coordWhereMovePanda_FirstParcelWithBamboo() {
         Coordinate coordParcel1 = new Coordinate(1, -1, 0);//parcel entre 2-4h
         Coordinate coordParcel2 = new Coordinate(0, -1, 1);//parcel entre 4-6h
         Coordinate coordParcel3 = new Coordinate(1, -2, 1);//parcel a 4h éloigné de 1
         Coordinate coordParcel4 = new Coordinate(0, -2, 2);//parcel a 5h éloigné de 1
-        board.placeParcel(parcel1,coordParcel1);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(),coordParcel2);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(),coordParcel3);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
-        board.placeParcel(new Parcel(),coordParcel4);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        assertEquals(coordParcel1, bot.getRushPandaStrat().strategyMovePanda());
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), coordParcel1);//place la parcel (un bamboo pousse)
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), coordParcel2);//place la parcel (un bamboo pousse)
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), coordParcel3);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), coordParcel4);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
+        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN, 1));
+        assertEquals(coordParcel1, missionPandaStrat.strategyMovePanda(ColorType.ALL_COLOR));
+    }
+
+
+    /**
+     * <h1><u>nbMoveOneColor</u></h1>
+     */
+
+    @Test
+    void nbMoveOneColorColorInInvetoryAndParcelPlaced() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate); //place une parcelle
+
+        assertEquals(1, missionPandaStrat.howManyMoveToDoMission(missionGreenOneColor));
     }
 
     @Test
-    void movePanda_1ParcelEtBamboo() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        assertEquals(1,board.getPlacedParcels().get(coordinate1).getNbBamboo());//1 bamboo sur la parcel
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        bot.botPlay(WeatherType.NO_WEATHER);
-        assertEquals(0,board.getPlacedParcels().get(coordinate1).getNbBamboo());//0 bamboo sur la parcel
-    }*/
+    void nbMoveOneColorColorInInvetory() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        assertEquals(-1, missionPandaStrat.howManyMoveToDoMission(missionGreenOneColor));
+    }
+
+    @Test
+    void nbMoveOneColorColorParcelPlaced() {
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate); //place une parcelle
+
+        assertEquals(3, missionPandaStrat.howManyMoveToDoMission(missionGreenOneColor));
+    }
+
+    @Test
+    void nbMoveOneColorColorNoBambooInInventoryNoParcelPlaced() {
+        assertEquals(-1, missionPandaStrat.howManyMoveToDoMission(missionGreenOneColor));
+    }
+
+    /**
+     * <h1><u>nbMoveAllColor</u></h1>
+     */
+
+    @Test
+    void nbMoveAllColorOneBambooInInventory() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        assertEquals(-1, missionPandaStrat.howManyMoveToDoMission(missionAllColor));
+    }
+
+    @Test
+    void nbMoveAllColorTwoBambooInInventory() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.RED);
+        assertEquals(-1, missionPandaStrat.howManyMoveToDoMission(missionAllColor));
+    }
+
+    @Test
+    void nbMoveAllColorOneBambooInInventoryOneParcelPlaced() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.RED, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate); //place une parcelle
+
+        assertEquals(4, missionPandaStrat.howManyMoveToDoMission(missionAllColor));
+    }
+
+    @Test
+    void nbMoveAllColorOneBambooInInventoryOneParcelPlacedSameColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate); //place une parcelle
+
+        assertEquals(-1, missionPandaStrat.howManyMoveToDoMission(missionAllColor));
+    }
+
+    /**
+     * <h1><u>nbMoveAllColor</u></h1>
+     */
+
+    @Test
+    void isAlreadyFinishedIsFinishMissionOneColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        assertTrue(missionPandaStrat.isAlreadyFinished(missionGreenOneColor));
+    }
+
+    @Test
+    void isAlreadyFinishedTooManyBambooMissionOneColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        assertTrue(missionPandaStrat.isAlreadyFinished(missionGreenOneColor));
+    }
+
+    @Test
+    void isAlreadyFinishedNotEnoughBambooMissionOneColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        assertFalse(missionPandaStrat.isAlreadyFinished(missionGreenOneColor));
+    }
+
+    @Test
+    void isAlreadyFinishedNotGoodColorMissionOneColor() {
+        game.getPlayerData().addBamboo(ColorType.RED);
+        game.getPlayerData().addBamboo(ColorType.RED);
+        assertFalse(missionPandaStrat.isAlreadyFinished(missionGreenOneColor));
+    }
+
+    @Test
+    void isAlreadyFinishedIsFinishMissionAllColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.RED);
+        game.getPlayerData().addBamboo(ColorType.YELLOW);
+        assertTrue(missionPandaStrat.isAlreadyFinished(missionAllColor));
+    }
+
+    @Test
+    void isAlreadyFinishedTooManyBambooMissionAllColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.RED);
+        game.getPlayerData().addBamboo(ColorType.YELLOW);
+        assertTrue(missionPandaStrat.isAlreadyFinished(missionAllColor));
+    }
+
+    @Test
+    void isAlreadyFinishedNotEnoughBambooMissionAllColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.RED);
+        assertFalse(missionPandaStrat.isAlreadyFinished(missionAllColor));
+    }
+
+
+    /**
+     * <h1><u>isFinishedInOneTurn</u></h1>
+     */
+
+    @Test
+    void isFinishedInOneTurnOneBambooInInventoryPlacedParcelWithGoodColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate); //place une parcelle
+
+        assertTrue(missionPandaStrat.isFinishedInOneTurn(missionGreenOneColor));
+    }
+
+    @Test
+    void isFinishedInOneTurnOneBambooInInventoryPlacedParcelWithAllColor() {
+        game.getPlayerData().addBamboo(ColorType.YELLOW);
+        game.getPlayerData().addBamboo(ColorType.RED);
+
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate); //place une parcelle
+
+        assertTrue(missionPandaStrat.isFinishedInOneTurn(missionAllColor));
+    }
+
+    @Test
+    void isFinishedInOneTurnNoParcel() {
+        assertFalse(missionPandaStrat.isFinishedInOneTurn(missionGreenOneColor));
+    }
+
+    @Test
+    void isFinishedInOneBambooNoParcel() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        assertFalse(missionPandaStrat.isFinishedInOneTurn(missionGreenOneColor));
+    }
+
+    @Test
+    void isFinishedInOneTurnAlreadyFinishMissionOneColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        assertFalse(missionPandaStrat.isFinishedInOneTurn(missionGreenOneColor));
+    }
+
+    @Test
+    void isFinishedInOneTurnAlreadyFinishMissionAllColor() {
+        game.getPlayerData().addBamboo(ColorType.GREEN);
+        game.getPlayerData().addBamboo(ColorType.RED);
+        game.getPlayerData().addBamboo(ColorType.YELLOW);
+        assertFalse(missionPandaStrat.isFinishedInOneTurn(missionAllColor));
+    }
+
+
+    /**
+     * <h1><u>strategyMovePeasant</u></h1>
+     */
+
+    @Test
+    void strategyMovePeasantGoodColor(){
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+
+        assertEquals(coordinate,missionPandaStrat.strategyMovePeasant(ColorType.GREEN));
+    }
+
+    @Test
+    void strategyMovePeasantNotGoodColorButOneParcel(){
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.RED, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+
+        assertEquals(coordinate,missionPandaStrat.strategyMovePeasant(ColorType.GREEN));
+    }
+
+    @Test
+    void strategyMovePeasantTwoColors(){
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+
+        Coordinate coordinate2 = new Coordinate(1, -1, 0);
+        Parcel parcel2 = new Parcel(ColorType.RED, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel2, coordinate2);
+
+        assertEquals(coordinate2,missionPandaStrat.strategyMovePeasant(ColorType.GREEN));
+    }
+
+
+    /**
+     * <h1><u>strategyPlaceCanal</u></h1>
+     */
+
+    @Test
+    void strategyPlaceCanal(){
+
+
+    }
+
 /*
-    @Test
-    void movePanda_WhereNoImprovement(){
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(ColorType.GREEN, ImprovementType.ENCLOSURE),new Coordinate(0,-1,1));
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        assertEquals(coordinate1,bot.getRushPandaStrat().strategyMovePanda());
+    public void strategyPlaceCanal() {
+        gameInteraction.drawCanal();
+        if(!possibleCoordinatesCanal().isEmpty()){
+            Coordinate[] coordinates = possibleCoordinatesCanal().get(0);
+            gameInteraction.placeCanal(coordinates[0],coordinates[1]);
+        }
     }
-
-    @Test
-    void drawMission() {
-        assertEquals(0,game.getGameInteraction().getInventoryPandaMissions().size() );//0 mission dans son inventaire
-        game.getPlayerData().getBot().drawMission(PANDA);//fait jouer le panda(il vas piocher)
-        assertEquals(1, game.getGameInteraction().getInventoryPandaMissions().size());//1 mission dans son inventaire
-    }
-
-    @Test
-    void stratThunderstormPanda(){
-        Game gamePanda = new Game(new BotType[]{BotType.PANDA_BOT});
-        PandaBot pandaBot = (PandaBot) gamePanda.getPlayerData().getBot();
-        Parcel parcel = new Parcel(ColorType.RED);
-        Parcel parcel2 = new Parcel(ColorType.GREEN);
-
-        gamePanda.getPlayerData().getInventory().subMissions(gamePanda.getPlayerData().getMissions());
-
-        gamePanda.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
-        gamePanda.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
-
-        gamePanda.getPlayerData().addMission(new PandaMission(ColorType.GREEN,2));
-
-        assertEquals(new Coordinate(1,0,-1),pandaBot.getRushPandaStrat().stratThunderstorm());
-    }*/
-
+*/
 
 }
 
 
 
-
-
-
-
-
-    /*
-    Board board;
-    Parcel parcel1;
-    Parcel parcel2;
-    PandaBot bot;
-    Coordinate coordinate1;
-    Coordinate coordinate2;
-    Game game;
-    BoardRules boardRules;
-
-
-    @BeforeEach void setUp()  {
-        game = new Game(new BotType[]{BotType.PANDA_BOT});
-        board = game.getBoard();
-        boardRules = game.getRules();
-        bot= (PandaBot) game.getPlayerData().getBot();
-        parcel1 = new Parcel(ColorType.GREEN);
-        parcel2 = new Parcel(ColorType.GREEN);
-        coordinate1 = new Coordinate(1, -1, 0);
-        coordinate2 = new Coordinate(0, -1, 1);
-        game.getPlayerData().getInventory().subMissions(game.getPlayerData().getPandaMissions()); //supprime la mission donner au debut
-    }
-*/
-    /**
-     <h2><u>Strategy Move Panda</u></h2>
-
-     *//*
-
-    @Test
-    void coordWhereMovePanda_0parcel() {
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Pas de parcel, il ne bouge pas
-    }
-
-    @Test
-    void coordWhereMovePanda_1parcelWithBambooMissionGreenColor() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        assertEquals(coordinate1, bot.getRushPandaStrat().strategyMovePanda());//Le panda veut aller dessus
-    }
-
-    @Test
-    void coordWhereMovePanda_1parcelWithBambooMissionAllColor() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.ALL_COLOR,1));
-        assertEquals(coordinate1, bot.getRushPandaStrat().strategyMovePanda());//Le panda veut aller dessus
-    }
-
-    @Test
-    void AlreadyHaveABambooInInventory() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        board.placeParcel(parcel2,coordinate2);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.ALL_COLOR,1));
-
-        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
-    }
-
-    @Test
-    void AlreadyHaveABambooInInventoryMissionOneColor() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        board.placeParcel(parcel2,coordinate2);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        game.getPlayerData().resetTemporaryInventory(WeatherType.NO_WEATHER);
-        bot.movePanda(bot.getRushPandaStrat().strategyMovePanda());//ajoute un bamboo à l'inventaire
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
-    }/*
-
-    @Test
-    void colorMissionDifferentFromColorParcelSoNoGoodDeplacement() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        game.getPlayerData().addMission(new PandaMission(ColorType.RED,1));
-        assertNull(bot.getRushPandaStrat().strategyMovePanda());//Le panda ne veut pas aller dessus
-    }
-
-    @Test
-    void coordWhereMovePanda_FirstParcelWithBamboo(){
-        Coordinate coordParcel1 = new Coordinate(1, -1, 0);//parcel entre 2-4h
-        Coordinate coordParcel2 = new Coordinate(0, -1, 1);//parcel entre 4-6h
-        Coordinate coordParcel3 = new Coordinate(1, -2, 1);//parcel a 4h éloigné de 1
-        Coordinate coordParcel4 = new Coordinate(0, -2, 2);//parcel a 5h éloigné de 1
-        board.placeParcel(parcel1,coordParcel1);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(),coordParcel2);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(),coordParcel3);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
-        board.placeParcel(new Parcel(),coordParcel4);//place la parcel (aucun bamboo pour car éloigné du centre donc pas irrigé)
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        assertEquals(coordParcel1, bot.getRushPandaStrat().strategyMovePanda());
-    }
-
-    @Test
-    void movePanda_1ParcelEtBamboo() {
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        assertEquals(1,board.getPlacedParcels().get(coordinate1).getNbBamboo());//1 bamboo sur la parcel
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        bot.botPlay(WeatherType.NO_WEATHER);
-        assertEquals(0,board.getPlacedParcels().get(coordinate1).getNbBamboo());//0 bamboo sur la parcel
-    }*/
-/*
-    @Test
-    void movePanda_WhereNoImprovement(){
-        board.placeParcel(parcel1,coordinate1);//place la parcel (un bamboo pousse)
-        board.placeParcel(new Parcel(ColorType.GREEN, ImprovementType.ENCLOSURE),new Coordinate(0,-1,1));
-        game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,1));
-        assertEquals(coordinate1,bot.getRushPandaStrat().strategyMovePanda());
-    }
-
-    @Test
-    void drawMission() {
-        assertEquals(0,game.getGameInteraction().getInventoryPandaMissions().size() );//0 mission dans son inventaire
-        game.getPlayerData().getBot().drawMission(PANDA);//fait jouer le panda(il vas piocher)
-        assertEquals(1, game.getGameInteraction().getInventoryPandaMissions().size());//1 mission dans son inventaire
-    }
-
-    @Test
-    void stratThunderstormPanda(){
-        Game gamePanda = new Game(new BotType[]{BotType.PANDA_BOT});
-        PandaBot pandaBot = (PandaBot) gamePanda.getPlayerData().getBot();
-        Parcel parcel = new Parcel(ColorType.RED);
-        Parcel parcel2 = new Parcel(ColorType.GREEN);
-
-        gamePanda.getPlayerData().getInventory().subMissions(gamePanda.getPlayerData().getMissions());
-
-        gamePanda.getBoard().placeParcel(parcel,new Coordinate(1,-1,0));
-        gamePanda.getBoard().placeParcel(parcel2,new Coordinate(1,0,-1));
-
-        gamePanda.getPlayerData().addMission(new PandaMission(ColorType.GREEN,2));
-
-        assertEquals(new Coordinate(1,0,-1),pandaBot.getRushPandaStrat().stratThunderstorm());
-    }*/

@@ -25,7 +25,7 @@ public class MissionPandaStrat extends Strategie {
         else if (isJudiciousPlaceParcel())
             strategyPlaceParcel(mission.getColorType());
         else if (isJudiciousPlaceCanal())
-            strategyPlaceCanal();
+            gameInteraction.placeCanal(strategyPlaceCanal()[0],strategyPlaceCanal()[1]);
         else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
             gameInteraction.moveCharacter(CharacterType.PANDA,possibleCoordinatesPanda().get(0));
     }
@@ -47,7 +47,8 @@ public class MissionPandaStrat extends Strategie {
 
     boolean isJudiciousPlaceCanal() {
         return !gameInteraction.contains(ActionType.DRAW_CANAL) && !gameInteraction.contains(ActionType.PLACE_CANAL)
-                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0) ;
+                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0
+                && !possibleCoordinatesCanal().isEmpty()) ;
     }
 
     /**<b><u>STRATEGIES METHODS</b>
@@ -90,12 +91,9 @@ public class MissionPandaStrat extends Strategie {
         return possibleCoordinatesPeasant().get(0);
     }
 
-    public void strategyPlaceCanal() {
+    public Coordinate[] strategyPlaceCanal() {
         gameInteraction.drawCanal();
-        if(!possibleCoordinatesCanal().isEmpty()){
-            Coordinate[] coordinates = possibleCoordinatesCanal().get(0);
-            gameInteraction.placeCanal(coordinates[0],coordinates[1]);
-        }
+        return possibleCoordinatesCanal().get(0);
     }
 
     public void strategyPlaceParcel(ColorType colorType) {
@@ -194,9 +192,7 @@ public class MissionPandaStrat extends Strategie {
                 return 1;
             return 3;
         }
-        else if(gameInteraction.getInventoryBamboo()[colorTypeMission.ordinal()] == 1)
-            return 2;
-        return 4;
+        return -1;
     }
 
     int nbMoveAllColor(){
