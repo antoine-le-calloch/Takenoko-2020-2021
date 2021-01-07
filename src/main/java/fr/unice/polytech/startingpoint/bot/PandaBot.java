@@ -13,7 +13,7 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  *
  * <p>This class provides a bot specialized in {@link PandaMission} missions.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} and {@link Bot#bestMissionTypeToDraw()} methods from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric

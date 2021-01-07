@@ -17,7 +17,7 @@ import java.util.Random;
  *
  * <p>This class provides a bot playing randomly.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} and {@link Bot#bestMissionTypeToDraw()} methods from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -35,11 +35,6 @@ public class RandomBot extends Bot {
     private Random random;
     private Random random2;
 
-    /**<p>Set up the bot. Call the constructor from {@link Bot} superclass and initialize two {@link Random} objects.</p>
-     *
-     * @param gameInteraction
-     *            <b>GameInteraction object.</b>
-     */
     public RandomBot(GameInteraction gameInteraction) {
         super(gameInteraction);
         random = new Random();
@@ -51,21 +46,11 @@ public class RandomBot extends Bot {
         return null;
     }
 
-    /**<p>Set the {@link #random} and {@link #random2} to new objects specified in the parameters.</p>
-     *
-     * @param rand1
-     *            <b>The first {@link Random} object.</b>
-     * @param rand2
-     *            <b>The second {@link Random} object.</b>
-     */
     public void setRand(Random rand1, Random rand2){
         random = rand1;
         random2 = rand2;
     }
 
-    /**<p>The actions of the bot during his turn.</p>
-     * @param weatherType
-     */
     @Override
     public void botPlay(WeatherType weatherType){
         int randAction = random.nextInt(5);

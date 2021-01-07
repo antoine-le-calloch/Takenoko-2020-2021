@@ -32,7 +32,7 @@ public final class BoardRules {
     /**@return <b>True, if the parcel is playable on the coordinates specified in parameter.</b>
      */
     public boolean isPlayableParcel(Coordinate coordinate){
-        if (coordinate.isCentral())
+        if (coordinate.isCentral() || board.isPlacedParcel(coordinate))
             return false;
         int nbParcelAround = 0;
         for(Coordinate coordinateAround : coordinate.coordinatesAround()) {

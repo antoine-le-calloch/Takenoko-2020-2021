@@ -191,4 +191,8 @@ public class Game{
         }
         return Score;
     }
+
+    public int getNumberPlayers() {
+        return botData.size();
+    }
 }

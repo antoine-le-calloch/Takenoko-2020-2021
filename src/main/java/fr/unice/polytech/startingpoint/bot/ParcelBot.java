@@ -1,6 +1,5 @@
 package fr.unice.polytech.startingpoint.bot;
 
-
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
  *
  * <p>This class provides a bot specialized in {@link ParcelMission} missions.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} and {@link Bot#bestMissionTypeToDraw()} methods from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric

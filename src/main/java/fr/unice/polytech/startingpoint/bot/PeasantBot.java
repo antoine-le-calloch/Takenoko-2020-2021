@@ -11,7 +11,7 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  *
  * <p>This class provides a bot specialized in {@link PeasantMission} missions.</p>
  *
- * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} method from the {@link Bot}.</p>
+ * <p>The programmer needs only to provide implementations for the {@link Bot#botPlay(WeatherType)} and {@link Bot#bestMissionTypeToDraw()} methods from the {@link Bot}.</p>
  *
  * @author Manuel Enzo
  * @author Naud Eric
@@ -26,15 +26,11 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  */
 
 public class PeasantBot extends Bot {
-    /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
-     */
+
     public PeasantBot(GameInteraction gameInteraction) {
         super(gameInteraction);
     }
 
-    /**<p>The actions of the bot during his turn.</p>
-     * @param weatherType
-     */
     @Override
     public void botPlay(WeatherType weatherType) {
         if (isJudiciousPlayWeather())

@@ -3,7 +3,6 @@ package fr.unice.polytech.startingpoint.bot.strategie;
 import fr.unice.polytech.startingpoint.bot.Bot;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
-import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
@@ -20,8 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MissionParcelStrat extends Strategie {
-    /**@param bot
-     */
+
     public MissionParcelStrat(Bot bot) {
         super(bot);
     }
@@ -38,11 +36,10 @@ public class MissionParcelStrat extends Strategie {
             bot.movePeasant(possibleCoordinatesPeasant().get(0));
     }
 
-    /**
-     * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
-     * @see GameInteraction
+    /**<b><u>IS JUDICIOUS METHODS</b>
      */
-    public boolean isJudiciousPutCanal(ParcelMission parcelMission){
+
+    boolean isJudiciousPutCanal(ParcelMission parcelMission){
         if (bestCoordinatesForMission(parcelMission).size() == 0)
             return bot.getGameInteraction().getResourceSize(ResourceType.CANAL) > 0 &&
                     possibleCoordinatesCanal().size() > 0 &&
@@ -50,82 +47,11 @@ public class MissionParcelStrat extends Strategie {
         return false;
     }
 
-    /**
-     * @return <b>True if the bot can draw a parcel and haven’t finished a form or still have 2 actions.</b>
-     * @see GameInteraction
-     */
-    public boolean isJudiciousPutParcel(){
+    boolean isJudiciousPutParcel(){
         return bot.getGameInteraction().getResourceSize(ResourceType.PARCEL) > 0 && !bot.getGameInteraction().contains(ActionType.DRAW_PARCELS);
     }
 
-    public int howManyMoveToDoMission(Mission mission) {
-        ParcelMission parcelMission = (ParcelMission) mission;
-        if(!isAlreadyFinished(parcelMission) &&
-                isJudiciousPutParcel() &&
-                        isJudiciousPutCanal((ParcelMission) mission)){
-            if (coordEndMissionNoIrrigate(parcelMission).size() > bot.getGameInteraction().getResourceSize(ResourceType.PARCEL))
-                return -1;
-            else if (isFinishedInOneTurn(parcelMission))
-                return 1;
-            return nbMoveParcel(parcelMission);
-        }
-        return -1;
-    }
-
-    private boolean isFinishedInOneTurn(ParcelMission parcelMission) {
-        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
-            List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
-            List<Coordinate> coordinateNotPlaced = new ArrayList<>();
-            List<Coordinate> coordinateNotIrrigated = new ArrayList<>();
-            for (Coordinate coordinate1 : parcelForm){
-                if (!bot.getGameInteraction().isIrrigatedParcel(coordinate1))
-                    coordinateNotPlaced.add(coordinate1);
-                if (bot.getGameInteraction().isPlacedParcel(coordinate1) && !bot.getGameInteraction().isIrrigatedParcel(coordinate1))
-                    coordinateNotIrrigated.add(coordinate1);
-            }
-            if (coordinateNotPlaced.size() == 1 && coordinateNotPlaced.get(0).isNextTo(new Coordinate(0,0,0)))
-                return true;
-            if (coordinateNotPlaced.size() == 0 && coordinateNotIrrigated.size() == 1
-                    && getBestCanal(coordinateNotIrrigated.get(0)) != null
-                    && (getBestCanal(coordinateNotIrrigated.get(0))[0] == coordinateNotIrrigated.get(0)
-                        ||  getBestCanal(coordinateNotIrrigated.get(0))[1] == coordinateNotIrrigated.get(0)))
-                return true;
-        }
-        return false;
-    }
-
-    public boolean isAlreadyFinished(ParcelMission parcelMission) {
-        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
-            List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
-            int cpt = 0;
-            for (Coordinate coordinate1 : parcelForm){
-                if (bot.getGameInteraction().isIrrigatedParcel(coordinate1))
-                    cpt++;
-            }
-            if (cpt == parcelForm.size())
-                return true;
-        }
-        return false;
-    }
-
-    private int nbMoveParcel(ParcelMission parcelMission) {
-        Map<Coordinate,Boolean> bestCoordinatesForMission = bestCoordinatesForMission(parcelMission);
-        int nbMove = 0;
-        for (Coordinate coordinate1 : bestCoordinatesForMission.keySet()){
-            if (coordinate1.isNextTo(new Coordinate(0,0,0)))
-                nbMove ++;
-            else
-                nbMove += 2;
-        }
-        return nbMove;
-    }
-
-    /**
-     * <p>For each mission, put a parcel to best place to finish it or place a random one.</p>
-     *
-     * @see GameInteraction
-     * @see FormType
-     * @see ColorType
+    /**<b><u>STRATEGIES METHODS</b>
      */
 
     public void putParcel(ParcelMission parcelmission) {
@@ -169,17 +95,9 @@ public class MissionParcelStrat extends Strategie {
         return OtherCoords;
     }
 
-    /**
-     * <h2>{@link #bestCoordinatesForMission(ParcelMission mission)} :</h2>
-     *
-     * @param mission
+    /**@param mission
      *            <b>The mission wanted to be completed.</b>
      * @return <b>The best coordinates where a parcel need to be placed to complete the mission.</b>
-     *
-     * @see Coordinate
-     * @see FormType
-     * @see ColorType
-     * @see GameInteraction
      */
     public Map<Coordinate, Boolean> bestCoordinatesForMission(ParcelMission mission){
         Map<Coordinate, Boolean> bestCoordinates = new HashMap<>();
@@ -196,19 +114,11 @@ public class MissionParcelStrat extends Strategie {
         return bestCoordinates;
     }
 
-    /**
-     * <h2>{@link #coordNeedToDoMission(Coordinate hightCoord, ParcelMission mission)} :</h2>
-     *
-     * @param coordinate
+    /**@param coordinate
      *            <b>The higth coordinate of a form.</b>
      * @param mission
      *            <b>The mission wanted to be completed.</b>
      * @return <b>The list of required coordinates where parcels need to be placed to complete the mission.</b>
-     *
-     * @see Coordinate
-     * @see FormType
-     * @see ColorType
-     * @see GameInteraction
      */
     public Map<Coordinate, Boolean> coordNeedToDoMission(Coordinate coordinate, ParcelMission mission){
         List<Coordinate> distantCoord = new ArrayList<>();
@@ -273,12 +183,6 @@ public class MissionParcelStrat extends Strategie {
         return coordForm;
     }
 
-    /**
-     * @return <b>True, if a canal can be place and irrigate a parcel, else, it returns false and place a random canal.</b>
-     *
-     * @see Coordinate
-     * @see GameInteraction
-     */
     public void putCanal(ParcelMission mission) {
         try {
             List<Coordinate> fullForm = coordEndMissionNoIrrigate(mission);
@@ -308,5 +212,70 @@ public class MissionParcelStrat extends Strategie {
             }
         }
         return new ArrayList<>();
+    }
+
+    /**<b><u>NUMBER OF MOVES TO DO THE MISSION METHODS</b>
+     */
+
+    public int howManyMoveToDoMission(Mission mission) {
+        ParcelMission parcelMission = (ParcelMission) mission;
+        if(!isAlreadyFinished(parcelMission) &&
+                isJudiciousPutParcel() &&
+                isJudiciousPutCanal((ParcelMission) mission)){
+            if (coordEndMissionNoIrrigate(parcelMission).size() > bot.getGameInteraction().getResourceSize(ResourceType.PARCEL))
+                return -1;
+            else if (isFinishedInOneTurn(parcelMission))
+                return 1;
+            return nbMoveParcel(parcelMission);
+        }
+        return -1;
+    }
+
+    boolean isFinishedInOneTurn(ParcelMission parcelMission) {
+        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
+            List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
+            List<Coordinate> coordinateNotPlaced = new ArrayList<>();
+            List<Coordinate> coordinateNotIrrigated = new ArrayList<>();
+            for (Coordinate coordinate1 : parcelForm){
+                if (!bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                    coordinateNotPlaced.add(coordinate1);
+                if (bot.getGameInteraction().isPlacedParcel(coordinate1) && !bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                    coordinateNotIrrigated.add(coordinate1);
+            }
+            if (coordinateNotPlaced.size() == 1 && coordinateNotPlaced.get(0).isNextTo(new Coordinate(0,0,0)))
+                return true;
+            if (coordinateNotPlaced.size() == 0 && coordinateNotIrrigated.size() == 1
+                    && getBestCanal(coordinateNotIrrigated.get(0)) != null
+                    && (getBestCanal(coordinateNotIrrigated.get(0))[0] == coordinateNotIrrigated.get(0)
+                    ||  getBestCanal(coordinateNotIrrigated.get(0))[1] == coordinateNotIrrigated.get(0)))
+                return true;
+        }
+        return false;
+    }
+
+    boolean isAlreadyFinished(ParcelMission parcelMission) {
+        for (Coordinate coordinate : bot.getGameInteraction().getPlacedCoordinates()){
+            List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
+            int cpt = 0;
+            for (Coordinate coordinate1 : parcelForm){
+                if (bot.getGameInteraction().isIrrigatedParcel(coordinate1))
+                    cpt++;
+            }
+            if (cpt == parcelForm.size())
+                return true;
+        }
+        return false;
+    }
+
+    int nbMoveParcel(ParcelMission parcelMission) {
+        Map<Coordinate,Boolean> bestCoordinatesForMission = bestCoordinatesForMission(parcelMission);
+        int nbMove = 0;
+        for (Coordinate coordinate1 : bestCoordinatesForMission.keySet()){
+            if (coordinate1.isNextTo(new Coordinate(0,0,0)))
+                nbMove ++;
+            else
+                nbMove += 2;
+        }
+        return nbMove;
     }
 }
