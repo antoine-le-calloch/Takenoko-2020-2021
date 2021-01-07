@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MissionParcelStrat extends Strategie {
-
     /**@param bot
      */
     public MissionParcelStrat(Bot bot) {
@@ -26,26 +25,22 @@ public class MissionParcelStrat extends Strategie {
     }
 
     public void stratOneTurn(Mission mission){
-        if (isJudiciousPutCanal())
-            putCanal((ParcelMission) mission);
-        else if(isJudiciousPutParcel()) {
-            putParcel((ParcelMission) mission);
-        }
+        System.out.println("Parcel Strat");
+        ParcelMission parcelMission = (ParcelMission) mission;
+        if (isJudiciousPutCanal(parcelMission))
+            putCanal(parcelMission);
+        else if(isJudiciousPutParcel())
+            putParcel(parcelMission);
     }
 
     /**
      * @return <b>True if the bot can draw a canal and place a canal on the game.</b>
      * @see GameInteraction
      */
-    public boolean isJudiciousPutCanal(){
-        if(bot.getGameInteraction().getStamina() < 2) {
-            for (ParcelMission mission : bot.getGameInteraction().getInventoryParcelMissions()) {
-                if (bestCoordinatesForMission(mission).size() == 0)
-                    return bot.getGameInteraction().getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.getGameInteraction().contains(ActionType.PLACE_CANAL);
-            }
-            return false;
-        }
-        return bot.getGameInteraction().getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.getGameInteraction().contains(ActionType.PLACE_CANAL);
+    public boolean isJudiciousPutCanal(ParcelMission parcelMission){
+        if (bestCoordinatesForMission(parcelMission).size() == 0)
+            return bot.getGameInteraction().getResourceSize(ResourceType.CANAL)  > 0 && possibleCoordinatesCanal().size() > 0 && !bot.getGameInteraction().contains(ActionType.PLACE_CANAL);
+        return false;
     }
 
     /**
@@ -55,7 +50,6 @@ public class MissionParcelStrat extends Strategie {
     public boolean isJudiciousPutParcel(){
         return bot.getGameInteraction().getResourceSize(ResourceType.PARCEL) > 0 && !bot.getGameInteraction().contains(ActionType.DRAW_PARCELS);
     }
-
 
     public int howManyMoveToDoMission(Mission mission) {
         ParcelMission parcelMission = (ParcelMission) mission;
@@ -110,9 +104,9 @@ public class MissionParcelStrat extends Strategie {
         int nbMove = 0;
         for (Coordinate coordinate1 : bestCoordinatesForMission){
             if (coordinate1.isNextTo(new Coordinate(0,0,0)))
-                nbMove++;
+                nbMove ++ ;
             else
-                nbMove += 3;
+                nbMove += 2;
         }
         return nbMove;
     }

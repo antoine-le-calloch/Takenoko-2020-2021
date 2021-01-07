@@ -3,11 +3,17 @@ package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
+import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
+import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>{@link ParcelBot} :</h1>
@@ -29,12 +35,6 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  */
 
 public class ParcelBot extends Bot {
-    public MissionParcelStrat getStratMissionParcel() {
-        return stratMissionParcel;
-    }
-
-    MissionParcelStrat stratMissionParcel = new MissionParcelStrat(this);
-
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
      * @param gameInteraction
@@ -44,17 +44,15 @@ public class ParcelBot extends Bot {
         super(gameInteraction);
     }
 
-
     @Override
     public void botPlay(WeatherType weatherType) {
         if (isJudiciousPlayWeather())
             playWeather(weatherType);
         for (int i = gameInteraction.getStamina(); i > 0; i--) {
-            if( isJudiciousDrawMission()) {
+            if( isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
-            }
-            Mission mission = determineBestMissionToDo();
-            playBestMission(mission);
+            else
+                playBestMission(determineBestMissionToDo());
         }
     }
 
@@ -73,5 +71,27 @@ public class ParcelBot extends Bot {
             return MissionType.PEASANT;
         else
             return MissionType.PARCEL;
+    }
+
+    @Override
+    public void playWeather(WeatherType weatherType){
+        if(weatherType.equals(WeatherType.RAIN))
+            stratRain();
+        else if(weatherType.equals(WeatherType.THUNDERSTORM))
+            stratThunderstorm();
+    }
+
+    @Override
+    public void stratRain() {
+        for(PeasantMission peasantMission:getGameInteraction().getInventoryPeasantMissions()) {
+            ColorType peasantMissionColor = peasantMission.getColorType();
+
+            List<Coordinate> parcelsIrrigatedSameColorAsMission = getGameInteraction().
+                    getPlacedCoordinatesByColor(peasantMissionColor).stream()
+                    .filter(getGameInteraction()::isIrrigatedParcel)
+                    .collect(Collectors.toList());
+            if (!parcelsIrrigatedSameColorAsMission.isEmpty())
+                getGameInteraction().rainAction(parcelsIrrigatedSameColorAsMission.get(0));
+        }
     }
 }

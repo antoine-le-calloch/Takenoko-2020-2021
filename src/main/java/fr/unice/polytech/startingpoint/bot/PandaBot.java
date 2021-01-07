@@ -1,10 +1,10 @@
 package fr.unice.polytech.startingpoint.bot;
 
-
-import fr.unice.polytech.startingpoint.bot.strategie.RushPandaStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
+import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.MissionType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
@@ -29,7 +29,6 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  */
 
 public class PandaBot extends Bot {
-
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      *
      * @param gameInteraction
@@ -47,11 +46,10 @@ public class PandaBot extends Bot {
         if (isJudiciousPlayWeather())
             playWeather(weatherType);
         for (int i = gameInteraction.getStamina(); i > 0; i--) {
-            if( isJudiciousDrawMission()) {
+            if( isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
-            }
-            Mission mission = determineBestMissionToDo();
-            playBestMission(mission);
+            else
+                playBestMission(determineBestMissionToDo());
         }
     }
 
@@ -76,6 +74,15 @@ public class PandaBot extends Bot {
             return MissionType.PANDA;
     }
 
-
-
+    @Override
+    public void stratThunderstorm() {
+        for (PandaMission pandaMission : getGameInteraction().getInventoryPandaMissions()) {
+            Coordinate coordinateAllColor = rushPandaStrat.strategyMissionAllColor();
+            Coordinate coordinateOneColor = rushPandaStrat.strategyMissionOneColor(pandaMission.getColorType());
+            if (coordinateAllColor != null && pandaMission.getColorType().equals(ColorType.ALL_COLOR))
+                getGameInteraction().thunderstormAction(coordinateAllColor);
+            else if (coordinateOneColor != null)
+                getGameInteraction().thunderstormAction(coordinateOneColor);
+        }
+    }
 }

@@ -17,10 +17,13 @@ public class RushPandaStrat extends Strategie {
     }
 
     public void stratOneTurn(Mission mission){
+        System.out.println("Panda Strat");
         if (isJudiciousMovePanda(mission.getColorType()))
             bot.movePanda(strategyMovePanda(mission.getColorType()));
         else if (isJudiciousMovePeasant())
             bot.movePeasant(strategyMovePeasant(mission.getColorType()));
+        else if (!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
+            bot.movePanda(possibleCoordinatesPanda().get(0));
     }
 
     public int howManyMoveToDoMission(Mission mission) {

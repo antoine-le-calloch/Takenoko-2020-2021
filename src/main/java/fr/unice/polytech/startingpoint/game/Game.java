@@ -146,7 +146,7 @@ public class Game{
         if (lastRound >= botData.size())
             return false;
         if(resource.isEmpty()) {
-            System.out.print("Bad end       ");
+            System.out.print("Bad end");
             return false;
         }
         return true;

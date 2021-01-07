@@ -28,32 +28,24 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
  */
 
 public class PeasantBot extends Bot {
-    MissionPeasantStrat stratMissionPeasant = new MissionPeasantStrat(this);
     /**<p>Set up the bot. Call the constructor from {@link Bot} superclass.</p>
      */
     public PeasantBot(GameInteraction gameInteraction) {
         super(gameInteraction);
     }
 
-    public MissionPeasantStrat getStratMissionPeasant() {
-        return stratMissionPeasant;
-    }
-
     /**<p>The actions of the bot during his turn.</p>
      * @param weatherType
      */
-
-
     @Override
     public void botPlay(WeatherType weatherType) {
         if (isJudiciousPlayWeather())
             playWeather(weatherType);
         for (int i = gameInteraction.getStamina(); i > 0; i--) {
-            if( isJudiciousDrawMission()) {
+            if( isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
-            }
-            Mission mission = determineBestMissionToDo();
-            playBestMission(mission);
+            else
+                playBestMission(determineBestMissionToDo());
         }
     }
 

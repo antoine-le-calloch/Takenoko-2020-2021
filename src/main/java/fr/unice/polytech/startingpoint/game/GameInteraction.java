@@ -31,6 +31,7 @@ public class GameInteraction {
     }
 
     public void drawCanal() {
+        System.out.println("Draw Canal");
         if (getPlayerData().add(ActionType.DRAW_CANAL)){
             getPlayerData().looseStamina();
             getPlayerData().addCanal(game.getResource().drawCanal());
@@ -52,15 +53,12 @@ public class GameInteraction {
         chooseWeather(WeatherType.QUESTION_MARK,weatherType);
     }
 
-    public boolean chooseWeather(WeatherType weatherType,WeatherType weatherTypeChosen){
-
+    public void chooseWeather(WeatherType weatherType, WeatherType weatherTypeChosen){
         if(weatherType.equals(WeatherType.QUESTION_MARK) && !weatherTypeChosen.equals(WeatherType.QUESTION_MARK)){
             game.getPlayerData().botPlay(weatherTypeChosen);
-            return true;
         }
         else if(weatherType.equals(WeatherType.CLOUD) && !(weatherTypeChosen.equals(WeatherType.CLOUD) || weatherTypeChosen.equals(WeatherType.QUESTION_MARK))) {
             game.getPlayerData().botPlay(weatherTypeChosen);
-            return true;
         }
         else{
             throw new RulesViolationException("You can't choose" + weatherTypeChosen +" weather" );
@@ -72,6 +70,7 @@ public class GameInteraction {
     }
 
     public void drawMission(MissionType missionType) {
+        System.out.println("Draw mission");
         if (getPlayerData().add(ActionType.DRAW_MISSION)){
             if (getPlayerData().getMissionsSize() <= NB_MAX_MISSION){
                 getPlayerData().looseStamina();
@@ -97,6 +96,7 @@ public class GameInteraction {
     }
 
     public List<ParcelInformation> drawParcels() {
+        System.out.println("Draw parcels");
         if (getPlayerData().add(ActionType.DRAW_PARCELS)){
             getPlayerData().looseStamina();
             getPlayerData().saveParcels(game.getResource().drawParcels());
@@ -181,6 +181,7 @@ public class GameInteraction {
     }
 
     public void moveCharacter(CharacterType characterType, Coordinate coordinate){
+        System.out.println("Move character");
         ColorType ColorBambooEat;
         if (getPlayerData().add(ActionType.get(characterType))) {
             if (game.getRules().isMovableCharacter(characterType, coordinate)) {

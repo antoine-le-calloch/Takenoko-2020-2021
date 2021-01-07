@@ -133,29 +133,21 @@ public abstract class Bot {
         List<Mission> missionList = new LinkedList<>();
         List<int[]> intsList = new LinkedList<>();
         for (Mission mission : gameInteraction.getInventoryMissions()){
-            int nbMove;
+            int nbMove = -1;
             switch (mission.getMissionType()){
                 case PANDA:
                     nbMove = rushPandaStrat.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{rushPandaStrat.howManyMoveToDoMission(mission),mission.getPoints()});
-                    }
                     break;
                 case PARCEL:
                     nbMove = stratMissionParcel.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{nbMove,mission.getPoints()});
-                    }
                     break;
                 case PEASANT:
                     nbMove = stratMissionPeasant.howManyMoveToDoMission(mission);
-                    if ( nbMove == -1){
-                        missionList.add(mission);
-                        intsList.add(new int[]{nbMove,mission.getPoints()});
-                    }
                     break;
+            }
+            if ( nbMove < 0){
+                missionList.add(mission);
+                intsList.add(new int[]{nbMove,mission.getPoints()});
             }
         }
         return missionList.get(determineBestMission(intsList));
@@ -175,31 +167,26 @@ public abstract class Bot {
             if (intsList.get(i)[0] == bestInts[0] && intsList.get(i)[1] == bestInts[1])
                 bestMissionOrdinal = i;
         }
+        System.out.println(bestInts[0]);
         return bestMissionOrdinal;
     }
-
 
     void playBestMission(Mission mission){
         switch (mission.getMissionType()){
             case PANDA:
                 rushPandaStrat.stratOneTurn(mission);
-                break;
+                return;
             case PARCEL:
                 stratMissionParcel.stratOneTurn(mission);
-                break;
+                return;
             case PEASANT:
                 stratMissionPeasant.stratOneTurn(mission);
-                break;
         }
     }
-
-
 
     public boolean isJudiciousPlayWeather(){
         return !gameInteraction.contains(ActionType.WEATHER);
     }
-
-
 
     public void playWeather(WeatherType weatherType){
         if(weatherType.equals(WeatherType.RAIN))
@@ -212,34 +199,24 @@ public abstract class Bot {
             stratCloud();
     }
 
-
-    public Coordinate stratThunderstorm(){
-        List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = getGameInteraction().getAllParcelsIrrigated().stream().
-                filter( coordinate -> getGameInteraction().getPlacedParcelsNbBamboo(coordinate) > 0 &&
-                        !getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
+    public void stratThunderstorm(){
+        List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = getGameInteraction().getAllParcelsIrrigated()
+                .stream()
+                .filter( coordinate -> getGameInteraction().getPlacedParcelsNbBamboo(coordinate) > 0 && !getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
                 .collect(Collectors.toList());
-
-        if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty()) {
+        if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty())
             getGameInteraction().rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
-            return irrigatedParcelsWithMoreThan1Bamboo.get(0);
-        }
-        return null;
     }
 
-    public Coordinate stratRain(){
+    public void stratRain(){
         List<Coordinate> parcelsIrrigated= getGameInteraction().getAllParcelsIrrigated();
         List<Coordinate> parcelsIrrigatedWithFertilizer=parcelsIrrigated.stream().
                 filter(coordinate -> getGameInteraction().getPlacedParcelInformation(coordinate).getImprovementType()
                         .equals(ImprovementType.FERTILIZER)).collect(Collectors.toList());
-        if(!parcelsIrrigatedWithFertilizer.isEmpty()){
+        if(!parcelsIrrigatedWithFertilizer.isEmpty())
             getGameInteraction().rainAction(parcelsIrrigatedWithFertilizer.get(0));
-            return parcelsIrrigatedWithFertilizer.get(0);
-
-        }else if(!parcelsIrrigated.isEmpty()){
+        else if(!parcelsIrrigated.isEmpty())
             getGameInteraction().rainAction(parcelsIrrigated.get(0));
-            return parcelsIrrigated.get(0);
-        }
-        return null;
     }
 
     public void stratQuestionMark(){

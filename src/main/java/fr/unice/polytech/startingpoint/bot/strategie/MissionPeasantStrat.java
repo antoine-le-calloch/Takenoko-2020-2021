@@ -23,8 +23,11 @@ public class MissionPeasantStrat extends Strategie {
      * @param mission
      */
     public void stratOneTurn(Mission mission){
+        System.out.println("Peasant Strat");
         if (isJudiciousMovePeasant((PeasantMission) mission))
             bot.movePeasant(strategyMovePeasant((PeasantMission) mission));
+        else if (!bot.getGameInteraction().contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
+            bot.movePanda(possibleCoordinatesPanda().get(0));
     }
 
     public int howManyMoveToDoMission(Mission mission) {
