@@ -131,6 +131,10 @@ public class PlayerData {
         missionsDone++;
     }
 
+    public void addParcelMission(){
+        missionsParcelDone++;
+    }
+
     public void addMissionDone(){
         addMissionDone(0);
     }
