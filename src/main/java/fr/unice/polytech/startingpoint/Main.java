@@ -12,9 +12,10 @@ import fr.unice.polytech.startingpoint.type.BotType;
  * @version 2020.12.03
  */
 
-class Main{
-    public static void main(String... args){
-        final int NUMBER_OF_GAMES = 100;
+public class Main{
+
+    public static void main(String[] args) {
+        final int NUMBER_OF_GAMES = 1000;
 
         BotType[] botList = new BotType[]{BotType.INTELLIGENT_BOT,BotType.PANDA_BOT,BotType.PEASANT_BOT,BotType.PARCEL_BOT};
         Stat statGame = new Stat(botList);
@@ -26,17 +27,15 @@ class Main{
             Game game = new Game(false, botList);
             game.play();
             statGame.add(game.getScores());
+
             Game game2 = new Game(false, botList2);
             game2.play();
             statGame2.add(game2.getScores());
         }
 
-        Game game = new Game(true, botList);
-        game.play();
-        statGame.add(game.getScores());
-
         System.out.println(statGame);
 
         System.out.println(statGame2);
     }
+
 }
