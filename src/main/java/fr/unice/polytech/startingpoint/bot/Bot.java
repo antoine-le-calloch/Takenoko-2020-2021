@@ -5,13 +5,10 @@ import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.MissionPandaStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
-import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.type.*;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -53,10 +50,8 @@ public abstract class Bot {
     public void botPlay(WeatherType weatherType) {
         playWeather(weatherType);
 
-        int stamina = gameInteraction.getStamina();
-
-        for (int i = stamina; i > 0; i--)
-            if( isJudiciousDrawMission() )
+        for (int i = gameInteraction.getStamina(); i > 0; i--)
+            if(isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
             else
                 playMission(determineBestMissionToDo());
@@ -81,6 +76,8 @@ public abstract class Bot {
                 break;
             case WIND:
                 gameInteraction.useWind();
+                break;
+            default:
                 break;
         }
     }

@@ -1,9 +1,9 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.exception.TooManyPlayersInGameException;
 import fr.unice.polytech.startingpoint.game.board.*;
 import fr.unice.polytech.startingpoint.game.playerdata.PlayerData;
-import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
@@ -102,29 +102,34 @@ public class Game{
      *
      */
     public void play() {
-        while( isContinue() ) {
-            if( numBot == FIRST_BOT )
-                newRound();
-                if ( isInformationsPrinted ) {
-                    System.out.println("=========== TOUR N°" + round + " ===========\n");
-                    printTurnInformations();
-                    System.out.println("\n");
+        int NB_MAX_PLAYER = 4;
+        if (botData.size() <= NB_MAX_PLAYER)
+            while( isContinue() ) {
+                if( numBot == FIRST_BOT )
+                    newRound();
+                    if ( isInformationsPrinted ) {
+                        System.out.println("=========== TOUR N°" + round + " ===========\n");
+                        printTurnInformations();
+                        System.out.println("\n");
                 }
-            botPlay();
-            nextBot();
-        }
+                botPlay();
+                nextBot();
+            }
+        else
+            throw new TooManyPlayersInGameException("\nThere are more players than the allowed number.\n" +
+                    "The maximum number is " + NB_MAX_PLAYER + ".");
     }
 
     /**
      * <p>print the informations of the game after each round</p>
      */
     private void printTurnInformations() {
-        for (int i = 0; i < botData.size(); i++) {
-            System.out.println("Le bot " + botData.get(i).getBotType() + " a complété " + botData.get(i).getMissionsDone()
-                    + " missions (" + botData.get(i).getMissionsPandaDone() + " missions panda, " + botData.get(i).getMissionsPeasantDone()
-                    + " missions jardinier, " + botData.get(i).getMissionsParcelDone() + " missions parcelles) pour un total de "
-                    + botData.get(i).getScore()[0] + " points.");
-            System.out.println("Il a joué les actions suivantes : " + botData.get(i).getActionTypeList() + "\n");
+        for (PlayerData botDatum : botData) {
+            System.out.println("Le bot " + botDatum.getBotType() + " a complété " + botDatum.getMissionsDone()
+                    + " missions (" + botDatum.getMissionsPandaDone() + " missions panda, " + botDatum.getMissionsPeasantDone()
+                    + " missions jardinier, " + botDatum.getMissionsParcelDone() + " missions parcelles) pour un total de "
+                    + botDatum.getScore()[0] + " points.");
+            System.out.println("Au tour d'avant, il a joué les actions suivantes : " + botDatum.getActionTypeList().stream().sorted() + "\n");
         }
         System.out.println("\nLe panda est sur la parcelle de coordonnées : " + board.getPandaCoordinate());
         System.out.println("Le jardinier est sur la parcelle de coordonnées : " + board.getPeasantCoordinate());

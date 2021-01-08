@@ -51,6 +51,13 @@ public class RandomBot extends Bot {
 
     @Override
     public void botPlay(WeatherType weatherType){
+        playWeather(weatherType);
+        for (int i = gameInteraction.getStamina(); i > 0; i--) {
+            stratRandom();
+        }
+    }
+
+    void stratRandom(){
         int randAction = random.nextInt(5);
 
         if (    randAction == 0 &&
