@@ -225,7 +225,7 @@ public class MissionParcelStrat extends Strategie {
     }
 
     List<Coordinate> coordEndMissionNoIrrigate(ParcelMission mission) {
-        for (Coordinate coordinate : allPlaces()) {
+        for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()) {
             Map<Coordinate, Boolean> coordinateList = coordsToDoMission(coordinate,mission);
             if(coordinateList != null)
                 if(coordinateList.size() == 0)
@@ -234,7 +234,8 @@ public class MissionParcelStrat extends Strategie {
         return new ArrayList<>();
     }
 
-    /**<b><u>NUMBER OF MOVES TO DO THE MISSION METHODS</b>
+    /**
+     * <b><u>NUMBER OF MOVES TO DO THE MISSION METHODS</b>
      */
 
     /**
@@ -246,66 +247,12 @@ public class MissionParcelStrat extends Strategie {
      */
     public int howManyMoveToDoMission(Mission mission) {
         ParcelMission parcelMission = (ParcelMission) mission;
-        if(!isAlreadyFinished(parcelMission) &&
-                isJudiciousPutParcel() &&
-                isJudiciousPutCanal((ParcelMission) mission)){
-            if (coordEndMissionNoIrrigate(parcelMission).size() > gameInteraction.getResourceSize(ResourceType.PARCEL))
+        if(isJudiciousPutParcel() && isJudiciousPutCanal(parcelMission)){
+            if (bestCoordinatesForMission(parcelMission).size() > gameInteraction.getResourceSize(ResourceType.PARCEL))
                 return -1;
-            else if (isFinishedInOneTurn(parcelMission))
-                return 1;
             return nbMoveParcel(parcelMission);
         }
         return -1;
-    }
-
-    /**
-     * <p>check if the mission can be done in only one turn</p>
-     * @param parcelMission
-     *          <b>ParcelMission object we want to test.</b>
-     * @return <b>True if the mission can be done in one turn</b>
-     * @see GameInteraction
-     */
-    boolean isFinishedInOneTurn(ParcelMission parcelMission) {
-        for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()){
-            List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
-            List<Coordinate> coordinateNotPlaced = new ArrayList<>();
-            List<Coordinate> coordinateNotIrrigated = new ArrayList<>();
-            for (Coordinate coordinate1 : parcelForm){
-                if (!gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
-                    coordinateNotPlaced.add(coordinate1);
-                if (gameInteraction.isPlacedParcel(coordinate1) && !gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
-                    coordinateNotIrrigated.add(coordinate1);
-            }
-            if (coordinateNotPlaced.size() == 1 && coordinateNotPlaced.get(0).isNextTo(new Coordinate(0,0,0)))
-                return true;
-            if (coordinateNotPlaced.size() == 0 && coordinateNotIrrigated.size() == 1
-                    && getBestCanal(coordinateNotIrrigated.get(0)) != null
-                    && (getBestCanal(coordinateNotIrrigated.get(0))[0] == coordinateNotIrrigated.get(0)
-                    ||  getBestCanal(coordinateNotIrrigated.get(0))[1] == coordinateNotIrrigated.get(0)))
-                return true;
-        }
-        return false;
-    }
-
-    /**
-     * <p>check if the mission is already done or not</p>
-     * @param parcelMission
-     *          <b>ParcelMission object we want to test.</b>
-     * @return <b>True if the mission is done</b>
-     * @see GameInteraction
-     */
-    boolean isAlreadyFinished(ParcelMission parcelMission) {
-        for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()){
-            List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
-            int cpt = 0;
-            for (Coordinate coordinate1 : parcelForm){
-                if (gameInteraction.isPlacedAndIrrigatedParcel(coordinate1))
-                    cpt++;
-            }
-            if (cpt == parcelForm.size())
-                return true;
-        }
-        return false;
     }
 
     /**
@@ -316,14 +263,21 @@ public class MissionParcelStrat extends Strategie {
      * @see GameInteraction
      */
     int nbMoveParcel(ParcelMission parcelMission) {
-        Map<Coordinate,Boolean> bestCoordinatesForMission = bestCoordinatesForMission(parcelMission);
+        Map<Coordinate,Boolean> bestCoordinatesForMission;
         int nbMove = 0;
-        for (Coordinate coordinate1 : bestCoordinatesForMission.keySet()){
-            if (coordinate1.isNextTo(new Coordinate(0,0,0)))
-                nbMove ++;
-            else
+
+        if((bestCoordinatesForMission = bestCoordinatesForMission(parcelMission)).size() == 0){
+            for (Coordinate coord : coordEndMissionNoIrrigate(parcelMission))
+                if (!gameInteraction.isPlacedAndIrrigatedParcel(coord))
+                    nbMove += 2;
+            return nbMove;
+        }
+
+        for (Map.Entry<Coordinate,Boolean> line : bestCoordinatesForMission.entrySet()) {
+            if (line.getValue() && !line.getKey().isNextTo(new Coordinate(0, 0, 0)))
                 nbMove += 2;
         }
-        return nbMove;
+
+        return nbMove + bestCoordinatesForMission.size();
     }
 }
