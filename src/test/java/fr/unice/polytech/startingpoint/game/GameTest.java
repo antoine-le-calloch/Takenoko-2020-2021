@@ -105,21 +105,21 @@ class GameTest {
 
     @Test
     void tooManyPlayersInGame(){
-        BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
+        BotType[] botList = new BotType[]{BotType.RANDOM,BotType.RANDOM,BotType.RANDOM,BotType.RANDOM,BotType.RANDOM};
         Game game=new Game(false, botList);
         assertThrows(TooManyPlayersInGameException.class, game::play);
     }
 
     @Test
     void fourPlayersInGame(){
-        BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
+        BotType[] botList = new BotType[]{BotType.RANDOM,BotType.RANDOM,BotType.RANDOM,BotType.RANDOM};
         Game game=new Game(false, botList);
         game.play();
     }
 
     @Test
     void OnePlayersInGame(){
-        BotType[] botList = new BotType[]{BotType.PARCEL_BOT};
+        BotType[] botList = new BotType[]{BotType.RANDOM};
         Game game=new Game(false, botList);
         game.play();
     }
