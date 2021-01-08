@@ -104,7 +104,7 @@ public class MissionPandaStrat extends Strategie {
             if (parcelInformationList.stream().map(ParcelInformation::getColorType).collect(Collectors.toList()).contains(colorType)){
                 Coordinate coordinate = null;
                 for (Coordinate c : possibleCoordinatesParcel()){
-                    if (gameInteraction.getRules().isMovableCharacter(CharacterType.PANDA,c))
+                    if (gameInteraction.getRules().isMovableCharacterIfCoordinateIsPlaced(CharacterType.PANDA,c))
                         coordinate = c;
                 }
                 if (coordinate == null)

@@ -1,17 +1,19 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
-import fr.unice.polytech.startingpoint.bot.Bot;
-import fr.unice.polytech.startingpoint.bot.PeasantBot;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
-import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,9 +28,6 @@ class MissionPeasantStratTest {
     private GameInteraction gameInteraction;
     private PeasantMission peasantMissionGreen;
     private PeasantMission peasantMissionGreenFerti;
-
-
-
 
     @BeforeEach
     void setUp() {
@@ -84,7 +83,6 @@ class MissionPeasantStratTest {
         assertEquals(2,game.getBoard().getPlacedParcels().get(coordinate1).getNbBamboo());//2 bamboo sur la parcel
     }
 
-
     /**
      <h2><u>IS JUDICIOUS</u></h2>
      */
@@ -114,7 +112,6 @@ class MissionPeasantStratTest {
         assertFalse(missionPeasantStratWithMock.isJudiciousPlaceCanal());
     }
 
-
     @Test
     void noMoreParcels(){
         GameInteraction gameInteractionMock = Mockito.mock(GameInteraction.class);
@@ -129,7 +126,6 @@ class MissionPeasantStratTest {
         assertFalse(stratMissionPeasant.isJudiciousPlaceParcel());
     }
 
-
     /**
      <h2><u>Strats Missions</u></h2>
      */
@@ -139,18 +135,16 @@ class MissionPeasantStratTest {
         stratMissionPeasant.isAlreadyFinished(peasantMissionGreen);
     }
 
-
     @Test
     void missionNotFinished(){
-        for(int i=0;i<2;i++){
+        for(int i = 0 ; i < 2 ; i++){
             parcelGreen.addBamboo();
         }
         game.getBoard().placeParcel(parcelGreen,coordinate1);
         assertFalse(stratMissionPeasant.isAlreadyFinished(peasantMissionGreen));
     }
 
-
- @Test
+    @Test
     void missionFinished(){
         for(int i=0;i<3;i++){
             parcelGreen.addBamboo();
@@ -159,6 +153,28 @@ class MissionPeasantStratTest {
         assertTrue(stratMissionPeasant.isAlreadyFinished(peasantMissionGreen));
     }
 
+    @Test
+    void getBestParcelInformation(){
+        List<ParcelInformation> parcelInformationList = new ArrayList<>(Arrays.asList(new ParcelInformation(),new ParcelInformation(ColorType.GREEN),new ParcelInformation(ImprovementType.FERTILIZER)));
+        PeasantMission peasantMission = new PeasantMission(ColorType.NO_COLOR,ImprovementType.NOTHING,0);
+        assertEquals(new ParcelInformation(),stratMissionPeasant.getBestParcelInformation(parcelInformationList,peasantMission));
+    }
+
+    @Test
+    void noBestParcelInformation(){
+        List<ParcelInformation> parcelInformationList = new ArrayList<>(Arrays.asList(new ParcelInformation(),new ParcelInformation(ColorType.GREEN),new ParcelInformation(ImprovementType.FERTILIZER)));
+        PeasantMission peasantMission = new PeasantMission(ColorType.RED,ImprovementType.WATERSHED,0);
+        assertEquals(new ParcelInformation(),stratMissionPeasant.getBestParcelInformation(parcelInformationList,peasantMission));
+    }
+
+    @Test
+    void getBestCoordinateParcel(){
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(1,-1,0));
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(2,-2,0));
+        game.getBoard().placeParcel(new Parcel(),new Coordinate(3,-3,0));
+        game.getBoard().moveCharacter(CharacterType.PEASANT,new Coordinate(3,-3,0));
+        assertEquals(new Coordinate(-1,1,0),stratMissionPeasant.getBestCoordinateParcel());
+    }
 
     @Test
     void strategyPlaceCanal(){
@@ -166,7 +182,7 @@ class MissionPeasantStratTest {
         Coordinate coordinate2 = new Coordinate(1,0,-1);
         game.getBoard().placeParcel(new Parcel(),coordinate1);
         game.getBoard().placeParcel(new Parcel(),coordinate2);
-        stratMissionPeasant.strategyPlaceCanal();
+        stratMissionPeasant.strategyPlaceCanal(new PeasantMission(ColorType.NO_COLOR,ImprovementType.NOTHING,0));
         assertTrue(game.getBoard().getPlacedCanals().containsKey(Coordinate.getSortedSet(coordinate1, coordinate2)));
     }
 
@@ -191,7 +207,7 @@ class MissionPeasantStratTest {
         assertFalse(stratMissionPeasant.isFinishedInOneTurn(peasantMissionGreen));
     }
 
- @Test
+    @Test
     void notExistGoodMOvableParcel(){
         game.getBoard().placeParcel(parcelRed,coordinate1);
         assertTrue(stratMissionPeasant.notExistGoodMovableParcel(peasantMissionGreen));
@@ -207,6 +223,7 @@ class MissionPeasantStratTest {
     void missionNotTakenCauseToolong(){
         assertEquals(-1,stratMissionPeasant.howManyMoveToDoMission(new PeasantMission(ColorType.GREEN,ImprovementType.WHATEVER,-2)));
     }
+
     @Test
     void missionTakenCauseCanBeFinishedIn1Turn(){
         game.getBoard().placeParcel(parcelGreen,coordinate1);
@@ -214,17 +231,15 @@ class MissionPeasantStratTest {
         parcelGreen.addBamboo();
         assertEquals(1,stratMissionPeasant.howManyMoveToDoMission(peasantMissionGreen));
     }
+
     @Test
     void missionNotTakenCauseCanBeFinishedIn3Turn(){
         game.getBoard().placeParcel(parcelGreen,coordinate1);
         assertEquals(4,stratMissionPeasant.howManyMoveToDoMission(peasantMissionGreen));
     }
+
    @Test
     void cantMoveSoChooseToDontDoMission(){
         assertEquals(-1,stratMissionPeasant.howManyMoveToDoMission(peasantMissionGreen));
     }
-
-
-
-
 }

@@ -1,8 +1,8 @@
 package fr.unice.polytech.startingpoint.bot;
 
+import fr.unice.polytech.startingpoint.bot.strategie.MissionPandaStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
-import fr.unice.polytech.startingpoint.bot.strategie.MissionPandaStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.Mission;

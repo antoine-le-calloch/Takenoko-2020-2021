@@ -1,13 +1,11 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.GameInteraction;
-import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
-import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
-import fr.unice.polytech.startingpoint.type.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import fr.unice.polytech.startingpoint.type.BotType;
+import fr.unice.polytech.startingpoint.type.MissionType;
+import fr.unice.polytech.startingpoint.type.ResourceType;
+import fr.unice.polytech.startingpoint.type.WeatherType;
 
 /**
  * <h1>{@link ParcelBot} :</h1>

@@ -2,7 +2,6 @@ package fr.unice.polytech.startingpoint.type;
 
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 
-import java.util.List;
 import java.util.Set;
 
 public enum ActionType {

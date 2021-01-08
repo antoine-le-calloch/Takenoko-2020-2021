@@ -9,7 +9,10 @@ import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MissionParcelStrat extends Strategie {
@@ -221,9 +224,10 @@ public class MissionParcelStrat extends Strategie {
 
     private List<Coordinate> coordEndMissionNoIrrigate(ParcelMission mission) {
         for (Coordinate coordinate : allPlaces()) {
-            if(coordNeedToDoMission(coordinate,mission) != null && coordNeedToDoMission(coordinate,mission).size() == 0) {
-                return setForm(coordinate, mission.getFormType());
-            }
+            Map<Coordinate, Boolean> coordinateList = coordNeedToDoMission(coordinate,mission);
+            if(coordinateList != null)
+                if(coordinateList.size() == 0)
+                    return setForm(coordinate, mission.getFormType());
         }
         return new ArrayList<>();
     }
