@@ -47,8 +47,7 @@ public class MissionPandaStrat extends Strategie {
 
     boolean isJudiciousPlaceCanal() {
         return !gameInteraction.contains(ActionType.DRAW_CANAL) && !gameInteraction.contains(ActionType.PLACE_CANAL)
-                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0
-                && !possibleCoordinatesCanal().isEmpty()) ;
+                && (gameInteraction.getResourceSize(ResourceType.CANAL) > 0) ;
     }
 
     /**<b><u>STRATEGIES METHODS</b>
@@ -99,7 +98,7 @@ public class MissionPandaStrat extends Strategie {
         }
     }
 
-    public void strategyPlaceParcel(ColorType colorType) {
+    private void strategyPlaceParcel(ColorType colorType) {
         try {
             List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
             if (parcelInformationList.stream().map(ParcelInformation::getColorType).collect(Collectors.toList()).contains(colorType)){
@@ -179,7 +178,7 @@ public class MissionPandaStrat extends Strategie {
         return false;
     }
 
-    boolean notExistGoodMovableParcel(ColorType colorTypeMission){
+    private boolean notExistGoodMovableParcel(ColorType colorTypeMission){
         int nbEnclosure = 0;
         List<Coordinate> coordinates = gameInteraction.getPlacedCoordinatesByColor(colorTypeMission);
         for (Coordinate coordinate : coordinates){
@@ -189,7 +188,7 @@ public class MissionPandaStrat extends Strategie {
         return nbEnclosure == 0;
     }
 
-    int nbMoveOneColor(ColorType colorTypeMission){
+    private int nbMoveOneColor(ColorType colorTypeMission){
         if (strategyMovePanda(colorTypeMission) != null){
             if (gameInteraction.getInventoryBamboo()[colorTypeMission.ordinal()] == 1)
                 return 1;
@@ -198,7 +197,7 @@ public class MissionPandaStrat extends Strategie {
         return -1;
     }
 
-    int nbMoveAllColor(){
+    private int nbMoveAllColor(){
         int nbBamboos = 0;
         for (int i = 0; i < gameInteraction.getInventoryBamboo().length; i++) {
             if (gameInteraction.getInventoryBamboo()[i] == 0)

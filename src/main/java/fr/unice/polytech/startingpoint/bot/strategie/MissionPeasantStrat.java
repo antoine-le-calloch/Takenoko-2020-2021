@@ -51,12 +51,12 @@ public class MissionPeasantStrat extends Strategie {
     public Coordinate strategyMovePeasant(PeasantMission mission) {
         if (!mission.getImprovementType().equals(ImprovementType.WHATEVER))
             for (Coordinate coordinate : possibleCoordinatesPeasant())
-                if (gameInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColorType()))
+                if (gameInteraction.getPlacedParcelInformation(coordinate).getColorType().equals(mission.getColorType()) && gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(mission.getImprovementType()))
                     return coordinate;
         return null;
     }
 
-    public void strategyPlaceParcel(ColorType colorType) {
+    private void strategyPlaceParcel(ColorType colorType) {
         try {
             List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
             if (parcelInformationList.stream().map(ParcelInformation::getColorType).collect(Collectors.toList()).contains(colorType)){
@@ -95,7 +95,7 @@ public class MissionPeasantStrat extends Strategie {
         PeasantMission peasantMission = (PeasantMission) mission;
         if(!isAlreadyFinished(peasantMission) &&
                 isJudiciousMovePeasant((PeasantMission) mission) &&
-                        (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty()) ){
+                        (!gameInteraction.contains(ActionType.MOVE_PEASANT) ) ){
             if (peasantMission.getImprovementType().equals(ImprovementType.WHATEVER) || notExistGoodMovableParcel(peasantMission))
                 return -1;
             else if (isFinishedInOneTurn(peasantMission))
@@ -116,7 +116,7 @@ public class MissionPeasantStrat extends Strategie {
     boolean isFinishedInOneTurn(PeasantMission peasantMission) {
         if (strategyMovePeasant(peasantMission) != null)
             if (gameInteraction.getPlacedParcelsNbBamboo(strategyMovePeasant(peasantMission)) == 2 &&
-                    peasantMission.getImprovementType().equals(ImprovementType.WATERSHED))
+                    peasantMission.getImprovementType().equals(ImprovementType.FERTILIZER))
                 return true;
             else
                 return gameInteraction.getPlacedParcelsNbBamboo(strategyMovePeasant(peasantMission)) == 3;
@@ -133,7 +133,7 @@ public class MissionPeasantStrat extends Strategie {
         return nbGoodParcelPlaced == 0;
     }
 
-    int nbMovePeasant(PeasantMission peasantMission){
+    private int nbMovePeasant(PeasantMission peasantMission){
         int maxNbBamboo = 0;
         for (Coordinate coordinate : gameInteraction.getPlacedCoordinatesByParcelInformation(new ParcelInformation(peasantMission.getColorType(),peasantMission.getImprovementType()))){
             if (gameInteraction.getPlacedParcelsNbBamboo(coordinate) > maxNbBamboo)

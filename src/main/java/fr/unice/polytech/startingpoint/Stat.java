@@ -17,7 +17,7 @@ import java.util.List;
  * @version 0.5
  */
 
-public final class Stat {
+final class Stat {
     private final List<List<int[]>> gameData;
     private final BotType[] botList;
     private final int[][] botScores;
@@ -107,6 +107,7 @@ public final class Stat {
     /**
      * @return <b>The stats from all players.</b>
      */
+    @Override
     public String toString(){
         StringBuilder displayStat = new StringBuilder();
         for (int i = 0; i < botScores.length; i++) {

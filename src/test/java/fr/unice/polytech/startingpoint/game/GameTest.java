@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.exception.RulesViolationException;
+import fr.unice.polytech.startingpoint.exception.TooManyPlayersInGameException;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.Test;
@@ -7,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-    Game game = new Game();
+    private Game game = new Game();
 
     @Test
     void aPlayerFinished(){
@@ -29,7 +31,7 @@ class GameTest {
     @Test
     void secondPlayerDidntReceiveEmperor(){
         BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT};
-        Game game=new Game(botList);
+        Game game=new Game(false, botList);
         for (int i = 0; i < 9; i++) {
             game.getPlayerData().addMissionDone();
             game.nextBot();
@@ -43,7 +45,7 @@ class GameTest {
     @Test
     void gameIsFinish(){
         BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
-        Game game=new Game(botList);
+        Game game=new Game(false, botList);
         for (int i = 0; i < 28; i++) {
             game.getPlayerData().addMissionDone();
             game.isContinue();
@@ -55,7 +57,7 @@ class GameTest {
     @Test
     void gameIsnTFinishBecauseLastTurnIsnTFinish(){
         BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
-        Game game=new Game(botList);
+        Game game=new Game(false, botList);
         for (int i = 0; i < 25; i++) {
             game.getPlayerData().addMissionDone();
             game.isContinue();
@@ -100,4 +102,27 @@ class GameTest {
         assertEquals(2,game.getScores().get(0)[0]);
         assertEquals(1,game.getMissionsDone().get(0));
     }
+
+    @Test
+    void tooManyPlayersInGame(){
+        BotType[] botList = new BotType[]{BotType.RANDOM,BotType.RANDOM,BotType.RANDOM,BotType.RANDOM,BotType.RANDOM};
+        Game game=new Game(false, botList);
+        assertThrows(TooManyPlayersInGameException.class, game::play);
+    }
+
+    @Test
+    void fourPlayersInGame(){
+        BotType[] botList = new BotType[]{BotType.RANDOM,BotType.RANDOM,BotType.RANDOM,BotType.RANDOM};
+        Game game=new Game(false, botList);
+        game.play();
+    }
+
+    @Test
+    void OnePlayersInGame(){
+        BotType[] botList = new BotType[]{BotType.RANDOM};
+        Game game=new Game(false, botList);
+        game.play();
+    }
+
+
 }

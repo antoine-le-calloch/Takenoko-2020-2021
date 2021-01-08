@@ -49,7 +49,7 @@ public final class Coordinate implements Comparable<Coordinate> {
     }
 
     //Renvoie l'opposé de la coordonnée actuelle
-    public Coordinate negative() {
+    private Coordinate negative() {
         Coordinate c = new Coordinate(this);
         for(int i = 0 ; i < coordinate.length ; i++){
             c.coordinate[i] = -c.coordinate[i];

@@ -67,10 +67,10 @@ public class MissionParcelStrat extends Strategie {
     /**<b><u>STRATEGIES METHODS</b>
      */
 
-    public void putParcel(ParcelMission parcelmission) {
+    void putParcel(ParcelMission parcelmission) {
         try {
             List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
-            List<Coordinate> bestCoords = coordsToPut(parcelInformationList, parcelmission);
+            List<Coordinate> bestCoords = bestCoordPossibleBasedOnParcelDrawn(parcelInformationList, parcelmission);
 
             gameInteraction.selectParcel(parcelInformationList.get(0));
             gameInteraction.placeParcel(bestCoords.get(0));
@@ -81,7 +81,7 @@ public class MissionParcelStrat extends Strategie {
         }
     }
 
-    public List<Coordinate> coordsToPut(List<ParcelInformation> parcelInformationList, ParcelMission parcelmission) {
+    List<Coordinate> bestCoordPossibleBasedOnParcelDrawn(List<ParcelInformation> parcelInformationList, ParcelMission parcelmission) {
         Map<Coordinate, Boolean> bestCoords = bestCoordinatesForMission(parcelmission);
         List<Coordinate> coordsNeeded= new ArrayList<>();
         List<Coordinate> coordsUsed= new ArrayList<>();
@@ -113,12 +113,12 @@ public class MissionParcelStrat extends Strategie {
      *            <b>The mission wanted to be completed.</b>
      * @return <b>The best coordinates where a parcel need to be placed to complete the mission.</b>
      */
-    public Map<Coordinate, Boolean> bestCoordinatesForMission(ParcelMission mission){
-        Map<Coordinate, Boolean> bestCoordinates = new HashMap<>();
+    Map<Coordinate, Boolean> bestCoordinatesForMission(ParcelMission mission){
+        Map<Coordinate, Boolean> bestCoordinates = new LinkedHashMap<>();
         int minTurnToEndForm = -1;
 
         for (Coordinate coordinate : allPlaces()) {
-            Map<Coordinate, Boolean> parcelsToPlaceToDoForm = coordNeedToDoMission(coordinate, mission);
+            Map<Coordinate, Boolean> parcelsToPlaceToDoForm = coordsToDoMission(coordinate, mission);
 
             if(parcelsToPlaceToDoForm != null && (minTurnToEndForm == -1 || parcelsToPlaceToDoForm.size() < minTurnToEndForm)){
                 minTurnToEndForm = parcelsToPlaceToDoForm.size();
@@ -134,9 +134,9 @@ public class MissionParcelStrat extends Strategie {
      *            <b>The mission wanted to be completed.</b>
      * @return <b>The list of required coordinates where parcels need to be placed to complete the mission.</b>
      */
-    public Map<Coordinate, Boolean> coordNeedToDoMission(Coordinate coordinate, ParcelMission mission){
+    Map<Coordinate, Boolean> coordsToDoMission(Coordinate coordinate, ParcelMission mission){
         List<Coordinate> distantCoord = new ArrayList<>();
-        Map<Coordinate, Boolean> coordToDoMission = new HashMap<>();
+        Map<Coordinate, Boolean> coordToDoMission = new LinkedHashMap<>();
         List<Coordinate> form = setForm(coordinate, mission.getFormType());
 
         if(form.contains(new Coordinate(0,0,0)) || form.stream().anyMatch(coord -> gameInteraction.isPlacedParcel(coord) &&
@@ -166,7 +166,7 @@ public class MissionParcelStrat extends Strategie {
         return coordToDoMission;
     }
 
-    public void treatDistantCoord (Coordinate distantCoord, Map<Coordinate, Boolean> coordToDoMission){
+    void treatDistantCoord(Coordinate distantCoord, Map<Coordinate, Boolean> coordToDoMission){
         if(distantCoord.coordinatesAround().stream().filter(coordToDoMission.keySet()::contains).count() < 2){
             List<Coordinate>  coordsNeed =  Coordinate.getInCommonAroundCoordinates(distantCoord,distantCoord.coordinatesAround().stream().filter(coordToDoMission.keySet()::contains).collect(Collectors.toList()).get(0));
             if(boardRules.isPlayableParcel(coordsNeed.get(0)))
@@ -184,20 +184,22 @@ public class MissionParcelStrat extends Strategie {
         }
     }
 
-    public Coordinate coordAroundUse(Coordinate coordinate){
+    Coordinate coordAroundUse(Coordinate coordinate){
         for (Coordinate coordAround : coordinate.coordinatesAround())
             if(gameInteraction.isPlacedParcel(coordAround))
                 return coordAround;
         return null;
     }
 
-    public List<Coordinate> setForm(Coordinate coordinate, FormType form){
+    List<Coordinate> setForm(Coordinate coordinate, FormType form){
         List<Coordinate> coordForm = new ArrayList<>(Coordinate.coordinatesOfOffsets(coordinate, form.getOffsetsList1()));
         coordForm.addAll(Coordinate.coordinatesOfOffsets(coordinate, form.getOffsetsList2()));
         return coordForm;
     }
 
-    public void putCanal(ParcelMission mission) {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void putCanal(ParcelMission mission) {
         try {
             List<Coordinate> fullForm = coordEndMissionNoIrrigate(mission);
             Coordinate[] bestCoordinatesCanal = null;
@@ -219,9 +221,9 @@ public class MissionParcelStrat extends Strategie {
         }
     }
 
-    public List<Coordinate> coordEndMissionNoIrrigate(ParcelMission mission) {
+    List<Coordinate> coordEndMissionNoIrrigate(ParcelMission mission) {
         for (Coordinate coordinate : allPlaces()) {
-            if(coordNeedToDoMission(coordinate,mission) != null && coordNeedToDoMission(coordinate,mission).size() == 0) {
+            if(coordsToDoMission(coordinate,mission) != null && coordsToDoMission(coordinate,mission).size() == 0) {
                 return setForm(coordinate, mission.getFormType());
             }
         }

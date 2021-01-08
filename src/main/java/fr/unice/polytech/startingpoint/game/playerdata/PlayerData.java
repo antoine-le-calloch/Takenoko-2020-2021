@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class PlayerData {
     private final Bot bot;
+    private final BotType botType;
     private final Inventory inventory;
 
     public TemporaryInventory getTemporaryInventory() {
@@ -32,6 +33,7 @@ public class PlayerData {
 
     public PlayerData(Bot bot){
         this.bot = bot;
+        this.botType = bot.getBotType();
         inventory = new Inventory();
         temporaryInventory = new TemporaryInventory();
         score = 0;
@@ -149,6 +151,8 @@ public class PlayerData {
     public Bot getBot() {
         return bot;
     }
+
+    public BotType getBotType() { return botType;}
 
     public List<ActionType> getActionTypeList() {
         return temporaryInventory.getActionTypeList();

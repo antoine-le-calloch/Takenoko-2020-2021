@@ -36,7 +36,7 @@ public class GameInteraction {
         this.game = game;
     }
 
-    PlayerData getPlayerData() {
+    private PlayerData getPlayerData() {
         return game.getPlayerData();
     }
 
@@ -247,6 +247,14 @@ public class GameInteraction {
         }
         else
             throw new RulesViolationException("Already used this method.");
+    }
+
+    public void useSun(){
+        getPlayerData().add(ActionType.SUN);
+    }
+
+    public void useWind(){
+        getPlayerData().add(ActionType.WIND);
     }
 
     /**

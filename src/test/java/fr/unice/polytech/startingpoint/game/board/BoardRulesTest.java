@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BoardRulesTest {
-    Game game;
-    Board board;
-    BoardRules boardRules;
-    Resource resource;
+class BoardRulesTest {
+    private Game game;
+    private Board board;
+    private BoardRules boardRules;
+    private Resource resource;
 
     @BeforeEach
-    public void initialize(){
+    void initialize(){
         game = new Game();
         board = game.getBoard();
         boardRules = game.getRules();

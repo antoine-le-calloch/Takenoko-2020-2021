@@ -13,99 +13,108 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Strategie {
-    protected final GameInteraction gameInteraction;
-    protected final BoardRules boardRules;
+    final GameInteraction gameInteraction;
+    final BoardRules boardRules;
 
-    public Strategie(GameInteraction gameInteraction) {
+    Strategie(GameInteraction gameInteraction) {
         this.gameInteraction = gameInteraction;
         this.boardRules = gameInteraction.getRules();
     }
 
-    /**<p>The actions of the bot during his turn.</p>
+    /**
+     * <p>The actions of the bot during his turn.</p>
+     *
      * @param mission
      */
     public abstract void stratOneTurn(Mission mission);
 
     public abstract int howManyMoveToDoMission(Mission mission);
 
-    public Coordinate[] getBestCanal(Coordinate coordinateToIrrigate){
+    public Coordinate[] getBestCanal(Coordinate coordinateToIrrigate) {
         Coordinate[] bestCanal = null;
         for (Coordinate[] coordinatesCanal : possibleCoordinatesCanal())
-            if( bestCanal == null ||
-                    (Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[0]) + Coordinate.getNorm(coordinateToIrrigate,coordinatesCanal[1])) <
-                    (Coordinate.getNorm(coordinateToIrrigate,bestCanal[0]) + Coordinate.getNorm(coordinateToIrrigate,bestCanal[1])) )
+            if (bestCanal == null ||
+                    (Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[0]) + Coordinate.getNorm(coordinateToIrrigate, coordinatesCanal[1])) <
+                            (Coordinate.getNorm(coordinateToIrrigate, bestCanal[0]) + Coordinate.getNorm(coordinateToIrrigate, bestCanal[1])))
                 bestCanal = coordinatesCanal;
         return bestCanal;
     }
 
-    /**@return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>
+    /**
+     * @return <b>A list of all parcels’ coordinates present on the board and one layer of coordinates around.</b>
      */
-    public List<Coordinate> allPlaces(){
+    public List<Coordinate> allPlaces() {
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : gameInteraction.getPlacedCoordinates()) {
+        for (Coordinate c : gameInteraction.getPlacedCoordinates()) {
             possibleCoordinates.add(c);
             for (Coordinate offSet : Coordinate.offSets())
-                possibleCoordinates.add(new Coordinate(c,offSet));
+                possibleCoordinates.add(new Coordinate(c, offSet));
         }
         return new ArrayList<>(possibleCoordinates);
     }
 
-    /**@return <b>A list of coordinates for all placeable parcels on the board.</b>
+    /**
+     * @return <b>A list of coordinates for all placeable parcels on the board.</b>
      */
-    public List<Coordinate> possibleCoordinatesParcel(){
+    public List<Coordinate> possibleCoordinatesParcel() {
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : gameInteraction.getPlacedCoordinates())
+        for (Coordinate c : gameInteraction.getPlacedCoordinates())
             for (Coordinate offSet : Coordinate.offSets())
-                if(boardRules.isPlayableParcel(new Coordinate(c,offSet)))
-                    possibleCoordinates.add(new Coordinate(c,offSet));
+                if (boardRules.isPlayableParcel(new Coordinate(c, offSet)))
+                    possibleCoordinates.add(new Coordinate(c, offSet));
         return new ArrayList<>(possibleCoordinates);
     }
 
-    /**@return <b>A list of coordinates for all placeable canals on the board.</b>
+    /**
+     * @return <b>A list of coordinates for all placeable canals on the board.</b>
      */
-    public List<Coordinate[]> possibleCoordinatesCanal(){
+    public List<Coordinate[]> possibleCoordinatesCanal() {
         Set<Coordinate[]> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate1 : gameInteraction.getPlacedCoordinates())
-            for(Coordinate coordinate2 : gameInteraction.getPlacedCoordinates())
+        for (Coordinate coordinate1 : gameInteraction.getPlacedCoordinates())
+            for (Coordinate coordinate2 : gameInteraction.getPlacedCoordinates())
                 if (boardRules.isPlayableCanal(coordinate1, coordinate2))
                     possibleCoordinates.add(new Coordinate[]{coordinate1, coordinate2});
         return new ArrayList<>(possibleCoordinates);
     }
 
-    /**@return <b>A list of coordinates where the Panda can be moved on the board.</b>
+    /**
+     * @return <b>A list of coordinates where the Panda can be moved on the board.</b>
      */
-    public List<Coordinate> possibleCoordinatesPanda(){
+    public List<Coordinate> possibleCoordinatesPanda() {
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate coordinate : gameInteraction.getPlacedCoordinates())
-            if (boardRules.isMovableCharacter(CharacterType.PANDA,coordinate))
+        for (Coordinate coordinate : gameInteraction.getPlacedCoordinates())
+            if (boardRules.isMovableCharacter(CharacterType.PANDA, coordinate))
                 possibleCoordinates.add(coordinate);
         return new ArrayList<>(possibleCoordinates);
     }
 
-    /**@return <b>A list of coordinates  where the Peasant can be moved on the board.</b>
+    /**
+     * @return <b>A list of coordinates  where the Peasant can be moved on the board.</b>
      */
-    public List<Coordinate> possibleCoordinatesPeasant(){
+    public List<Coordinate> possibleCoordinatesPeasant() {
         Set<Coordinate> possibleCoordinates = new HashSet<>();
-        for(Coordinate c : gameInteraction.getPlacedCoordinates())
-            if (boardRules.isMovableCharacter(CharacterType.PEASANT,c))
+        for (Coordinate c : gameInteraction.getPlacedCoordinates())
+            if (boardRules.isMovableCharacter(CharacterType.PEASANT, c))
                 possibleCoordinates.add(c);
         return new ArrayList<>(possibleCoordinates);
     }
 
-    /**@return <b>A list of playable coordinates around a coordinate given </b>
+    /**
+     * @return <b>A list of playable coordinates around a coordinate given </b>
      **/
-    public List<Coordinate> playableCoordinatesAroundACoordinateGivenCo(Coordinate coordinate){
+    private List<Coordinate> playableCoordinatesAroundACoordinateGivenCo(Coordinate coordinate) {
         return coordinate.coordinatesAround().stream()
-                .filter(c-> boardRules.isPlayableParcel(c) && !gameInteraction.isPlacedParcel(c))
+                .filter(c -> boardRules.isPlayableParcel(c) && !gameInteraction.isPlacedParcel(c))
                 .collect(Collectors.toList());
     }
 
-    /**@return <b>A list of all possible coordinates next to all parcels with the color given </b>
+    /**
+     * @return <b>A list of all possible coordinates next to all parcels with the color given </b>
      **/
-    public List<Coordinate> allPosssibleCoordinatesNextToParcelsWithAColor(ColorType colorGiven){
-        Set<Coordinate> posssibleCoNextToParcelsWithAColor=new HashSet<>();
-        List<Coordinate> placedCoordinatesByColor=gameInteraction.getPlacedCoordinatesByColor(colorGiven);
-        for (Coordinate  placedCoordinate: placedCoordinatesByColor)
+    public List<Coordinate> allPosssibleCoordinatesNextToParcelsWithAColor(ColorType colorGiven) {
+        Set<Coordinate> posssibleCoNextToParcelsWithAColor = new HashSet<>();
+        List<Coordinate> placedCoordinatesByColor = gameInteraction.getPlacedCoordinatesByColor(colorGiven);
+        for (Coordinate placedCoordinate : placedCoordinatesByColor)
             posssibleCoNextToParcelsWithAColor.addAll(playableCoordinatesAroundACoordinateGivenCo(placedCoordinate));
         return new ArrayList<>(posssibleCoNextToParcelsWithAColor);
     }

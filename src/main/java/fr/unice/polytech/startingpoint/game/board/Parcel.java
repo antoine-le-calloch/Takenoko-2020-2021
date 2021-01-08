@@ -89,4 +89,17 @@ public class Parcel {
     public int getNbBamboo(){
         return nbBamboo;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder displayInformationsParcel = new StringBuilder();
+        displayInformationsParcel.append("Couleur : ").append(parcelInformation.getColorType()).append(" | ");
+        displayInformationsParcel.append("Aménagement : ").append(parcelInformation.getImprovementType()).append(" | ");
+        displayInformationsParcel.append("Nombre bambous : ").append(nbBamboo).append(" | ");
+        if(irrigated)
+            displayInformationsParcel.append("Irrigué");
+        else
+            displayInformationsParcel.append("Non irrigué");
+        return displayInformationsParcel.toString();
+    }
 }

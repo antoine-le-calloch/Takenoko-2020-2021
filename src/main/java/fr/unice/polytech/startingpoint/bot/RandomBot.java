@@ -39,6 +39,7 @@ public class RandomBot extends Bot {
 
     public RandomBot(GameInteraction gameInteraction) {
         super(gameInteraction);
+        botType = BotType.RANDOM;
         random = new Random();
         random2 = new Random();
     }
@@ -50,6 +51,13 @@ public class RandomBot extends Bot {
 
     @Override
     public void botPlay(WeatherType weatherType){
+        playWeather(weatherType);
+        for (int i = gameInteraction.getStamina(); i > 0; i--) {
+            stratRandom();
+        }
+    }
+
+    void stratRandom(){
         int randAction = random.nextInt(5);
 
         if (randAction == 0 && gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 && !gameInteraction.contains(ActionType.DRAW_MISSION) && gameInteraction.getInventoryMissions().size() < 5) {// pioche mission

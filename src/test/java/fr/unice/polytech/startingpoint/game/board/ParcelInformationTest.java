@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParcelInformationTest {
-    ParcelInformation parcelInformation;
+class ParcelInformationTest {
+    private ParcelInformation parcelInformation;
 
     @BeforeEach
     void setUp(){

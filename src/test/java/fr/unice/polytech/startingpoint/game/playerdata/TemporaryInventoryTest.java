@@ -13,16 +13,16 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TemporaryInventoryTest {
-    TemporaryInventory temporaryInventory;
+class TemporaryInventoryTest {
+    private TemporaryInventory temporaryInventory;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         temporaryInventory = new TemporaryInventory();
     }
 
     @Test
-    public void stamina() throws OutOfResourcesException {
+    void stamina() throws OutOfResourcesException {
         assertEquals(2,temporaryInventory.getStamina());
 
         temporaryInventory.looseStamina();
@@ -38,7 +38,7 @@ public class TemporaryInventoryTest {
     }
 
     @Test
-    public void parcel() throws OutOfResourcesException {
+    void parcel() throws OutOfResourcesException {
         assertNull(temporaryInventory.getParcel());
 
         temporaryInventory.saveParcel(new Parcel());
@@ -49,7 +49,7 @@ public class TemporaryInventoryTest {
     }
 
     @Test
-    public void saveParcels(){
+    void saveParcels(){
         assertTrue(temporaryInventory.getParcelsSaved().isEmpty());
 
         temporaryInventory.saveParcels(new ArrayList<>(Arrays.asList(new Parcel(),new Parcel(),new Parcel())));
@@ -60,7 +60,7 @@ public class TemporaryInventoryTest {
     }
 
     @Test
-    public void actionTypeList(){
+    void actionTypeList(){
         assertTrue(temporaryInventory.getActionTypeList().isEmpty());
 
         temporaryInventory.add(ActionType.DRAW_PARCELS);

@@ -14,29 +14,29 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ParcelMissionTest {
-    Board boardMock;
+class ParcelMissionTest {
+    private Board boardMock;
 
-    Parcel parcel1;
-    Parcel parcel2;
-    Parcel parcel3;
-    Parcel parcel4;
-    Parcel parcel5;
-    Parcel parcel6;
-    Parcel parcel7;
+    private Parcel parcel1;
+    private Parcel parcel2;
+    private Parcel parcel3;
+    private Parcel parcel4;
+    private Parcel parcel5;
+    private Parcel parcel6;
+    private Parcel parcel7;
 
-    Map<Coordinate,Parcel> coordinateParcelMap;
+    private Map<Coordinate,Parcel> coordinateParcelMap;
 
-    ParcelMission missionTR;
-    ParcelMission missionLR;
-    ParcelMission missionDR;
-    ParcelMission missionAR;
-    ParcelMission missionDBR;
-    ParcelMission missionTG;
-    ParcelMission missionLG;
-    ParcelMission missionDG;
-    ParcelMission missionAG;
-    ParcelMission missionDBG;
+    private ParcelMission missionTR;
+    private ParcelMission missionLR;
+    private ParcelMission missionDR;
+    private ParcelMission missionAR;
+    private ParcelMission missionDBR;
+    private ParcelMission missionTG;
+    private ParcelMission missionLG;
+    private ParcelMission missionDG;
+    private ParcelMission missionAG;
+    private ParcelMission missionDBG;
 
     @BeforeEach
     void setUp(){

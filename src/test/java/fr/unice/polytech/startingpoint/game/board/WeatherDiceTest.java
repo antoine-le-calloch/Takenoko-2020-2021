@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 class WeatherDiceTest {
-    WeatherDice weatherDice;
+    private WeatherDice weatherDice;
 
     @Test
     void rollOverNumberOfNumberOfFaces(){

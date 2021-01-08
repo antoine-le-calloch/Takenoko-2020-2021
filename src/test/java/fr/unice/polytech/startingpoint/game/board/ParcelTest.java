@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParcelTest {
-    Parcel parcel;
+    private Parcel parcel;
 
     @BeforeEach
     void initialize(){

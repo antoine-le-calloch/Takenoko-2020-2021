@@ -1,18 +1,18 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.exception.TooManyPlayersInGameException;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Resource;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.WeatherDice;
 import fr.unice.polytech.startingpoint.game.playerdata.PlayerData;
+import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import javax.swing.*;
+import java.util.*;
 
 /**
  * Moteur de jeu, creation d'une partie, fait jouer les bots, verifie les missions faites et termine la partie
@@ -33,11 +33,12 @@ public class Game{
     private final int FIRST_BOT = 0;
     private final WeatherDice weatherDice;
     private boolean isFirstPlayer;
+    private final boolean isInformationsPrinted;
     private int numBot;
     private int round;
     private int lastRound;
 
-    public Game(BotType[] botTypes){
+    public Game(boolean isInformationsPrinted, BotType[] botTypes){
         board = new Board();
         boardRules = new BoardRules(board);
         resource = new Resource();
@@ -45,6 +46,7 @@ public class Game{
         botData = new LinkedList<>();
         NB_MISSION = 11 - botTypes.length;
         isFirstPlayer = true;
+        this.isInformationsPrinted = isInformationsPrinted;
         numBot = FIRST_BOT;
         round = 0;
         lastRound = 0;
@@ -54,7 +56,7 @@ public class Game{
     }
 
     public Game(){
-        this(new BotType[]{BotType.RANDOM});
+        this(false, new BotType[]{BotType.RANDOM});
     }
 
     /**Initialize all bots.
@@ -109,12 +111,52 @@ public class Game{
      *
      */
 
+    /*        if(getPlayerData().add(ActionType.WEATHER)){
+             if(getPlacedCoordinates().contains(coordinate))
+                 game.getBoard().moveCharacter(CharacterType.PANDA,coordinate);
+             else
+                 throw new BadCoordinateException("The character can't move to this coordinate : " + coordinate.toString());
+        }
+        else
+            throw new RulesViolationException("Already used this method.");*/
+
     public void play() {
-        while( isContinue() ) {
-            if(numBot==FIRST_BOT)
-                newRound();
-            botPlay();
-            nextBot();
+        int NB_MAX_PLAYER = 4;
+        if (botData.size() <= NB_MAX_PLAYER) {
+            while (isContinue()) {
+                if (numBot == FIRST_BOT) {
+                    newRound();
+                    if (isInformationsPrinted) {
+                        System.out.println("=========== TOUR N°" + round + " ===========\n");
+                        printTurnInformations();
+                        System.out.println("\n");
+                    }
+                }
+                botPlay();
+                nextBot();
+            }
+        }
+        else
+            throw new TooManyPlayersInGameException("\nThere are more players in the list than the number of allowed players. \n" +
+                    "The maximum is " + NB_MAX_PLAYER + ".");
+    }
+
+    /**
+     * <p>print the informations of the game after each round</p>
+     */
+    private void printTurnInformations() {
+        for (int i = 0; i < botData.size(); i++) {
+            System.out.println("Le bot " + botData.get(i).getBotType() + " a complété " + botData.get(i).getMissionsDone()
+                    + " missions (" + botData.get(i).getMissionsPandaDone() + " missions panda, " + botData.get(i).getMissionsPeasantDone()
+                    + " missions jardinier, " + botData.get(i).getMissionsParcelDone() + " missions parcelles) pour un total de "
+                    + botData.get(i).getScore()[0] + " points.");
+            System.out.println("Au tour d'avant, il a joué les actions suivantes : " + botData.get(i).getActionTypeList() + "\n");
+        }
+        System.out.println("\nLe panda est sur la parcelle de coordonnées : " + board.getPandaCoordinate());
+        System.out.println("Le jardinier est sur la parcelle de coordonnées : " + board.getPeasantCoordinate());
+        System.out.println("\nLes parcelles posées sont :");
+        for(Map.Entry placedParcel : board.getPlacedParcels().entrySet()){
+            System.out.println(placedParcel.getValue() + " | Coordonnées " + placedParcel.getKey());
         }
     }
 

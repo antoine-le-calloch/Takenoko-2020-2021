@@ -59,6 +59,20 @@ public enum ActionType {
         }
     }
     ,
+    SUN{
+        @Override
+        public String toString() {
+            return "Sun";
+        }
+    }
+    ,
+    WIND{
+        @Override
+        public String toString() {
+            return "Wind";
+        }
+    }
+    ,
     MOVE_PEASANT {
         @Override
         public String toString() {

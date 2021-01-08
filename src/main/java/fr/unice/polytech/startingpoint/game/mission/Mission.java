@@ -9,11 +9,11 @@ import fr.unice.polytech.startingpoint.type.MissionType;
 import java.util.Map;
 
 public abstract class Mission {
-    protected final MissionType missionType;
-    protected final ColorType colorType;
-    protected final int points;
+    private final MissionType missionType;
+    final ColorType colorType;
+    private final int points;
 
-    protected Mission(MissionType missionType,ColorType colorType, int points){
+    Mission(MissionType missionType, ColorType colorType, int points){
         this.missionType = missionType;
         this.colorType = colorType;
         this.points = points;

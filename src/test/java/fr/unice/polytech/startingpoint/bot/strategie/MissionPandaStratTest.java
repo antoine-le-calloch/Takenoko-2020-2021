@@ -10,13 +10,14 @@ import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MissionPandaStratTest {
-    Game game;
-    MissionPandaStrat missionPandaStrat;
-    Mission missionGreenOneColor;
-    Mission missionAllColor;
+    private Game game;
+    private MissionPandaStrat missionPandaStrat;
+    private Mission missionGreenOneColor;
+    private Mission missionAllColor;
 
     @BeforeEach
     void setUp() {
@@ -357,18 +358,140 @@ class MissionPandaStratTest {
 
     @Test
     void strategyPlaceCanal(){
-
-
+        Coordinate coordinate1 = new Coordinate(1,-1,0);
+        Coordinate coordinate2 = new Coordinate(1,0,-1);
+        game.getBoard().placeParcel(new Parcel(),coordinate1);
+        game.getBoard().placeParcel(new Parcel(),coordinate2);
+        missionPandaStrat.strategyPlaceCanal();
+        assertTrue(game.getBoard().getPlacedCanals().containsKey(Coordinate.getSortedSet(coordinate1, coordinate2)));
     }
 
 
+    /**
+     * <h1><u>isJudiciousMovePanda</u></h1>
+     */
 
-/*
-    public Coordinate[] strategyPlaceCanal() {
-        gameInteraction.drawCanal();
-        return possibleCoordinatesCanal().get(0);
+    @Test
+    void isJudiciousMovePandaActionAlreadyDone(){
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+
+        game.getPlayerData().getTemporaryInventory().add(ActionType.MOVE_PANDA);
+        assertFalse(missionPandaStrat.isJudiciousMovePanda(ColorType.GREEN));
     }
-*/
+
+    @Test
+    void isJudiciousMovePandaActionNoParcel(){
+        assertFalse(missionPandaStrat.isJudiciousMovePanda(ColorType.GREEN));
+    }
+
+    @Test
+    void isJudiciousMovePandaTrue(){
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+
+        assertTrue(missionPandaStrat.isJudiciousMovePanda(ColorType.GREEN));
+    }
+
+    /**
+     * <h1><u>isJudiciousMovePeasant</u></h1>
+     */
+
+    @Test
+    void isJudiciousMovePeasantActionAlreadyDone(){
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+
+        game.getPlayerData().getTemporaryInventory().add(ActionType.MOVE_PEASANT);
+        assertFalse(missionPandaStrat.isJudiciousMovePeasant());
+    }
+
+    @Test
+    void isJudiciousMovePeasantActionNoParcel(){
+        assertFalse(missionPandaStrat.isJudiciousMovePeasant());
+    }
+
+    @Test
+    void isJudiciousMovePeasantTrue(){
+        Coordinate coordinate = new Coordinate(1, -1, 0);
+        Parcel parcel = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
+        game.getBoard().placeParcel(parcel, coordinate);
+
+        assertTrue(missionPandaStrat.isJudiciousMovePeasant());
+    }
+
+    /**
+     * <h1><u>isJudiciousPlaceParcel</u></h1>
+     */
+
+    @Test
+    void isJudiciousPlaceParcelActionAlreadyDone(){
+        game.getPlayerData().getTemporaryInventory().add(ActionType.DRAW_PARCELS);
+        assertFalse(missionPandaStrat.isJudiciousPlaceParcel());
+    }
+
+    @Test
+    void isJudiciousPlaceParcelTrue(){
+        assertTrue(missionPandaStrat.isJudiciousPlaceParcel());
+    }
+
+    /**
+     * <h1><u>isJudiciousPlaceCanal</u></h1>
+     */
+
+    @Test
+    void isJudiciousPlaceCanalActionAlreadyDoneDrawCanal(){
+        game.getPlayerData().getTemporaryInventory().add(ActionType.DRAW_CANAL);
+        assertFalse(missionPandaStrat.isJudiciousPlaceCanal());
+    }
+
+    @Test
+    void isJudiciousPlaceCanalActionAlreadyDonePlaceCanal(){
+        game.getPlayerData().getTemporaryInventory().add(ActionType.PLACE_CANAL);
+        assertFalse(missionPandaStrat.isJudiciousPlaceCanal());
+    }
+    @Test
+    void isJudiciousPlaceCanal(){
+        assertTrue(missionPandaStrat.isJudiciousPlaceCanal());
+    }
+
+    /**
+     * <h1><u>strategyPlaceParcel</u></h1>
+     */
+
+    @Test
+    void strategyPlaceParcel(){
+
+    }
+
+    /*      public void strategyPlaceParcel(ColorType colorType) {
+        try {
+            List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
+            if (parcelInformationList.stream().map(ParcelInformation::getColorType).collect(Collectors.toList()).contains(colorType)){
+                Coordinate coordinate = null;
+                for (Coordinate c : possibleCoordinatesParcel()){
+                    if (gameInteraction.getRules().isMovableCharacter(CharacterType.PANDA,c))
+                        coordinate = c;
+                }
+                if (coordinate == null)
+                    coordinate = possibleCoordinatesParcel().get(0);
+                gameInteraction.selectParcel(parcelInformationList.stream().filter(parcelInformation -> parcelInformation.getColorType().equals(colorType)).collect(Collectors.toList()).get(0));
+                gameInteraction.placeParcel(coordinate);
+            }
+            else {
+                gameInteraction.selectParcel(parcelInformationList.get(0));
+                gameInteraction.placeParcel(possibleCoordinatesParcel().get(0));
+            }
+
+        } catch (OutOfResourcesException | RulesViolationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    */
 
 }
 
