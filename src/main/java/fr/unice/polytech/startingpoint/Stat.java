@@ -62,17 +62,18 @@ final class Stat {
         int[] bestScore = new int[]{0,0};
         List<Integer> winner = new ArrayList<>();
 
-        for(int[] score : scoreList)
-            if (score[0] > bestScore[0]){
+        for(int[] score : scoreList) {
+            if (score[0] > bestScore[0]) {
                 bestScore[0] = score[0];
                 bestScore[1] = score[1];
             }
             else if (score[0] == bestScore[0] && score[1] > bestScore[1])
                 bestScore[1] = score[1];
-
-        for(int i = 0; i < scoreList.size(); i++)
+        }
+        for(int i = 0; i < scoreList.size(); i++) {
             if (scoreList.get(i)[0] == bestScore[0] && scoreList.get(i)[1] == bestScore[1])
                 winner.add(i);
+        }
 
         return winner;
     }
@@ -83,7 +84,7 @@ final class Stat {
      * @return <b>The average points from the player.</b>
      */
     public double getPointsAverage(int player){
-        return botScores[player][0]*1.0 / gameData.size();
+        return Math.round((botScores[player][0]*1.0)/(gameData.size())*100.0)/100.0;
     }
 
     /**@param player
@@ -92,7 +93,7 @@ final class Stat {
      * @return <b>The win rate from the player.</b>
      */
     public double getWinRate(int player){
-        return botScores[player][1] / (gameData.size() / 100.0);
+        return Math.round(botScores[player][1]/((gameData.size())/100.0)*100.0)/100.0;
     }
 
     /**@param player
@@ -101,7 +102,7 @@ final class Stat {
      * @return <b>The equality rate from the player.</b>
      */
     public double getEqualityRate(int player){
-        return botScores[player][2] / (gameData.size() / 100.0);
+        return Math.round(botScores[player][2]/((gameData.size())/100.0)*100.0)/100.0;
     }
 
     /**

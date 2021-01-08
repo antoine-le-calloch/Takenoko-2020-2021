@@ -8,6 +8,7 @@ import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Moteur de jeu, creation d'une partie, fait jouer les bots, verifie les missions faites et termine la partie
@@ -129,7 +130,7 @@ public class Game{
                     + " missions (" + botDatum.getMissionsPandaDone() + " missions panda, " + botDatum.getMissionsPeasantDone()
                     + " missions jardinier, " + botDatum.getMissionsParcelDone() + " missions parcelles) pour un total de "
                     + botDatum.getScore()[0] + " points.");
-            System.out.println("Au tour d'avant, il a joué les actions suivantes : " + botDatum.getActionTypeList().stream().sorted() + "\n");
+            System.out.println("Au tour d'avant, il a joué les actions suivantes : " + botDatum.getActionTypeList() + "\n");
         }
         System.out.println("\nLe panda est sur la parcelle de coordonnées : " + board.getPandaCoordinate());
         System.out.println("Le jardinier est sur la parcelle de coordonnées : " + board.getPeasantCoordinate());
