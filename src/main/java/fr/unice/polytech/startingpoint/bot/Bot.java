@@ -52,8 +52,7 @@ public abstract class Bot {
 
     public void botPlay(WeatherType weatherType) {
         playWeather(weatherType);
-        int stamina = gameInteraction.getStamina();
-        for (int i = stamina; i > 0; i--) {
+        for (int i = gameInteraction.getStamina(); i > 0; i--) {
             if(isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
             else
@@ -81,6 +80,8 @@ public abstract class Bot {
             case WIND:
                 gameInteraction.useWind();
                 break;
+            default:
+                break;
         }
     }
 
@@ -91,8 +92,6 @@ public abstract class Bot {
                 .collect(Collectors.toList());
         if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty())
             gameInteraction.rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
-        else
-            gameInteraction.rainAction(null);
     }
 
     void stratRain(){
@@ -104,8 +103,6 @@ public abstract class Bot {
             gameInteraction.rainAction(parcelsIrrigatedWithFertilizer.get(0));
         else if(!parcelsIrrigated.isEmpty())
             gameInteraction.rainAction(parcelsIrrigated.get(0));
-        else
-            gameInteraction.rainAction(null);
     }
 
     private void stratQuestionMark(){

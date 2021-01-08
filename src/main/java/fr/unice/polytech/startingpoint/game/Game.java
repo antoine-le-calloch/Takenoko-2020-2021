@@ -110,16 +110,15 @@ public class Game{
      */
 
     public void play() {
-        int cpt = 0;
         while( isContinue() ) {
-            if(numBot==FIRST_BOT)
+            if(numBot==FIRST_BOT) {
                 newRound();
                 if (isInformationsPrinted) {
-                    System.out.println("=========== TOUR N°" + cpt + " ===========\n");
+                    System.out.println("=========== TOUR N°" + round + " ===========\n");
                     printTurnInformations();
                     System.out.println("\n");
-                    cpt++;
                 }
+            }
             botPlay();
             nextBot();
         }
@@ -134,7 +133,7 @@ public class Game{
                     + " missions (" + botData.get(i).getMissionsPandaDone() + " missions panda, " + botData.get(i).getMissionsPeasantDone()
                     + " missions jardinier, " + botData.get(i).getMissionsParcelDone() + " missions parcelles) pour un total de "
                     + botData.get(i).getScore()[0] + " points.");
-            System.out.println("Il a joué les actions suivantes : " + botData.get(i).getActionTypeList() + "\n");
+            System.out.println("Au tour d'avant, il a joué les actions suivantes : " + botData.get(i).getActionTypeList() + "\n");
         }
         System.out.println("\nLe panda est sur la parcelle de coordonnées : " + board.getPandaCoordinate());
         System.out.println("Le jardinier est sur la parcelle de coordonnées : " + board.getPeasantCoordinate());
