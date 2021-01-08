@@ -1,9 +1,12 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
 
+import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.game.Game;
+import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
@@ -12,6 +15,10 @@ import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -459,6 +466,34 @@ class MissionPandaStratTest {
     void isJudiciousPlaceCanal(){
         assertTrue(missionPandaStrat.isJudiciousPlaceCanal());
     }
+
+
+    @Test
+    void drawParcelWithStrat(){
+        GameInteraction gameInteractionMock= Mockito.mock(GameInteraction.class);
+        MissionPandaStrat missionPandaStratMock=new MissionPandaStrat(gameInteractionMock);
+        List<ParcelInformation> parcelInformations=new ArrayList<>();
+        parcelInformations.add(new ParcelInformation(ColorType.RED,ImprovementType.NOTHING));
+        parcelInformations.add(new ParcelInformation(ColorType.GREEN,ImprovementType.NOTHING));
+        Mockito.when(gameInteractionMock.drawParcels()).thenReturn(parcelInformations);
+        assertEquals(parcelInformations.get(1), missionPandaStratMock.drawParcelStrategy(ColorType.GREEN));
+    }
+
+    @Test
+    void drawParcelWithNoStrat(){
+        GameInteraction gameInteractionMock= Mockito.mock(GameInteraction.class);
+        MissionPandaStrat missionPandaStratMock=new MissionPandaStrat(gameInteractionMock);
+        List<ParcelInformation> parcelInformations=new ArrayList<>();
+        parcelInformations.add(new ParcelInformation(ColorType.RED,ImprovementType.NOTHING));
+        Mockito.when(gameInteractionMock.drawParcels()).thenReturn(parcelInformations);
+        assertEquals(parcelInformations.get(0), missionPandaStratMock.drawParcelStrategy(ColorType.GREEN));
+    }
+
+    @Test
+    void strategyPlaceParcel(){
+        assertTrue(game.getRules().isMovableCharacter(CharacterType.PANDA,missionPandaStrat.strategyPlaceParcel(missionPandaStrat.drawParcelStrategy(ColorType.GREEN))));
+    }
+    
 
 }
 

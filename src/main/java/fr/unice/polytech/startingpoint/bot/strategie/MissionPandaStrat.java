@@ -22,8 +22,9 @@ public class MissionPandaStrat extends Strategie {
             gameInteraction.moveCharacter(CharacterType.PANDA,strategyMovePanda(mission.getColorType()));
         else if (isJudiciousMovePeasant())
             gameInteraction.moveCharacter(CharacterType.PEASANT,strategyMovePeasant(mission.getColorType()));
-        else if (isJudiciousPlaceParcel())
-            strategyPlaceParcel(mission.getColorType());
+        else if (isJudiciousPlaceParcel()) {
+            strategyPlaceParcel(drawParcelStrategy(mission.getColorType()));
+        }
         else if (isJudiciousPlaceCanal())
             strategyPlaceCanal();
         else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
@@ -98,28 +99,36 @@ public class MissionPandaStrat extends Strategie {
         }
     }
 
-    private void strategyPlaceParcel(ColorType colorType) {
-        try {
-            List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
-            if (parcelInformationList.stream().map(ParcelInformation::getColorType).collect(Collectors.toList()).contains(colorType)){
-                Coordinate coordinate = null;
-                for (Coordinate c : possibleCoordinatesParcel()){
-                    if (gameInteraction.getRules().isMovableCharacter(CharacterType.PANDA,c))
-                        coordinate = c;
-                }
-                if (coordinate == null)
-                    coordinate = possibleCoordinatesParcel().get(0);
-                gameInteraction.selectParcel(parcelInformationList.stream().filter(parcelInformation -> parcelInformation.getColorType().equals(colorType)).collect(Collectors.toList()).get(0));
-                gameInteraction.placeParcel(coordinate);
+
+    public ParcelInformation drawParcelStrategy(ColorType colorType){
+        List<ParcelInformation> parcelInformations=gameInteraction.drawParcels();
+        for(ParcelInformation parcelInformation:parcelInformations)
+            if(colorType.equals(parcelInformation.getColorType())) {
+                return parcelInformation;
             }
-            else {
-                gameInteraction.selectParcel(parcelInformationList.get(0));
-                gameInteraction.placeParcel(possibleCoordinatesParcel().get(0));
+        return parcelInformations.get(0);
+    }
+
+    Coordinate strategyPlaceParcel(ParcelInformation parcelInformation) {
+        try {
+            Coordinate coordinate = null;
+            for (Coordinate c : possibleCoordinatesParcel()) {
+                if (gameInteraction.getRules().isMovableCharacter(CharacterType.PANDA, c))
+                    coordinate = c;
+            }
+            if (coordinate == null){
+                coordinate = possibleCoordinatesParcel().get(0);
             }
 
-        } catch (OutOfResourcesException | RulesViolationException e) {
+            gameInteraction.selectParcel(parcelInformation);
+            gameInteraction.placeParcel(coordinate);
+            return coordinate;
+        }
+        catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
+        return null;
+
     }
 
     /**<b><u>NUMBER OF MOVES TO DO THE MISSION METHODS</b>
