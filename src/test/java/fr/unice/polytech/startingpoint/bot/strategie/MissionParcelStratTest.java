@@ -249,6 +249,108 @@ class MissionParcelStratTest {
     }
 
 ///////////////////////////////
+///////////////////////////////
+
+    @Test
+    void nbMoveForMission_GreenTriangleEnd() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate9);
+        board.placeCanal(new Canal(), coordinate2,coordinate3);
+        board.placeCanal(new Canal(), coordinate2,coordinate9);
+        assertEquals(0,stratMissionParcel.nbMoveForMission(missionGreenTriangle));
+    }
+
+    @Test
+    void nbMoveForMission_RedLine3Parcels_AllIrrigated() {
+        board.placeParcel(new Parcel(ColorType.RED), coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate3);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate9);
+        board.placeCanal(new Canal(), coordinate2,coordinate3);
+        board.placeCanal(new Canal(), coordinate3,coordinate9);
+        assertEquals(1,stratMissionParcel.nbMoveForMission(missionRedLine));
+    }
+
+    @Test
+    void nbMoveForMission_GreenTriangleEnd_NotIrrigated() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate9);
+        assertEquals(2,stratMissionParcel.nbMoveForMission(missionGreenTriangle));
+    }
+
+    @Test
+    void nbMoveForMission_GreenTriangle2Parcels_2Irrigated() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        assertEquals(3,stratMissionParcel.nbMoveForMission(missionGreenTriangle));
+    }
+
+    @Test
+    void nbMoveForMission_GreenTriangle1Parcels_2Irrigated() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        assertEquals(4,stratMissionParcel.nbMoveForMission(missionGreenTriangle));
+    }
+
+    @Test
+    void nbMoveForMission_GreenTriangle0Parcel_2Irrigated() {
+        assertEquals(5,stratMissionParcel.nbMoveForMission(missionGreenTriangle));
+    }
+
+    @Test
+    void nbMoveForMission_RedLine0Parcel_3Irrigated() {
+        assertEquals(6,stratMissionParcel.nbMoveForMission(missionRedLine));
+    }
+
+///////////////////////////////
+
+    @Test
+    void howManyMoveToDoMission_GreenTriangleEnd() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate9);
+        board.placeCanal(new Canal(), coordinate2,coordinate3);
+        board.placeCanal(new Canal(), coordinate2,coordinate9);
+        assertEquals(0,stratMissionParcel.howManyMoveToDoMission(missionGreenTriangle));
+    }
+
+    @Test
+    void howManyMoveToDoMission_RedLine3Parcels_AllIrrigated() {
+        board.placeParcel(new Parcel(ColorType.RED), coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate3);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate9);
+        board.placeCanal(new Canal(), coordinate2,coordinate3);
+        board.placeCanal(new Canal(), coordinate3,coordinate9);
+        assertEquals(1,stratMissionParcel.howManyMoveToDoMission(missionRedLine));
+    }
+
+    @Test
+    void howManyMoveToDoMission_GreenTriangleEnd_NotIrrigated() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate9);
+        assertEquals(2,stratMissionParcel.howManyMoveToDoMission(missionGreenTriangle));
+    }
+
+    @Test
+    void howManyMoveToDoMission_GreenTriangle2Parcels_2Irrigated() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        assertEquals(3,stratMissionParcel.howManyMoveToDoMission(missionGreenTriangle));
+    }
+
+    @Test
+    void howManyMoveToDoMission_RedLine0Parcel_3Irrigated() {
+        assertEquals(6,stratMissionParcel.howManyMoveToDoMission(missionRedLine));
+    }
+
+    @Test
+    void howManyMoveToDoMission_RedLine0Parcel_3Irrigated_NotJudiciousPutParcelAndCanal() {
+        game.getPlayerData().add(ActionType.DRAW_PARCELS);
+        game.getPlayerData().add(ActionType.PLACE_CANAL);
+        assertEquals(-1,stratMissionParcel.howManyMoveToDoMission(missionRedLine));
+    }
+///////////////////////////////
 
     @Test
     void findEndMissionWithoutCanal_GreenTriangle_1endMission() {
@@ -324,17 +426,39 @@ class MissionParcelStratTest {
         assertTrue(board.isPlacedAndIrrigatedParcel(coordinate9));
     }
 
+    @Test
+    void putCanal_RedLineEnd() {
+        board.placeParcel(new Parcel(ColorType.RED), coordinate1);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate2);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate3);
+        board.placeParcel(new Parcel(ColorType.RED), coordinate9);
+        board.placeCanal(new Canal(),coordinate2,coordinate3);
+        board.placeCanal(new Canal(),coordinate2,coordinate9);
+
+        Coordinate []coordCanal = stratMissionParcel.possibleCoordinatesCanal().get(0);
+
+        assertEquals(2, board.getPlacedCanals().size());
+        assertFalse(board.getPlacedCanals().containsKey(Coordinate.getSortedSet(coordCanal[0],coordCanal[1])));
+
+        stratMissionParcel.putCanal(missionRedLine);
+
+        assertEquals(3, board.getPlacedCanals().size());
+        assertTrue(board.getPlacedCanals().containsKey(Coordinate.getSortedSet(coordCanal[0],coordCanal[1])));
+    }
+
 ///////////////////////////////
 
     @Test
     void judiciousPutParcel() {
         game.getPlayerData().addMission(missionGreenTriangle);
+
         assertTrue(stratMissionParcel.isJudiciousPutParcel());
     }
 
     @Test
     void notJudiciousPutParcel_ActionAlreadyPlay() {
         game.getPlayerData().add(ActionType.DRAW_PARCELS);
+
         assertFalse(stratMissionParcel.isJudiciousPutParcel());
     }
 
@@ -345,6 +469,7 @@ class MissionParcelStratTest {
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate9);
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+
         assertTrue(stratMissionParcel.isJudiciousPutCanal(missionGreenTriangle));
     }
 
@@ -356,6 +481,7 @@ class MissionParcelStratTest {
         board.placeCanal(new Canal(),coordinate2,coordinate3);
         board.placeCanal(new Canal(),coordinate3,coordinate9);
         board.placeCanal(new Canal(),coordinate2,coordinate9);
+
         assertFalse(stratMissionParcel.isJudiciousPutCanal(missionGreenTriangle));
     }
 
@@ -363,6 +489,7 @@ class MissionParcelStratTest {
     void notJudiciousPutCanal_0MissionEnd() {
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate9);
+
         assertFalse(stratMissionParcel.isJudiciousPutCanal(missionGreenTriangle));
     }
 
@@ -372,6 +499,50 @@ class MissionParcelStratTest {
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate9);
         board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+
         assertFalse(stratMissionParcel.isJudiciousPutCanal(missionGreenTriangle));
+    }
+
+////////////////////////////////
+
+    @Test
+    void stratOneTurn_PutCanal() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate2);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate3);
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate9);
+
+        assertEquals(0, board.getPlacedCanals().size());
+        stratMissionParcel.stratOneTurn(missionGreenTriangle);
+        assertEquals(1, board.getPlacedCanals().size());
+    }
+
+    @Test
+    void stratOneTurn_PutParcel() {
+        assertEquals(1, board.getPlacedParcels().size());
+        stratMissionParcel.stratOneTurn(missionGreenTriangle);
+        assertEquals(2, board.getPlacedParcels().size());
+    }
+
+    @Test
+    void stratOneTurn_MovePanda() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate1);
+        game.getPlayerData().add(ActionType.DRAW_PARCELS);
+        game.getPlayerData().add(ActionType.PLACE_CANAL);
+
+        assertEquals(coordCentral, board.getPandaCoordinate());
+        stratMissionParcel.stratOneTurn(missionGreenTriangle);
+        assertNotEquals(coordCentral, board.getPandaCoordinate());
+    }
+
+    @Test
+    void stratOneTurn_MovePeasant() {
+        board.placeParcel(new Parcel(ColorType.GREEN), coordinate1);
+        game.getPlayerData().add(ActionType.DRAW_PARCELS);
+        game.getPlayerData().add(ActionType.PLACE_CANAL);
+        game.getPlayerData().add(ActionType.MOVE_PANDA);
+
+        assertEquals(coordCentral, board.getPeasantCoordinate());
+        stratMissionParcel.stratOneTurn(missionGreenTriangle);
+        assertNotEquals(coordCentral, board.getPeasantCoordinate());
     }
 }

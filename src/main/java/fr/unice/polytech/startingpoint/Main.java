@@ -14,7 +14,7 @@ import fr.unice.polytech.startingpoint.type.BotType;
 
 class Main{
     public static void main(String... args){
-        final int NUMBER_OF_GAMES = 100;
+        final int NUMBER_OF_GAMES = 1000;
 
         BotType[] botList = new BotType[]{BotType.INTELLIGENT_BOT,BotType.PANDA_BOT,BotType.PEASANT_BOT,BotType.PARCEL_BOT};
         Stat statGame = new Stat(botList);
@@ -23,6 +23,7 @@ class Main{
         Stat statGame2 = new Stat(botList2);
 
         for (int i = 0; i < NUMBER_OF_GAMES; i++) {
+            System.out.println(i);
             Game game = new Game(false, botList);
             game.play();
             statGame.add(game.getScores());
