@@ -24,7 +24,6 @@ public class Main{
         Stat statGame2 = new Stat(botList2);
 
         for (int i = 0; i < NUMBER_OF_GAMES; i++) {
-            System.out.println(i);
             Game game = new Game(false, botList);
             game.play();
             statGame.add(game.getScores());
