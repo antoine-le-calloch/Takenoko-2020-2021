@@ -332,13 +332,6 @@ class MissionParcelStratTest {
         assertTrue(stratMissionParcel.isJudiciousPutParcel());
     }
 
-    /*@Test
-    void notJudiciousPutParcel_0Mission() {
-        for (int i = stratMissionParcel.gameInteraction.getResourceSize(ResourceType.PARCEL); i > 0; i--) {
-        }
-        assertFalse(stratMissionParcel.isJudiciousPutParcel());
-    }*/
-
     @Test
     void notJudiciousPutParcel_ActionAlreadyPlay() {
         game.getPlayerData().add(ActionType.DRAW_PARCELS);

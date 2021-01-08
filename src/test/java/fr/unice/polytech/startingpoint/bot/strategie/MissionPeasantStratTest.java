@@ -6,10 +6,7 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
-import fr.unice.polytech.startingpoint.type.ActionType;
-import fr.unice.polytech.startingpoint.type.ColorType;
-import fr.unice.polytech.startingpoint.type.ImprovementType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
+import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -28,7 +25,6 @@ class MissionPeasantStratTest {
     private Coordinate coordinate1;
     private Game game;
     private MissionPeasantStrat stratMissionPeasant;
-    private GameInteraction gameInteraction;
     private PeasantMission peasantMissionGreen;
     private PeasantMission peasantMissionGreenFerti;
 
@@ -41,7 +37,7 @@ class MissionPeasantStratTest {
         coordinate1 = new Coordinate(1, -1, 0);
         peasantMissionGreen=new PeasantMission(ColorType.GREEN,ImprovementType.NOTHING,2);
         peasantMissionGreenFerti=new PeasantMission(ColorType.GREEN,ImprovementType.FERTILIZER,2);
-        gameInteraction=game.getGameInteraction();
+        GameInteraction gameInteraction = game.getGameInteraction();
         stratMissionPeasant = new MissionPeasantStrat(gameInteraction);
         game.getPlayerData().getInventory().subMissions(game.getPlayerData().getPeasantMissions()); //supprime la mission donner au debut
 
