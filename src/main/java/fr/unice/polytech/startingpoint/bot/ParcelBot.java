@@ -41,29 +41,21 @@ public class ParcelBot extends Bot {
 
     @Override
     public MissionType bestMissionTypeToDraw() {
-        if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
+        if ( gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0 )
             return MissionType.PARCEL;
         return chooseMissionTypeDrawable(MissionType.PANDA,MissionType.PEASANT,MissionType.PARCEL);
     }
 
     @Override
-    public void playWeather(WeatherType weatherType){
-        if(weatherType.equals(WeatherType.RAIN))
-            stratRain();
-        else if(weatherType.equals(WeatherType.THUNDERSTORM))
-            stratThunderstorm();
-    }
-
-    @Override
     public void stratRain() {
-        for(PeasantMission peasantMission:gameInteraction.getInventoryPeasantMissions()) {
+        for(PeasantMission peasantMission : gameInteraction.getInventoryPeasantMissions()) {
             ColorType peasantMissionColor = peasantMission.getColorType();
 
-            List<Coordinate> parcelsIrrigatedSameColorAsMission = gameInteraction.
-                    getPlacedCoordinatesByColor(peasantMissionColor).stream()
+            List<Coordinate> parcelsIrrigatedSameColorAsMission = gameInteraction
+                    .getPlacedCoordinatesByColor(peasantMissionColor).stream()
                     .filter(gameInteraction::isPlacedAndIrrigatedParcel)
                     .collect(Collectors.toList());
-            if (!parcelsIrrigatedSameColorAsMission.isEmpty()) {
+            if ( !parcelsIrrigatedSameColorAsMission.isEmpty() ) {
                 gameInteraction.rainAction(parcelsIrrigatedSameColorAsMission.get(0));
                 break;
             }

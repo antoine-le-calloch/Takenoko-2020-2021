@@ -1,10 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
-import fr.unice.polytech.startingpoint.game.board.Board;
-import fr.unice.polytech.startingpoint.game.board.Resource;
-import fr.unice.polytech.startingpoint.game.board.BoardRules;
-import fr.unice.polytech.startingpoint.game.board.WeatherDice;
+import fr.unice.polytech.startingpoint.game.board.*;
 import fr.unice.polytech.startingpoint.game.playerdata.PlayerData;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.BotType;
@@ -88,7 +85,6 @@ public class Game{
      * <p>Initialize the 3 missions for each bot at the beginning of a game.</p>
      *
      */
-
     private void initializeMissionsBot(){
         for (PlayerData playerData : botData) {
             playerData.addMission(resource.drawPandaMission());
@@ -101,24 +97,18 @@ public class Game{
         round++;
     }
 
-
-
-
     /**
      * <p>Run the game while the conditions of an end game false</p>
      *
      */
-
     public void play() {
-        int cpt = 0;
         while( isContinue() ) {
-            if(numBot==FIRST_BOT)
+            if( numBot == FIRST_BOT )
                 newRound();
-                if (isInformationsPrinted) {
-                    System.out.println("=========== TOUR N°" + cpt + " ===========\n");
+                if ( isInformationsPrinted ) {
+                    System.out.println("=========== TOUR N°" + round + " ===========\n");
                     printTurnInformations();
                     System.out.println("\n");
-                    cpt++;
                 }
             botPlay();
             nextBot();
@@ -139,15 +129,13 @@ public class Game{
         System.out.println("\nLe panda est sur la parcelle de coordonnées : " + board.getPandaCoordinate());
         System.out.println("Le jardinier est sur la parcelle de coordonnées : " + board.getPeasantCoordinate());
         System.out.println("\nLes parcelles posées sont :");
-        for(Map.Entry placedParcel : board.getPlacedParcels().entrySet()){
+        for(Map.Entry<Coordinate,Parcel> placedParcel : board.getPlacedParcels().entrySet())
             System.out.println(placedParcel.getValue() + " | Coordonnées " + placedParcel.getKey());
-        }
     }
 
     /**
      * <p>allow a bot to play with a weather which appears at the second round</p>
      */
-
     void botPlay() {
         getPlayerData().botPlay((round < 2) ? WeatherType.NO_WEATHER : weatherDice.roll());
         getPlayerData().checkMissions(board.getPlacedParcels());
@@ -164,8 +152,8 @@ public class Game{
     boolean isSomebodyFinished(){
         final int EMPEROR_POINTS = 2;
         for (int missionDoneBy1P : getMissionsDone()) {
-            if (missionDoneBy1P >= NB_MISSION) {
-                if (isFirstPlayer) {
+            if ( missionDoneBy1P >= NB_MISSION ) {
+                if ( isFirstPlayer ) {
                     getPlayerData().addMissionDone(EMPEROR_POINTS);
                     isFirstPlayer = false;
                 }
@@ -178,7 +166,6 @@ public class Game{
 
     /**@return <b>True if the game is not done because a player finished his missions and the round is finished, and when resources aren't empty.</b>
      */
-
     boolean isContinue(){
         if (isSomebodyFinished())
             lastRound++;

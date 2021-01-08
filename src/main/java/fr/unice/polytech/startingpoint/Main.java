@@ -14,9 +14,9 @@ import fr.unice.polytech.startingpoint.type.BotType;
 
 class Main{
     public static void main(String... args){
-        final int NUMBER_OF_GAMES = 10;
+        final int NUMBER_OF_GAMES = 500;
 
-        BotType[] botList = new BotType[]{BotType.INTELLIGENT_BOT,BotType.RANDOM,BotType.PANDA_BOT,BotType.PEASANT_BOT};
+        BotType[] botList = new BotType[]{BotType.INTELLIGENT_BOT,BotType.PANDA_BOT,BotType.PEASANT_BOT,BotType.PARCEL_BOT};
         Stat statGame = new Stat(botList);
 
         for (int i = 0; i < NUMBER_OF_GAMES; i++) {
@@ -24,8 +24,6 @@ class Main{
             game.play();
             statGame.add(game.getScores());
         }
-
-
 
         BotType[] botList2 = new BotType[]{BotType.INTELLIGENT_BOT,BotType.INTELLIGENT_BOT};
         Stat statGame2 = new Stat(botList2);
@@ -35,9 +33,6 @@ class Main{
             game2.play();
             statGame2.add(game2.getScores());
         }
-
-        Game game3 = new Game(true, botList);
-        game3.play();
 
         System.out.println(statGame);
 

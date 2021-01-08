@@ -5,13 +5,9 @@ import fr.unice.polytech.startingpoint.game.board.Canal;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
-import fr.unice.polytech.startingpoint.game.mission.PandaMission;
-import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
-import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +37,6 @@ public class PlayerData {
         missionsPandaDone = 0;
         missionsParcelDone = 0;
         missionsPeasantDone = 0;
-
     }
 
     public void botPlay(WeatherType weatherType) {
@@ -52,21 +47,21 @@ public class PlayerData {
 
     public void checkMissions(Map<Coordinate, Parcel> coordinateParcelMap){
         List<Mission> toRemoveMissions = new ArrayList<>();
-        for(Mission mission : inventory.getMissions()){
+
+        for(Mission mission : inventory.getMissions())
             if(mission.checkMission(coordinateParcelMap,inventory)){
                 addMissionDone(mission.getPoints());
-                if (mission.getMissionType().equals(MissionType.PANDA)){
+
+                if (mission.getMissionType().equals(MissionType.PANDA))
                     missionsPandaDone ++;
-                }
-                if (mission.getMissionType().equals(MissionType.PARCEL)){
+                else if (mission.getMissionType().equals(MissionType.PARCEL))
                     missionsParcelDone ++;
-                }
-                if (mission.getMissionType().equals(MissionType.PEASANT)){
+                else if (mission.getMissionType().equals(MissionType.PEASANT))
                     missionsPeasantDone ++;
-                }
+
                 toRemoveMissions.add(mission);
             }
-        }
+
         inventory.subMissions(toRemoveMissions);
     }
 
@@ -144,10 +139,6 @@ public class PlayerData {
         return new int[]{score,missionsPandaDone};
     }
 
-    public int getMissionsDone() {
-        return missionsDone;
-    }
-
     public Bot getBot() {
         return bot;
     }
@@ -191,11 +182,7 @@ public class PlayerData {
     }
 
     public int getMissionsSize() {
-        return (getPandaMissions().size() + getParcelMissions().size() + getPeasantMissions().size());
-    }
-
-    public int[] getInventoryBamboo() {
-        return  inventory.getInventoryBamboo();
+        return inventory.getMissions().size();
     }
 
     public int getMissionsPandaDone(){
@@ -208,6 +195,14 @@ public class PlayerData {
 
     public int getMissionsPeasantDone() {
         return missionsPeasantDone;
+    }
+
+    public int getMissionsDone() {
+        return missionsDone;
+    }
+
+    public int[] getInventoryBamboo() {
+        return inventory.getInventoryBamboo();
     }
 
     public List<ImprovementType> getImprovementTypes() {

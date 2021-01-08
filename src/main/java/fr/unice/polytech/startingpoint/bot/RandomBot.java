@@ -53,27 +53,35 @@ public class RandomBot extends Bot {
     public void botPlay(WeatherType weatherType){
         int randAction = random.nextInt(5);
 
-        if (randAction == 0 && gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 && !gameInteraction.contains(ActionType.DRAW_MISSION) && gameInteraction.getInventoryMissions().size() < 5) {// pioche mission
+        if (    randAction == 0 &&
+                gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 &&
+                !gameInteraction.contains(ActionType.DRAW_MISSION) &&
+                gameInteraction.getInventoryMissions().size() < 5 ){// pioche mission
             int randMission = random2.nextInt(3);
 
-            if (randMission == 0 && gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0)
+            if (    randMission == 0 &&
+                    gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0 )
                 drawMission(MissionType.PARCEL);
-            if (randMission == 1 && gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+            if (    randMission == 1 &&
+                    gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 )
                 drawMission(MissionType.PANDA);
-            if (randMission == 2 && gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0)
+            if (    randMission == 2 &&
+                    gameInteraction.getResourceSize(ResourceType.PEASANT_MISSION) > 0 )
                 drawMission(MissionType.PEASANT);
         }
-
-        else if (randAction == 1 && gameInteraction.getResourceSize(ResourceType.CANAL) > 0 && !gameInteraction.contains(ActionType.DRAW_CANAL)) {  // place canal
-            if (missionParcelStrat.possibleCoordinatesCanal().size() > 0) {
+        else if ( randAction == 1 &&
+                  gameInteraction.getResourceSize(ResourceType.CANAL) > 0 &&
+                  !gameInteraction.contains(ActionType.DRAW_CANAL) ){  // place canal
+            if ( missionParcelStrat.possibleCoordinatesCanal().size() > 0 ) {
                 List<Coordinate[]> list = missionParcelStrat.possibleCoordinatesCanal();
                 Collections.shuffle(list);
                 gameInteraction.drawCanal();
                 gameInteraction.placeCanal(list.get(0)[0],list.get(0)[1]);
             }
         }
-
-        else if (randAction == 2 && gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !gameInteraction.contains(ActionType.DRAW_PARCELS)){ // place parcel
+        else if ( randAction == 2 &&
+                  gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 &&
+                  !gameInteraction.contains(ActionType.DRAW_PARCELS) ){ // place parcel
             List<ParcelInformation> parcelList = gameInteraction.drawParcels();
             Collections.shuffle(parcelList);
             gameInteraction.selectParcel(parcelList.get(0));
@@ -81,14 +89,15 @@ public class RandomBot extends Bot {
             Collections.shuffle(list);
             gameInteraction.placeParcel(list.get(0));
         }
-
-        else if (randAction == 3 && missionParcelStrat.possibleCoordinatesPanda().size() != 0 && !gameInteraction.contains(ActionType.MOVE_PANDA)) {
+        else if ( randAction == 3 &&
+                  missionParcelStrat.possibleCoordinatesPanda().size() != 0 &&
+                  !gameInteraction.contains(ActionType.MOVE_PANDA) ){
             List<Coordinate> list = missionParcelStrat.possibleCoordinatesPanda();
             Collections.shuffle(list);
             gameInteraction.moveCharacter(CharacterType.PANDA,list.get(0));
         }
-
-        else if (missionParcelStrat.possibleCoordinatesPeasant().size() != 0 && !gameInteraction.contains(ActionType.MOVE_PEASANT)) {
+        else if ( missionParcelStrat.possibleCoordinatesPeasant().size() != 0 &&
+                  !gameInteraction.contains(ActionType.MOVE_PEASANT) ) {
             List<Coordinate> list = missionParcelStrat.possibleCoordinatesPeasant();
             Collections.shuffle(list);
             gameInteraction.moveCharacter(CharacterType.PEASANT,list.get(0));
@@ -96,7 +105,7 @@ public class RandomBot extends Bot {
     }
 
     @Override
-    public MissionType bestMissionTypeToDraw() {
+    protected MissionType bestMissionTypeToDraw() {
         return null;
     }
 }
