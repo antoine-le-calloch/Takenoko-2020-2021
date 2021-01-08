@@ -91,7 +91,7 @@ public abstract class Bot {
                 .filter( coordinate -> gameInteraction.getPlacedParcelsNbBamboo(coordinate) > 0 && !gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
                 .collect(Collectors.toList());
         if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty())
-            gameInteraction.rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
+            gameInteraction.thunderstormAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
     }
 
     void stratRain(){
@@ -105,11 +105,11 @@ public abstract class Bot {
             gameInteraction.rainAction(parcelsIrrigated.get(0));
     }
 
-    private void stratQuestionMark(){
+    void stratQuestionMark(){
         gameInteraction.questionMarkAction(WeatherType.SUN);
     }
 
-    private void stratCloud(){
+    void stratCloud(){
         if(gameInteraction.getResourceSize(ResourceType.WATERSHED_IMPROVEMENT) > 0)
             gameInteraction.cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
         else if(gameInteraction.getResourceSize(ResourceType.FERTILIZER_IMPROVEMENT) > 0)
@@ -136,7 +136,7 @@ public abstract class Bot {
             return missionType3;
     }
 
-    private boolean isJudiciousDrawMission() {
+    boolean isJudiciousDrawMission() {
         int NB_MAX_MISSION = 5;
         return gameInteraction.getMissionsSize() < NB_MAX_MISSION &&
                 gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 &&
@@ -154,7 +154,7 @@ public abstract class Bot {
 
     protected abstract MissionType bestMissionTypeToDraw();
 
-    private Mission determineBestMissionToDo() {
+    Mission determineBestMissionToDo() {
         Mission bestMission = null;
         int minNbMove = -1;
         int nbMove = 0;

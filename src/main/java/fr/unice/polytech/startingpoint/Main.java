@@ -14,7 +14,7 @@ import fr.unice.polytech.startingpoint.type.BotType;
 
 class Main{
     public static void main(String... args){
-        final int NUMBER_OF_GAMES = 10;
+        final int NUMBER_OF_GAMES = 100;
 
         BotType[] botList = new BotType[]{BotType.INTELLIGENT_BOT,BotType.RANDOM,BotType.PANDA_BOT,BotType.PEASANT_BOT};
         Stat statGame = new Stat(botList);
