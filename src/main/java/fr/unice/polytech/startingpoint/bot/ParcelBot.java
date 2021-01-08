@@ -47,14 +47,6 @@ public class ParcelBot extends Bot {
     }
 
     @Override
-    public void playWeather(WeatherType weatherType){
-        if(weatherType.equals(WeatherType.RAIN))
-            stratRain();
-        else if(weatherType.equals(WeatherType.THUNDERSTORM))
-            stratThunderstorm();
-    }
-
-    @Override
     public void stratRain() {
         for(PeasantMission peasantMission:gameInteraction.getInventoryPeasantMissions()) {
             ColorType peasantMissionColor = peasantMission.getColorType();
