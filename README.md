@@ -14,7 +14,7 @@ Une composée de : Parcel Bot/Panda Bot/Intelligent Bot/Random Bot
 Une autre composée de: Intelligent Bot contre lui même
 
  
-Les tests couvrent 90% des lignes de code
+Les tests couvrent 91% des lignes de code
 
 
 
