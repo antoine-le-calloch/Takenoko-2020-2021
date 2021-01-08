@@ -7,7 +7,6 @@ import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.*;
 
-
 /**
  * Inventaire temporaire d'un joueur qui permet de contrôler ses actions lors d'un round
  * @author Manuel Enzo
@@ -16,7 +15,6 @@ import java.util.*;
  * @author Le Calloch Antoine
  * @version 2020.12.03
  */
-
 
 public class TemporaryInventory {
     private final Set<ActionType> actionTypeList;
@@ -36,7 +34,6 @@ public class TemporaryInventory {
         parcelList = new ArrayList<>();
         weatherType = WeatherType.NO_WEATHER;
     }
-
 
     /**
      * <p>The player loose an ability to do an action </p>
@@ -67,18 +64,14 @@ public class TemporaryInventory {
         return parcel;
     }
 
-
-
     /**
      * <p>Check if the bot did the actions in the good order and in the good way during a round</p>
      */
 
     public void hasPlayedCorrectly() {
-        if ( !(actionTypeList.contains(ActionType.DRAW_PARCELS) == actionTypeList.contains(ActionType.SELECT_PARCEL)) ||
-                !(actionTypeList.contains(ActionType.DRAW_PARCELS) == actionTypeList.contains(ActionType.PLACE_PARCEL)) )
+        if ( ActionType.containParcelAction(actionTypeList) == 1 || ActionType.containParcelAction(actionTypeList) == 2 )
             throw new NoSuchElementException("Player has not played correctly.");
     }
-
 
     /**
      * <p>Check if an action could be done twice during the same round</p>
@@ -88,7 +81,6 @@ public class TemporaryInventory {
         return actionCouldBeDoneTwice;
     }
 
-
     /**
      * <p>Reset the temporary inventory of a player with a weather given</p>
      *
@@ -96,57 +88,40 @@ public class TemporaryInventory {
      *
      *          <p>change the weather during a round</p>
      */
-
     public void reset(WeatherType weatherType) {
-        this.weatherType=weatherType;
-        actionCouldBeDoneTwice=false;
+        this.weatherType = weatherType;
+        actionCouldBeDoneTwice = false;
         parcel = null;
         actionTypeList.clear();
         parcelList.clear();
         if(this.weatherType.equals(WeatherType.WIND))
-            actionCouldBeDoneTwice=true;
+            actionCouldBeDoneTwice = true;
         if(this.weatherType.equals(WeatherType.SUN))
-            this.stamina=INITIAL_STAMINA+1;
+            this.stamina = INITIAL_STAMINA + 1;
         else
             this.stamina = INITIAL_STAMINA;
 
+    }
+
+    public void reset() {
+        reset(WeatherType.NO_WEATHER);
     }
 
     public boolean contains(ActionType actionType) {
         return actionTypeList.contains(actionType);
     }
 
-
-
-    /**
-     * <p>Add an action in the list of actions done by a player by the help of the rules</p>
-     */
     public boolean add(ActionType actionType) {
-        if (!actionTypeList.contains(actionType) && actionCouldBeDoneTwice){
-            if( !(  actionType.equals(ActionType.DRAW_PARCELS) ||
-                    actionType.equals(ActionType.SELECT_PARCEL) ||
-                    actionType.equals(ActionType.PLACE_PARCEL) )){
-                actionCouldBeDoneTwice = false;
-                return true;
-            }
-        }
-        else if(actionTypeList.contains(ActionType.DRAW_PARCELS) &&
-                actionTypeList.contains(ActionType.SELECT_PARCEL) &&
-                actionTypeList.contains(ActionType.PLACE_PARCEL) &&
-                actionType.equals(ActionType.DRAW_PARCELS) &&
-                actionCouldBeDoneTwice){
-            actionTypeList.remove(ActionType.SELECT_PARCEL);
-            actionTypeList.remove(ActionType.PLACE_PARCEL);
-            actionCouldBeDoneTwice=false;
-            return true;
-        }
-        return actionTypeList.add(actionType);
+        if (!actionCouldBeDoneTwice)
+            return actionTypeList.add(actionType);
+        else if (ActionType.isParcelAction(actionType) && ActionType.containParcelAction(actionTypeList) != 3)
+            return actionTypeList.add(actionType);
+        else if (actionType.equals(ActionType.DRAW_PARCELS) )
+            actionTypeList.removeAll(Arrays.asList(ActionType.PLACE_PARCEL,ActionType.SELECT_PARCEL));
+        actionCouldBeDoneTwice = false;
+        return true;
     }
 
-
-    /**
-     * <p>Remove an action of the list of actions </p>
-     */
     public void remove(ActionType actionType) {
         actionTypeList.remove(actionType);
     }
@@ -166,10 +141,7 @@ public class TemporaryInventory {
     public int getStamina() {
         return stamina;
     }
-    
-    /**
-     * <p>set the weather type </p>
-     */
+
     public void setWeatherType(WeatherType weatherType) {
         this.weatherType = weatherType;
     }

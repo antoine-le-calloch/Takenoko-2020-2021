@@ -2,16 +2,11 @@ package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
 import fr.unice.polytech.startingpoint.exception.TooManyPlayersInGameException;
-import fr.unice.polytech.startingpoint.game.board.Board;
-import fr.unice.polytech.startingpoint.game.board.Resource;
-import fr.unice.polytech.startingpoint.game.board.BoardRules;
-import fr.unice.polytech.startingpoint.game.board.WeatherDice;
+import fr.unice.polytech.startingpoint.game.board.*;
 import fr.unice.polytech.startingpoint.game.playerdata.PlayerData;
-import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
-import javax.swing.*;
 import java.util.*;
 
 /**
@@ -90,7 +85,6 @@ public class Game{
      * <p>Initialize the 3 missions for each bot at the beginning of a game.</p>
      *
      */
-
     private void initializeMissionsBot(){
         for (PlayerData playerData : botData) {
             playerData.addMission(resource.drawPandaMission());
@@ -103,67 +97,50 @@ public class Game{
         round++;
     }
 
-
-
-
     /**
      * <p>Run the game while the conditions of an end game false</p>
      *
      */
-
-    /*        if(getPlayerData().add(ActionType.WEATHER)){
-             if(getPlacedCoordinates().contains(coordinate))
-                 game.getBoard().moveCharacter(CharacterType.PANDA,coordinate);
-             else
-                 throw new BadCoordinateException("The character can't move to this coordinate : " + coordinate.toString());
-        }
-        else
-            throw new RulesViolationException("Already used this method.");*/
-
     public void play() {
         int NB_MAX_PLAYER = 4;
-        if (botData.size() <= NB_MAX_PLAYER) {
-            while (isContinue()) {
-                if (numBot == FIRST_BOT) {
+        if (botData.size() <= NB_MAX_PLAYER)
+            while( isContinue() ) {
+                if( numBot == FIRST_BOT )
                     newRound();
-                    if (isInformationsPrinted) {
+                    if ( isInformationsPrinted ) {
                         System.out.println("=========== TOUR N°" + round + " ===========\n");
                         printTurnInformations();
                         System.out.println("\n");
-                    }
                 }
                 botPlay();
                 nextBot();
             }
-        }
         else
-            throw new TooManyPlayersInGameException("\nThere are more players in the list than the number of allowed players. \n" +
-                    "The maximum is " + NB_MAX_PLAYER + ".");
+            throw new TooManyPlayersInGameException("\nThere are more players than the allowed number.\n" +
+                    "The maximum number is " + NB_MAX_PLAYER + ".");
     }
 
     /**
      * <p>print the informations of the game after each round</p>
      */
     private void printTurnInformations() {
-        for (int i = 0; i < botData.size(); i++) {
-            System.out.println("Le bot " + botData.get(i).getBotType() + " a complété " + botData.get(i).getMissionsDone()
-                    + " missions (" + botData.get(i).getMissionsPandaDone() + " missions panda, " + botData.get(i).getMissionsPeasantDone()
-                    + " missions jardinier, " + botData.get(i).getMissionsParcelDone() + " missions parcelles) pour un total de "
-                    + botData.get(i).getScore()[0] + " points.");
-            System.out.println("Au tour d'avant, il a joué les actions suivantes : " + botData.get(i).getActionTypeList() + "\n");
+        for (PlayerData botDatum : botData) {
+            System.out.println("Le bot " + botDatum.getBotType() + " a complété " + botDatum.getMissionsDone()
+                    + " missions (" + botDatum.getMissionsPandaDone() + " missions panda, " + botDatum.getMissionsPeasantDone()
+                    + " missions jardinier, " + botDatum.getMissionsParcelDone() + " missions parcelles) pour un total de "
+                    + botDatum.getScore()[0] + " points.");
+            System.out.println("Au tour d'avant, il a joué les actions suivantes : " + botDatum.getActionTypeList() + "\n");
         }
         System.out.println("\nLe panda est sur la parcelle de coordonnées : " + board.getPandaCoordinate());
         System.out.println("Le jardinier est sur la parcelle de coordonnées : " + board.getPeasantCoordinate());
         System.out.println("\nLes parcelles posées sont :");
-        for(Map.Entry placedParcel : board.getPlacedParcels().entrySet()){
+        for(Map.Entry<Coordinate,Parcel> placedParcel : board.getPlacedParcels().entrySet())
             System.out.println(placedParcel.getValue() + " | Coordonnées " + placedParcel.getKey());
-        }
     }
 
     /**
      * <p>allow a bot to play with a weather which appears at the second round</p>
      */
-
     void botPlay() {
         getPlayerData().botPlay((round < 2) ? WeatherType.NO_WEATHER : weatherDice.roll());
         getPlayerData().checkMissions(board.getPlacedParcels());
@@ -180,8 +157,8 @@ public class Game{
     boolean isSomebodyFinished(){
         final int EMPEROR_POINTS = 2;
         for (int missionDoneBy1P : getMissionsDone()) {
-            if (missionDoneBy1P >= NB_MISSION) {
-                if (isFirstPlayer) {
+            if ( missionDoneBy1P >= NB_MISSION ) {
+                if ( isFirstPlayer ) {
                     getPlayerData().addMissionDone(EMPEROR_POINTS);
                     isFirstPlayer = false;
                 }
@@ -191,10 +168,8 @@ public class Game{
         return false;
     }
 
-
     /**@return <b>True if the game is not done because a player finished his missions and the round is finished, and when resources aren't empty.</b>
      */
-
     boolean isContinue(){
         if (isSomebodyFinished())
             lastRound++;

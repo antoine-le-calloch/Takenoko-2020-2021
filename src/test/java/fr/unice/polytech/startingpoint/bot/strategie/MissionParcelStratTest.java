@@ -8,11 +8,13 @@ import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.ColorType;
 import fr.unice.polytech.startingpoint.type.FormType;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -299,10 +301,10 @@ class MissionParcelStratTest {
         assertEquals(0, board.getPlacedCanals().size());
         assertFalse(board.isPlacedCanal(coordinate2,coordinate3));
 
-        stratMissionParcel.putCanal(missionGreenTriangle);
+        stratMissionParcel.putCanal(missionRedLine);
 
         assertEquals(1, board.getPlacedCanals().size());
-        assertTrue(board.isPlacedCanal(coordinate2,coordinate3));
+        assertTrue(board.isPlacedCanal(coordinate3,coordinate2));
     }
 
     @Test
@@ -316,7 +318,7 @@ class MissionParcelStratTest {
         assertEquals(1, board.getPlacedCanals().size());
         assertFalse(board.isPlacedAndIrrigatedParcel(coordinate9));
 
-        stratMissionParcel.putCanal(missionGreenTriangle);
+        stratMissionParcel.putCanal(missionRedLine);
 
         assertEquals(2, board.getPlacedCanals().size());
         assertTrue(board.isPlacedAndIrrigatedParcel(coordinate9));

@@ -2,8 +2,7 @@ package fr.unice.polytech.startingpoint.bot.strategie;
 
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.*;
-
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.ColorType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +10,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StrategieTest {
     private Parcel parcel1;
@@ -230,63 +230,4 @@ class StrategieTest {
         assertTrue(allPossibleCoNextToRed.contains(expectedCo2));
         assertTrue(allPossibleCoNextToRed.contains(expectedCo3));
     }
-
-/*
-    @Test
-    void simpleRainStratPreferFertilizer(){
-        board.placeParcel(new Parcel(),coordinate2);
-        board.placeParcel(new Parcel(ImprovementType.FERTILIZER),new Coordinate(-1,1,0));
-        assertEquals(new Coordinate(-1,1,0),strategie.stratRain());
-    }
-    @Test
-    void simpleRainStratWith1Parcel(){
-        board.placeParcel(new Parcel(),coordinate2);
-        assertEquals(coordinate2,strategie.stratRain());
-    }
-
-    @Test
-    void simlpeThunderstormStrat(){
-        Parcel parcel=new Parcel();
-        parcel.addBamboo();
-        board.placeParcel(new Parcel(),new Coordinate(-1,1,0));
-        board.placeParcel(parcel,coordinate2);
-        assertEquals(coordinate2,strategie.stratThunderstorm());
-    }
-
-    @Test
-    void stratCloudNoMoreWathershedSoFertizilerChosen(){
-        Game gamePanda= new Game(new BotType[]{BotType.PANDA_BOT});
-        for(int i=0;i<3;i++) {
-            gamePanda.getGameInteraction().drawImprovement(ImprovementType.WATERSHED);
-        }
-        PandaBot pandaBot= (PandaBot) gamePanda.getPlayerData().getBot();
-        pandaBot.getRushPandaStrat().stratCloud();
-        assertFalse(gamePanda.getPlayerData().getInventory().getInventoryImprovement(ImprovementType.FERTILIZER).isEmpty());
-        assertTrue(gamePanda.getPlayerData().getInventory().getInventoryImprovement(ImprovementType.ENCLOSURE).isEmpty());
-    }
-
-    @Test
-    void stratCloudNoMoreImprovementSoWeatherChanged(){
-        Game gamePanda= new Game(new BotType[]{BotType.PANDA_BOT});
-        assertEquals(WeatherType.NO_WEATHER,gamePanda.getPlayerData().getTemporaryInventory().getWeatherType());
-        for(int i=0;i<3;i++) {
-            gamePanda.getGameInteraction().drawImprovement(ImprovementType.WATERSHED);
-            gamePanda.getGameInteraction().drawImprovement(ImprovementType.FERTILIZER);
-            gamePanda.getGameInteraction().drawImprovement(ImprovementType.ENCLOSURE);
-        }
-        PandaBot pandaBot= (PandaBot) gamePanda.getPlayerData().getBot();
-        pandaBot.getRushPandaStrat().stratCloud();
-        assertEquals(WeatherType.SUN,gamePanda.getPlayerData().getTemporaryInventory().getWeatherType());
-    }
-
-
-    @Test
-    void stratQuestionMark(){
-        Game gamePanda= new Game(new BotType[]{BotType.PANDA_BOT});
-        assertEquals(WeatherType.NO_WEATHER,gamePanda.getPlayerData().getTemporaryInventory().getWeatherType());
-        PandaBot pandaBot= (PandaBot) gamePanda.getPlayerData().getBot();
-        pandaBot.getRushPandaStrat().stratQuestionMark();
-        assertEquals(WeatherType.SUN,gamePanda.getPlayerData().getTemporaryInventory().getWeatherType());
-    }
-    */
 }

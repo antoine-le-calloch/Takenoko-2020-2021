@@ -1,14 +1,14 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
-import fr.unice.polytech.startingpoint.bot.Bot;
-import fr.unice.polytech.startingpoint.bot.PeasantBot;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
-import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
-import fr.unice.polytech.startingpoint.type.*;
+import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
+import fr.unice.polytech.startingpoint.type.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

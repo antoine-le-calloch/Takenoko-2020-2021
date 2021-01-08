@@ -4,18 +4,21 @@ import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.Canal;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
 import fr.unice.polytech.startingpoint.type.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class PlayerDataTest {
     private Game game;
@@ -96,11 +99,77 @@ class PlayerDataTest {
         assertEquals(3,playerData.getScore()[0]);
         assertEquals(1,playerData.getMissionsDone());
     }
-/*
-    @Test
-    void windRolledSo2SameAction(){
-        Game game=new Game(new BotType[]{BotType.PANDA_BOT} );
-        game.getPlayerData().botPlay(WeatherType.WIND);
-        assertEquals(3, game.getPlayerData().getPandaMissions().size());//le panda va piocher 2 fois la mission panda
+
+    /*
+    public void checkMissions(Map<Coordinate, Parcel> coordinateParcelMap){
+        List<Mission> toRemoveMissions = new ArrayList<>();
+        for(Mission mission : inventory.getMissions()){
+            if(mission.checkMission(coordinateParcelMap,inventory)){
+                addMissionDone(mission.getPoints());
+                if (mission.getMissionType().equals(MissionType.PANDA)){
+                    missionsPandaDone ++;
+                }
+                if (mission.getMissionType().equals(MissionType.PARCEL)){
+                    missionsParcelDone ++;
+                }
+                if (mission.getMissionType().equals(MissionType.PEASANT)){
+                    missionsPeasantDone ++;
+                }
+                toRemoveMissions.add(mission);
+            }
+        }
+        inventory.checkMissions(toRemoveMissions);
     }*/
+
+
+
+    /**
+     * <h1><u>checkMissions</u></h1>
+     */
+
+    @Test
+    public void checkMissionsAddMissioPandaDone(){
+        //playerData.addMission(new ParcelMission(ColorType.RED, FormType.TRIANGLE, 3));
+        playerData.addMission(new PandaMission(ColorType.RED,2));
+        //.addMission(new PeasantMission(ColorType.RED, ImprovementType.NOTHING, 4));
+        playerData.addBamboo(ColorType.RED);
+        playerData.addBamboo(ColorType.RED);
+
+        playerData.checkMissions(game.getBoard().getPlacedParcels());
+        assertEquals(1,playerData.getMissionsPandaDone());
+    }
+
+    @Test
+    public void checkMissionsAddMissionPandaDone(){
+        Inventory inventory = playerData.getInventory();
+        Mission mission = mock(PandaMission.class);
+        Mockito.when(mission.checkMission(game.getBoard().getPlacedParcels(),inventory)).thenReturn(true);
+        Mockito.when(mission.getMissionType()).thenReturn(MissionType.PANDA);
+        playerData.addMission(mission);
+        playerData.checkMissions(game.getBoard().getPlacedParcels());
+        assertEquals(1,playerData.getMissionsPandaDone());
+    }
+
+    @Test
+    public void checkMissionsAddMissionParcelDone(){
+        Inventory inventory = playerData.getInventory();
+        Mission mission = mock(PandaMission.class);
+        Mockito.when(mission.checkMission(game.getBoard().getPlacedParcels(),inventory)).thenReturn(true);
+        Mockito.when(mission.getMissionType()).thenReturn(MissionType.PARCEL);
+        playerData.addMission(mission);
+        playerData.checkMissions(game.getBoard().getPlacedParcels());
+        assertEquals(1,playerData.getMissionsParcelDone());
+    }
+
+    @Test
+    public void checkMissionsAddMissiPeasantDone(){
+        Inventory inventory = playerData.getInventory();
+        Mission mission = mock(PandaMission.class);
+        Mockito.when(mission.checkMission(game.getBoard().getPlacedParcels(),inventory)).thenReturn(true);
+        Mockito.when(mission.getMissionType()).thenReturn(MissionType.PEASANT);
+        playerData.addMission(mission);
+        playerData.checkMissions(game.getBoard().getPlacedParcels());
+        assertEquals(1,playerData.getMissionsPeasantDone());
+    }
+
 }

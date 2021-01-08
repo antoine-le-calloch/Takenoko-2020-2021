@@ -6,10 +6,12 @@ import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
-import fr.unice.polytech.startingpoint.type.*;
-import org.junit.jupiter.api.Test;
+import fr.unice.polytech.startingpoint.type.ActionType;
+import fr.unice.polytech.startingpoint.type.CharacterType;
+import fr.unice.polytech.startingpoint.type.ColorType;
+import fr.unice.polytech.startingpoint.type.ImprovementType;
 import org.junit.jupiter.api.BeforeEach;
-
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -457,41 +459,6 @@ class MissionPandaStratTest {
     void isJudiciousPlaceCanal(){
         assertTrue(missionPandaStrat.isJudiciousPlaceCanal());
     }
-
-    /**
-     * <h1><u>strategyPlaceParcel</u></h1>
-     */
-
-    @Test
-    void strategyPlaceParcel(){
-
-    }
-
-    /*      public void strategyPlaceParcel(ColorType colorType) {
-        try {
-            List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
-            if (parcelInformationList.stream().map(ParcelInformation::getColorType).collect(Collectors.toList()).contains(colorType)){
-                Coordinate coordinate = null;
-                for (Coordinate c : possibleCoordinatesParcel()){
-                    if (gameInteraction.getRules().isMovableCharacter(CharacterType.PANDA,c))
-                        coordinate = c;
-                }
-                if (coordinate == null)
-                    coordinate = possibleCoordinatesParcel().get(0);
-                gameInteraction.selectParcel(parcelInformationList.stream().filter(parcelInformation -> parcelInformation.getColorType().equals(colorType)).collect(Collectors.toList()).get(0));
-                gameInteraction.placeParcel(coordinate);
-            }
-            else {
-                gameInteraction.selectParcel(parcelInformationList.get(0));
-                gameInteraction.placeParcel(possibleCoordinatesParcel().get(0));
-            }
-
-        } catch (OutOfResourcesException | RulesViolationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    */
 
 }
 

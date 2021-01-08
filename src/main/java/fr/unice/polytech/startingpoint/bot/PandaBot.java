@@ -34,10 +34,11 @@ public class PandaBot extends Bot {
     @Override
     public MissionType bestMissionTypeToDraw() {
         int NB_MAX_MISSION_PARCEL = 2;
-        if (gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0
-                && (gameInteraction.getInventoryParcelMissions().size() + gameInteraction.getMissionsParcelDone() < NB_MAX_MISSION_PARCEL))
+
+        if (    gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0 &&
+                (gameInteraction.getInventoryParcelMissions().size() + gameInteraction.getMissionsParcelDone() < NB_MAX_MISSION_PARCEL) )
             return MissionType.PARCEL;
-        else if (gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0)
+        else if ( gameInteraction.getResourceSize(ResourceType.PANDA_MISSION) > 0 )
             return MissionType.PANDA;
         else
             return chooseMissionTypeDrawable(MissionType.PARCEL,MissionType.PEASANT,MissionType.PANDA);
@@ -48,13 +49,14 @@ public class PandaBot extends Bot {
         for (PandaMission pandaMission : gameInteraction.getInventoryPandaMissions()) {
             Coordinate coordinateAllColor = missionPandaStrat.strategyMissionAllColor();
             Coordinate coordinateOneColor = missionPandaStrat.strategyMissionOneColor(pandaMission.getColorType());
+
             if (coordinateAllColor != null && pandaMission.getColorType().equals(ColorType.ALL_COLOR)){
                 gameInteraction.thunderstormAction(coordinateAllColor);
                 return;
             }
             else if (coordinateOneColor != null){
                 gameInteraction.thunderstormAction(coordinateOneColor);
-                break;
+                return;
             }
         }
     }

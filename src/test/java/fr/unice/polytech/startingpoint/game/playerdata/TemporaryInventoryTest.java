@@ -2,9 +2,11 @@ package fr.unice.polytech.startingpoint.game.playerdata;
 
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
+import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -21,66 +23,146 @@ class TemporaryInventoryTest {
         temporaryInventory = new TemporaryInventory();
     }
 
-    @Test
-    void stamina() throws OutOfResourcesException {
-        assertEquals(2,temporaryInventory.getStamina());
+    @Nested
+    class staminaTest{
 
-        temporaryInventory.looseStamina();
-        assertEquals(1,temporaryInventory.getStamina());
+        @Test
+        void staminaLoose() throws OutOfResourcesException {
+            assertEquals(2,temporaryInventory.getStamina());
 
-        temporaryInventory.looseStamina();
-        assertEquals(0,temporaryInventory.getStamina());
+            temporaryInventory.looseStamina();
 
-        assertThrows(OutOfResourcesException.class, () -> temporaryInventory.looseStamina());
+            assertEquals(1,temporaryInventory.getStamina());
+        }
 
-        temporaryInventory.reset(WeatherType.NO_WEATHER);
-        assertEquals(2,temporaryInventory.getStamina());
+        @Test
+        void outOfStamina() throws OutOfResourcesException {
+            assertEquals(2,temporaryInventory.getStamina());
+
+            temporaryInventory.looseStamina();
+            temporaryInventory.looseStamina();
+
+            assertEquals(0,temporaryInventory.getStamina());
+            assertThrows(OutOfResourcesException.class, () -> temporaryInventory.looseStamina());
+        }
+        @Test
+        void staminaReset() throws OutOfResourcesException {
+            assertEquals(2,temporaryInventory.getStamina());
+
+            temporaryInventory.looseStamina();
+
+            assertEquals(1,temporaryInventory.getStamina());
+
+            temporaryInventory.looseStamina();
+
+            assertEquals(0,temporaryInventory.getStamina());
+
+            temporaryInventory.reset();
+
+            assertEquals(2,temporaryInventory.getStamina());
+        }
     }
 
-    @Test
-    void parcel() throws OutOfResourcesException {
-        assertNull(temporaryInventory.getParcel());
+    @Nested
+    class parcelListAndParcelTest{
 
-        temporaryInventory.saveParcel(new Parcel());
-        assertEquals(new Parcel().getParcelInformation(),temporaryInventory.getParcel().getParcelInformation());
+        @Test
+        void saveParcel() throws OutOfResourcesException {
+            assertNull(temporaryInventory.getParcel());
 
-        temporaryInventory.reset(WeatherType.NO_WEATHER);
-        assertNull(temporaryInventory.getParcel());
+            temporaryInventory.saveParcel(new Parcel());
+
+            assertEquals(new ParcelInformation(),temporaryInventory.getParcel().getParcelInformation());
+        }
+
+        @Test
+        void parcelReset() throws OutOfResourcesException {
+            assertNull(temporaryInventory.getParcel());
+
+            temporaryInventory.saveParcel(new Parcel());
+            temporaryInventory.reset();
+
+            assertNull(temporaryInventory.getParcel());
+        }
+
+        @Test
+        void saveParcels(){
+            assertTrue(temporaryInventory.getParcelsSaved().isEmpty());
+
+            temporaryInventory.saveParcels(new ArrayList<>(Arrays.asList(new Parcel(),new Parcel(),new Parcel())));
+
+            assertEquals(3,temporaryInventory.getParcelsSaved().size());
+        }
+
+        @Test
+        void parcelsReset(){
+            assertTrue(temporaryInventory.getParcelsSaved().isEmpty());
+
+            temporaryInventory.saveParcels(new ArrayList<>(Arrays.asList(new Parcel(),new Parcel(),new Parcel())));
+            temporaryInventory.reset();
+
+            assertTrue(temporaryInventory.getParcelsSaved().isEmpty());
+        }
     }
 
-    @Test
-    void saveParcels(){
-        assertTrue(temporaryInventory.getParcelsSaved().isEmpty());
+    @Nested
+    class actionTypeListTest{
 
-        temporaryInventory.saveParcels(new ArrayList<>(Arrays.asList(new Parcel(),new Parcel(),new Parcel())));
-        assertEquals(3,temporaryInventory.getParcelsSaved().size());
+        @Test
+        void addActionType(){
+            assertTrue(temporaryInventory.getActionTypeList().isEmpty());
 
-        temporaryInventory.reset(WeatherType.NO_WEATHER);
-        assertTrue(temporaryInventory.getParcelsSaved().isEmpty());
-    }
+            temporaryInventory.add(ActionType.DRAW_PARCELS);
 
-    @Test
-    void actionTypeList(){
-        assertTrue(temporaryInventory.getActionTypeList().isEmpty());
+            assertEquals(1,temporaryInventory.getActionTypeList().size());
+        }
 
-        temporaryInventory.add(ActionType.DRAW_PARCELS);
-        assertEquals(1,temporaryInventory.getActionTypeList().size());
-        assertThrows(NoSuchElementException.class,() -> temporaryInventory.hasPlayedCorrectly());
+        @Test
+        void removeActionType(){
+            assertTrue(temporaryInventory.getActionTypeList().isEmpty());
 
-        temporaryInventory.add(ActionType.SELECT_PARCEL);
-        assertEquals(2,temporaryInventory.getActionTypeList().size());
-        assertThrows(NoSuchElementException.class,() -> temporaryInventory.hasPlayedCorrectly());
+            temporaryInventory.add(ActionType.DRAW_PARCELS);
+            temporaryInventory.remove(ActionType.DRAW_PARCELS);
 
-        temporaryInventory.add(ActionType.PLACE_PARCEL);
-        assertEquals(3,temporaryInventory.getActionTypeList().size());
-        assertDoesNotThrow(() -> temporaryInventory.hasPlayedCorrectly());
+            assertTrue(temporaryInventory.getActionTypeList().isEmpty());
+        }
 
-        temporaryInventory.remove(ActionType.SELECT_PARCEL);
-        assertEquals(2,temporaryInventory.getActionTypeList().size());
-        assertThrows(NoSuchElementException.class,() -> temporaryInventory.hasPlayedCorrectly());
+        @Test
+        void actionTypeListReset(){
+            assertTrue(temporaryInventory.getActionTypeList().isEmpty());
 
-        temporaryInventory.reset(WeatherType.NO_WEATHER);
-        assertTrue(temporaryInventory.getActionTypeList().isEmpty());
+            temporaryInventory.add(ActionType.DRAW_PARCELS);
+            temporaryInventory.reset();
+
+            assertTrue(temporaryInventory.getActionTypeList().isEmpty());
+        }
+
+        @Test
+        void hasPlayedCorrectlyTest(){
+            assertDoesNotThrow(() -> temporaryInventory.hasPlayedCorrectly());
+
+            temporaryInventory.add(ActionType.DRAW_PARCELS);
+
+            assertThrows(NoSuchElementException.class,() -> temporaryInventory.hasPlayedCorrectly());
+
+            temporaryInventory.add(ActionType.SELECT_PARCEL);
+
+            assertThrows(NoSuchElementException.class,() -> temporaryInventory.hasPlayedCorrectly());
+
+            temporaryInventory.add(ActionType.PLACE_PARCEL);
+
+            assertDoesNotThrow(() -> temporaryInventory.hasPlayedCorrectly());
+        }
+
+        @Test
+        void hasPlayedCorrectlyReset(){
+            assertDoesNotThrow(() -> temporaryInventory.hasPlayedCorrectly());
+
+            temporaryInventory.add(ActionType.DRAW_PARCELS);
+            temporaryInventory.reset();
+
+            assertDoesNotThrow(() -> temporaryInventory.hasPlayedCorrectly());
+        }
     }
 
     @Test void weatherDifferentFromSunSo2Stamina(){
@@ -105,6 +187,4 @@ class TemporaryInventoryTest {
         temporaryInventory.reset(WeatherType.WIND);
         assertTrue(temporaryInventory.isActionCouldBeDoneTwice());
     }
-
-
 }

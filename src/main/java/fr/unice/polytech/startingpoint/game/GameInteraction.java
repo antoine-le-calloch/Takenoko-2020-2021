@@ -4,10 +4,10 @@ import fr.unice.polytech.startingpoint.exception.BadCoordinateException;
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.exception.RulesViolationException;
+import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.board.Parcel;
 import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
-import fr.unice.polytech.startingpoint.game.board.BoardRules;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.game.mission.PandaMission;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
@@ -306,14 +306,14 @@ public class GameInteraction {
      */
     public void moveCharacter(CharacterType characterType, Coordinate coordinate){
         ColorType ColorBambooEat;
-        if (getPlayerData().add(ActionType.get(characterType))) {
+        if (getPlayerData().add(ActionType.getCharacterAction(characterType))) {
             if (game.getRules().isMovableCharacter(characterType, coordinate)) {
                 getPlayerData().looseStamina();
                 if((ColorBambooEat = game.getBoard().moveCharacter(characterType, coordinate)) != null)
                     getPlayerData().addBamboo(ColorBambooEat);
             }
             else{
-                getPlayerData().remove(ActionType.get(characterType));
+                getPlayerData().remove(ActionType.getCharacterAction(characterType));
                 throw new BadCoordinateException("The character can't move to this coordinate : " + coordinate.toString());
             }
         }

@@ -2,6 +2,8 @@ package fr.unice.polytech.startingpoint.type;
 
 import fr.unice.polytech.startingpoint.exception.IllegalTypeException;
 
+import java.util.Set;
+
 public enum ActionType {
     DRAW_CANAL {
         @Override
@@ -87,7 +89,7 @@ public enum ActionType {
         }
     };
 
-    public static ActionType get(CharacterType characterType){
+    public static ActionType getCharacterAction(CharacterType characterType){
         switch (characterType){
             case PANDA:
                 return MOVE_PANDA;
@@ -97,4 +99,17 @@ public enum ActionType {
                 throw new IllegalTypeException("Wrong CharacterType to move.");
         }
     }
+
+    public static boolean isParcelAction(ActionType actionType){
+        return  actionType.equals(DRAW_PARCELS) ||
+                actionType.equals(SELECT_PARCEL) ||
+                actionType.equals(PLACE_PARCEL);
+    }
+
+    public static int containParcelAction(Set<ActionType> actionTypeList){
+        return  (actionTypeList.contains(DRAW_PARCELS) ? 1 : 0) +
+                (actionTypeList.contains(SELECT_PARCEL) ? 1 : 0) +
+                (actionTypeList.contains(PLACE_PARCEL) ? 1 : 0);
+    }
+
 }

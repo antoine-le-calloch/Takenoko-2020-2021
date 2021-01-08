@@ -1,17 +1,14 @@
 package fr.unice.polytech.startingpoint.bot;
 
+import fr.unice.polytech.startingpoint.bot.strategie.MissionPandaStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.MissionParcelStrat;
 import fr.unice.polytech.startingpoint.bot.strategie.MissionPeasantStrat;
-import fr.unice.polytech.startingpoint.bot.strategie.MissionPandaStrat;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;
-import fr.unice.polytech.startingpoint.game.board.ParcelInformation;
 import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.type.*;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -52,12 +49,12 @@ public abstract class Bot {
 
     public void botPlay(WeatherType weatherType) {
         playWeather(weatherType);
-        for (int i = gameInteraction.getStamina(); i > 0; i--) {
+
+        for (int i = gameInteraction.getStamina(); i > 0; i--)
             if(isJudiciousDrawMission())
                 drawMission(bestMissionTypeToDraw());
             else
                 playMission(determineBestMissionToDo());
-        }
     }
 
     void playWeather(WeatherType weatherType){
@@ -88,10 +85,11 @@ public abstract class Bot {
     void stratThunderstorm(){
         List<Coordinate> irrigatedParcelsWithMoreThan1Bamboo = gameInteraction.getAllParcelsIrrigated()
                 .stream()
-                .filter( coordinate -> gameInteraction.getPlacedParcelsNbBamboo(coordinate) > 0 && !gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
+                .filter( coordinate -> gameInteraction.getPlacedParcelsNbBamboo(coordinate) > 0 &&
+                                       !gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.ENCLOSURE) )
                 .collect(Collectors.toList());
         if(!irrigatedParcelsWithMoreThan1Bamboo.isEmpty())
-            gameInteraction.rainAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
+            gameInteraction.thunderstormAction(irrigatedParcelsWithMoreThan1Bamboo.get(0));
     }
 
     void stratRain(){
@@ -99,27 +97,30 @@ public abstract class Bot {
         List<Coordinate> parcelsIrrigatedWithFertilizer=parcelsIrrigated.stream().
                 filter(coordinate -> gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType()
                         .equals(ImprovementType.FERTILIZER)).collect(Collectors.toList());
-        if(!parcelsIrrigatedWithFertilizer.isEmpty())
+
+        if( !parcelsIrrigatedWithFertilizer.isEmpty() )
             gameInteraction.rainAction(parcelsIrrigatedWithFertilizer.get(0));
-        else if(!parcelsIrrigated.isEmpty())
+        else if( !parcelsIrrigated.isEmpty() )
             gameInteraction.rainAction(parcelsIrrigated.get(0));
     }
 
-    private void stratQuestionMark(){
+    void stratQuestionMark(){
         gameInteraction.questionMarkAction(WeatherType.SUN);
     }
 
-    private void stratCloud(){
-        if(gameInteraction.getResourceSize(ResourceType.WATERSHED_IMPROVEMENT) > 0)
+    void stratCloud(){
+        if( gameInteraction.getResourceSize(ResourceType.WATERSHED_IMPROVEMENT) > 0 )
             gameInteraction.cloudAction(ImprovementType.WATERSHED,WeatherType.SUN);
-        else if(gameInteraction.getResourceSize(ResourceType.FERTILIZER_IMPROVEMENT) > 0)
+        else if( gameInteraction.getResourceSize(ResourceType.FERTILIZER_IMPROVEMENT) > 0 )
             gameInteraction.cloudAction(ImprovementType.FERTILIZER,WeatherType.SUN);
         else
             gameInteraction.cloudAction(ImprovementType.ENCLOSURE,WeatherType.SUN);
+
         ImprovementType improvementType = (gameInteraction.getInventoryImprovementTypes().isEmpty()) ? null : gameInteraction.getInventoryImprovementTypes().get(0);
         List<Coordinate> coordinateList = gameInteraction.getPlacedCoordinates().stream()
                 .filter(coordinate -> gameInteraction.getPlacedParcelInformation(coordinate).getImprovementType().equals(ImprovementType.NOTHING))
                 .collect(Collectors.toList());
+
         if (improvementType != null && !coordinateList.isEmpty())
             gameInteraction.placeImprovement(improvementType,coordinateList.get(0));
     }
@@ -128,15 +129,15 @@ public abstract class Bot {
      */
 
     MissionType chooseMissionTypeDrawable(MissionType missionType1, MissionType missionType2, MissionType missionType3) {
-        if (gameInteraction.getResourceSize(ResourceType.get(missionType1)) > 0)
+        if ( gameInteraction.getResourceSize(ResourceType.get(missionType1)) > 0 )
             return missionType1;
-        else if (gameInteraction.getResourceSize(ResourceType.get(missionType2)) > 0)
+        else if ( gameInteraction.getResourceSize(ResourceType.get(missionType2)) > 0 )
             return missionType2;
         else
             return missionType3;
     }
 
-    private boolean isJudiciousDrawMission() {
+    boolean isJudiciousDrawMission() {
         int NB_MAX_MISSION = 5;
         return gameInteraction.getMissionsSize() < NB_MAX_MISSION &&
                 gameInteraction.getResourceSize(ResourceType.ALL_MISSION) > 0 &&
@@ -154,7 +155,7 @@ public abstract class Bot {
 
     protected abstract MissionType bestMissionTypeToDraw();
 
-    private Mission determineBestMissionToDo() {
+    Mission determineBestMissionToDo() {
         Mission bestMission = null;
         int minNbMove = -1;
         int nbMove = 0;
@@ -171,12 +172,13 @@ public abstract class Bot {
                     nbMove = missionPeasantStrat.howManyMoveToDoMission(mission);
                     break;
             }
-            if((nbMove < minNbMove && nbMove != 0) || minNbMove == -1){
+            if( (nbMove < minNbMove && nbMove > 0) ||
+                    minNbMove == -1){
                 minNbMove = nbMove;
                 bestMission = mission;
             }
         }
-        if (nbMove != 0)
+        if ( bestMission != null)
             return bestMission;
         else
             return gameInteraction.getInventoryMissions().get(0);

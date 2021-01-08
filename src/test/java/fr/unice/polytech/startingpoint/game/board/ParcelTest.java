@@ -99,4 +99,23 @@ class ParcelTest {
         parcel.setIrrigated();
         assertEquals(ColorType.NO_COLOR, parcel.delBamboo());
     }
+
+    /**
+     * <h1><u>toString</u></h1>
+     */
+
+    @Test
+    void toStringParcelIrrigate(){
+        Parcel parcel = new Parcel(ColorType.GREEN,ImprovementType.NOTHING);
+        parcel.setIrrigated();
+        parcel.addBamboo();
+        assertEquals("Couleur : Green | Aménagement : Nothing | Nombre bambous : 2 | Irrigué", parcel.toString());
+    }
+
+    @Test
+    void toStringParcelNoIrrigate(){
+        Parcel parcel = new Parcel(ColorType.GREEN,ImprovementType.NOTHING);
+        parcel.addBamboo();
+        assertEquals("Couleur : Green | Aménagement : Nothing | Nombre bambous : 1 | Non irrigué", parcel.toString());
+    }
 }
