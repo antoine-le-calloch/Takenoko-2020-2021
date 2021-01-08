@@ -1,7 +1,5 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
-import fr.unice.polytech.startingpoint.bot.Bot;
-import fr.unice.polytech.startingpoint.bot.ParcelBot;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.board.*;
 import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
@@ -38,7 +36,6 @@ class MissionParcelStratTest {
 
     Game game;
     Board board;
-    Bot parcelBot;
 
     MissionParcelStrat stratMissionParcel;
 
@@ -60,7 +57,6 @@ class MissionParcelStratTest {
 
         game = new Game();
         board = game.getBoard();
-        parcelBot = new ParcelBot(game.getGameInteraction());
 
         stratMissionParcel = new MissionParcelStrat(game.getGameInteraction());
 

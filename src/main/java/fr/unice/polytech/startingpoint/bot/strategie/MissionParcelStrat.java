@@ -235,10 +235,6 @@ public class MissionParcelStrat extends Strategie {
     }
 
     /**
-     * <b><u>NUMBER OF MOVES TO DO THE MISSION METHODS</b>
-     */
-
-    /**
      * <p>Count the number of move needed to end one mission</p>
      * @param mission
      *          <b>Mission object whose number of movements we are looking for.</b>

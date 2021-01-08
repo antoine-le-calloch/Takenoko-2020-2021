@@ -22,7 +22,6 @@ class RandomBotTest {
     private Resource resource;
     private BoardRules boardRules;
 
-
     @BeforeEach
     void setUp() {
 
@@ -45,7 +44,6 @@ class RandomBotTest {
         rdmBot1.botPlay(WeatherType.NO_WEATHER);
         assertEquals(2, game.getGameInteraction().getInventoryParcelMissions().size());
     }
-
 
     @Test
     void drawMissionPanda() {
