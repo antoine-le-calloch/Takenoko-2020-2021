@@ -1,6 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
 import fr.unice.polytech.startingpoint.bot.*;
+import fr.unice.polytech.startingpoint.exception.TooManyPlayersInGameException;
 import fr.unice.polytech.startingpoint.game.board.Board;
 import fr.unice.polytech.startingpoint.game.board.Resource;
 import fr.unice.polytech.startingpoint.game.board.BoardRules;
@@ -10,6 +11,7 @@ import fr.unice.polytech.startingpoint.type.ActionType;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
+import javax.swing.*;
 import java.util.*;
 
 /**
@@ -109,19 +111,34 @@ public class Game{
      *
      */
 
-    public void play() {
-        while( isContinue() ) {
-            if(numBot==FIRST_BOT) {
-                newRound();
-                if (isInformationsPrinted) {
-                    System.out.println("=========== TOUR N°" + round + " ===========\n");
-                    printTurnInformations();
-                    System.out.println("\n");
-                }
-            }
-            botPlay();
-            nextBot();
+    /*        if(getPlayerData().add(ActionType.WEATHER)){
+             if(getPlacedCoordinates().contains(coordinate))
+                 game.getBoard().moveCharacter(CharacterType.PANDA,coordinate);
+             else
+                 throw new BadCoordinateException("The character can't move to this coordinate : " + coordinate.toString());
         }
+        else
+            throw new RulesViolationException("Already used this method.");*/
+
+    public void play() {
+        int NB_MAX_PLAYER = 4;
+        if (botData.size() <= NB_MAX_PLAYER) {
+            while (isContinue()) {
+                if (numBot == FIRST_BOT) {
+                    newRound();
+                    if (isInformationsPrinted) {
+                        System.out.println("=========== TOUR N°" + round + " ===========\n");
+                        printTurnInformations();
+                        System.out.println("\n");
+                    }
+                }
+                botPlay();
+                nextBot();
+            }
+        }
+        else
+            throw new TooManyPlayersInGameException("\nThere are more players in the list than the number of allowed players. \n" +
+                    "The maximum is " + NB_MAX_PLAYER + ".");
     }
 
     /**

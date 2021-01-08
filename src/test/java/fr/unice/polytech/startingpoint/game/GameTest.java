@@ -1,5 +1,7 @@
 package fr.unice.polytech.startingpoint.game;
 
+import fr.unice.polytech.startingpoint.exception.RulesViolationException;
+import fr.unice.polytech.startingpoint.exception.TooManyPlayersInGameException;
 import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 import org.junit.jupiter.api.Test;
@@ -100,4 +102,27 @@ class GameTest {
         assertEquals(2,game.getScores().get(0)[0]);
         assertEquals(1,game.getMissionsDone().get(0));
     }
+
+    @Test
+    void tooManyPlayersInGame(){
+        BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
+        Game game=new Game(false, botList);
+        assertThrows(TooManyPlayersInGameException.class, game::play);
+    }
+
+    @Test
+    void fourPlayersInGame(){
+        BotType[] botList = new BotType[]{BotType.PARCEL_BOT,BotType.PANDA_BOT,BotType.PARCEL_BOT,BotType.PANDA_BOT};
+        Game game=new Game(false, botList);
+        game.play();
+    }
+
+    @Test
+    void OnePlayersInGame(){
+        BotType[] botList = new BotType[]{BotType.PARCEL_BOT};
+        Game game=new Game(false, botList);
+        game.play();
+    }
+
+
 }
