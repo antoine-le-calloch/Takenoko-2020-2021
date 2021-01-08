@@ -97,6 +97,15 @@ final class Stat {
     }
 
     /**@param player
+     *              <b>The player we want the loss rate from.</b>
+     *
+     * @return <b>The loss rate from the player.</b>
+     */
+    public double getLoosRate(int player){
+        return Math.round((gameData.size()-botScores[player][1]-botScores[player][2])/((gameData.size())/100.0)*100.0)/100.0;
+    }
+
+    /**@param player
      *              <b>The player we want the equality rate from.</b>
      *
      * @return <b>The equality rate from the player.</b>
@@ -119,7 +128,9 @@ final class Stat {
                        .append(i+1)
                        .append(" : ")
                        .append(getWinRate(i))
-                       .append("% win rate and ")
+                       .append("% win rate, ")
+                       .append(getLoosRate(i))
+                       .append("% loss rate and ")
                        .append(getEqualityRate(i))
                        .append("% equality rate with a ")
                        .append(getPointsAverage(i))
