@@ -25,7 +25,6 @@ class Main{
             game.play();
             statGame.add(game.getScores());
         }
-
         System.out.println(statGame);
     }
 }
