@@ -434,12 +434,10 @@ class MissionParcelStratTest {
         Coordinate []coordCanal = stratMissionParcel.possibleCoordinatesCanal().get(0);
 
         assertEquals(2, board.getPlacedCanals().size());
-        assertFalse(board.getPlacedCanals().containsKey(Coordinate.getSortedSet(coordCanal[0],coordCanal[1])));
 
         stratMissionParcel.putCanal(missionRedLine);
 
         assertEquals(3, board.getPlacedCanals().size());
-        assertTrue(board.getPlacedCanals().containsKey(Coordinate.getSortedSet(coordCanal[0],coordCanal[1])));
     }
 
 ///////////////////////////////
