@@ -82,6 +82,27 @@ class MissionPeasantStratTest {
         assertEquals(2,game.getBoard().getPlacedParcels().get(coordinate1).getNbBamboo());//2 bamboo sur la parcel
     }
 
+    @Test
+    void stratOneTurn_PutParcel() {
+        game.getPlayerData().add(ActionType.MOVE_PEASANT);
+
+        assertEquals(1,game.getBoard().getPlacedParcels().size());
+        stratMissionPeasant.stratOneTurn(peasantMissionGreen);
+        assertEquals(2,game.getBoard().getPlacedParcels().size());
+    }
+
+    @Test
+    void stratOneTurn_PlaceCanal() {
+        game.getPlayerData().add(ActionType.MOVE_PEASANT);
+        game.getPlayerData().add(ActionType.DRAW_PARCELS);
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1,0,-1));
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1,-1,0));
+
+        assertEquals(0,game.getBoard().getPlacedCanals().size());
+        stratMissionPeasant.stratOneTurn(peasantMissionGreen);
+        assertEquals(1,game.getBoard().getPlacedCanals().size());
+    }
+
     /**
      <h2><u>IS JUDICIOUS</u></h2>
      */

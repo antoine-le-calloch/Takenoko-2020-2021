@@ -492,8 +492,50 @@ class MissionPandaStratTest {
     void strategyPlaceParcel(){
         assertTrue(game.getRules().isMovableCharacter(CharacterType.PANDA,missionPandaStrat.strategyPlaceParcel(missionPandaStrat.drawParcelStrategy(ColorType.GREEN))));
     }
-    
 
+////////////////////////////////
+
+    @Test
+    void stratOneTurn_MovePanda() {
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1,0,-1));
+
+        assertEquals(new Coordinate(0,0,0), game.getBoard().getPandaCoordinate());
+        missionPandaStrat.stratOneTurn(missionGreenOneColor);
+        assertNotEquals(new Coordinate(0,0,0), game.getBoard().getPandaCoordinate());
+    }
+
+    @Test
+    void stratOneTurn_MovePeasant() {
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1,0,-1));
+        game.getPlayerData().add(ActionType.MOVE_PANDA);
+
+        assertEquals(new Coordinate(0,0,0), game.getBoard().getPeasantCoordinate());
+        missionPandaStrat.stratOneTurn(missionGreenOneColor);
+        assertNotEquals(new Coordinate(0,0,0), game.getBoard().getPeasantCoordinate());
+    }
+
+    @Test
+    void stratOneTurn_PutParcel() {
+        game.getPlayerData().add(ActionType.MOVE_PANDA);
+        game.getPlayerData().add(ActionType.MOVE_PEASANT);
+
+        assertEquals(1,game.getBoard().getPlacedParcels().size());
+        missionPandaStrat.stratOneTurn(missionGreenOneColor);
+        assertEquals(2,game.getBoard().getPlacedParcels().size());
+    }
+
+    @Test
+    void stratOneTurn_PlaceCanal() {
+        game.getPlayerData().add(ActionType.MOVE_PANDA);
+        game.getPlayerData().add(ActionType.MOVE_PEASANT);
+        game.getPlayerData().add(ActionType.DRAW_PARCELS);
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1,0,-1));
+        game.getBoard().placeParcel(new Parcel(ColorType.GREEN), new Coordinate(1,-1,0));
+
+        assertEquals(0,game.getBoard().getPlacedCanals().size());
+        missionPandaStrat.stratOneTurn(missionGreenOneColor);
+        assertEquals(1,game.getBoard().getPlacedCanals().size());
+    }
 }
 
 

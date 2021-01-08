@@ -21,9 +21,8 @@ public class MissionPandaStrat extends Strategie {
             gameInteraction.moveCharacter(CharacterType.PANDA,strategyMovePanda(mission.getColorType()));
         else if (isJudiciousMovePeasant())
             gameInteraction.moveCharacter(CharacterType.PEASANT,strategyMovePeasant(mission.getColorType()));
-        else if (isJudiciousPlaceParcel()) {
+        else if (isJudiciousPlaceParcel())
             strategyPlaceParcel(drawParcelStrategy(mission.getColorType()));
-        }
         else if (isJudiciousPlaceCanal())
             strategyPlaceCanal();
         else if (!gameInteraction.contains(ActionType.MOVE_PANDA) && !possibleCoordinatesPanda().isEmpty())
