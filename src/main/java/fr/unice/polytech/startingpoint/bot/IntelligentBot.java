@@ -35,7 +35,7 @@ public class IntelligentBot extends Bot {
     @Override
     public MissionType bestMissionTypeToDraw() {
         int NB_MAX_MISSION_PARCEL = 2;
-        int NB_MISSION_DONE = 9 - gameInteraction.getNumberPlayers();
+        int NB_MISSION_DONE = 7 - gameInteraction.getNumberPlayers();
         if (    gameInteraction.getResourceSize(ResourceType.PARCEL_MISSION) > 0 &&
                 (gameInteraction.getInventoryParcelMissions().size() + gameInteraction.getMissionsParcelDone()) < NB_MAX_MISSION_PARCEL)
             return MissionType.PARCEL;
