@@ -6,8 +6,6 @@ Groupe GigaBoss :
 	Enzo Manuel, 
 	Antoine Le Calloch
 
----avancement du projet:100%----
-
 Le programme se lance avec la commande suivante:
 mvn clean package
 mvn exec:java 
