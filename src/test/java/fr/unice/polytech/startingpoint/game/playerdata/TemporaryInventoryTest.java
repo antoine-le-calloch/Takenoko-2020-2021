@@ -164,27 +164,31 @@ class TemporaryInventoryTest {
             assertDoesNotThrow(() -> temporaryInventory.hasPlayedCorrectly());
         }
     }
+    
+    @Nested
+    class windTest{
 
-    @Test void weatherDifferentFromSunSo2Stamina(){
-        //de base no_weather
-        assertEquals(2,temporaryInventory.getStamina());
-        temporaryInventory.reset(WeatherType.NO_WEATHER);
-        assertEquals(2,temporaryInventory.getStamina());
-    }
+        @Test void weatherDifferentFromSunSo2Stamina(){
+            //de base no_weather
+            assertEquals(2,temporaryInventory.getStamina());
+            temporaryInventory.reset(WeatherType.NO_WEATHER);
+            assertEquals(2,temporaryInventory.getStamina());
+        }
 
-    @Test void sunWeatherSo3Stamina(){
-        temporaryInventory.reset(WeatherType.SUN);
-        assertEquals(3,temporaryInventory.getStamina());
-    }
+        @Test void sunWeatherSo3Stamina(){
+            temporaryInventory.reset(WeatherType.SUN);
+            assertEquals(3,temporaryInventory.getStamina());
+        }
 
-    @Test void noWindSoNoDoubleAction(){
-        assertFalse(temporaryInventory.isActionCouldBeDoneTwice());
-        temporaryInventory.setWeatherType(WeatherType.SUN);
-        assertFalse(temporaryInventory.isActionCouldBeDoneTwice());
-    }
+        @Test void noWindSoNoDoubleAction(){
+            assertFalse(temporaryInventory.isActionCouldBeDoneTwice());
+            temporaryInventory.setWeatherType(WeatherType.SUN);
+            assertFalse(temporaryInventory.isActionCouldBeDoneTwice());
+        }
 
-    @Test void windWeather(){
-        temporaryInventory.reset(WeatherType.WIND);
-        assertTrue(temporaryInventory.isActionCouldBeDoneTwice());
+        @Test void windWeather(){
+            temporaryInventory.reset(WeatherType.WIND);
+            assertTrue(temporaryInventory.isActionCouldBeDoneTwice());
+        }
     }
 }

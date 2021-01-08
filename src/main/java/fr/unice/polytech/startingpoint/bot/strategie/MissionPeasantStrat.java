@@ -13,7 +13,6 @@ import fr.unice.polytech.startingpoint.type.ImprovementType;
 import fr.unice.polytech.startingpoint.type.ResourceType;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MissionPeasantStrat extends Strategie {
 
@@ -22,15 +21,13 @@ public class MissionPeasantStrat extends Strategie {
     }
 
     public void stratOneTurn(Mission mission){
-        if ( isJudiciousMovePeasant((PeasantMission) mission) )
-            gameInteraction.moveCharacter(CharacterType.PEASANT,strategyMovePeasant((PeasantMission) mission));
+        PeasantMission peasantMission = (PeasantMission) mission;
+        if ( isJudiciousMovePeasant(peasantMission) )
+            gameInteraction.moveCharacter(CharacterType.PEASANT,strategyMovePeasant(peasantMission));
         else if ( isJudiciousPlaceParcel() )
-            strategyPlaceParcel((PeasantMission) mission);
+            strategyPlaceParcel(peasantMission);
         else if ( isJudiciousPlaceCanal() )
-            strategyPlaceCanal();
-        else if ( !gameInteraction.contains(ActionType.MOVE_PANDA) &&
-                  !possibleCoordinatesPanda().isEmpty() )
-            gameInteraction.moveCharacter(CharacterType.PANDA,possibleCoordinatesPanda().get(0));
+            strategyPlaceCanal(peasantMission);
     }
 
     /**<b><u>IS JUDICIOUS METHODS</b>
@@ -63,58 +60,69 @@ public class MissionPeasantStrat extends Strategie {
         return null;
     }
 
-    private void strategyPlaceParcel(PeasantMission peasantMission) {
-        try{List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
-
-            if (parcelInformationList
-                    .stream()
-                    .map(ParcelInformation::getColorType)
-                    .collect(Collectors.toList())
-                    .contains(peasantMission.getColorType())){
-                Coordinate coordinate = null;
-
-                for (Coordinate c : possibleCoordinatesParcel())
-                    if (gameInteraction.getRules().isMovableCharacter(CharacterType.PEASANT,c))
-                        coordinate = c;
-
-                if (coordinate == null)
-                    coordinate = possibleCoordinatesParcel().get(0);
-
-                if (parcelInformationList
-                        .stream()
-                        .filter(parcelInformation -> parcelInformation.getColorType().equals(peasantMission.getColorType()))
-                        .map(ParcelInformation::getImprovementType)
-                        .collect(Collectors.toList())
-                        .contains(peasantMission.getImprovementType()))
-                    gameInteraction.selectParcel(parcelInformationList
-                            .stream()
-                            .filter(parcelInformation -> parcelInformation.getColorType().equals(peasantMission.getColorType()) &&
-                            parcelInformation.getImprovementType().equals(peasantMission.getImprovementType()))
-                            .collect(Collectors.toList()).get(0) );
-                else
-                    gameInteraction.selectParcel(parcelInformationList
-                            .stream()
-                            .filter(parcelInformation -> parcelInformation.getColorType().equals(peasantMission.getColorType()))
-                            .collect(Collectors.toList()).get(0) );
-
-                gameInteraction.placeParcel(coordinate);
-            }
-            else {
-                gameInteraction.selectParcel(parcelInformationList.get(0));
-                gameInteraction.placeParcel(possibleCoordinatesParcel().get(0));
-            }
+    public void strategyPlaceParcel(PeasantMission peasantMission) {
+        try{
+            gameInteraction.selectParcel(getBestParcelInformation(gameInteraction.drawParcels(),peasantMission));
+            gameInteraction.placeParcel(getBestCoordinateParcel());
         }
         catch (OutOfResourcesException | RulesViolationException e) {
             e.printStackTrace();
         }
     }
 
-    public void strategyPlaceCanal() {
+    ParcelInformation getBestParcelInformation(List<ParcelInformation> parcelInformationList,PeasantMission peasantMission){
+        ParcelInformation bestParcelInformation = null;
+
+        for (ParcelInformation parcelInformation : parcelInformationList)
+            if (    parcelInformation.getColorType().equals(peasantMission.getColorType()) &&
+                    parcelInformation.getImprovementType().equals(peasantMission.getImprovementType()) )
+                bestParcelInformation = parcelInformation;
+
+        if (bestParcelInformation == null)
+            return parcelInformationList.get(0);
+        else
+            return bestParcelInformation;
+    }
+
+    Coordinate getBestCoordinateParcel(){
+        Coordinate bestCoordinate = null;
+
+        for (Coordinate c : possibleCoordinatesParcel())
+            if (gameInteraction.getRules().isMovableCharacterIfCoordinateIsPlaced(CharacterType.PEASANT,c))
+                bestCoordinate = c;
+
+        if (bestCoordinate == null)
+            return possibleCoordinatesParcel().get(0);
+        else
+            return bestCoordinate;
+    }
+
+    public void strategyPlaceCanal(PeasantMission peasantMission) {
         gameInteraction.drawCanal();
         if(!possibleCoordinatesCanal().isEmpty()){
-            Coordinate[] coordinates = possibleCoordinatesCanal().get(0);
+            Coordinate[] coordinates = getBestCoordinateCanal(peasantMission);
             gameInteraction.placeCanal(coordinates[0],coordinates[1]);
         }
+    }
+
+    Coordinate[] getBestCoordinateCanal(PeasantMission peasantMission){
+        ParcelInformation parcelInformation = new ParcelInformation(peasantMission.getColorType(),peasantMission.getImprovementType());
+        List<Coordinate> goodPlacedParcelForMission = gameInteraction.getPlacedCoordinatesByParcelInformation(parcelInformation);
+        Coordinate bestCoordinate = null;
+        Coordinate[] bestCoordinateCanal = null;
+
+        for (Coordinate c : goodPlacedParcelForMission){
+            if (gameInteraction.getRules().isMovableCharacter(CharacterType.PEASANT,c))
+                bestCoordinate = c;
+        }
+
+        if (bestCoordinate != null)
+            bestCoordinateCanal = getBestCanal(bestCoordinate);
+
+        if (bestCoordinateCanal != null)
+            return getBestCanal(bestCoordinate);
+        else
+            return possibleCoordinatesCanal().get(0);
     }
 
     /**<b><u>NUMBER OF MOVES TO DO THE MISSION METHODS</b>

@@ -76,4 +76,20 @@ public final class BoardRules {
         }
         return false;
     }
+
+    /**@return <b>True, if the character is movable on the coordinates specified in parameter if a parcel is placed.</b>
+     */
+    public boolean isMovableCharacterIfCoordinateIsPlaced(CharacterType characterType, Coordinate coordinate) {
+        fr.unice.polytech.startingpoint.game.board.Character character = board.getCharacter(characterType);
+        if(coordinate.isOnTheSameLine(character.getCoordinate())){
+            if(!character.getCoordinate().isNextTo(coordinate)){
+                for(Coordinate c : Coordinate.getAllCoordinatesBetween(character.getCoordinate(),coordinate)){
+                    if(!board.isPlacedParcel(c))
+                        return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }

@@ -115,6 +115,7 @@ public class MissionPandaStrat extends Strategie {
             for (Coordinate c : possibleCoordinatesParcel()) {
                 if (gameInteraction.getRules().isMovableCharacter(CharacterType.PANDA, c))
                     coordinate = c;
+
             }
             if (coordinate == null){
                 coordinate = possibleCoordinatesParcel().get(0);

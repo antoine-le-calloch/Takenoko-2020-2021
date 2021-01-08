@@ -226,9 +226,10 @@ public class MissionParcelStrat extends Strategie {
 
     List<Coordinate> coordEndMissionNoIrrigate(ParcelMission mission) {
         for (Coordinate coordinate : allPlaces()) {
-            if(coordsToDoMission(coordinate,mission) != null && coordsToDoMission(coordinate,mission).size() == 0) {
-                return setForm(coordinate, mission.getFormType());
-            }
+            Map<Coordinate, Boolean> coordinateList = coordsToDoMission(coordinate,mission);
+            if(coordinateList != null)
+                if(coordinateList.size() == 0)
+                    return setForm(coordinate, mission.getFormType());
         }
         return new ArrayList<>();
     }
