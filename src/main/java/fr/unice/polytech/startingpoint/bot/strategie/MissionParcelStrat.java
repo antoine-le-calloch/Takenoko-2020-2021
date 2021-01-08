@@ -10,7 +10,7 @@ import fr.unice.polytech.startingpoint.game.mission.ParcelMission;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,7 +50,7 @@ public class MissionParcelStrat extends Strategie {
      * @return <b>True if it is judicious to put a canal.</b>
      * @see GameInteraction
      */
-    private boolean isJudiciousPutCanal(ParcelMission parcelMission){
+    boolean isJudiciousPutCanal(ParcelMission parcelMission){
         if (bestCoordinatesForMission(parcelMission).size() == 0)
             return gameInteraction.getResourceSize(ResourceType.CANAL) > 0 &&
                     possibleCoordinatesCanal().size() > 0 &&
@@ -63,17 +63,17 @@ public class MissionParcelStrat extends Strategie {
      * @return <b>True if it is judicious to put a parcel.</b>
      * @see GameInteraction
      */
-    private boolean isJudiciousPutParcel(){
+    boolean isJudiciousPutParcel(){
         return gameInteraction.getResourceSize(ResourceType.PARCEL) > 0 && !gameInteraction.contains(ActionType.DRAW_PARCELS);
     }
 
     /**<b><u>STRATEGIES METHODS</b>
      */
 
-    private void putParcel(ParcelMission parcelmission) {
+    void putParcel(ParcelMission parcelmission) {
         try {
             List<ParcelInformation> parcelInformationList = gameInteraction.drawParcels();
-            List<Coordinate> bestCoords = coordsToPut(parcelInformationList, parcelmission);
+            List<Coordinate> bestCoords = bestCoordPossibleBasedOnParcelDrawn(parcelInformationList, parcelmission);
 
             gameInteraction.selectParcel(parcelInformationList.get(0));
             gameInteraction.placeParcel(bestCoords.get(0));
@@ -84,7 +84,7 @@ public class MissionParcelStrat extends Strategie {
         }
     }
 
-    private List<Coordinate> coordsToPut(List<ParcelInformation> parcelInformationList, ParcelMission parcelmission) {
+    List<Coordinate> bestCoordPossibleBasedOnParcelDrawn(List<ParcelInformation> parcelInformationList, ParcelMission parcelmission) {
         Map<Coordinate, Boolean> bestCoords = bestCoordinatesForMission(parcelmission);
         List<Coordinate> coordsNeeded= new ArrayList<>();
         List<Coordinate> coordsUsed= new ArrayList<>();
@@ -116,12 +116,12 @@ public class MissionParcelStrat extends Strategie {
      *            <b>The mission wanted to be completed.</b>
      * @return <b>The best coordinates where a parcel need to be placed to complete the mission.</b>
      */
-    private Map<Coordinate, Boolean> bestCoordinatesForMission(ParcelMission mission){
-        Map<Coordinate, Boolean> bestCoordinates = new HashMap<>();
+    Map<Coordinate, Boolean> bestCoordinatesForMission(ParcelMission mission){
+        Map<Coordinate, Boolean> bestCoordinates = new LinkedHashMap<>();
         int minTurnToEndForm = -1;
 
         for (Coordinate coordinate : allPlaces()) {
-            Map<Coordinate, Boolean> parcelsToPlaceToDoForm = coordNeedToDoMission(coordinate, mission);
+            Map<Coordinate, Boolean> parcelsToPlaceToDoForm = coordsToDoMission(coordinate, mission);
 
             if(parcelsToPlaceToDoForm != null && (minTurnToEndForm == -1 || parcelsToPlaceToDoForm.size() < minTurnToEndForm)){
                 minTurnToEndForm = parcelsToPlaceToDoForm.size();
@@ -137,9 +137,9 @@ public class MissionParcelStrat extends Strategie {
      *            <b>The mission wanted to be completed.</b>
      * @return <b>The list of required coordinates where parcels need to be placed to complete the mission.</b>
      */
-    private Map<Coordinate, Boolean> coordNeedToDoMission(Coordinate coordinate, ParcelMission mission){
+    Map<Coordinate, Boolean> coordsToDoMission(Coordinate coordinate, ParcelMission mission){
         List<Coordinate> distantCoord = new ArrayList<>();
-        Map<Coordinate, Boolean> coordToDoMission = new HashMap<>();
+        Map<Coordinate, Boolean> coordToDoMission = new LinkedHashMap<>();
         List<Coordinate> form = setForm(coordinate, mission.getFormType());
 
         if(form.contains(new Coordinate(0,0,0)) || form.stream().anyMatch(coord -> gameInteraction.isPlacedParcel(coord) &&
@@ -169,7 +169,7 @@ public class MissionParcelStrat extends Strategie {
         return coordToDoMission;
     }
 
-    private void treatDistantCoord(Coordinate distantCoord, Map<Coordinate, Boolean> coordToDoMission){
+    void treatDistantCoord(Coordinate distantCoord, Map<Coordinate, Boolean> coordToDoMission){
         if(distantCoord.coordinatesAround().stream().filter(coordToDoMission.keySet()::contains).count() < 2){
             List<Coordinate>  coordsNeed =  Coordinate.getInCommonAroundCoordinates(distantCoord,distantCoord.coordinatesAround().stream().filter(coordToDoMission.keySet()::contains).collect(Collectors.toList()).get(0));
             if(boardRules.isPlayableParcel(coordsNeed.get(0)))
@@ -187,20 +187,22 @@ public class MissionParcelStrat extends Strategie {
         }
     }
 
-    private Coordinate coordAroundUse(Coordinate coordinate){
+    Coordinate coordAroundUse(Coordinate coordinate){
         for (Coordinate coordAround : coordinate.coordinatesAround())
             if(gameInteraction.isPlacedParcel(coordAround))
                 return coordAround;
         return null;
     }
 
-    private List<Coordinate> setForm(Coordinate coordinate, FormType form){
+    List<Coordinate> setForm(Coordinate coordinate, FormType form){
         List<Coordinate> coordForm = new ArrayList<>(Coordinate.coordinatesOfOffsets(coordinate, form.getOffsetsList1()));
         coordForm.addAll(Coordinate.coordinatesOfOffsets(coordinate, form.getOffsetsList2()));
         return coordForm;
     }
 
-    private void putCanal(ParcelMission mission) {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void putCanal(ParcelMission mission) {
         try {
             List<Coordinate> fullForm = coordEndMissionNoIrrigate(mission);
             Coordinate[] bestCoordinatesCanal = null;
@@ -222,9 +224,9 @@ public class MissionParcelStrat extends Strategie {
         }
     }
 
-    private List<Coordinate> coordEndMissionNoIrrigate(ParcelMission mission) {
+    List<Coordinate> coordEndMissionNoIrrigate(ParcelMission mission) {
         for (Coordinate coordinate : allPlaces()) {
-            Map<Coordinate, Boolean> coordinateList = coordNeedToDoMission(coordinate,mission);
+            Map<Coordinate, Boolean> coordinateList = coordsToDoMission(coordinate,mission);
             if(coordinateList != null)
                 if(coordinateList.size() == 0)
                     return setForm(coordinate, mission.getFormType());
@@ -263,7 +265,7 @@ public class MissionParcelStrat extends Strategie {
      * @return <b>True if the mission can be done in one turn</b>
      * @see GameInteraction
      */
-    private boolean isFinishedInOneTurn(ParcelMission parcelMission) {
+    boolean isFinishedInOneTurn(ParcelMission parcelMission) {
         for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()){
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
             List<Coordinate> coordinateNotPlaced = new ArrayList<>();
@@ -292,7 +294,7 @@ public class MissionParcelStrat extends Strategie {
      * @return <b>True if the mission is done</b>
      * @see GameInteraction
      */
-    private boolean isAlreadyFinished(ParcelMission parcelMission) {
+    boolean isAlreadyFinished(ParcelMission parcelMission) {
         for (Coordinate coordinate : gameInteraction.getPlacedCoordinates()){
             List<Coordinate> parcelForm = setForm(coordinate, parcelMission.getFormType());
             int cpt = 0;
@@ -313,7 +315,7 @@ public class MissionParcelStrat extends Strategie {
      * @return <b>The number of move or -1 if something wrong</b>
      * @see GameInteraction
      */
-    private int nbMoveParcel(ParcelMission parcelMission) {
+    int nbMoveParcel(ParcelMission parcelMission) {
         Map<Coordinate,Boolean> bestCoordinatesForMission = bestCoordinatesForMission(parcelMission);
         int nbMove = 0;
         for (Coordinate coordinate1 : bestCoordinatesForMission.keySet()){
