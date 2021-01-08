@@ -8,7 +8,6 @@ import fr.unice.polytech.startingpoint.type.BotType;
 import fr.unice.polytech.startingpoint.type.WeatherType;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Moteur de jeu, creation d'une partie, fait jouer les bots, verifie les missions faites et termine la partie
@@ -168,7 +167,6 @@ public class Game{
         }
         return false;
     }
-
 
     /**@return <b>True if the game is not done because a player finished his missions and the round is finished, and when resources aren't empty.</b>
      */

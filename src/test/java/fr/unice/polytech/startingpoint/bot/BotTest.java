@@ -22,7 +22,7 @@ class BotTest {
     public void setUp(){
         game = new Game();
         bot = new RandomBot(game.getGameInteraction());
-
+        game.getPlayerData().getInventory().subMissions(game.getPlayerData().getMissions());
     }
 
     /**
@@ -57,9 +57,8 @@ class BotTest {
 
     @Test
     void isJudiciousDrawMissionAlready5Missions(){
-        for (int i = 0; i < 2; i++) {
-            game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,0) {
-            });
+        for (int i = 0; i < 5; i++) {
+            game.getPlayerData().addMission(new PandaMission(ColorType.GREEN,0));
         }
         assertFalse(bot.isJudiciousDrawMission());
     }
@@ -176,9 +175,9 @@ class BotTest {
         parcelGreen.addBamboo();
         parcelGreen.addBamboo(); // mission jardinier faisable en un coup
 
-        Parcel parcelGreen2 = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
-        Coordinate coordinate2 = new Coordinate(1, -1, 0);
-        Mission peasantMissionGreen2 = new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 2);
+        Parcel parcelGreen2 = new Parcel(ColorType.GREEN, ImprovementType.ENCLOSURE);
+        Coordinate coordinate2 = new Coordinate(1, 0, -1);
+        Mission peasantMissionGreen2 = new PeasantMission(ColorType.GREEN, ImprovementType.ENCLOSURE, 2);
 
         game.getBoard().placeParcel(parcelGreen2,coordinate2);
         parcelGreen2.addBamboo(); // mission jardinier faisable en plus d'un coup
@@ -186,29 +185,6 @@ class BotTest {
         game.getPlayerData().getInventory().addMission(peasantMissionGreen);
         game.getPlayerData().getInventory().addMission(peasantMissionGreen2);
         assertEquals(peasantMissionGreen,bot.determineBestMissionToDo());
-    }
-
-    @Test
-    void determineBestMissionToDoMissionSameSpeedOneHaveMorePoints(){
-        Parcel parcelGreen = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
-        Coordinate coordinate1 = new Coordinate(1, -1, 0);
-        Mission peasantMissionGreen = new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 2);
-
-        game.getBoard().placeParcel(parcelGreen,coordinate1);
-        parcelGreen.addBamboo();
-        parcelGreen.addBamboo(); // mission jardinier faisable en un coup
-
-        Parcel parcelGreen2 = new Parcel(ColorType.GREEN, ImprovementType.NOTHING);
-        Coordinate coordinate2 = new Coordinate(1, -1, 0);
-        Mission peasantMissionGreen2 = new PeasantMission(ColorType.GREEN, ImprovementType.NOTHING, 4);
-        //mission2 : plus de points
-        game.getBoard().placeParcel(parcelGreen2,coordinate2);
-        parcelGreen2.addBamboo();
-        parcelGreen.addBamboo(); // mission jardinier faisable en un coup
-
-        game.getPlayerData().getInventory().addMission(peasantMissionGreen);
-        game.getPlayerData().getInventory().addMission(peasantMissionGreen2);
-        assertEquals(peasantMissionGreen2,bot.determineBestMissionToDo());
     }
 
     @Test
@@ -221,14 +197,11 @@ class BotTest {
         parcelGreen.addBamboo();
         parcelGreen.addBamboo(); // mission jardinier faisable en un coup
 
-
         Mission peasantMissionGreen2 = new PeasantMission(ColorType.GREEN, ImprovementType.WHATEVER, 4);
-
 
         game.getPlayerData().getInventory().addMission(peasantMissionGreen);
         game.getPlayerData().getInventory().addMission(peasantMissionGreen2);
+
         assertEquals(peasantMissionGreen,bot.determineBestMissionToDo());
     }
-
-
 }

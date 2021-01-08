@@ -178,7 +178,7 @@ public abstract class Bot {
                 bestMission = mission;
             }
         }
-        if ( nbMove != 0 )
+        if ( bestMission != null)
             return bestMission;
         else
             return gameInteraction.getInventoryMissions().get(0);
