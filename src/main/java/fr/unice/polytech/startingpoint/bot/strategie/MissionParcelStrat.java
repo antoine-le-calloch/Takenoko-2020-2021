@@ -243,10 +243,10 @@ public class MissionParcelStrat extends Strategie {
      */
     public int howManyMoveToDoMission(Mission mission) {
         ParcelMission parcelMission = (ParcelMission) mission;
-        if(isJudiciousPutParcel() && isJudiciousPutCanal(parcelMission)){
+        if(isJudiciousPutParcel() || isJudiciousPutCanal(parcelMission)){
             if (bestCoordinatesForMission(parcelMission).size() > gameInteraction.getResourceSize(ResourceType.PARCEL))
                 return -1;
-            return nbMoveParcel(parcelMission);
+            return nbMoveForMission(parcelMission);
         }
         return -1;
     }
@@ -258,7 +258,7 @@ public class MissionParcelStrat extends Strategie {
      * @return <b>The number of move or -1 if something wrong</b>
      * @see GameInteraction
      */
-    int nbMoveParcel(ParcelMission parcelMission) {
+    int nbMoveForMission(ParcelMission parcelMission) {
         Map<Coordinate,Boolean> bestCoordinatesForMission;
         int nbMove = 0;
 
