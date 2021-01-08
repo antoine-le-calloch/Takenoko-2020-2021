@@ -1,7 +1,6 @@
 package fr.unice.polytech.startingpoint.bot.strategie;
 
 
-import fr.unice.polytech.startingpoint.exception.OutOfResourcesException;
 import fr.unice.polytech.startingpoint.game.Game;
 import fr.unice.polytech.startingpoint.game.GameInteraction;
 import fr.unice.polytech.startingpoint.game.board.Coordinate;

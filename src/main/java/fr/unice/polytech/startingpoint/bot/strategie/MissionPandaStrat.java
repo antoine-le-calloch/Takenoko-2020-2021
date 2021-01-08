@@ -9,7 +9,6 @@ import fr.unice.polytech.startingpoint.game.mission.Mission;
 import fr.unice.polytech.startingpoint.type.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MissionPandaStrat extends Strategie {
 
