@@ -1,11 +1,12 @@
 package fr.unice.polytech.startingpoint.bot;
 
 import fr.unice.polytech.startingpoint.game.GameInteraction;
+import fr.unice.polytech.startingpoint.game.board.Coordinate;
 import fr.unice.polytech.startingpoint.game.mission.PeasantMission;
-import fr.unice.polytech.startingpoint.type.BotType;
-import fr.unice.polytech.startingpoint.type.MissionType;
-import fr.unice.polytech.startingpoint.type.ResourceType;
-import fr.unice.polytech.startingpoint.type.WeatherType;
+import fr.unice.polytech.startingpoint.type.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <h1>{@link PeasantBot} :</h1>
@@ -44,4 +45,34 @@ public class PeasantBot extends Bot {
         else
             return chooseMissionTypeDrawable(MissionType.PARCEL,MissionType.PANDA,MissionType.PEASANT);
     }
+
+    @Override
+    public void stratThunderstorm() {
+
+    }
+
+    @Override
+    public void stratRain() {
+
+        for(PeasantMission peasantMission:gameInteraction.getInventoryPeasantMissions()) {
+            ColorType peasantMissionColor = peasantMission.getColorType();
+
+            List<Coordinate> parcelsIrrigatedSameColorAsMission = gameInteraction.
+                    getPlacedCoordinatesByColor(peasantMissionColor).stream()
+                    .filter(gameInteraction::isPlacedAndIrrigatedParcel)
+                    .collect(Collectors.toList());
+            if (!parcelsIrrigatedSameColorAsMission.isEmpty()) {
+                gameInteraction.rainAction(parcelsIrrigatedSameColorAsMission.get(0));
+                break;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
 }
