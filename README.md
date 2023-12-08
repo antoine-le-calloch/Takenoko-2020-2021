@@ -1,33 +1,30 @@
-Polytech-Nice Sophia SI3, 
-Projet semestre 5 : Takenoko 
-Groupe GigaBoss : 
-	Eric Naud, 
-	Loic Madern, 
-	Enzo Manuel, 
-	Antoine Le Calloch
+<h1>Projet semestre 5 : Takenoko</h1>
+<div></div><em>Polytech-Nice Sophia SI3</em></div>
+<div><em>Eric Naud, Loic Madern, Enzo Manuel, Antoine Le Calloch</em></div><br>
 
-Le programme se lance avec la commande suivante:
-mvn clean package
-mvn exec:java 
+Takenoko is a turn-based board game. It is played by 2 to 4 players for games of around 45 minutes.
+The theme of the game is to take care of a panda, a gift from the emperor of China to that of Japan, while taking care of the imperial bamboo grove, maintained by a gardener.
+Players cultivate plots of land, irrigate them, and grow one of three varieties of bamboo (green, yellow or pink) through this gardener.
 
+<h3>Project setup</h4>
 
-Comportement du programme:
+	mvn clean package
 
-La simulation du jeu se fait par l’instanciation d’un objet Game qui possède une liste de bots en argument. 
-Le nombre de joueurs peut varier de 1 à 4. 
+	mvn exec:java 
 
-La sortie standard affiche le pourcentage de victoire, de défaite et d’égalité ainsi que le score moyen pour chaque bot, pour un total de 1000 parties.
-On peut aussi activer l'affichage du detail du jeu à chaque tour.
+<br>
+<h3>Program behavior:</h3>
 
+We've developed a game that lets you play against artificial intelligences or have them play against each other. There are several different bots with different playing techniques.
+Game simulation is done by instantiating a Game object which has a list of bots as an argument. The number of players can vary from 1 to 4.
 
-Deux parties se lancent automatiquement : 
+The standard output displays the win, lose and tie percentage as well as the average score for each bot, for a total of 1000 games.
+You can also activate the display of game details each turn.
 
-La première partie est composé d'un Parcel Bot, un Panda Bot, d'un Intelligent Bot et d'un Random Bot
-La deuxième partie est composé de deux Intelligent Bot
+Two parts launch automatically. The first part is composed of a Parcel Bot, a Panda Bot, an Intelligent Bot and a Random Bot
+The second part is composed of two Intelligent Bots. These parts do not display game details.
 
-Ces parties n'affichent pas les détails du jeu.
-
-Les tests couvrent 91% des lignes de code.
+The tests cover 91% of the lines of code.
 
 
 
